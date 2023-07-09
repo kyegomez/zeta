@@ -5,12 +5,12 @@ import torch
 import torch.nn as nn
 
 from zeta.architecture.encoder import Encoder
-from zeta.urils.embedding import (
+from zeta.utils.embedding import (
     PositionalEmbedding,
     TextEmbedding,
     VisionEmbedding,
 )
-from zeta.urils.multiway_network import MutliwayEmbedding
+from zeta.utils.multiway_network import MutliwayEmbedding
 
 
 class BEiT3(nn.Module):

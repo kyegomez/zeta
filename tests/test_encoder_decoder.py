@@ -6,7 +6,7 @@ import torch
 
 from zeta.architecture.config import EncoderDecoderConfig
 from zeta.architecture.encoder_decoder import EncoderDecoder
-from zeta.urils.embedding import PositionalEmbedding, TextEmbedding
+from zeta.utils.embedding import PositionalEmbedding, TextEmbedding
 
 testcases = [
     {},

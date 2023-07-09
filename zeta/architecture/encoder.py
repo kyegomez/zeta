@@ -13,13 +13,13 @@ except ModuleNotFoundError:
     from torch.nn import LayerNorm
 
 from zeta.architecture.utils import init_bert_params
-from zeta.urils.droppath import DropPath
-from zeta.urils.feedforward_network import FeedForwardNetwork, make_experts
-from zeta.urils.multihead_attention import MultiheadAttention
-from zeta.urils.multiway_network import MultiwayWrapper, set_split_position
-from zeta.urils.relative_position_bias import RelativePositionBias
-from zeta.urils.xmoe.moe_layer import MOELayer
-from zeta.urils.xmoe.routing import Top1Gate, Top2Gate
+from zeta.utils.droppath import DropPath
+from zeta.utils.feedforward_network import FeedForwardNetwork, make_experts
+from zeta.utils.multihead_attention import MultiheadAttention
+from zeta.utils.multiway_network import MultiwayWrapper, set_split_position
+from zeta.utils.relative_position_bias import RelativePositionBias
+from zeta.utils.xmoe.moe_layer import MOELayer
+from zeta.utils.xmoe.routing import Top1Gate, Top2Gate
 
 
 class EncoderLayer(nn.Module):
