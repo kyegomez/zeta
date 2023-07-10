@@ -1,3 +1,5 @@
+#modularize the decoder to accept any attemtion, dilated or multihead
+
 import torch
 from torch.nn import Embedding, Module
 import bitsandbytes

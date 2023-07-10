@@ -114,3 +114,6 @@ If our work here in Zeta has aided you in your journey, please consider acknowle
 ## Contributing
 
 We're always thrilled to welcome new ideas and improvements from the community. Please check our [Contributor's Guide](contributing.md) for more details about contributing.
+
+
+* Modularize the decoder to accept any attemtion, dilated or multihead
