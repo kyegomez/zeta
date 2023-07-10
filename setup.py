@@ -7,7 +7,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="zetascale",
-    version="0.2.0",
+    version="0.0.2",
     author="Zeta Team",
     author_email="kye@apac.ai",
     description="Transformers at zeta scales",

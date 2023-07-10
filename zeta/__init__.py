@@ -8,3 +8,7 @@ from zeta.architecture.encoder_decoder import EncoderDecoder
 #models
 from zeta.models.KosmosX import KosmosTokenizer, Kosmos
 from zeta.models.LongNet import LongNetTokenizer, LongNet
+
+
+#attention
+from zeta.utils.attention.dilated_attention import DilatedAttention2
