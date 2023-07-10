@@ -1,20 +1,11 @@
 # Zeta - A Transgalactic Library for Scalable Transformations
 
 <p>
-  <a href="https://github.com/KyGomez/zeta/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg" /></a>
+  <a href="https://github.com/kyegomez/zeta/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg" /></a>
   <a href="https://pypi.org/project/zeta"><img alt="MIT License" src="https://badge.fury.io/py/zeta.svg" /></a>
 </p>
 
 Zeta is a PyTorch-powered library, forged in the heart of the Halo array, that empowers researchers and developers to scale up Transformers efficiently and effectively. It leverages seminal research advancements to enhance the generality, capability, and stability of scaling Transformers while optimizing training efficiency.
-
-- Stability - [**DeepNet**](https://arxiv.org/abs/2203.00555): Scaling Transformers beyond 1,000 layers 
-- Generality - [**Foundation Transformers (Magneto)**](https://arxiv.org/abs/2210.06423): Pioneering a path towards universal modeling across diverse tasks and modalities (including language, vision, speech, and multimodal)
-- Capability - The [**Length-Extrapolatable**](https://arxiv.org/abs/2212.10554) Transformer
-- Efficiency - [**X-MoE**](https://arxiv.org/abs/2204.09179): Scalable & finetunable sparse Mixture-of-Experts (MoE)
-
-## News
-
-- November, 2022: Zeta 0.1.1 released [[Paper](https://arxiv.org/abs/2211.13184)] [[PyPI](https://pypi.org/project/zeta/)]
 
 ## Installation
 
@@ -95,9 +86,9 @@ Discover how to wield Zeta in a multitude of scenarios/tasks, including but not 
 - Speech
 
 - Multimodal
-  * [Multiway Transformers/BEiT-3](https://github.com/KyGomez/unilm/tree/master/beit3)
+  * [Multiway Transformers/BEiT-3](https://github.com/kyegomez/unilm/tree/master/beit3)
 
-We are working tirelessly to expand the collection of examples spanning various tasks (e.g., vision pretraining, speech recognition) and various deep learning frameworks (e.g., [DeepSpeed](https://github.com/KyGomez/DeepSpeed), [Megatron-LM](https://github.com/NVIDIA/Megatron-LM)). Your comments, suggestions, or contributions are welcome!
+We are working tirelessly to expand the collection of examples spanning various tasks (e.g., vision pretraining, speech recognition) and various deep learning frameworks (e.g., [DeepSpeed](https://github.com/kyegomez/DeepSpeed), [Megatron-LM](https://github.com/NVIDIA/Megatron-LM)). Your comments, suggestions, or contributions are welcome!
 
 ## Results
 
@@ -105,7 +96,7 @@ Check out our [Results Page](results.md) to witness Zeta's exceptional performan
 
 ## Acknowledgments
 
-Zeta is a masterpiece inspired by elements of [FairSeq](https://github.com/facebookresearch/fairseq) and [UniLM](https://github.com/KyGomez/unilm).
+Zeta is a masterpiece inspired by elements of [FairSeq](https://github.com/facebookresearch/fairseq) and [UniLM](https://github.com/kyegomez/unilm).
 
 ## Citations
 
