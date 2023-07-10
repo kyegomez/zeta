@@ -17,11 +17,10 @@ from typing import List
 from einops import rearrange, repeat, reduce
 from einops.layers.torch import Rearrange
 
-from zeta.utils.attention.attend import Attend, Intermediates
-
 from abc import ABC, abstractmethod
 import bitsandbytes as bnb
 
+from zeta.utils.attention.attend import Attend, Intermediates
 
 from zeta.utils.feedforward_network import FeedForwardNetwork as FeedForward
 from zeta.utils.module.relative_position_bias import RelativePositionBias
