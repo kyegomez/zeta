@@ -11,7 +11,7 @@ Zeta is a PyTorch-powered library, forged in the heart of the Halo array, that e
 
 To install:
 ```
-pip install zeta
+pip install zetascale
 ```
 
 To get hands-on and develop it locally:
