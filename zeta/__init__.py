@@ -12,3 +12,5 @@ from zeta.models.LongNet import LongNetTokenizer, LongNet
 
 #attention
 from zeta.utils.attention.dilated_attention import DilatedAttention2
+from zeta.utils.attention.main import Attention, AttentionLayers
+
