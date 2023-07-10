@@ -25,7 +25,7 @@ pip install zeta
 
 To get hands-on and develop it locally:
 ```
-git clone https://github.com/KyGomez/zeta.git
+git clone https://github.com/kyegomez/zeta.git
 cd zeta
 pip install -e .
 ```
