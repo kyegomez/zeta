@@ -3,7 +3,7 @@
 
 import torch.nn as nn
 
-from zeta.utils.multihead_attention import MultiheadAttention
+from zeta.utils.attention.multihead_attention import MultiheadAttention
 from zeta.utils.modules.multiway_network import MultiwayNetwork
 
 

@@ -15,7 +15,7 @@ except ModuleNotFoundError:
 from zeta.architecture.utils import init_bert_params
 from zeta.utils.droppath import DropPath
 from zeta.utils.feedforward_network import FeedForwardNetwork, make_experts
-from zeta.utils.multihead_attention import MultiheadAttention
+from zeta.utils.attention.multihead_attention import MultiheadAttention
 from zeta.utils.modules.multiway_network import MultiwayWrapper, set_split_position
 from zeta.utils.modules.relative_position_bias import RelativePositionBias
 from zeta.utils.xmoe.moe_layer import MOELayer
