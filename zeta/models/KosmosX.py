@@ -1,7 +1,6 @@
 import torch
-# from zeta.architecture.config import DecoderConfig
 from zeta import DecoderConfig, Decoder
-from zeta.component.embedding import PositionalEmbedding
+from zeta.utils.embedding import PositionalEmbedding
 
 from transformers import T5Tokenizer, CLIPProcessor, CLIPModel, PreTrainedTokenizerFast, AutoTokenizer
 from tokenizers import SentencePieceBPETokenizer
@@ -11,20 +10,11 @@ from PIL import Image
 from torch.nn import Embedding, Module
 import bitsandbytes
 
-#use segment anything dataset as finetuning
-
-"""Action items:
-
-Check system paths and update them if necessary.
-Check if the main CUDA library is installed and update it if necessary.
-Investigate the error related to 'WindowsPath' not being iterable in the DA setup."""
-
 
 class KosmosTokenizer:
     def __init__(self):
         self.processor = CLIPProcessor.from_pretrained("laion/CLIP-ViT-L-14-laion2B-s32B-b82K")
 
-        #maybe this will work
         self.tokenizer = AutoTokenizer.from_pretrained(
             "EleutherAI/gpt-neox-20b",
             additional_special_tokens=["<image>", "</image>"],
