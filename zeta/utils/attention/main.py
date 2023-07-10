@@ -17,7 +17,7 @@ from typing import List
 from einops import rearrange, repeat, reduce
 from einops.layers.torch import Rearrange
 
-from zeta.utils.attention.attend import Attend
+from zeta.utils.attention.attend import Attend, Intermediates
 
 from abc import ABC, abstractmethod
 import bitsandbytes as bnb
@@ -291,6 +291,24 @@ def dropout_seq(seq, mask, dropout):
 
     return seq, mask
 
+
+
+class GRUGating(nn.Module):
+    def __init__(self, dim, scale_residual = False, **kwargs):
+        super().__init__()
+        self.gru = nn.GRUCell(dim, dim)
+        self.residual_scale = nn.Parameter(torch.ones(dim)) if scale_residual else None
+
+    def forward(self, x, residual):
+        if exists(self.residual_scale):
+            residual = residual * self.residual_scale
+
+        gated_output = self.gru(
+            rearrange(x, 'b n d -> (b n) d'),
+            rearrange(residual, 'b n d -> (b n) d')
+        )
+
+        return gated_output.reshape_as(x)
 
 
 class Residual(nn.Module):
