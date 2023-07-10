@@ -10,7 +10,7 @@ from zeta.utils.embedding import (
     TextEmbedding,
     VisionEmbedding,
 )
-from zeta.utils.multiway_network import MutliwayEmbedding
+from zeta.utils.modules.multiway_network import MutliwayEmbedding
 
 
 class BEiT3(nn.Module):

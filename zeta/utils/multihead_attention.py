@@ -11,8 +11,8 @@ try:
 except ModuleNotFoundError:
     from torch.nn import LayerNorm
 
-from .multiway_network import MultiwayWrapper
-from .xpos_relative_position import XPOS
+from .modules.multiway_network import MultiwayWrapper
+from .modules.xpos_relative_position import XPOS
 
 
 class MultiheadAttention(nn.Module):
