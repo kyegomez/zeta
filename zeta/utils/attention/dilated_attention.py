@@ -4,8 +4,8 @@ import torch.nn.functional as F
 
 from flash_attn.flash_attn.flash_attention import  FlashMHA
 # from torchscale import XPOS, RelativePositionBias
-from zeta.utils.modules.xpos_relative_position import XPOS
-from zeta.utils.modules.relative_position_bias import RelativePositionBias
+from zeta.utils.module.xpos_relative_position import XPOS
+from zeta.utils.module.relative_position_bias import RelativePositionBias
 
 
 # Replace this with your correct GPU device

@@ -4,7 +4,7 @@
 import torch.nn as nn
 
 from zeta.utils.attention.multihead_attention import MultiheadAttention
-from zeta.utils.modules.multiway_network import MultiwayNetwork
+from zeta.utils.module.multiway_network import MultiwayNetwork
 
 
 def init_bert_params(module):

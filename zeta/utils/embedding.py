@@ -5,6 +5,17 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from abc import ABC, abstractmethod
+import bitsandbytes as bnb
+
+
+class BaseEmbedding(ABC):
+    @abstractmethod
+    def get_embedding(self, num_tokens: int, dim: int) -> nn.Module:
+        #custom embedding function
+        embedding = ...
+
+        return embedding
+
 
 class VisionLanguageEmbedding(nn.Module):
     def __init__(self, text_embed, vision_embed):
@@ -24,14 +35,6 @@ class VisionLanguageEmbedding(nn.Module):
 
         return torch.cat([x1, x2], dim=1)
 
-
-class BaseEmbedding(ABC):
-    @abstractmethod
-    def get_embedding(self, num_tokens: int, dim: int) -> nn.Module:
-        #custom embedding function
-        embedding = ...
-
-        return embedding
 
 class VisionEmbedding(nn.Module):
     """Image to Patch Embedding"""
