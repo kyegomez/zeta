@@ -48,7 +48,7 @@ Additionally, we support the `Decoder` and `EncoderDecoder` architectures:
 
 ```python
 # To create a decoder model
->>> from zeta. import DecoderConfig
+>>> from zeta import DecoderConfig
 >>> from zeta import Decoder
 
 >>> config = DecoderConfig(vocab_size=64000)
