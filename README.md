@@ -35,8 +35,8 @@ pip install -e .
 Creating a model empowered with the aforementioned breakthrough research features is a breeze. Here's how to quickly materialize a BERT-like encoder:
 
 ```python
->>> from zeta.architecture.config import EncoderConfig
->>> from zeta.architecture.encoder import Encoder
+>>> from zeta import EncoderConfig
+>>> from zeta import Encoder
 
 >>> config = EncoderConfig(vocab_size=64000)
 >>> model = Encoder(config)
@@ -48,16 +48,16 @@ Additionally, we support the `Decoder` and `EncoderDecoder` architectures:
 
 ```python
 # To create a decoder model
->>> from zeta.architecture.config import DecoderConfig
->>> from zeta.architecture.decoder import Decoder
+>>> from zeta. import DecoderConfig
+>>> from zeta import Decoder
 
 >>> config = DecoderConfig(vocab_size=64000)
 >>> decoder = Decoder(config)
 >>> print(decoder)
 
 # To create an encoder-decoder model
->>> from zeta.architecture.config import EncoderDecoderConfig
->>> from zeta.architecture.encoder_decoder import EncoderDecoder
+>>> from zeta import EncoderDecoderConfig
+>>> from zeta import EncoderDecoder
 
 >>> config = EncoderDecoderConfig(vocab_size=64000)
 >>> encdec = EncoderDecoder(config)
@@ -69,8 +69,8 @@ Additionally, we support the `Decoder` and `EncoderDecoder` architectures:
 Most of the transformative features mentioned below can be enabled by simply setting the corresponding parameters in the `config`:
 
 ```python
->>> from zeta.architecture.config import EncoderConfig
->>> from zeta.architecture.encoder import Encoder
+>>> from zeta import EncoderConfig
+>>> from zeta import Encoder
 
 >>> config = EncoderConfig(vocab_size=64000, deepnorm=True, multiway=True)
 >>> model = Encoder(config)
