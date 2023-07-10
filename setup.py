@@ -6,7 +6,7 @@ from io import open
 from setuptools import find_packages, setup
 
 setup(
-    name="zeta",
+    name="zetascale",
     version="0.2.0",
     author="Zeta Team",
     author_email="kye@apac.ai",
