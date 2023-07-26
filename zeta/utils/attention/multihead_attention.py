@@ -15,6 +15,8 @@ from ..module.multiway_network import MultiwayWrapper
 from ..module.xpos_relative_position import XPOS
 
 
+from optimus_prime import Attention
+
 class MultiheadAttention(nn.Module):
     def __init__(
         self,
@@ -54,6 +56,8 @@ class MultiheadAttention(nn.Module):
             if args.xpos_rel_pos and self.self_attention
             else None
         )
+
+        self.attention = Attention(dim=embed_dim, heads=num_heads)
 
     def reset_parameters(self):
         nn.init.xavier_uniform_(self.k_proj.weight, gain=1 / math.sqrt(2))
@@ -120,31 +124,16 @@ class MultiheadAttention(nn.Module):
             k = self.xpos(k, offset=0, downscale=True)
             q = self.xpos(q, offset=offset, downscale=False)
 
-        attn_weights = torch.bmm(q, k.transpose(1, 2))
-
-        if attn_mask is not None:
-            attn_weights = torch.nan_to_num(attn_weights)
-            attn_mask = attn_mask.unsqueeze(0)
-            attn_weights += attn_mask
-
-        if key_padding_mask is not None:
-            attn_weights = attn_weights.view(bsz, self.num_heads, tgt_len, src_len)
-            attn_weights = attn_weights.masked_fill(
-                key_padding_mask.unsqueeze(1).unsqueeze(2).to(torch.bool),
-                float("-inf"),
-            )
-            attn_weights = attn_weights.view(bsz * self.num_heads, tgt_len, src_len)
-
-        if rel_pos is not None:
-            rel_pos = rel_pos.view(attn_weights.size())
-            attn_weights = attn_weights + rel_pos
-
-        attn_weights = F.softmax(attn_weights, dim=-1, dtype=torch.float32).type_as(
-            attn_weights
+        # Replace the standard attention computation with the Attention computation
+        attn, attn_weights = self.attention(
+            x=q,
+            context=k,
+            mask=key_padding_mask,
+            attn_mask=attn_mask,
+            rel_pos=rel_pos,
         )
-        attn_probs = self.dropout_module(attn_weights)
 
-        attn = torch.bmm(attn_probs, v)
+        # Post-processing
         attn = attn.transpose(0, 1).reshape(tgt_len, bsz, embed_dim).transpose(0, 1)
 
         if self.inner_attn_ln is not None:
