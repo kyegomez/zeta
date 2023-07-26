@@ -306,7 +306,7 @@ class MultiheadAttentionTriton(nn.Module):
             rel_pos = rel_pos.view(attn_weights.size())
             attn_weights = attn_weights + rel_pos
 
-        q = q.unsqueeze(0)
+        q = q.unsqueeze(0).float()
         k = k.unsqueeze(0)
         v = v.unsqueeze(0)
 
