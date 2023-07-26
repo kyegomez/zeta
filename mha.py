@@ -218,8 +218,11 @@ class Args:
     def __init__(self, embed_dim, num_heads):
         self.embed_dim = embed_dim
         self.num_heads = num_heads
+        self.dropout = 0.0
+        self.self_attention = True
+        self.encoder_decoder_attention = False
+        self.subln = False
         # Add other necessary parameters here
-
 
 def MultiheadAttentionTriton():
     # Define the parameters
@@ -229,7 +232,7 @@ def MultiheadAttentionTriton():
 
     # Initialize the MultiheadAttentionTriton
     args = Args(embed_dim, num_heads)
-    multihead_attention = MultiheadAttentionTriton(args)
+    multihead_attention = MultiheadAttentionTriton(args, embed_dim, num_heads, args.dropout, args.self_attention, args.encoder_decoder_attention, args.subln)
 
     # Move the model to GPU if available
     if torch.cuda.is_available():
