@@ -43,7 +43,7 @@ attention = MultiheadAttention(
 ).to(device)
 
 #test the input 
-test_input = torch.randint(0, 256, (1, 1024)).unsqueeze(0).to(device)
+test_input = torch.randint(0, 256, (1, 1024)).unsqueeze(0).float().to(device)
 
 #measure forward pass time
 start_time = time.time()
@@ -83,7 +83,7 @@ print(f"Consistency score: {consistency_score}")
 sequence_lengths = [1024, 2048, 4096, 8192, 160032, 32002]
 times = []
 for length in sequence_lengths:
-    test_input = torch.randint(0, 256, (1, length)).to(device)
+    test_input = torch.randint(0, 256, (1, length)).unsqueeze(0).float().to(device)
     start_time = time.time()
     attention(test_input, test_input, test_input)
     end_time = time.time()
