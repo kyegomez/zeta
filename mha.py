@@ -214,15 +214,16 @@
 import torch
 from zeta import MultiheadAttentionTriton
 
+device = torch.device('cuda' if torch.cuda.is_available() else "cpu")
+
+
 class Args:
-    def __init__(self, embed_dim, num_heads):
-        self.embed_dim = embed_dim
-        self.num_heads = num_heads
-        self.dropout = 0.0
-        self.self_attention = True
-        self.encoder_decoder_attention = False
-        self.subln = False
-        # Add other necessary parameters here
+    def __init__(self):
+        self.layernorm_eps = 1e-5
+        self.xpos_rel_pos = False
+        self.xpos_scale_base = 1.0
+        self.multiway = True
+args = Args()
 
 # Define the parameters
 embed_dim = 512
@@ -230,8 +231,16 @@ num_heads = 8
 sequence_lengths = [2**i for i in range(10, 15)]  # sequence lengths up to 16,000+
 
 # Initialize the MultiheadAttentionTriton
-# args = Args(embed_dim, num_heads)
-multihead_attention = MultiheadAttentionTriton()
+args = Args()
+multihead_attention = MultiheadAttentionTriton(
+    args, 
+    embed_dim=1024,
+    num_heads=8,
+    dropout=0.0,
+    self_attention=True,
+    subln=True,
+).to(device)
+
 
 # Move the model to GPU if available
 if torch.cuda.is_available():
@@ -257,4 +266,3 @@ for seq_len in sequence_lengths:
     assert attn_weights.shape == (1, num_heads, seq_len, seq_len), f"Attn_weights shape mismatch for seq_len {seq_len}"
 
     print(f"Passed for seq_len {seq_len}")
-
