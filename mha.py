@@ -135,7 +135,7 @@ class DistributedTester(AttentionTester):
 
     def setup(self, rank, world_size):
         os.environ['MASTER_ADDR'] = 'localhost'
-        os.environ['MASTER_PORT'] = '12355'
+        os.environ['MASTER_PORT'] = '7400'
         torch.distributed.init_process_group("gloo", rank=rank, world_size=world_size)
 
     def cleanup(self):
