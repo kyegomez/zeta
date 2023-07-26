@@ -224,39 +224,37 @@ class Args:
         self.subln = False
         # Add other necessary parameters here
 
-def MultiheadAttentionTriton():
-    # Define the parameters
-    embed_dim = 512
-    num_heads = 8
-    sequence_lengths = [2**i for i in range(10, 15)]  # sequence lengths up to 16,000+
+# Define the parameters
+embed_dim = 512
+num_heads = 8
+sequence_lengths = [2**i for i in range(10, 15)]  # sequence lengths up to 16,000+
 
-    # Initialize the MultiheadAttentionTriton
-    # args = Args(embed_dim, num_heads)
-    multihead_attention = MultiheadAttentionTriton()
+# Initialize the MultiheadAttentionTriton
+# args = Args(embed_dim, num_heads)
+multihead_attention = MultiheadAttentionTriton()
 
-    # Move the model to GPU if available
+# Move the model to GPU if available
+if torch.cuda.is_available():
+    multihead_attention = multihead_attention.cuda()
+
+for seq_len in sequence_lengths:
+    # Create random input tensors
+    query = torch.randn((1, seq_len, embed_dim))
+    key = torch.randn((1, seq_len, embed_dim))
+    value = torch.randn((1, seq_len, embed_dim))
+
+    # Move the tensors to GPU if available
     if torch.cuda.is_available():
-        multihead_attention = multihead_attention.cuda()
+        query = query.cuda()
+        key = key.cuda()
+        value = value.cuda()
 
-    for seq_len in sequence_lengths:
-        # Create random input tensors
-        query = torch.randn((1, seq_len, embed_dim))
-        key = torch.randn((1, seq_len, embed_dim))
-        value = torch.randn((1, seq_len, embed_dim))
+    # Forward pass
+    output, attn_weights = multihead_attention(query, key, value)
 
-        # Move the tensors to GPU if available
-        if torch.cuda.is_available():
-            query = query.cuda()
-            key = key.cuda()
-            value = value.cuda()
+    # Check the output shape
+    assert output.shape == (1, seq_len, embed_dim), f"Output shape mismatch for seq_len {seq_len}"
+    assert attn_weights.shape == (1, num_heads, seq_len, seq_len), f"Attn_weights shape mismatch for seq_len {seq_len}"
 
-        # Forward pass
-        output, attn_weights = multihead_attention(query, key, value)
+    print(f"Passed for seq_len {seq_len}")
 
-        # Check the output shape
-        assert output.shape == (1, seq_len, embed_dim), f"Output shape mismatch for seq_len {seq_len}"
-        assert attn_weights.shape == (1, num_heads, seq_len, seq_len), f"Attn_weights shape mismatch for seq_len {seq_len}"
-
-        print(f"Passed for seq_len {seq_len}")
-
-MultiheadAttentionTriton()
