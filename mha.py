@@ -3,7 +3,7 @@ import time
 import tracemalloc
 
 import matplotlib.pyplot as plt
-from memory_profiler import profiler
+# from memory_profiler import profile
 from zeta import MultiheadAttention
 
 

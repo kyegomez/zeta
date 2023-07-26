@@ -3,3 +3,5 @@ torch
 fairscale
 timm
 einops
+
+memory-profiler
