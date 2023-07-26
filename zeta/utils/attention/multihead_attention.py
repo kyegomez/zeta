@@ -79,7 +79,18 @@ class MultiheadAttention(nn.Module):
         self.attn_qk_norm = attn_qk_norm
         self.attn_qk_norm_dim_scale = attn_qk_norm_dim_scale
 
-        self.attention = Attention(dim=embed_dim, heads=num_heads)
+        self.attention = Attention(
+            dim=embed_dim, 
+            heads=num_heads,
+            alibi_pos_bias=self.alibi_pos_bias,
+            alibi_num_heads=self.alibi_num_heads,
+            rotary_xpos=self.rotary_xpos,
+            attn_flash=self.attn_flash,
+            shift_tokens=self.shift_tokens,
+            attn_one_kv_head=self.attn_one_kv_head,
+            qk_norm=self.qk_norm,
+            attn_qk_norm=self.attn_qk_norm,
+            attn_qk_norm_dim_scale=self.attn_qk_norm_dim_scale)
 
     def reset_parameters(self):
         nn.init.xavier_uniform_(self.k_proj.weight, gain=1 / math.sqrt(2))
@@ -153,16 +164,7 @@ class MultiheadAttention(nn.Module):
             context=k,
             mask=key_padding_mask,
             attn_mask=attn_mask,
-            rel_pos=rel_pos,
-            alibi_pos_bias=self.alibi_pos_bias,
-            alibi_num_heads=self.alibi_num_heads,
-            rotary_xpos=self.rotary_xpos,
-            attn_flash=self.attn_flash,
-            shift_tokens=self.shift_tokens,
-            attn_one_kv_head=self.attn_one_kv_head,
-            qk_norm=self.qk_norm,
-            attn_qk_norm=self.attn_qk_norm,
-            attn_qk_norm_dim_scale=self.attn_qk_norm_dim_scale
+            rel_pos=rel_pos
         )
 
         # Post-processing
