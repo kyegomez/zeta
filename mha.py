@@ -15,8 +15,17 @@ if torch.cuda.is_available():
 device = torch.device('cuda' if torch.cuda.is_available() else "cpu")
 
 
+class Args:
+    def __init__(self):
+        self.layernorm_eps = 1e-5
+        self.xpos_rel_pos = False
+        self.xpos_scale_base = 1.0
+        self.multiway = True
+args = Args()
+
 #initialize attention
 attention = MultiheadAttention(
+    args, 
     embed_dim=1024,
     num_heads=8,
     dropout=0.0,
