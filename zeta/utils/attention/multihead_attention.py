@@ -13,7 +13,7 @@ except ModuleNotFoundError:
 
 from ..module.multiway_network import MultiwayWrapper
 from ..module.xpos_relative_position import XPOS
-from zeta.utils.attention.flash_triton import FlashAttention
+from zeta.utils.attention.flash_triton import attention
 
 
 class MultiheadAttention(nn.Module):
@@ -307,7 +307,7 @@ class MultiheadAttentionTriton(nn.Module):
             attn_weights = attn_weights + rel_pos
 
         # Pass into Flash Attention triton
-        attn_weights = FlashAttention(q, k, v, attn_mask, self.scaling)
+        attn_weights = attention(q, k, v, attn_mask, self.scaling)
         
         #performs a batch matrix product of the attention weights with the value
         attn = torch.bmm(attn_weights, v)
