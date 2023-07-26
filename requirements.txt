@@ -1,0 +1,5 @@
+optimus-prime-transformers
+torch
+fairscale
+timm
+einops

@@ -7,7 +7,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="zetascale",
-    version="0.0.2",
+    version="0.0.3",
     author="Zeta Team",
     author_email="kye@apac.ai",
     description="Transformers at zeta scales",
@@ -17,7 +17,7 @@ setup(
     license="MIT",
     url="https://github.com/kyegomez/zeta",
     packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
-    install_requires=["torch>=1.8", "fairscale==0.4.0", "timm==0.6.13"],
+    install_requires=["torch>=1.8", "fairscale==0.4.0", "timm==0.6.13", 'optimus-prime-transformers'],
     python_requires=">=3.8.0",
     classifiers=[
         "Programming Language :: Python :: 3",
