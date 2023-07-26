@@ -257,7 +257,7 @@ class _attention(torch.autograd.Function):
         BLOCK = 128
         q, k, v, o, L = ctx.saved_tensors
         do = do.contiguous()
-        dq = torch.zeros_like(q, dtype=torch.float32)
+        dq = torch.zeros_like(q, dtype=torch.float16)
         dk = torch.empty_like(k)
         dv = torch.empty_like(v)
         delta = torch.empty_like(L)
