@@ -4,8 +4,7 @@ import tracemalloc
 
 import matplotlib.pyplot as plt
 # from memory_profiler import profile
-from zeta import MultiheadAttention
-
+from zeta import MultiheadAttentionTriton as MultiheadAttention
 
 #set seeed 
 torch.manual_seed(0)
