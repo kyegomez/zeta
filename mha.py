@@ -28,17 +28,8 @@ attention = MultiheadAttention(
     embed_dim=1024,
     num_heads=8,
     dropout=0.0,
-    self_attention=True,
+    # self_attention=True,
     subln=True,
-    alibi_pos_bias=True,
-    alibi_num_heads=4,
-    rotary_xpos=True,
-    attn_flash=True,
-    # shift_tokens=False,
-    attn_one_kv_head=True,
-    qk_norm=False,
-    attn_qk_norm=False,
-    attn_qk_norm_dim_scale=True
 ).to(device)
 
 #test the input 
