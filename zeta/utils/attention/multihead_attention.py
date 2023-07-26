@@ -27,6 +27,16 @@ class MultiheadAttention(nn.Module):
         self_attention=False,
         encoder_decoder_attention=False,
         subln=False,
+        alibi_pos_bias=False,
+        alibi_num_heads=None,
+        rotary_xpos=False,
+        attn_flash=False,
+        # deepnorm=deepnorm,
+        shift_tokens=False,
+        attn_one_kv_head=False,
+        qk_norm=False,
+        attn_qk_norm=False,
+        attn_qk_norm_dim_scale=False
     ):
         super().__init__()
         self.args = args
@@ -56,6 +66,18 @@ class MultiheadAttention(nn.Module):
             if args.xpos_rel_pos and self.self_attention
             else None
         )
+
+        self.alibi_pos_bias = alibi_pos_bias
+        self.alibi_num_heads = alibi_num_heads
+        self.rotary_xpos = rotary_xpos
+        
+        self.attn_flash = attn_flash
+        self.shift_tokens = shift_tokens
+        self.attn_one_kv_head = attn_one_kv_head
+
+        self.qk_norm = qk_norm
+        self.attn_qk_norm = attn_qk_norm
+        self.attn_qk_norm_dim_scale = attn_qk_norm_dim_scale
 
         self.attention = Attention(dim=embed_dim, heads=num_heads)
 
@@ -94,6 +116,7 @@ class MultiheadAttention(nn.Module):
         q = q.view(bsz, tgt_len, self.num_heads, self.head_dim).transpose(1, 2)
         k = k.view(bsz, src_len, self.num_heads, self.head_dim).transpose(1, 2)
         v = v.view(bsz, src_len, self.num_heads, self.head_dim).transpose(1, 2)
+
         q = q.reshape(bsz * self.num_heads, tgt_len, self.head_dim)
         k = k.reshape(bsz * self.num_heads, src_len, self.head_dim)
         v = v.reshape(bsz * self.num_heads, src_len, self.head_dim)
@@ -131,6 +154,15 @@ class MultiheadAttention(nn.Module):
             mask=key_padding_mask,
             attn_mask=attn_mask,
             rel_pos=rel_pos,
+            alibi_pos_bias=self.alibi_pos_bias,
+            alibi_num_heads=self.alibi_num_heads,
+            rotary_xpos=self.rotary_xpos,
+            attn_flash=self.attn_flash,
+            shift_tokens=self.hift_tokens,
+            attn_one_kv_head=self.attn_one_kv_head,
+            qk_norm=self.qk_norm,
+            attn_qk_norm=self.attn_qk_norm,
+            attn_qk_norm_dim_scale=self.attn_qk_norm_dim_scale
         )
 
         # Post-processing
