@@ -234,7 +234,7 @@ sequence_lengths = [2**i for i in range(10, 15)]  # sequence lengths up to 16,00
 args = Args()
 multihead_attention = MultiheadAttentionTriton(
     args, 
-    embed_dim=1024,
+    embed_dim=embed_dim,
     num_heads=8,
     dropout=0.0,
     self_attention=True,
