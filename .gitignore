@@ -158,3 +158,8 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+zeta/utils/attention/__pycache__
+zeta/utils/__pycache__
+zeta/utils/__pycache__
+zeta/__pycache__
+zeta/utils/module/__pycache__
