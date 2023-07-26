@@ -104,7 +104,7 @@ import matplotlib.pyplot as plt
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.utils.data.distributed import DistributedSampler
 from torch.utils.data import TensorDataset, DataLoader
-from zeta import MultiheadAttentionTriton as MultiHeadAttention
+from zeta import MultiheadAttentionTriton
 
 class AttentionTester:
     def __init__(self, attention, device):
