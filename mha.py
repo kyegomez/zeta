@@ -214,6 +214,13 @@
 import torch
 from zeta import MultiheadAttentionTriton
 
+class Args:
+    def __init__(self, embed_dim, num_heads):
+        self.embed_dim = embed_dim
+        self.num_heads = num_heads
+        # Add other necessary parameters here
+
+
 def MultiheadAttentionTriton():
     # Define the parameters
     embed_dim = 512
@@ -221,7 +228,8 @@ def MultiheadAttentionTriton():
     sequence_lengths = [2**i for i in range(10, 15)]  # sequence lengths up to 16,000+
 
     # Initialize the MultiheadAttentionTriton
-    multihead_attention = MultiheadAttentionTriton(embed_dim, num_heads)
+    args = Args(embed_dim, num_heads)
+    multihead_attention = MultiheadAttentionTriton(args)
 
     # Move the model to GPU if available
     if torch.cuda.is_available():
