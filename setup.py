@@ -17,7 +17,7 @@ setup(
     license="MIT",
     url="https://github.com/kyegomez/zeta",
     packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
-    install_requires=["torch>=1.8", "fairscale==0.4.0", "timm==0.6.13", 'optimus-prime-transformers'],
+    install_requires=["torch>=1.8", "fairscale==0.4.0", "timm==0.6.13", 'optimus-prime-transformers', 'triton', 'pytest'],
     python_requires=">=3.8.0",
     classifiers=[
         "Programming Language :: Python :: 3",
