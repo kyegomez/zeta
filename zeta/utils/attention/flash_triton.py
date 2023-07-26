@@ -215,22 +215,27 @@ def _bwd_kernel(
 
 
 empty = torch.empty(128, device="cuda")
-
-
 class _attention(torch.autograd.Function):
     @staticmethod
-    def forward(ctx, q, k, v, causal, sm_scale):
+    def forward(ctx, q, k, v, causal, sm_scale, dtype=torch.float32, BLOCK_M=128, BLOCK_N=64, num_warps=None):
+        # Convert tensors to the specified data type
+        q = q.to(dtype)
+        k = k.to(dtype)
+        v = v.to(dtype)
+
         # shape constraints
         Lq, Lk, Lv = q.shape[-1], k.shape[-1], v.shape[-1]
         assert Lq == Lk and Lk == Lv
         assert Lk in {16, 32, 64, 128}
+
+        # Compute the number of warps if not provided
+        if num_warps is None:
+            num_warps = 4 if Lk <= 64 else 8
+
         o = torch.empty_like(q)
-        BLOCK_M = 128
-        BLOCK_N = 64
         grid = (triton.cdiv(q.shape[2], BLOCK_M), q.shape[0] * q.shape[1], 1)
         L = torch.empty((q.shape[0] * q.shape[1], q.shape[2]), device=q.device, dtype=torch.float32)
 
-        num_warps = 4 if Lk <= 64 else 8
         _fwd_kernel[grid](
             q, k, v, sm_scale,
             L,
@@ -253,11 +258,10 @@ class _attention(torch.autograd.Function):
         return o
 
     @staticmethod
-    def backward(ctx, do):
-        BLOCK = 128
+    def backward(ctx, do, BLOCK=128):
         q, k, v, o, L = ctx.saved_tensors
         do = do.contiguous()
-        dq = torch.zeros_like(q, dtype=torch.float16)
+        dq = torch.zeros_like(q, dtype=torch.float32)
         dk = torch.empty_like(k)
         dv = torch.empty_like(v)
         delta = torch.empty_like(L)
@@ -282,6 +286,5 @@ class _attention(torch.autograd.Function):
             num_stages=1,
         )
         return dq, dk, dv, None, None
-
 
 attention = _attention.apply
