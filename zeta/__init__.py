@@ -6,11 +6,11 @@ from zeta.architecture.encoder_decoder import EncoderDecoder
 
 
 #models
-from zeta.models.KosmosX import KosmosTokenizer, Kosmos
-from zeta.models.LongNet import LongNetTokenizer, LongNet
+# from zeta.models.KosmosX import KosmosTokenizer, Kosmos
+# from zeta.models.LongNet import LongNetTokenizer, LongNet
 
 
 #attention
 from zeta.utils.attention.dilated_attention import DilatedAttention2
-from zeta.utils.attention.main import Attention, AttentionLayers
-
+# from zeta.utils.attention.main import Attention, AttentionLayers
+from zeta.utils.attention.multihead_attention import MultiheadAttention
