@@ -43,7 +43,7 @@ attention = MultiheadAttention(
 ).to(device)
 
 #test the input 
-test_input = torch.randint(0, 256, (1, 1024)).to(device)
+test_input = torch.randint(0, 256, (1, 1024)).unsqueeze(0).to(device)
 
 #measure forward pass time
 start_time = time.time()
