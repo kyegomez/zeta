@@ -253,9 +253,10 @@ class MultiheadAttentionTriton(nn.Module):
         v = self.v_proj(value)
         q *= self.scaling
 
-        q = q.view(bsz, tgt_len, self.num_heads, self.head_dim).transpose(1, 2)
-        k = k.view(bsz, src_len, self.num_heads, self.head_dim).transpose(1, 2)
-        v = v.view(bsz, src_len, self.num_heads, self.head_dim).transpose(1, 2)
+        q = q.contiguous().view(bsz, tgt_len, self.num_heads, self.head_dim).transpose(1, 2)
+        k = k.contiguous().view(bsz, src_len, self.num_heads, self.head_dim).transpose(1, 2)
+        v = v.contiguous().view(bsz, src_len, self.num_heads, self.head_dim).transpose(1, 2)
+
         q = q.reshape(bsz * self.num_heads, tgt_len, self.head_dim)
         k = k.reshape(bsz * self.num_heads, src_len, self.head_dim)
         v = v.reshape(bsz * self.num_heads, src_len, self.head_dim)
