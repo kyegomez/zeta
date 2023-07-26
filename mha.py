@@ -216,7 +216,6 @@ from zeta import MultiheadAttentionTriton
 
 device = torch.device('cuda' if torch.cuda.is_available() else "cpu")
 
-
 class Args:
     def __init__(self):
         self.layernorm_eps = 1e-5
@@ -241,22 +240,11 @@ multihead_attention = MultiheadAttentionTriton(
     subln=True,
 ).to(device)
 
-
-# Move the model to GPU if available
-if torch.cuda.is_available():
-    multihead_attention = multihead_attention.cuda()
-
 for seq_len in sequence_lengths:
     # Create random input tensors
-    query = torch.randn((1, seq_len, embed_dim))
-    key = torch.randn((1, seq_len, embed_dim))
-    value = torch.randn((1, seq_len, embed_dim))
-
-    # Move the tensors to GPU if available
-    if torch.cuda.is_available():
-        query = query.cuda()
-        key = key.cuda()
-        value = value.cuda()
+    query = torch.randn((1, seq_len, embed_dim)).unsqueeze(0).to(device)
+    key = torch.randn((1, seq_len, embed_dim)).unsqueeze(0).to(device)
+    value = torch.randn((1, seq_len, embed_dim)).unsqueeze(0).to(device)
 
     # Forward pass
     output, attn_weights = multihead_attention(query, key, value)
