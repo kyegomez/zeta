@@ -28,7 +28,7 @@ attention = MultiheadAttention(
     embed_dim=1024,
     num_heads=8,
     dropout=0.0,
-    # self_attention=True,
+    self_attention=True,
     subln=True,
 ).to(device)
 
