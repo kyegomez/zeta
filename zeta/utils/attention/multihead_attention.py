@@ -306,6 +306,10 @@ class MultiheadAttentionTriton(nn.Module):
             rel_pos = rel_pos.view(attn_weights.size())
             attn_weights = attn_weights + rel_pos
 
+        q = q.unsqueeze(0)
+        k = k.unsqueeze(0)
+        v = v.unsqueeze(0)
+
         # Pass into Flash Attention triton
         attn_weights = attention(q, k, v, attn_mask, self.scaling)
         

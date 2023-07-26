@@ -218,7 +218,6 @@ empty = torch.empty(128, device="cuda")
 
 
 class _attention(torch.autograd.Function):
-
     @staticmethod
     def forward(ctx, q, k, v, causal, sm_scale):
         # shape constraints
