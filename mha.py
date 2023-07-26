@@ -234,7 +234,7 @@ args = Args()
 multihead_attention = MultiheadAttentionTriton(
     args, 
     embed_dim=embed_dim,
-    num_heads=8,
+    num_heads=num_heads,
     dropout=0.0,
     self_attention=True,
     subln=True,
@@ -242,9 +242,9 @@ multihead_attention = MultiheadAttentionTriton(
 
 for seq_len in sequence_lengths:
     # Create random input tensors
-    query = torch.randn((1, seq_len, embed_dim)).to(device)
-    key = torch.randn((1, seq_len, embed_dim)).to(device)
-    value = torch.randn((1, seq_len, embed_dim)).to(device)
+    query = torch.randn((1, num_heads, seq_len, embed_dim // num_heads)).to(device)
+    key = torch.randn((1, num_heads, seq_len, embed_dim // num_heads)).to(device)
+    value = torch.randn((1, num_heads, seq_len, embed_dim // num_heads)).to(device)
 
     # Forward pass
     output, attn_weights = multihead_attention(query, key, value)
