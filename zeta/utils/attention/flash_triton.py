@@ -53,9 +53,9 @@ def _fwd_kernel(
     offs_m = start_m * BLOCK_M + tl.arange(0, BLOCK_M)
     offs_n = tl.arange(0, BLOCK_N)
     # initialize pointer to m and l
-    m_i = tl.zeros([BLOCK_M], dtype=tl.float16) - float("inf")
-    l_i = tl.zeros([BLOCK_M], dtype=tl.float16)
-    acc = tl.zeros([BLOCK_M, BLOCK_DMODEL], dtype=tl.float16)
+    m_i = tl.zeros([BLOCK_M], dtype=tl.float32) - float("inf")
+    l_i = tl.zeros([BLOCK_M], dtype=tl.float32)
+    acc = tl.zeros([BLOCK_M, BLOCK_DMODEL], dtype=tl.float32)
     # scale sm_scale by log_2(e) and use
     # 2^x instead of exp in the loop because CSE and LICM
     # don't work as expected with `exp` in the loop
@@ -71,7 +71,7 @@ def _fwd_kernel(
         k = tl.load(K_block_ptr)
         v = tl.load(V_block_ptr)
         # -- compute qk ---
-        qk = tl.zeros([BLOCK_M, BLOCK_N], dtype=tl.float16)
+        qk = tl.zeros([BLOCK_M, BLOCK_N], dtype=tl.float32)
         if IS_CAUSAL:
             qk = tl.where(offs_m[:, None] >= (start_n + offs_n[None, :]), qk, float("-inf"))
         qk += tl.dot(q, k)
@@ -114,8 +114,8 @@ def _bwd_preprocess(
     off_m = tl.program_id(0) * BLOCK_M + tl.arange(0, BLOCK_M)
     off_n = tl.arange(0, D_HEAD)
     # load
-    o = tl.load(Out + off_m[:, None] * D_HEAD + off_n[None, :]).to(tl.float16)
-    do = tl.load(DO + off_m[:, None] * D_HEAD + off_n[None, :]).to(tl.float16)
+    o = tl.load(Out + off_m[:, None] * D_HEAD + off_n[None, :]).to(tl.float32)
+    do = tl.load(DO + off_m[:, None] * D_HEAD + off_n[None, :]).to(tl.float32)
     # compute
     delta = tl.sum(o * do, axis=1)
     # write-back
@@ -169,8 +169,8 @@ def _bwd_kernel(
         D_ptrs = D + off_hz * N_CTX
         l_ptrs = L + off_hz * N_CTX
         # initialize dv amd dk
-        dv = tl.zeros([BLOCK_M, BLOCK_DMODEL], dtype=tl.float16)
-        dk = tl.zeros([BLOCK_M, BLOCK_DMODEL], dtype=tl.float16)
+        dv = tl.zeros([BLOCK_M, BLOCK_DMODEL], dtype=tl.float32)
+        dk = tl.zeros([BLOCK_M, BLOCK_DMODEL], dtype=tl.float32)
         # k and v stay in SRAM throughout
         k = tl.load(k_ptrs)
         v = tl.load(v_ptrs)
@@ -183,7 +183,7 @@ def _bwd_kernel(
             if CAUSAL:
                 qk = tl.where(offs_m_curr[:, None] >= (offs_n[None, :]), float(0.), float("-inf"))
             else:
-                qk = tl.zeros([BLOCK_M, BLOCK_N], dtype=tl.float16)
+                qk = tl.zeros([BLOCK_M, BLOCK_N], dtype=tl.float32)
             qk += tl.dot(q, tl.trans(k))
             qk *= qk_scale
             l_i = tl.load(l_ptrs + offs_m_curr)
@@ -193,7 +193,7 @@ def _bwd_kernel(
             dv += tl.dot(tl.trans(p.to(Q.dtype.element_ty)), do)
             # compute dp = dot(v, do)
             Di = tl.load(D_ptrs + offs_m_curr)
-            dp = tl.zeros([BLOCK_M, BLOCK_N], dtype=tl.float16) - Di[:, None]
+            dp = tl.zeros([BLOCK_M, BLOCK_N], dtype=tl.float32) - Di[:, None]
             dp += tl.dot(do, tl.trans(v))
             # compute ds = p * (dp - delta[:, None])
             ds = p * dp * sm_scale
@@ -228,7 +228,7 @@ class _attention(torch.autograd.Function):
         BLOCK_M = 128
         BLOCK_N = 64
         grid = (triton.cdiv(q.shape[2], BLOCK_M), q.shape[0] * q.shape[1], 1)
-        L = torch.empty((q.shape[0] * q.shape[1], q.shape[2]), device=q.device, dtype=torch.float16)
+        L = torch.empty((q.shape[0] * q.shape[1], q.shape[2]), device=q.device, dtype=torch.float32)
 
         num_warps = 4 if Lk <= 64 else 8
         _fwd_kernel[grid](
@@ -257,7 +257,7 @@ class _attention(torch.autograd.Function):
         BLOCK = 128
         q, k, v, o, L = ctx.saved_tensors
         do = do.contiguous()
-        dq = torch.zeros_like(q, dtype=torch.float16)
+        dq = torch.zeros_like(q, dtype=torch.float32)
         dk = torch.empty_like(k)
         dv = torch.empty_like(v)
         delta = torch.empty_like(L)
