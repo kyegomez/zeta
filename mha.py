@@ -169,6 +169,7 @@ class Args:
         self.layernorm_eps = 1e-5
         self.xpos_rel_pos = False
         self.xpos_scale_base = 1.0
+        self.multiway = True
 
 args = Args()
 
