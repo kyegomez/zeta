@@ -4,7 +4,7 @@
 
 # import matplotlib.pyplot as plt
 # # from memory_profiler import profile
-# from zeta import MultiheadAttentionTriton as MultiheadAttention
+# from zeta import MultiheadAttentionTritonTriton as MultiheadAttentionTriton
 
 # #set seeed 
 # torch.manual_seed(0)
@@ -23,7 +23,7 @@
 # args = Args()
 
 # #initialize attention
-# attention = MultiheadAttention(
+# attention = MultiheadAttentionTriton(
 #     args, 
 #     embed_dim=1024,
 #     num_heads=8,
@@ -191,7 +191,7 @@ if __name__ == "__main__":
     if torch.cuda.is_available():
         torch.cuda.manual_seed(0)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    attention = MultiheadAttention(
+    attention = MultiheadAttentionTriton(
         args,
         embed_dim=1024,
         num_heads=8,
