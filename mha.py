@@ -231,8 +231,8 @@ def MultiheadAttentionTriton():
     sequence_lengths = [2**i for i in range(10, 15)]  # sequence lengths up to 16,000+
 
     # Initialize the MultiheadAttentionTriton
-    args = Args(embed_dim, num_heads)
-    multihead_attention = MultiheadAttentionTriton(args, embed_dim, num_heads, args.dropout, args.self_attention, args.encoder_decoder_attention, args.subln)
+    # args = Args(embed_dim, num_heads)
+    multihead_attention = MultiheadAttentionTriton()
 
     # Move the model to GPU if available
     if torch.cuda.is_available():
