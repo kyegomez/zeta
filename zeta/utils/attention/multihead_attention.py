@@ -158,7 +158,7 @@ class MultiheadAttention(nn.Module):
             alibi_num_heads=self.alibi_num_heads,
             rotary_xpos=self.rotary_xpos,
             attn_flash=self.attn_flash,
-            shift_tokens=self.hift_tokens,
+            shift_tokens=self.shift_tokens,
             attn_one_kv_head=self.attn_one_kv_head,
             qk_norm=self.qk_norm,
             attn_qk_norm=self.attn_qk_norm,
