@@ -163,12 +163,22 @@ class DistributedTester(AttentionTester):
             print(f"Consistency score: {consistency}%")
         self.cleanup()
 
+
+class Args:
+    def __init__(self):
+        self.layernorm_eps = 1e-5
+        self.xpos_rel_pos = False
+        self.xpos_scale_base = 1.0
+
+args = Args()
+
 if __name__ == "__main__":
     torch.manual_seed(0)
     if torch.cuda.is_available():
         torch.cuda.manual_seed(0)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     attention = MultiheadAttention(
+        args,
         embed_dim=1024,
         num_heads=8,
         dropout=0.0,
