@@ -89,7 +89,8 @@ def _fwd_kernel(
         # -- scale and update acc --
         acc_scale = l_i * 0 + alpha  # workaround some compiler bug
         acc *= acc_scale[:, None]
-        acc += tl.dot(p.to(tl.float16), v)
+        #e
+        acc += tl.dot(p.to(tl.float16), v.to(tl.float16))  # Ensure both inputs to tl.dot have the same dtype
         # -- update m_i and l_i --
         l_i = l_i * alpha + tl.sum(p, 1)
         m_i = m_i_new
