@@ -14,7 +14,7 @@ except ModuleNotFoundError:
 from ..module.multiway_network import MultiwayWrapper
 from ..module.xpos_relative_position import XPOS
 from zeta.utils.attention.flash_triton import attention
-from zeta.utils.attention.flash_attn_triton import flash_attn_kvpacked_func
+from zeta.utils.attention.flash_attn_triton import FlashAttnKVPackedFunc, flash_attn_kvpacked_func
 
 
 
@@ -583,8 +583,9 @@ class TritonMultiheadAttention20(nn.Module):
         k = k.to(torch.float16)
         v = v.to(torch.float16)
 
-        attn_weights = flash_attn_kvpacked_func(q, kv, attn_mask, self.self_attention, dtype=torch.float16)
-    
+        FlashAttnKVPackedFunc.dtype = torch.float16
+        attn_weights = flash_attn_kvpacked_func(q, kv, attn_mask, self.self_attention)    
+        
         if self.inner_attn_ln is not None:
             attn_weights = self.inner_attn_ln(attn_weights)
         

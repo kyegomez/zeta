@@ -729,9 +729,9 @@ class FlashAttnKVPackedFunc(torch.autograd.Function):
         q, kv = [x if x.stride(-1) == 1 else x.contiguous() for x in [q, kv]]
         
         #convert q and kv to dtype
-        q = q.to(dtype)
-        kv = kv.to(dtype)
-        
+        q = q.to(FlashAttnKVPackedFunc.dtype)
+        kv = kv.to(FlashAttnKVPackedFunc.dtype)
+
         o, lse, ctx.softmax_scale = _flash_attn_forward(
             q, kv[:, :, 0], kv[:, :, 1], bias=bias, causal=causal, softmax_scale=softmax_scale
         )
