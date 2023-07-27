@@ -210,9 +210,9 @@
 
 
 
-####### v3
+###### v3
 import torch
-from zeta import MultiheadAttentionTriton
+from zeta import TritonMultiheadAttention20
 
 device = torch.device('cuda' if torch.cuda.is_available() else "cpu")
 
@@ -232,7 +232,7 @@ sequence_lengths = [2**i for i in range(10, 15)]  # sequence lengths up to 16,00
 # Initialize the MultiheadAttentionTriton
 args = Args()
 
-multihead_attention = MultiheadAttentionTriton(
+multihead_attention = TritonMultiheadAttention20(
     args, 
     embed_dim=embed_dim,
     num_heads=num_heads,
@@ -255,3 +255,37 @@ for seq_len in sequence_lengths:
     assert attn_weights.shape == (1, num_heads, seq_len, seq_len), f"Attn_weights shape mismatch for seq_len {seq_len}"
 
     print(f"Passed for seq_len {seq_len}")
+
+
+
+
+
+#####################
+# import time
+# import torch
+# from zeta import TritonMultiheadAttention20
+
+# # Initialize the model
+# model = TritonMultiheadAttention20(args, embed_dim, num_heads)
+
+# # Define the sequence lengths to test
+# seq_lengths = [100, 200, 500, 1000, 2000]
+
+# # Define the batch size and embedding dimension
+# batch_size = 32
+# embed_dim = 512
+
+# # Run the test for each sequence length
+# for seq_len in seq_lengths:
+#     # Create random input tensors
+#     query = torch.rand(batch_size, seq_len, embed_dim)
+#     key = torch.rand(batch_size, seq_len, embed_dim)
+#     value = torch.rand(batch_size, seq_len, embed_dim)
+
+#     # Measure the time taken to run the forward method
+#     start_time = time.time()
+#     model.forward(query, key, value)
+#     end_time = time.time()
+
+#     # Print the results
+#     print(f"Sequence length: {seq_len}, Time taken: {end_time - start_time} seconds")
