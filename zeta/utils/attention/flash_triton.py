@@ -21,9 +21,36 @@ def _fwd_kernel(
     BLOCK_M: tl.constexpr, BLOCK_DMODEL: tl.constexpr,
     BLOCK_N: tl.constexpr,
     IS_CAUSAL: tl.constexpr,
-    dtype: tl.template,
+    dtype,
 ):
-    # initialize offsets
+    start_m = tl.program_id(0)
+    off_hz = tl.program_id(1)
+    qvk_offset = off_hz * stride_qh
+    Q_block_ptr = tl.make_block_ptr(
+        base=Q + qvk_offset,
+        shape=(N_CTX, BLOCK_DMODEL),
+        strides=(stride_qm, stride_qk),
+        offsets=(start_m * BLOCK_M, 0),
+        block_shape=(BLOCK_M, BLOCK_DMODEL),
+        order=(1, 0)
+    )
+    K_block_ptr = tl.make_block_ptr(
+        base=K + qvk_offset,
+        shape=(BLOCK_DMODEL, N_CTX),
+        strides=(stride_kk, stride_kn),
+        offsets=(0, 0),
+        block_shape=(BLOCK_DMODEL, BLOCK_N),
+        order=(0, 1)
+    )
+    V_block_ptr = tl.make_block_ptr(
+        base=V + qvk_offset,
+        shape=(N_CTX, BLOCK_DMODEL),
+        strides=(stride_vk, stride_vn),
+        offsets=(0, 0),
+        block_shape=(BLOCK_N, BLOCK_DMODEL),
+        order=(1, 0)
+    )
+   # initialize offsets
     offs_m = start_m * BLOCK_M + tl.arange(0, BLOCK_M)
     offs_n = tl.arange(0, BLOCK_N)
     # initialize pointer to m and l
@@ -77,6 +104,7 @@ def _fwd_kernel(
         order=(1, 0)
     )
     tl.store(O_block_ptr, acc.to(dtype))
+
 @triton.jit
 def _bwd_preprocess(
     Out, DO,
