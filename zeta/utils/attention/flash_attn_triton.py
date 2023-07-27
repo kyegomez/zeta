@@ -717,7 +717,7 @@ flash_attn_qkvpacked_func = FlashAttnQKVPackedFunc.apply
 class FlashAttnKVPackedFunc(torch.autograd.Function):
 
     @staticmethod
-    def forward(ctx, q, kv, bias=None, causal=False, softmax_scale=None):
+    def forward(ctx, q, kv, bias=None, causal=False, softmax_scale=None, dtype=torch.float16):
         """
             q: (batch, seqlen_q, nheads, headdim)
             kv: (batch, seqlen_k, 2, nheads, headdim)
@@ -727,6 +727,11 @@ class FlashAttnKVPackedFunc(torch.autograd.Function):
         """
         # Make sure that the last dimension is contiguous
         q, kv = [x if x.stride(-1) == 1 else x.contiguous() for x in [q, kv]]
+        
+        #convert q and kv to dtype
+        q = q.to(dtype)
+        kv = kv.to(dtype)
+        
         o, lse, ctx.softmax_scale = _flash_attn_forward(
             q, kv[:, :, 0], kv[:, :, 1], bias=bias, causal=causal, softmax_scale=softmax_scale
         )

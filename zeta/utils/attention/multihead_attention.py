@@ -583,7 +583,7 @@ class TritonMultiheadAttention20(nn.Module):
         k = k.to(torch.float16)
         v = v.to(torch.float16)
 
-        attn_weights = flash_attn_kvpacked_func(q, kv, attn_mask, self.self_attention)
+        attn_weights = flash_attn_kvpacked_func(q, kv, attn_mask, self.self_attention, dtype=torch.float16)
     
         if self.inner_attn_ln is not None:
             attn_weights = self.inner_attn_ln(attn_weights)
