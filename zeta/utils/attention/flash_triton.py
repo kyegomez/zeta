@@ -21,7 +21,7 @@ def _fwd_kernel(
     BLOCK_M: tl.constexpr, BLOCK_DMODEL: tl.constexpr,
     BLOCK_N: tl.constexpr,
     IS_CAUSAL: tl.constexpr,
-    dtype,
+    dtype=torch.float32,
 ):
     start_m = tl.program_id(0)
     off_hz = tl.program_id(1)
