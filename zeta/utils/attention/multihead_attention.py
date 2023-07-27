@@ -583,8 +583,8 @@ class TritonMultiheadAttention20(nn.Module):
         
         kv = torch.stack([k, v], dim=2)
 
-        attn_weights = flash_attn_kvpacked_func(q, kv, bias=attn_mask, casual=self.self_attention)
-
+        attn_weights = flash_attn_kvpacked_func(q, kv, attn_mask, self.self_attention)
+    
         if self.inner_attn_ln is not None:
             attn_weights = self.inner_attn_ln(attn_weights)
         
