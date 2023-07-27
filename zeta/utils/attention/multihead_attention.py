@@ -475,7 +475,6 @@ class MultiheadAttentionTriton(nn.Module):
 
         return attn, attn_weights
 
-
 class TritonMultiheadAttention20(nn.Module):
     def __init__(
         self,
@@ -551,11 +550,6 @@ class TritonMultiheadAttention20(nn.Module):
         q = q.view(bsz, self.num_heads, tgt_len, self.head_dim)
         k = k.view(bsz, self.num_heads, src_len, self.head_dim)
         v = v.view(bsz, self.num_heads, src_len, self.head_dim)
-
-
-        q = q.reshape(bsz * self.num_heads, tgt_len, self.head_dim)
-        k = k.reshape(bsz * self.num_heads, src_len, self.head_dim)
-        v = v.reshape(bsz * self.num_heads, src_len, self.head_dim)
 
         if incremental_state is not None:
             if "prev_key" in incremental_state:
