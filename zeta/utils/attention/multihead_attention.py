@@ -456,7 +456,7 @@ class MultiheadAttentionTriton(nn.Module):
         v = v.unsqueeze(0)
 
         # Pass into Flash Attention triton
-        attn_weights = attention(q, k, v, attn_mask, self.scaling)
+        attn_weights = attention(q, k, v, attn_mask, self.scaling, torch.float32)
         
         #performs a batch matrix product of the attention weights with the value
         attn = torch.bmm(attn_weights, v)
