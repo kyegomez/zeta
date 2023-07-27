@@ -1,7 +1,7 @@
 #modularize the decoder to accept any attemtion, dilated or multihead
 
 import torch
-from torch.nn import Embedding, Module
+from torch.nn import Module
 import bitsandbytes
 
 from zeta import DecoderConfig, Decoder

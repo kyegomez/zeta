@@ -60,7 +60,7 @@ class TestMultiheadAttention(unittest.TestCase):
 
         # Action
         start_time = time.time()
-        output = dilated_attention(input_tensor)
+        dilated_attention(input_tensor)
         end_time = time.time()
 
         # Assert

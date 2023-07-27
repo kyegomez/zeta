@@ -1,10 +1,10 @@
 import math
 import torch 
-from torch import nn, einsum, Tensor
+from torch import nn, Tensor
 import torch.nn.functional as F
 
 
-from einops import rearrange, repeat, reduce
+from einops import rearrange
 
 
 
@@ -32,7 +32,7 @@ class AlibiPositionalBias(nn.Module):
 
 
     def get_bias(self, i, j, device):
-        i_arange = torch.arange(j - i, j, device=device)
+        torch.arange(j - i, j, device=device)
         j_arange = torch.arange(j, device = device)
         bias = -torch.abs(rearrange(j_arange, 'j -> 1 1 j'))
         return bias

@@ -578,7 +578,8 @@ def _flash_attn_forward(q, k, v, bias=None, causal=False, softmax_scale=None):
     BLOCK_HEADDIM = max(triton.next_power_of_2(d), 16)
     BLOCK = 128
     num_warps = 4 if d <= 64 else 8
-    grid = lambda META: (triton.cdiv(seqlen_q, META["BLOCK_M"]), batch * nheads)
+    def grid(META):
+        return triton.cdiv(seqlen_q, META["BLOCK_M"]), batch * nheads
     _fwd_kernel[grid](
         q, k, v, bias, o,
         lse, tmp,
@@ -619,7 +620,8 @@ def _flash_attn_backward(do, q, k, v, o, lse, dq, dk, dv, bias=None, causal=Fals
     # delta = torch.zeros_like(lse)
 
     BLOCK_HEADDIM = max(triton.next_power_of_2(d), 16)
-    grid = lambda META: (triton.cdiv(seqlen_q, META["BLOCK_M"]), batch * nheads)
+    def grid(META):
+        return triton.cdiv(seqlen_q, META["BLOCK_M"]), batch * nheads
     _bwd_preprocess_do_o_dot[grid](
         o, do, delta,
         o.stride(0), o.stride(2), o.stride(1),
@@ -648,8 +650,8 @@ def _flash_attn_backward(do, q, k, v, o, lse, dq, dk, dv, bias=None, causal=Fals
     # BLOCK_M = 128
     # BLOCK_N = 64
     # num_warps = 4
-    grid = lambda META: (triton.cdiv(seqlen_k, META["BLOCK_N"]) if META["SEQUENCE_PARALLEL"] else 1,
-                    batch * nheads)
+    def grid(META):
+        return triton.cdiv(seqlen_k, META["BLOCK_N"]) if META["SEQUENCE_PARALLEL"] else 1, batch * nheads
     _bwd_kernel[grid](
         q, k, v, bias,
         do, dq_accum, dk, dv,

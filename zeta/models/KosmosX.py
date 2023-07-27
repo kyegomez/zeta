@@ -2,12 +2,10 @@ import torch
 from zeta import DecoderConfig, Decoder
 from zeta.utils.embedding import PositionalEmbedding
 
-from transformers import T5Tokenizer, CLIPProcessor, CLIPModel, PreTrainedTokenizerFast, AutoTokenizer
-from tokenizers import SentencePieceBPETokenizer
+from transformers import CLIPProcessor, CLIPModel, AutoTokenizer
 
 from flamingo_pytorch import PerceiverResampler
-from PIL import Image
-from torch.nn import Embedding, Module
+from torch.nn import Module
 import bitsandbytes
 
 
