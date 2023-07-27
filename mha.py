@@ -212,7 +212,7 @@
 
 ###### v3
 import torch
-from zeta import TritonMultiheadAttention20
+from zeta import MultiheadAttentionTriton
 
 device = torch.device('cuda' if torch.cuda.is_available() else "cpu")
 
@@ -232,7 +232,7 @@ sequence_lengths = [2**i for i in range(10, 15)]  # sequence lengths up to 16,00
 # Initialize the MultiheadAttentionTriton
 args = Args()
 
-multihead_attention = TritonMultiheadAttention20(
+multihead_attention = MultiheadAttentionTriton(
     args, 
     embed_dim=embed_dim,
     num_heads=num_heads,
