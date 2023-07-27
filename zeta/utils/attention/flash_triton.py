@@ -1,4 +1,6 @@
+import pytest
 import torch
+
 import triton
 import triton.language as tl
 
@@ -21,7 +23,6 @@ def _fwd_kernel(
     BLOCK_M: tl.constexpr, BLOCK_DMODEL: tl.constexpr,
     BLOCK_N: tl.constexpr,
     IS_CAUSAL: tl.constexpr,
-    dtype=torch.float32,
 ):
     start_m = tl.program_id(0)
     off_hz = tl.program_id(1)
@@ -50,20 +51,20 @@ def _fwd_kernel(
         block_shape=(BLOCK_N, BLOCK_DMODEL),
         order=(1, 0)
     )
-   # initialize offsets
+    # initialize offsets
     offs_m = start_m * BLOCK_M + tl.arange(0, BLOCK_M)
     offs_n = tl.arange(0, BLOCK_N)
     # initialize pointer to m and l
-    m_i = tl.zeros([BLOCK_M], dtype=dtype) - float("inf")
-    l_i = tl.zeros([BLOCK_M], dtype=dtype)
-    acc = tl.zeros([BLOCK_M, BLOCK_DMODEL], dtype=dtype)
+    m_i = tl.zeros([BLOCK_M], dtype=tl.float32) - float("inf")
+    l_i = tl.zeros([BLOCK_M], dtype=tl.float32)
+    acc = tl.zeros([BLOCK_M, BLOCK_DMODEL], dtype=tl.float32)
     # scale sm_scale by log_2(e) and use
     # 2^x instead of exp in the loop because CSE and LICM
     # don't work as expected with `exp` in the loop
     qk_scale = sm_scale * 1.44269504
     # load q: it will stay in SRAM throughout
     q = tl.load(Q_block_ptr)
-    q = (q * qk_scale).to(dtype)
+    q = (q * qk_scale).to(tl.float16)
     # loop over k, v and update accumulator
     lo = 0
     hi = (start_m + 1) * BLOCK_M if IS_CAUSAL else N_CTX
@@ -72,10 +73,10 @@ def _fwd_kernel(
         k = tl.load(K_block_ptr)
         v = tl.load(V_block_ptr)
         # -- compute qk ---
-        qk = tl.zeros([BLOCK_M, BLOCK_N], dtype=dtype)
+        qk = tl.zeros([BLOCK_M, BLOCK_N], dtype=tl.float32)
         if IS_CAUSAL:
             qk = tl.where(offs_m[:, None] >= (start_n + offs_n[None, :]), qk, float("-inf"))
-        qk += tl.dot(q.to(dtype), k)  # convert q to dtype
+        qk += tl.dot(q, k)
         # -- compute scaling constant ---
         m_i_new = tl.maximum(m_i, tl.max(qk, 1))
         alpha = tl.math.exp2(m_i - m_i_new)
@@ -83,7 +84,7 @@ def _fwd_kernel(
         # -- scale and update acc --
         acc_scale = l_i * 0 + alpha  # workaround some compiler bug
         acc *= acc_scale[:, None]
-        acc += tl.dot(p.to(dtype), v)
+        acc += tl.dot(p.to(tl.float16), v)
         # -- update m_i and l_i --
         l_i = l_i * alpha + tl.sum(p, 1)
         m_i = m_i_new
@@ -103,7 +104,8 @@ def _fwd_kernel(
         block_shape=(BLOCK_M, BLOCK_DMODEL),
         order=(1, 0)
     )
-    tl.store(O_block_ptr, acc.to(dtype))
+    tl.store(O_block_ptr, acc.to(tl.float16))
+
 
 @triton.jit
 def _bwd_preprocess(
@@ -215,22 +217,23 @@ def _bwd_kernel(
 
 
 empty = torch.empty(128, device="cuda")
+
+
 class _attention(torch.autograd.Function):
+
     @staticmethod
-    def forward(ctx, q, k, v, causal, sm_scale, dtype, BLOCK_M=128, BLOCK_N=64, num_warps=None):
+    def forward(ctx, q, k, v, causal, sm_scale):
         # shape constraints
         Lq, Lk, Lv = q.shape[-1], k.shape[-1], v.shape[-1]
         assert Lq == Lk and Lk == Lv
         assert Lk in {16, 32, 64, 128}
-
-        # Compute the number of warps if not provided
-        if num_warps is None:
-            num_warps = 4 if Lk <= 64 else 8
-
         o = torch.empty_like(q)
+        BLOCK_M = 128
+        BLOCK_N = 64
         grid = (triton.cdiv(q.shape[2], BLOCK_M), q.shape[0] * q.shape[1], 1)
         L = torch.empty((q.shape[0] * q.shape[1], q.shape[2]), device=q.device, dtype=torch.float32)
 
+        num_warps = 4 if Lk <= 64 else 8
         _fwd_kernel[grid](
             q, k, v, sm_scale,
             L,
@@ -253,7 +256,8 @@ class _attention(torch.autograd.Function):
         return o
 
     @staticmethod
-    def backward(ctx, do, BLOCK=128):
+    def backward(ctx, do):
+        BLOCK = 128
         q, k, v, o, L = ctx.saved_tensors
         do = do.contiguous()
         dq = torch.zeros_like(q, dtype=torch.float32)
@@ -281,5 +285,6 @@ class _attention(torch.autograd.Function):
             num_stages=1,
         )
         return dq, dk, dv, None, None
+
 
 attention = _attention.apply
