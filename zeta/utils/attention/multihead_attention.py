@@ -579,6 +579,10 @@ class TritonMultiheadAttention20(nn.Module):
         
         kv = torch.stack([k, v], dim=2)
 
+        q = q.to(torch.float16)
+        k = k.to(torch.float16)
+        v = v.to(torch.float16)
+
         attn_weights = flash_attn_kvpacked_func(q, kv, attn_mask, self.self_attention)
     
         if self.inner_attn_ln is not None:
