@@ -1,10 +1,17 @@
-# Copyright (c) 2022 Agora
-# Licensed under The MIT License [see LICENSE for details]
-
 import torch
 import torch.nn as nn
 
 def fixed_pos_embedding(x):
+    """
+    Generates fixed positional embeddings for the input tensor.
+    
+    Args:
+    - x: Input tensor of shape (seq_len, dim)
+    
+    Returns:
+    - sin: Sine positional embeddings of shape (seq_len, dim)
+    - cos: Cosine positional embeddings of shape (seq_len, dim)
+    """
     seq_len, dim = x.shape
     inv_freq = 1.0 / (10000 ** (torch.arange(0, dim) / dim))
     sinusoid_inp = (
@@ -13,26 +20,51 @@ def fixed_pos_embedding(x):
     return torch.sin(sinusoid_inp), torch.cos(sinusoid_inp)
 
 def rotate_every_two(x):
+    """
+    Rearranges the elements of the input tensor by rotating every two elements.
+    
+    Args:
+    - x: Input tensor of shape (batch_size, seq_len, dim)
+    
+    Returns:
+    - x: Rearranged tensor of shape (batch_size, seq_len, dim)
+    """
     x1 = x[:, :, ::2]
     x2 = x[:, :, 1::2]
     x = torch.stack((-x2, x1), dim=-1)
-    return x.flatten(-2)  # in einsum notation: rearrange(x, '... d j -> ... (d j)')\
+    return x.flatten(-2)
 
 def duplicate_interleave(m):
     """
-    A simple version of `torch.repeat_interleave` for duplicating a matrix while interleaving the copy.
+    Duplicates a matrix while interleaving the copy.
+    
+    Args:
+    - m: Input matrix
+    
+    Returns:
+    - m: Duplicated and interleaved matrix
     """
     dim0 = m.shape[0]
-    m = m.view(-1, 1)  # flatten the matrix
-    m = m.repeat(1, 2)  # repeat all elements into the 2nd dimension
-    m = m.view(dim0, -1)  # reshape into a matrix, interleaving the copy
+    m = m.view(-1, 1)
+    m = m.repeat(1, 2)
+    m = m.view(dim0, -1)
     return m
 
 def apply_rotary_pos_emb(x, sin, cos, scale=1):
+    """
+    Applies rotary positional embeddings to the input tensor.
+    
+    Args:
+    - x: Input tensor of shape (batch_size, seq_len, dim)
+    - sin: Sine positional embeddings of shape (seq_len, dim)
+    - cos: Cosine positional embeddings of shape (seq_len, dim)
+    - scale: Scaling factor for the positional embeddings
+    
+    Returns:
+    - x: Tensor with applied rotary positional embeddings
+    """
     sin, cos = map(lambda t: duplicate_interleave(t * scale), (sin, cos))
-    # einsum notation for lambda t: repeat(t[offset:x.shape[1]+offset,:], "n d -> () n () (d j)", j=2)
     return (x * cos) + (rotate_every_two(x) * sin)
-
 
 class XPOS(nn.Module):
     def __init__(
@@ -46,6 +78,17 @@ class XPOS(nn.Module):
         )
 
     def forward(self, x, offset=0, downscale=False):
+        """
+        Forward pass of the XPOS module.
+        
+        Args:
+        - x: Input tensor of shape (batch_size, seq_len, dim)
+        - offset: Offset value for positional embeddings
+        - downscale: Boolean indicating whether to downscale the positional embeddings
+        
+        Returns:
+        - x: Tensor with applied rotary positional embeddings
+        """
         length = x.shape[1]
         min_pos = -(length + offset) // 2
         max_pos = length + offset + min_pos
