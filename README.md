@@ -28,7 +28,7 @@ pip install -e .
 
 ## Initiating Your Journey
 
-Creating a model empowered with the aforementioned breakthrough research features is a breeze. Here's how to quickly materialize a BERT-like encoder:
+Creating a model empowered with the aforementioned breakthrough research features is a breeze. Here's how to quickly materialize the renowned Flash Attention
 
 ```python
 import torch
