@@ -13,9 +13,7 @@ except ModuleNotFoundError:
 
 from ..modules.multiway_network import MultiwayWrapper
 from ..modules.xpos_relative_position import XPOS
-from zeta.nn.utils.attention.flash_triton import attention
-from zeta.nn.utils.attention.flash_attn_triton import FlashAttnKVPackedFunc, flash_attn_kvpacked_func
-
+from zeta.nn.attention.flash_attention import FlashAttention as attention
 
 
 class MultiheadAttention(nn.Module):
@@ -309,126 +307,5 @@ class MultiheadAttentionTriton(nn.Module):
         
         #returns the attention weights but with an organized shape according to bsz, num_heads => tgt_len => src_len => then transposed, flipped
         attn_weights = attn_weights.view(bsz, self.num_heads, tgt_len, src_len).transpose(1, 0)
-
-        return attn, attn_weights
-
-class TritonMultiheadAttention20(nn.Module):
-    def __init__(
-        self,
-        args,
-        embed_dim,
-        num_heads,
-        dropout=0.0,
-        self_attention=False,
-        encoder_decoder_attention=False,
-        subln=False,
-    ):
-        super().__init__()
-        self.args = args
-        self.embed_dim = embed_dim
-        self.num_heads = num_heads
-        self.head_dim = embed_dim // num_heads
-        self.scaling = self.head_dim**-0.5
-
-        self.self_attention = self_attention
-        self.encoder_decoder_attention = encoder_decoder_attention
-        assert self.self_attention ^ self.encoder_decoder_attention
-
-        self.k_proj = MultiwayWrapper(args, nn.Linear(embed_dim, embed_dim, bias=True))
-        self.v_proj = MultiwayWrapper(args, nn.Linear(embed_dim, embed_dim, bias=True))
-        self.q_proj = MultiwayWrapper(args, nn.Linear(embed_dim, embed_dim, bias=True))
-        self.out_proj = MultiwayWrapper(
-            args, nn.Linear(embed_dim, embed_dim, bias=True)
-        )
-        self.inner_attn_ln = (
-            MultiwayWrapper(args, LayerNorm(self.embed_dim, eps=args.layernorm_eps))
-            if subln and self.self_attention
-            else None
-        )
-        self.dropout_module = torch.nn.Dropout(dropout)
-        self.xpos = (
-            XPOS(self.head_dim, args.xpos_scale_base)
-            if args.xpos_rel_pos and self.self_attention
-            else None
-        )
-
-    def reset_parameters(self):
-        nn.init.xavier_uniform_(self.k_proj.weight, gain=1 / math.sqrt(2))
-        nn.init.xavier_uniform_(self.v_proj.weight, gain=1 / math.sqrt(2))
-        nn.init.xavier_uniform_(self.q_proj.weight, gain=1 / math.sqrt(2))
-        nn.init.xavier_uniform_(self.out_proj.weight)
-        nn.init.constant_(self.out_proj.bias, 0.0)
-
-    def forward(
-        self,
-        query,
-        key,
-        value,
-        incremental_state=None,
-        key_padding_mask=None,
-        attn_mask=None,
-        rel_pos=None,
-        is_first_step=False,
-    ):
-        bsz, tgt_len, embed_dim = query.size()
-        src_len = tgt_len
-        assert embed_dim == self.embed_dim, f"query dim {embed_dim} != {self.embed_dim}"
-
-        key_bsz, src_len, _ = key.size()
-        assert key_bsz == bsz, f"{query.size(), key.size()}"
-        assert value is not None
-        assert bsz, src_len == value.shape[:2]
-
-        q = self.q_proj(query)
-        k = self.k_proj(key)
-        v = self.v_proj(value)
-        q *= self.scaling
-
-        q = q.view(bsz, self.num_heads, tgt_len, self.head_dim)
-        k = k.view(bsz, self.num_heads, src_len, self.head_dim)
-        v = v.view(bsz, self.num_heads, src_len, self.head_dim)
-
-        if incremental_state is not None:
-            if "prev_key" in incremental_state:
-                prev_key = incremental_state["prev_key"].view(
-                    bsz * self.num_heads, -1, self.head_dim
-                )
-                prev_value = incremental_state["prev_value"].view(
-                    bsz * self.num_heads, -1, self.head_dim
-                )
-                k = torch.cat([prev_key, k], dim=1)
-                v = torch.cat([prev_value, v], dim=1)
-            incremental_state["prev_key"] = k.view(
-                bsz, self.num_heads, -1, self.head_dim
-            )
-            incremental_state["prev_value"] = v.view(
-                bsz, self.num_heads, -1, self.head_dim
-            )
-            src_len = k.size(1)
-
-        if self.xpos is not None:
-            if incremental_state is not None and not is_first_step:
-                offset = src_len - 1
-            else:
-                offset = 0
-            k = self.xpos(k, offset=0, downscale=True)
-            q = self.xpos(q, offset=offset, downscale=False)
-        
-        kv = torch.stack([k, v], dim=2)
-
-        q = q.to(torch.float16)
-        k = k.to(torch.float16)
-        v = v.to(torch.float16)
-
-        FlashAttnKVPackedFunc.dtype = torch.float16
-        attn_weights = flash_attn_kvpacked_func(q, kv, attn_mask, self.self_attention)    
-        
-        if self.inner_attn_ln is not None:
-            attn_weights = self.inner_attn_ln(attn_weights)
-        
-        attn = self.out_proj(attn_weights)
-        attn_weights = attn_weights.view(
-            bsz, self.num_heads, tgt_len, src_len
-        ).transpose(1, 0)
 
         return attn, attn_weights
