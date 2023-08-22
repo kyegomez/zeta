@@ -1,4 +1,4 @@
-# Zeta - A Transgalactic Library for Scalable Transformations
+# Zeta - A Library for Zetascale Transformations
 [![Docs](https://readthedocs.org/projects/swarms/badge/)](https://swarms.readthedocs.io)
 
 Docs for [Zeta](https://github.com/kyegomez/swarms).
