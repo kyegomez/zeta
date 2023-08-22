@@ -40,64 +40,6 @@ Creating a model empowered with the aforementioned breakthrough research feature
 >>> print(model)
 ```
 
-Additionally, we support the `Decoder` and `EncoderDecoder` architectures:
-
-```python
-# To create a decoder model
->>> from zeta import DecoderConfig
->>> from zeta import Decoder
-
->>> config = DecoderConfig(vocab_size=64000)
->>> decoder = Decoder(config)
->>> print(decoder)
-
-# To create an encoder-decoder model
->>> from zeta import EncoderDecoderConfig
->>> from zeta import EncoderDecoder
-
->>> config = EncoderDecoderConfig(vocab_size=64000)
->>> encdec = EncoderDecoder(config)
->>> print(encdec)
-```
-
-## Key Features
-
-Most of the transformative features mentioned below can be enabled by simply setting the corresponding parameters in the `config`:
-
-```python
->>> from zeta import EncoderConfig
->>> from zeta import Encoder
-
->>> config = EncoderConfig(vocab_size=64000, deepnorm=True, multiway=True)
->>> model = Encoder(config)
-
->>> print(model)
-```
-
-For a complete overview of our key features, refer to our [Feature Guide](features.md).
-
-## Examples
-
-Discover how to wield Zeta in a multitude of scenarios/tasks, including but not limited to:
-
-- Language
-  * [Decoder/GPT](examples/fairseq/README.md#example-gpt-pretraining)
-  * [Encoder-Decoder/Neural Machine Translation](examples/fairseq/README.md#example-machine-translation)
-  * [Encoder/BERT](examples/fairseq/README.md#example-bert-pretraining)
-
-- Vision
-  * ViT/BEiT [In progress]
-
-- Speech
-
-- Multimodal
-  * [Multiway Transformers/BEiT-3](https://github.com/kyegomez/unilm/tree/master/beit3)
-
-We are working tirelessly to expand the collection of examples spanning various tasks (e.g., vision pretraining, speech recognition) and various deep learning frameworks (e.g., [DeepSpeed](https://github.com/kyegomez/DeepSpeed), [Megatron-LM](https://github.com/NVIDIA/Megatron-LM)). Your comments, suggestions, or contributions are welcome!
-
-## Results
-
-Check out our [Results Page](results.md) to witness Zeta's exceptional performance in Stability Evaluations and Scaling-up Experiments.
 
 ## Acknowledgments
 
