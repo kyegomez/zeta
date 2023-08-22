@@ -1,6 +1,6 @@
 [![Multi-Modality](agorabanner.png)](https://discord.gg/qUtxnK2NMf)
 
-# Zeta - A Library for Zetascale Transformers
+# Zeta - Seamlessly Create Zetascale Transformers
 [![Docs](https://readthedocs.org/projects/zeta/badge/)](https://zeta.readthedocs.io)
 
 <p>
@@ -46,7 +46,7 @@ print(output.shape)
 
 ## Acknowledgments
 
-Zeta is a masterpiece inspired by elements of [FairSeq](https://github.com/facebookresearch/fairseq) and [UniLM](https://github.com/kyegomez/unilm).
+Zeta is a masterpiece inspired by LucidRains's repositories and elements of [FairSeq](https://github.com/facebookresearch/fairseq) and [UniLM](https://github.com/kyegomez/unilm).
 
 ## Citations
 
