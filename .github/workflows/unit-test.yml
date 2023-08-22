@@ -24,7 +24,7 @@ jobs:
       run: pip install -r requirements.txt
 
     - name: Run Python unit tests
-      run: python3 -m unittest tests/swarms
+      run: python3 -m unittest tests/zeta
 
     - name: Verify that the Docker image for the action builds
       run: docker build . --file Dockerfile
@@ -42,4 +42,4 @@ jobs:
         input-two: false
 
     - name: Verify integration test results
-      run: python3 -m unittest unittesting/swarms
+      run: python3 -m unittest unittesting/zeta

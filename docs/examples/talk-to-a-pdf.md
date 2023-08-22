@@ -3,11 +3,11 @@ This example demonstrates how to vectorize a PDF of the [Attention Is All You Ne
 ```python
 import io
 import requests
-from swarms.engines import VectorQueryEngine
-from swarms.loaders import PdfLoader
-from swarms.structures import Agent
-from swarms.tools import KnowledgeBaseClient
-from swarms.utils import Chat
+from zeta.engines import VectorQueryEngine
+from zeta.loaders import PdfLoader
+from zeta.structures import Agent
+from zeta.tools import KnowledgeBaseClient
+from zeta.utils import Chat
 
 namespace = "attention"
 

@@ -1,12 +1,12 @@
 This example demonstrates how to vectorize a webpage and setup a Zeta agent with rules and the `KnowledgeBase` tool to use it during conversations.
 
 ```python
-from swarms.engines import VectorQueryEngine
-from swarms.loaders import WebLoader
-from swarms.rules import Ruleset, Rule
-from swarms.structures import Agent
-from swarms.tools import KnowledgeBaseClient
-from swarms.utils import Chat
+from zeta.engines import VectorQueryEngine
+from zeta.loaders import WebLoader
+from zeta.rules import Ruleset, Rule
+from zeta.structures import Agent
+from zeta.tools import KnowledgeBaseClient
+from zeta.utils import Chat
 
 
 namespace = "physics-wiki"

@@ -75,13 +75,13 @@ nav:
     - Checklist: "checklist.md"
     - Hiring: "hiring.md"
 - Zeta:
-  - Overview: "swarms/index.md"
-  - AutoScaler: "swarms/swarms/autoscaler.md"
+  - Overview: "zeta/index.md"
+  - AutoScaler: "zeta/zeta/autoscaler.md"
   - Workers:
-    - Overview: "swarms/workers/index.md"
+    - Overview: "zeta/workers/index.md"
   - Agents:
     - Base Models:
-      - Overview: "swarms/models/index.md"
+      - Overview: "zeta/models/index.md"
 - Examples:
     - Overview: "examples/index.md"
     - Agents:

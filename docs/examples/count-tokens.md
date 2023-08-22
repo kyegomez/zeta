@@ -1,11 +1,11 @@
 To count tokens you can use Zeta events and the `TokenCounter` util:
 
 ```python
-from swarms import utils
-from swarms.events import (
+from zeta import utils
+from zeta.events import (
     StartPromptEvent, FinishPromptEvent,
 )
-from swarms.structures import Agent
+from zeta.structures import Agent
 
 
 token_counter = utils.TokenCounter()

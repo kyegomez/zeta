@@ -1,8 +1,8 @@
 To store your conversation on DynamoDB you can use DynamoDbConversationMemoryDriver.
 ```python
-from swarms.memory.structure import ConversationMemory
-from swarms.memory.structure import ConversationMemoryElement, Turn, Message
-from swarms.drivers import DynamoDbConversationMemoryDriver
+from zeta.memory.structure import ConversationMemory
+from zeta.memory.structure import ConversationMemoryElement, Turn, Message
+from zeta.drivers import DynamoDbConversationMemoryDriver
 
 # Instantiate DynamoDbConversationMemoryDriver
 dynamo_driver = DynamoDbConversationMemoryDriver(

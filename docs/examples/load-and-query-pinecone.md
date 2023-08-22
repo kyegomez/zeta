@@ -3,7 +3,7 @@ import hashlib
 import json
 from urllib.request import urlopen
 from decouple import config
-from swarms.drivers import PineconeVectorStoreDriver
+from zeta.drivers import PineconeVectorStoreDriver
 
 
 def load_data(driver: PineconeVectorStoreDriver) -> None:

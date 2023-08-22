@@ -1,10 +1,10 @@
 ```python
-from swarms import utils
-from swarms.drivers import MarqoVectorStoreDriver
-from swarms.engines import VectorQueryEngine
-from swarms.loaders import WebLoader
-from swarms.structures import Agent
-from swarms.tools import KnowledgeBaseClient
+from zeta import utils
+from zeta.drivers import MarqoVectorStoreDriver
+from zeta.engines import VectorQueryEngine
+from zeta.loaders import WebLoader
+from zeta.structures import Agent
+from zeta.tools import KnowledgeBaseClient
 import openai
 from marqo import Client
 
@@ -31,13 +31,13 @@ query_engine = VectorQueryEngine(vector_store_driver=vector_store)
 
 # Initialize the knowledge base tool
 kb_tool = KnowledgeBaseClient(
-    description="Contains information about the Zeta Framework from www.swarms.ai",
+    description="Contains information about the Zeta Framework from www.zeta.ai",
     query_engine=query_engine,
     namespace=namespace
 )
 
 # Load artifacts from the web
-artifacts = WebLoader(max_tokens=200).load("https://www.swarms.ai")
+artifacts = WebLoader(max_tokens=200).load("https://www.zeta.ai")
 
 # Upsert the artifacts into the vector store
 vector_store.upsert_text_artifacts({namespace: artifacts,})

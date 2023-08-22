@@ -27,19 +27,19 @@ Join the Zeta community on Discord to connect with other contributors, coordinat
 
 
 ## Report and Issue
-The easiest way to contribute to our docs is through our public [issue tracker](https://github.com/kyegomez/swarms-docs/issues). Feel free to submit bugs, request features or changes, or contribute to the project directly. 
+The easiest way to contribute to our docs is through our public [issue tracker](https://github.com/kyegomez/zeta-docs/issues). Feel free to submit bugs, request features or changes, or contribute to the project directly. 
 
 ## Pull Requests
 
 Zeta docs are built using [MkDocs](https://squidfunk.github.io/mkdocs-material/getting-started/). 
 
-To directly contribute to Zeta documentation, first fork the [swarms-docs](https://github.com/kyegomez/swarms-docs) repository to your GitHub account. Then clone your repository to your local machine.
+To directly contribute to Zeta documentation, first fork the [zeta-docs](https://github.com/kyegomez/zeta-docs) repository to your GitHub account. Then clone your repository to your local machine.
 
 From inside the directory run: 
 
 ```pip install -r requirements.txt```
 
-To run `swarms-docs` locally run: 
+To run `zeta-docs` locally run: 
 
 ```mkdocs serve```
 
@@ -68,7 +68,7 @@ Follow the typical PR process to contribute changes.
 
 We have a growing list of tasks and issues that you can contribute to. To get started, follow these steps:
 
-1. Visit the [Zeta GitHub repository](https://github.com/kyegomez/swarms) and browse through the existing issues.
+1. Visit the [Zeta GitHub repository](https://github.com/kyegomez/zeta) and browse through the existing issues.
 
 2. Find an issue that interests you and make a comment stating that you would like to work on it. Include a brief description of how you plan to solve the problem and any questions you may have.
 

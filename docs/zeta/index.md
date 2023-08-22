@@ -17,10 +17,10 @@ First, configure an OpenAI client by [getting an API key](https://beta.openai.co
 
 ### Using pip
 
-Install **swarms** and **swarms-tools**:
+Install **zeta** and **zeta-tools**:
 
 ```
-pip3 install swarms 
+pip3 install zeta 
 ```
 
 ### Using Poetry
@@ -28,20 +28,20 @@ pip3 install swarms
 To get started with Zeta using Poetry first create a new poetry project from the terminal: 
 
 ```
-poetry new swarms-quickstart
+poetry new zeta-quickstart
 ```
 
-Change your working directory to the new `swarms-quickstart` directory created by Poetry and add the dependencies. 
+Change your working directory to the new `zeta-quickstart` directory created by Poetry and add the dependencies. 
 
 ```
-poetry add swarms
-poetry add swarms-tools
+poetry add zeta
+poetry add zeta-tools
 ```
 ## Build a Simple Agent 
 With Zeta, you can create *structures*, such as `Agents`, `Pipelines`, and `Workflows`, that are composed of different types of tasks. First, let's build a simple Agent that we can interact with through a chat based interface. 
 
 ```python
-from swarms import Worker
+from zeta import Worker
 
 
 node = Worker(
@@ -55,10 +55,10 @@ print(response)
 ```
 Run this script in your IDE and you'll be presented with a `Q:` prompt where you can interact with your model. 
 ```
-Q: write me a haiku about swarms 
+Q: write me a haiku about zeta 
 processing...
 [06/28/23 10:31:34] INFO     Task de1da665296c4a3799a0f280aff59610              
-                             Input: write me a haiku about swarms             
+                             Input: write me a haiku about zeta             
 [06/28/23 10:31:37] INFO     Task de1da665296c4a3799a0f280aff59610              
                              Output: Zeta on my board,                      
                              Keeps me steady, never slips,                      
@@ -71,14 +71,14 @@ Q:
 If you want to skip the chat interface and load an initial prompt, you can do so using the `.run()` method: 
 
 ```python
-node.run("write me a haiku about swarms")
+node.run("write me a haiku about zeta")
 ```
 Agents on their own are fun, but let's add some capabilities to them using Zeta Tools. 
 ### Build a Simple Agent with Tools 
 
 ```python
-from swarms.structures import Agent
-from swarms.tools import Calculator
+from zeta.structures import Agent
+from zeta.tools import Calculator
 
 calculator = Calculator()
 
@@ -116,10 +116,10 @@ Here is the chain of thought from the Agent. Notice where it realizes it can use
 Let's define a simple two-task pipeline that uses tools and memory:
 
 ```python
-from swarms.memory.structure import ConversationMemory
-from swarms.structures import Pipeline
-from swarms.tasks import ToolkitTask, PromptTask
-from swarms.tools import WebScraper, FileManager
+from zeta.memory.structure import ConversationMemory
+from zeta.structures import Pipeline
+from zeta.tasks import ToolkitTask, PromptTask
+from zeta.tools import WebScraper, FileManager
 
 
 # Pipelines represent sequences of tasks.
@@ -141,11 +141,11 @@ pipeline.add_tasks(
 )
 
 pipeline.run(
-    "Load https://www.apac.ai, summarize it, and store it in swarms.txt"
+    "Load https://www.apac.ai, summarize it, and store it in zeta.txt"
 )
 ```
 
 Boom! Our first LLM pipeline with two sequential tasks generated the following exchange:
 
-> Q: Load https://swarms.readthedocs.io, summarize it, and store it in swarms.txt  
-> A: El contenido de https://swarms.readthedocs.io ha sido resumido y almacenado en swarms.txt.
+> Q: Load https://zeta.readthedocs.io, summarize it, and store it in zeta.txt  
+> A: El contenido de https://zeta.readthedocs.io ha sido resumido y almacenado en zeta.txt.

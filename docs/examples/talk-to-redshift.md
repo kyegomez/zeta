@@ -4,12 +4,12 @@ Let's build a support agent that uses GPT-4:
 
 ```python
 import boto3
-from swarms.drivers import AmazonRedshiftSqlDriver, OpenAiPromptDriver
-from swarms.loaders import SqlLoader
-from swarms.rules import Ruleset, Rule
-from swarms.structures import Agent
-from swarms.tools import SqlClient, FileManager
-from swarms.utils import Chat
+from zeta.drivers import AmazonRedshiftSqlDriver, OpenAiPromptDriver
+from zeta.loaders import SqlLoader
+from zeta.rules import Ruleset, Rule
+from zeta.structures import Agent
+from zeta.tools import SqlClient, FileManager
+from zeta.utils import Chat
 
 session = boto3.Session(region_name="REGION_NAME")
 

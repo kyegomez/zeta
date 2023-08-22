@@ -27,7 +27,7 @@ The third phase of our bounty program is the most exciting - this is where we ai
 
 Remember, our roadmap is a guide, and we encourage you to bring your own ideas and creativity to the table. We believe that every contribution, no matter how small, can make a difference. So join us on this exciting journey and help us create the future of Zeta.
 
-**To participate in our bounty program, visit the [Zeta Bounty Program Page](https://swarms.ai/bounty).** Let's build the future together!
+**To participate in our bounty program, visit the [Zeta Bounty Program Page](https://zeta.ai/bounty).** Let's build the future together!
 
 
 

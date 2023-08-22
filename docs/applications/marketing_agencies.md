@@ -5,7 +5,7 @@
 ### **Introduction**: 
 - Brief background on marketing agencies and their role in driving brand narratives and sales.
 - Current challenges and pain points faced in media planning, placements, and budgeting.
-- Introduction to the transformative potential of swarms in reshaping the marketing industry.
+- Introduction to the transformative potential of zeta in reshaping the marketing industry.
 
 ---
 
@@ -58,7 +58,7 @@
 ---
 
 ### **Conclusion**: 
-- Reiterate the immense potential of swarms in revolutionizing media planning, placements, and budgeting for marketing agencies.
-- Call to action: For marketing agencies looking to step into the future and leave manual inefficiencies behind, swarms are the answer.
+- Reiterate the immense potential of zeta in revolutionizing media planning, placements, and budgeting for marketing agencies.
+- Call to action: For marketing agencies looking to step into the future and leave manual inefficiencies behind, zeta are the answer.
 
 ---

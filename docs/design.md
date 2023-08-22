@@ -56,14 +56,14 @@ Zeta is designed with a philosophy of simplicity and reliability. We believe tha
 
 ## Overview
 
-The goal of the Swarm Architecture is to provide a flexible and scalable system to build swarm intelligence models that can solve complex problems. This document details the proposed design to create a plug-and-play system, which makes it easy to create custom swarms, and provides pre-configured swarms with multi-modal agents.
+The goal of the Swarm Architecture is to provide a flexible and scalable system to build swarm intelligence models that can solve complex problems. This document details the proposed design to create a plug-and-play system, which makes it easy to create custom zeta, and provides pre-configured zeta with multi-modal agents.
 
 ## Design Principles
 
 - **Modularity**: The system will be built in a modular fashion, allowing various components to be easily swapped or upgraded.
 - **Interoperability**: Different swarm classes and components should be able to work together seamlessly.
-- **Scalability**: The design should support the growth of the system by adding more components or swarms.
-- **Ease of Use**: Users should be able to easily create their own swarms or use pre-configured ones with minimal configuration.
+- **Scalability**: The design should support the growth of the system by adding more components or zeta.
+- **Ease of Use**: Users should be able to easily create their own zeta or use pre-configured ones with minimal configuration.
 
 ## Design Components
 
@@ -79,13 +79,13 @@ Pre-configured swarm classes with multi-modal agents can be provided for ease of
 
 ### Tools and Agents
 
-Tools and agents are the components that provide the actual functionality to the swarms. They can be language models, AI assistants, vector stores, or any other components that can help in problem solving.
+Tools and agents are the components that provide the actual functionality to the zeta. They can be language models, AI assistants, vector stores, or any other components that can help in problem solving.
 
 To make the system plug-and-play, a standard interface should be defined for these components. Any new tool or agent should implement this interface, so that it can be easily plugged into the system.
 
 ## Usage
 
-Users can either use pre-configured swarms or create their own custom swarms.
+Users can either use pre-configured zeta or create their own custom zeta.
 
 To use a pre-configured swarm, they can simply instantiate the corresponding swarm class and call the run method with the required objective.
 
@@ -100,19 +100,19 @@ To create a custom swarm, they need to:
 ```python
 # Using pre-configured swarm
 swarm = PreConfiguredSwarm(openai_api_key)
-swarm.run_swarms(objective)
+swarm.run_zeta(objective)
 
 # Creating custom swarm
 class CustomSwarm(AbstractSwarm):
     # Implement required methods
 
 swarm = CustomSwarm(openai_api_key)
-swarm.run_swarms(objective)
+swarm.run_zeta(objective)
 ```
 
 ## Conclusion
 
-This Swarm Architecture design provides a scalable and flexible system for building swarm intelligence models. The plug-and-play design allows users to easily use pre-configured swarms or create their own custom swarms.
+This Swarm Architecture design provides a scalable and flexible system for building swarm intelligence models. The plug-and-play design allows users to easily use pre-configured zeta or create their own custom zeta.
 
 
 # Swarming Architectures
@@ -143,7 +143,7 @@ Sure, below are five different swarm architectures with their base requirements 
 8. **Ant Colony Optimization (ACO) Swarm**: Inspired by ant behavior, this architecture has agents leave a pheromone trail that other agents follow, reinforcing the best paths. It's useful for problems like the traveling salesperson problem.
     - Requirements: Agents (can be language models), a representation of the problem space, a pheromone updating mechanism.
 
-9. **Genetic Algorithm (GA) Swarm**: In this architecture, agents represent potential solutions to a problem. They can 'breed' to create new solutions and can undergo 'mutations'. GA swarms are good for search and optimization problems.
+9. **Genetic Algorithm (GA) Swarm**: In this architecture, agents represent potential solutions to a problem. They can 'breed' to create new solutions and can undergo 'mutations'. GA zeta are good for search and optimization problems.
     - Requirements: Agents (each representing a potential solution), a fitness function to evaluate solutions, a crossover mechanism to breed solutions, and a mutation mechanism.
 
 10. **Stigmergy-based Swarm**: In this architecture, agents communicate indirectly by modifying the environment, and other agents react to such modifications. It's a decentralized method of coordinating tasks.

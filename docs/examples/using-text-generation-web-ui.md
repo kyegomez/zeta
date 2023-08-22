@@ -19,15 +19,15 @@ Code snippet using a pre defined 'preset'.
 'max_tokens' argument here need to be set with the same value as in the preset in text gen.
 
 ```shell
-from swarms.structures import Agent
-from swarms.drivers import TextGenPromptDriver
-from swarms.tokenizers import TextGenTokenizer
+from zeta.structures import Agent
+from zeta.drivers import TextGenPromptDriver
+from zeta.tokenizers import TextGenTokenizer
 from transformers import PreTrainedTokenizerFast
 
 fast_tokenizer = PreTrainedTokenizerFast(tokenizer_file="tokenizer.json")
 
 prompt_driver = TextGenPromptDriver(
-    preset="swarms",
+    preset="zeta",
     tokenizer=TextGenTokenizer(max_tokens=300, tokenizer=fast_tokenizer)
 )
 
@@ -45,9 +45,9 @@ Code snippet example using params, if params and preset is defined, preset will 
 this params are overriding the current preset set in text gen, not all of them must be used.
 
 ```shell
-from swarms.structures import Agent
-from swarms.drivers import TextGenPromptDriver
-from swarms.tokenizers import TextGenTokenizer
+from zeta.structures import Agent
+from zeta.drivers import TextGenPromptDriver
+from zeta.tokenizers import TextGenTokenizer
 from transformers import PreTrainedTokenizerFast
 
 params = {
