@@ -254,11 +254,6 @@ class Attend(nn.Module):
 
 
 
-
-
-def exists(val):
-    return val is not None
-
 def eval_decorator(fn):
     def inner(self, *args, **kwargs):
         was_training = self.training
@@ -411,15 +406,6 @@ class LayerIntermediates:
     hiddens: List[Tensor] = None
     attn_intermediates: List[Intermediates] = None
 
-# helpers
-
-def exists(val):
-    return val is not None
-
-def default(val, d):
-    if exists(val):
-        return val
-    return d() if isfunction(d) else d
 
 def cast_tuple(val, depth):
     return val if isinstance(val, tuple) else (val,) * depth

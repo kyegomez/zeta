@@ -15,7 +15,68 @@ class BaseEmbedding(ABC):
         embedding = ...
 
         return embedding
+    
+#Other embedding
+class AndromedaEmbedding(BaseEmbedding):
+    def get_embedding(self, num_tokens: int, dim: int) -> nn.Module:
+        embedding = nn.Embedding(num_tokens, dim)
 
+        return embedding
+    
+class AndromedaBnBEmbedding(BaseEmbedding):
+    def get_embedding(self, num_tokens: int, dim: int, padding_idx) -> bnb.nn.modules:
+        embedding = bnb.nn.modules.Embedding(num_tokens, dim, padding_idx)
+
+        return embedding
+    
+class TextEmbedding(nn.Embedding):
+    def reset_parameters(self):
+        nn.init.normal_(self.weight, mean=0, std=self.embedding_dim**-0.5)
+        self._fill_padding_idx_with_zero()
+
+
+class PositionalEmbedding(nn.Embedding):
+    def forward(
+        self,
+        x,
+        positions=None,
+        **kwargs,
+    ):
+        if positions is None:
+            # being consistent with Fairseq, which starts from 2.
+            positions = (
+                torch.arange(2, x.size(1) + 2, device=x.device).long().unsqueeze(0)
+            )
+        return F.embedding(
+            positions,
+            self.weight,
+            self.padding_idx,
+            self.max_norm,
+            self.norm_type,
+            self.scale_grad_by_freq,
+            self.sparse,
+        )
+
+
+class AbsolutePositionalEmbedding(nn.Module):
+    def __init__(self, dim, max_seq_len, l2norm_embed=False):
+        super().__init__()
+        self.scale = dim ** -0.5 if not l2norm_embed else 1.
+        self.max_seq_len = max_seq_len
+        self.l2norm_embed = l2norm_embed
+        self.emb = nn.Embedding(max_seq_len, dim)
+    
+    def forward(self, x, pos=None):
+        seq_len, device = x.shape[-1], x.device
+        assert seq_len <= self.max_seq_len, f"You are passing in a sequence length of {seq_len} but you absolute positional embedding has a max of length of {self.max_seq_len}"
+
+        if not exists(pos):
+            pos = torch.arange(seq_len, device=device)
+        
+        pos_emb = self.emb(pos)
+        pos_emb = pos_emb * self.scale
+        return l2norm(pos_emb) if self.l2norm_embed else pos_emb
+    
 
 class VisionLanguageEmbedding(nn.Module):
     def __init__(self, text_embed, vision_embed):
@@ -99,47 +160,3 @@ class VisionEmbedding(nn.Module):
             x = torch.cat((cls_tokens, x), dim=1)
 
         return x
-
-
-class TextEmbedding(nn.Embedding):
-    def reset_parameters(self):
-        nn.init.normal_(self.weight, mean=0, std=self.embedding_dim**-0.5)
-        self._fill_padding_idx_with_zero()
-
-
-class PositionalEmbedding(nn.Embedding):
-    def forward(
-        self,
-        x,
-        positions=None,
-        **kwargs,
-    ):
-        if positions is None:
-            # being consistent with Fairseq, which starts from 2.
-            positions = (
-                torch.arange(2, x.size(1) + 2, device=x.device).long().unsqueeze(0)
-            )
-        return F.embedding(
-            positions,
-            self.weight,
-            self.padding_idx,
-            self.max_norm,
-            self.norm_type,
-            self.scale_grad_by_freq,
-            self.sparse,
-        )
-
-
-
-#Other embedding
-class AndromedaEmbedding(BaseEmbedding):
-    def get_embedding(self, num_tokens: int, dim: int) -> nn.Module:
-        embedding = nn.Embedding(num_tokens, dim)
-
-        return embedding
-    
-class AndromedaBnBEmbedding(BaseEmbedding):
-    def get_embedding(self, num_tokens: int, dim: int, padding_idx) -> bnb.nn.modules:
-        embedding = bnb.nn.modules.Embedding(num_tokens, dim, padding_idx)
-
-        return embedding
