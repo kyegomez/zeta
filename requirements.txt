@@ -5,3 +5,7 @@ einops
 apex
 memory-profiler
 triton
+
+mkdocs
+mkdocs-material
+mkdocs-glightbox

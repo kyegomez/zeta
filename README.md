@@ -1,4 +1,7 @@
 # Zeta - A Transgalactic Library for Scalable Transformations
+[![Docs](https://readthedocs.org/projects/swarms/badge/)](https://swarms.readthedocs.io)
+
+Docs for [Zeta](https://github.com/kyegomez/swarms).
 
 <p>
   <a href="https://github.com/kyegomez/zeta/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg" /></a>
