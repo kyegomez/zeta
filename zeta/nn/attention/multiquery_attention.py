@@ -654,7 +654,7 @@ class MultiQueryAttention(nn.Module):
         self,
         d_model: int,
         heads: int,
-        attn_impl: str = 'triton',
+        attn_impl: str = 'torch',
         clip_qkv: Optional[float] = None,
         qk_ln: bool = False,
         softmax_scale: Optional[float] = None,

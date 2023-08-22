@@ -82,6 +82,7 @@ nav:
         - RelativePositionBias: "zeta/nn/modules/"
       - attention:
         - FlashAttention: "zeta/nn/attention/flash_attention.md"
+        - MultiQueryAttention: "zeta/nn/attention/multiquery.md"
 - Examples:
     - Overview: "examples/index.md"
     - Agents:
