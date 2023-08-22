@@ -2,21 +2,30 @@ import math
 from abc import ABC, abstractmethod
 from collections import namedtuple
 from dataclasses import dataclass
-from functools import partial, wraps
-from inspect import isfunction
-from math import ceil
+from functools import partial
 from random import random
 from typing import List
 
 import torch
 import torch.nn.functional as F
-from einops import pack, rearrange, repeat, unpack
-from packaging import version
+from einops import rearrange, repeat
 from torch import Tensor, einsum, nn
 
 EfficientAttentionConfig = namedtuple('EfficientAttentionConfig', ['enable_flash', 'enable_math', 'enable_mem_efficient'])
 
-
+from zeta.nn.attention.flash_attention import FlashAttention as Attend
+from zeta.nn.utils.helpers import (  # noqa: E402
+    always,
+    cast_tuple,
+    default,
+    equals,
+    exists,
+    groupby_prefix_and_trim,
+    maybe,
+    not_equals,
+    once,  # noqa: F401
+    )
+from zeta.nn.utils.tensor_helpers import l2norm, max_neg_value, or_reduce, pad_at_dim
 
 
 @dataclass
@@ -25,379 +34,7 @@ class Intermediates:
     pre_softmax_attn: Tensor = None
     post_softmax_attn: Tensor = None
 
-# helpers
 
-def exists(val):
-    return val is not None
-
-def default(val, d):
-    return val if exists(val) else d
-
-def once(fn):
-    called = False
-    @wraps(fn)
-    def inner(x):
-        nonlocal called
-        if called:
-            return
-        called = True
-        return fn(x)
-    return inner
-
-print_once = once(print)
-
-# main class
-
-class Attend(nn.Module):
-    def __init__(
-        self,
-        *,
-        dropout = 0.,
-        causal = False,
-        heads = None,
-        talking_heads = False,
-        scale = None,
-        qk_norm = False,
-        flash = False,
-        triton = False,
-    ):
-        super().__init__()
-        self.scale = scale
-        self.qk_norm = qk_norm
-        self.causal = causal
-        self.attn_fn = partial(F.softmax, dtype = torch.float32) if not qk_norm else F.softmax
-
-        self.dropout = dropout
-        self.attn_dropout = nn.Dropout(dropout)
-
-        # talking heads
-
-        assert not (flash and talking_heads), 'talking heads not compatible with flash attention'
-
-        self.talking_heads = talking_heads
-        if talking_heads:
-            self.pre_softmax_talking_heads = nn.Conv2d(heads, heads, 1, bias = False)
-            self.post_softmax_talking_heads = nn.Conv2d(heads, heads, 1, bias = False)
-
-        # flash attention
-        self.flash = flash
-        assert not (flash and version.parse(torch.__version__) < version.parse('2.0.0')), 'in order to use flash attention, you must be using pytorch 2.0 or above'
-
-        # determine efficient attention configs for cuda and cpu
-        self.cpu_config = EfficientAttentionConfig(True, True, True)
-        self.cuda_config = None
-
-        if not torch.cuda.is_available() or not flash:
-            return
-
-        device_properties = torch.cuda.get_device_properties(torch.device('cuda'))
-
-        if device_properties.major == 8 and device_properties.minor == 0:
-            print_once('A100 GPU detected, using flash attention if input tensor is on cuda')
-            self.cuda_config = EfficientAttentionConfig(True, False, False)
-        else:
-            print_once('Non-A100 GPU detected, using math or mem efficient attention if input tensor is on cuda')
-            self.cuda_config = EfficientAttentionConfig(False, True, True)
-
-    def flash_attn(
-        self,
-        q, k, v,
-        mask = None,
-        attn_bias = None
-    ):
-        batch, heads, q_len, _, k_len, is_cuda, device = *q.shape, k.shape[-2], q.is_cuda, q.device
-
-        # Recommended for multi-query single-key-value attention by Tri Dao
-        # kv shape torch.Size([1, 512, 64]) -> torch.Size([1, 8, 512, 64])
-
-        if k.ndim == 3:
-            k = rearrange(k, 'b ... -> b 1 ...').expand_as(q)
-
-        if v.ndim == 3:
-            v = rearrange(v, 'b ... -> b 1 ...').expand_as(q)
-
-        # handle scale - by default they scale by dim_head ** -0.5, but need to take care if using cosine sim attention
-
-        if self.qk_norm:
-            default_scale = q.shape[-1] ** -0.5
-            q = q * (default_scale / self.scale)
-
-        # Check if mask exists and expand to compatible shape
-        # The mask is B L, so it would have to be expanded to B H N L
-
-        causal = self.causal
-
-        if exists(mask):
-            assert mask.ndim == 4
-            mask = mask.expand(batch, heads, q_len, k_len)
-
-            # manually handle causal mask, if another mask was given
-
-            if causal:
-                causal_mask = torch.ones((q_len, k_len), dtype = torch.bool, device = device).triu(k_len - q_len + 1)
-                mask = mask | causal_mask
-                causal = False
-
-        # handle alibi positional bias
-        # convert from bool to float
-
-        if exists(attn_bias):
-            attn_bias = rearrange(attn_bias, 'h i j -> 1 h i j').expand(batch, -1, -1, -1)
-
-            # if mask given, the mask would already contain the causal mask from above logic
-            # otherwise, if no mask given but still causal, mask out alibi positional bias to a large negative number
-
-            mask_value = -torch.finfo(q.dtype).max
-
-            if exists(mask):
-                attn_bias = attn_bias.masked_fill(mask, mask_value // 2)
-            elif causal:
-                causal_mask = torch.ones((q_len, k_len), dtype = torch.bool, device = device).triu(k_len - q_len + 1)
-                attn_bias = attn_bias.masked_fill(causal_mask, mask_value // 2)
-                causal = False
-
-            # scaled_dot_product_attention handles attn_mask either as bool or additive bias
-            # make it an additive bias here
-
-            mask = attn_bias
-
-        # Check if there is a compatible device for flash attention
-
-        config = self.cuda_config if is_cuda else self.cpu_config
-
-        # pytorch 2.0 flash attn: q, k, v, mask, dropout, causal, softmax_scale
-        
-        with torch.backends.cuda.sdp_kernel(**config._asdict()):
-            out = F.scaled_dot_product_attention(
-                q, k, v,
-                attn_mask = mask,
-                dropout_p = self.dropout if self.training else 0., 
-                is_causal = causal
-            )
-
-        return out, Intermediates()
-
-    def forward(
-        self,
-        q, k, v,
-        mask = None,
-        attn_bias = None,
-        prev_attn = None
-    ):
-        """
-        einstein notation
-        b - batch
-        h - heads
-        n, i, j - sequence length (base sequence length, source, target)
-        d - feature dimension
-        """
-
-        n, device = q.shape[-2], q.device
-
-        scale = default(self.scale, q.shape[-1] ** -0.5)
-
-        if self.flash:
-            assert not exists(prev_attn), 'residual attention not compatible with flash attention'
-            return self.flash_attn(q, k, v, mask = mask, attn_bias = attn_bias)
-            # return FlashAttention(q, k, v, mask=mask, attn_bias=attn_bias )
-
-
-        kv_einsum_eq = 'b j d' if k.ndim == 3 else 'b h j d'
-
-        dots = einsum(f'b h i d, {kv_einsum_eq} -> b h i j', q, k) * scale
-
-        if exists(prev_attn):
-            dots = dots + prev_attn
-
-        qk_similarities = dots.clone()
-
-        if self.talking_heads:
-            dots = self.pre_softmax_talking_heads(dots)
-
-        if exists(attn_bias):
-            dots = dots + attn_bias
-
-        dtype = dots.dtype
-        pre_softmax_attn = dots.clone()
-
-        mask_value = -torch.finfo(dots.dtype).max
-
-        if exists(mask):
-            dots = dots.masked_fill(mask, mask_value)
-
-        if self.causal:
-            i, j = dots.shape[-2:]
-            causal_mask = torch.ones((i, j), dtype = torch.bool, device = device).triu(j - i + 1)
-            dots = dots.masked_fill(causal_mask, mask_value)
-
-        attn = self.attn_fn(dots, dim = -1)
-        attn = attn.type(dtype)
-
-        post_softmax_attn = attn.clone()
-
-        attn = self.attn_dropout(attn)
-
-        if self.talking_heads:
-            attn = self.post_softmax_talking_heads(attn)
-
-        out = einsum(f'b h i j, {kv_einsum_eq} -> b h i d', attn, v)
-
-        intermediates = Intermediates(
-            qk_similarities = qk_similarities,
-            pre_softmax_attn = pre_softmax_attn,
-            post_softmax_attn = post_softmax_attn
-        )
-
-        return out, intermediates
-
-
-
-
-
-def eval_decorator(fn):
-    def inner(self, *args, **kwargs):
-        was_training = self.training
-        self.eval()
-        out = fn(self, *args, **kwargs)
-        self.train(was_training)
-        return out
-    return inner
-
-# nucleus
-
-def top_p(logits, thres = 0.9):
-    sorted_logits, sorted_indices = torch.sort(logits, descending=True)
-    cum_probs = torch.cumsum(F.softmax(sorted_logits, dim=-1), dim=-1)
-
-    sorted_indices_to_remove = cum_probs > (1 - thres)
-    sorted_indices_to_remove[:, 1:] = sorted_indices_to_remove[:, :-1].clone()
-    sorted_indices_to_remove[:, 0] = 0
-
-    sorted_logits[sorted_indices_to_remove] = float('-inf')
-    return sorted_logits.scatter(1, sorted_indices, sorted_logits)
-
-# topk
-
-def top_k(logits, thres = 0.9):
-    k = ceil((1 - thres) * logits.shape[-1])
-    val, ind = torch.topk(logits, k)
-    probs = torch.full_like(logits, float('-inf'))
-    probs.scatter_(1, ind, val)
-    return probs
-
-# top_a
-
-def top_a(logits, min_p_pow=2.0, min_p_ratio=0.02):
-    probs = F.softmax(logits, dim=-1)
-    limit = torch.pow(torch.max(probs), min_p_pow) * min_p_ratio
-    logits[probs < limit] = float('-inf')
-    logits[probs >= limit] = 1
-    return logits
-
-# autoregressive wrapper class
-
-class AutoregressiveWrapper(nn.Module):
-    def __init__(
-        self,
-        net,
-        ignore_index = -100,
-        pad_value = 0,
-        mask_prob = 0.
-    ):
-        super().__init__()
-        self.pad_value = pad_value
-        self.ignore_index = ignore_index
-
-        self.net = net
-        self.max_seq_len = net.max_seq_len
-
-        # paper shows masking (MLM) in conjunction with autoregressive decoder-only training leads to big improvements https://arxiv.org/abs/2210.13432
-        assert mask_prob < 1.
-        self.mask_prob = mask_prob
-
-    @torch.no_grad()
-    @eval_decorator
-    def generate(
-        self,
-        start_tokens,
-        seq_len,
-        eos_token = None,
-        temperature = 1.,
-        filter_logits_fn = top_k,
-        filter_thres = 0.9,
-        min_p_pow = 2.0,
-        min_p_ratio = 0.02,
-        **kwargs
-    ):
-
-        start_tokens, ps = pack([start_tokens], '* n')
-
-        b, t = start_tokens.shape
-
-        out = start_tokens
-
-        for _ in range(seq_len):
-            x = out[:, -self.max_seq_len:]
-
-            logits = self.net(x, **kwargs)[:, -1]
-
-            if filter_logits_fn in {top_k, top_p}:
-                filtered_logits = filter_logits_fn(logits, thres = filter_thres)
-                probs = F.softmax(filtered_logits / temperature, dim=-1)
-
-            elif filter_logits_fn is top_a:
-                filtered_logits = filter_logits_fn(logits, min_p_pow = min_p_pow, min_p_ratio= min_p_ratio)
-                probs = F.softmax(filtered_logits / temperature, dim=-1)
-
-            sample = torch.multinomial(probs, 1)
-
-            out = torch.cat((out, sample), dim=-1)
-
-            if exists(eos_token):
-                is_eos_tokens = (out == eos_token)
-
-                if is_eos_tokens.any(dim = -1).all():
-                    # mask out everything after the eos tokens
-                    shifted_is_eos_tokens = F.pad(is_eos_tokens, (1, -1))
-                    mask = shifted_is_eos_tokens.float().cumsum(dim = -1) >= 1
-                    out = out.masked_fill(mask, self.pad_value)
-                    break
-
-        out = out[:, t:]
-
-        out, = unpack(out, ps, '* n')
-
-        return out
-
-    def forward(self, x, return_loss=True, **kwargs):
-        seq, ignore_index = x.shape[1], self.ignore_index
-
-        inp, target = x[:, :-1], x[:, 1:]
-
-        if self.mask_prob > 0.:
-            rand = torch.randn(inp.shape, device = x.device)
-            rand[:, 0] = -torch.finfo(rand.dtype).max # first token should not be masked out
-            num_mask = min(int(seq * self.mask_prob), seq - 1)
-            indices = rand.topk(num_mask, dim = -1).indices
-            mask = ~torch.zeros_like(inp).scatter(1, indices, 1.).bool()
-            kwargs.update(self_attn_context_mask = mask)
-
-        logits = self.net(inp, **kwargs)
-
-        loss = F.cross_entropy(
-            rearrange(logits, 'b n c -> b c n'),
-            target,
-            ignore_index = ignore_index
-        )
-
-        if return_loss:
-            return logits, loss
-
-        return logits
-
-
-######## default
-# constants
 
 DEFAULT_DIM_HEAD = 64
 
@@ -407,89 +44,12 @@ class LayerIntermediates:
     attn_intermediates: List[Intermediates] = None
 
 
-def cast_tuple(val, depth):
-    return val if isinstance(val, tuple) else (val,) * depth
-
-def maybe(fn):
-    @wraps(fn)
-    def inner(x, *args, **kwargs):
-        if not exists(x):
-            return x
-        return fn(x, *args, **kwargs)
-    return inner
-
-class always():
-    def __init__(self, val):
-        self.val = val
-    def __call__(self, *args, **kwargs):
-        return self.val
-
-class not_equals():
-    def __init__(self, val):
-        self.val = val
-    def __call__(self, x, *args, **kwargs):
-        return x != self.val
-
-class equals():
-    def __init__(self, val):
-        self.val = val
-    def __call__(self, x, *args, **kwargs):
-        return x == self.val
-
-# tensor helpers
-
-def max_neg_value(tensor):
-    return -torch.finfo(tensor.dtype).max
-
-def l2norm(t, groups = 1):
-    t = rearrange(t, '... (g d) -> ... g d', g = groups)
-    t = F.normalize(t, p = 2, dim = -1)
-    return rearrange(t, '... g d -> ... (g d)')
-
-def pad_at_dim(t, pad, dim = -1, value = 0.):
-    dims_from_right = (- dim - 1) if dim < 0 else (t.ndim - dim - 1)
-    zeros = ((0, 0) * dims_from_right)
-    return F.pad(t, (*zeros, *pad), value = value)
-
-def or_reduce(masks):
-    head, *body = masks
-    for rest in body:
-        head = head | rest
-    return head
-
-# init helpers
 
 def init_zero_(layer):
     nn.init.constant_(layer.weight, 0.)
     if exists(layer.bias):
         nn.init.constant_(layer.bias, 0.)
 
-# keyword argument helpers
-
-def pick_and_pop(keys, d):
-    values = list(map(lambda key: d.pop(key), keys))
-    return dict(zip(keys, values))
-
-def group_dict_by_key(cond, d):
-    return_val = [dict(),dict()]
-    for key in d.keys():
-        match = bool(cond(key))
-        ind = int(not match)
-        return_val[ind][key] = d[key]
-    return (*return_val,)
-
-def string_begins_with(prefix, str):
-    return str.startswith(prefix)
-
-def group_by_key_prefix(prefix, d):
-    return group_dict_by_key(partial(string_begins_with, prefix), d)
-
-def groupby_prefix_and_trim(prefix, d):
-    kwargs_with_prefix, kwargs = group_dict_by_key(partial(string_begins_with, prefix), d)
-    kwargs_without_prefix = dict(map(lambda x: (x[0][len(prefix):], x[1]), tuple(kwargs_with_prefix.items())))
-    return kwargs_without_prefix, kwargs
-
-# initializations
 
 def deepnorm_init(
     transformer,
@@ -588,7 +148,6 @@ class TokenEmbedding(nn.Module):
         return l2norm(token_emb) if self.l2norm_embed else token_emb
 
 # positional embeddings
-
 class AbsolutePositionalEmbedding(nn.Module):
     def __init__(self, dim, max_seq_len, l2norm_embed = False):
         super().__init__()
