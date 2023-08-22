@@ -8,4 +8,5 @@
 
 
 #attention
-# from zeta.utils.attention.main import Attention, AttentionLayers
+from zeta.utils.attention.main import Attention, AttentionLayers
+from zeta.nn.attention.multiquery_attention import MultiQueryAttention
