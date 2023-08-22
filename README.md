@@ -3,8 +3,6 @@
 # Zeta - A Library for Zetascale Transformers
 [![Docs](https://readthedocs.org/projects/zeta/badge/)](https://zeta.readthedocs.io)
 
-Docs for [Zeta](https://github.com/kyegomez/zeta).
-
 <p>
   <a href="https://github.com/kyegomez/zeta/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg" /></a>
   <a href="https://pypi.org/project/zeta"><img alt="MIT License" src="https://badge.fury.io/py/zeta.svg" /></a>
