@@ -4,5 +4,3 @@
 ######### Attention
 from zeta.nn.attention.multiquery_attention import MultiQueryAttention
 from zeta.nn import *
-from zeta.models import *
-from zeta.training import *

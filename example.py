@@ -1,4 +1,4 @@
-#building GPT4 with zeta is easy
+#building GPT4 with zeta is easy, less than 75 lines of code
 import torch
 from torch.nn import nn
 from zeta import (
@@ -7,32 +7,7 @@ from zeta import (
     Decoder,
     Transformer,
 )
-
 class GPT4(nn.Module):
-    """
-    GPT4 is a transformer-based model architecture. It initializes with 
-    a Transformer and AutoregressiveWrapper with default or user-specified parameters.
-        Initialize the model with specified or default parameters.
-        Args:
-        - num_tokens: Number of tokens in the vocabulary
-        - max_seq_len: Maximum sequence length
-        - dim: Dimension of the model
-        - depth: Depth of the model
-        - dim_head: Dimension of the model head
-        - heads: Number of heads
-        - use_abs_pos_emb: Whether to use absolute position embedding
-        - alibi_pos_bias: Alibi position bias
-        - alibi_num_heads: Number of alibi heads
-        - rotary_xpos: Rotary position
-        - attn_flash: Attention flash
-        - deepnorm: Deep normalization
-        - shift_tokens: Number of tokens to shift
-        - attn_one_kv_head: Attention one key/value head
-        - qk_norm: Query-key normalization
-        - attn_qk_norm: Attention query-key normalization
-        - attn_qk_norm_dim_scale: Attention query-key normalization dimension scale
-        - embedding_provider: Embedding provider module
-    """
     def __init__(self, 
                  num_tokens=50432, 
                  max_seq_len=8192, 
