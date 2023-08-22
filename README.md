@@ -31,13 +31,18 @@ pip install -e .
 Creating a model empowered with the aforementioned breakthrough research features is a breeze. Here's how to quickly materialize a BERT-like encoder:
 
 ```python
->>> from zeta import EncoderConfig
->>> from zeta import Encoder
+import torch
+from zeta import FlashAttention
 
->>> config = EncoderConfig(vocab_size=64000)
->>> model = Encoder(config)
+q = torch.randn(2, 4, 6, 8)
+k = torch.randn(2, 4, 10, 8)
+v = torch.randn(2, 4, 10, 8)
 
->>> print(model)
+attention = FlashAttention(causal=False, dropout=0.1, flash=True)
+output = attention(q, k, v)
+
+print(output.shape) 
+
 ```
 
 
@@ -50,10 +55,11 @@ Zeta is a masterpiece inspired by elements of [FairSeq](https://github.com/faceb
 If our work here in Zeta has aided you in your journey, please consider acknowledging our efforts in your work. You can find relevant citation details in our [Citations Document](citations.md).
 
 ## Contributing
+We're dependent on you for contributions, it's only Kye maintaining this repository and it's very difficult and with that said any contribution is infinitely appreciated by not just me but by Zeta's users who dependen on this repository to build the world's
+best AI models
 
-We're always thrilled to welcome new ideas and improvements from the community. Please check our [Contributor's Guide](contributing.md) for more details about contributing.
+* Head over to the project board to look at open features to implement or bugs to tackle
 
 
-* Create an modular omni-universal Attention class with flash multihead attention or regular mh or dilated attention -> then integrate into Decoder/ DecoderConfig
-
-
+## Todo
+* Head over to the project board to look at open features to implement or bugs to tackle
