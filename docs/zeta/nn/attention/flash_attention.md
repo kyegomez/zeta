@@ -1,83 +1,105 @@
-# FlashAttention Module
-=====================
+# FlashAttention
 
-## Architecture
-------------
+The FlashAttention module performs efficient attention computations, specifically designed for leveraging hardware capabilities on certain NVIDIA GPUs. It offers the option to perform "flash" attention which can be computationally faster on specific GPU architectures.
 
-The `FlashAttention` module is a part of the Zeta package and is designed to perform attention computation. It supports both regular attention and flash attention. The module takes query, key, and value tensors as input and computes the attention-weighted sum of the value tensors based on the similarity between the query and key tensors.
+---
 
-## Purpose
--------
+## Class Definition:
 
-The purpose of the `FlashAttention` module is to provide an efficient and flexible way to compute attention in neural networks. It allows users to choose between regular attention and flash attention based on their specific requirements. Flash attention is a variant of attention that leverages efficient GPU kernels to accelerate the attention computation process.
-
-## Arguments
----------
-
-The `FlashAttention` module accepts the following arguments:
-
--   `causal` (bool, default=False): Whether to apply causal masking during attention computation.
--   `dropout` (float, default=0.): Dropout probability.
--   `flash` (bool, default=True): Whether to use flash attention.
-
-## Usage Examples
---------------
-
-Here are three examples demonstrating different ways to use the `FlashAttention` module:
-
-### Example 1: Regular Attention
-
+```python
+class FlashAttention(nn.Module):
 ```
-import torch
+
+### Parameters:
+
+- `causal` (bool, optional): Determines whether to apply causal masking. Default: False.
+- `dropout` (float, optional): Dropout probability. Default: 0.
+- `flash` (bool, optional): Whether to use flash attention. Requires PyTorch version 2.0 or above. Default: True.
+
+---
+
+## Methods:
+
+### `__init__(self, causal=False, dropout=0., flash=True)`
+
+Initializes the FlashAttention module.
+
+### `get_mask(self, i, j, device)`
+
+Generates a mask for attention computation.
+
+#### Parameters:
+- `i` (int): Length of the query sequence.
+- `j` (int): Length of the key sequence.
+- `device` (torch.device): Device to place the mask tensor.
+
+#### Returns:
+- `torch.Tensor`: Mask tensor of shape `(i, j)`.
+
+### `flash_attn(self, q, k, v, mask=None, attn_bias=None)`
+
+Performs flash attention computation.
+
+#### Parameters:
+- `q` (torch.Tensor): Query tensor of shape `(batch, heads, q_len, dim)`.
+- `k` (torch.Tensor): Key tensor of shape `(batch, heads, k_len, dim)`.
+- `v` (torch.Tensor): Value tensor of shape `(batch, heads, v_len, dim)`.
+- `mask` (torch.Tensor, optional): Mask tensor of shape `(batch, heads, q_len, k_len)`. Default: None.
+- `attn_bias` (torch.Tensor, optional): Attention bias tensor of shape `(batch, heads, q_len, k_len)`. Default: None.
+
+#### Returns:
+- `torch.Tensor`: Output tensor of shape `(batch, heads, q_len, dim)`.
+
+### `forward(self, q, k, v, mask=None, attn_bias=None)`
+
+Performs the attention computation using einstein notation.
+
+#### Parameters:
+- `q` (torch.Tensor): Query tensor of shape `(batch, heads, q_len, dim)`.
+- `k` (torch.Tensor): Key tensor of shape `(batch, heads, k_len, dim)`.
+- `v` (torch.Tensor): Value tensor of shape `(batch, heads, v_len, dim)`.
+- `mask` (torch.Tensor, optional): Mask tensor of shape `(batch, heads, q_len, k_len)`. Default: None.
+- `attn_bias` (torch.Tensor, optional): Attention bias tensor of shape `(batch, heads, q_len, k_len)`. Default: None.
+
+#### Returns:
+- `torch.Tensor`: Attention output tensor.
+
+---
+
+## Usage Examples:
+
+1. **Basic Usage**:
+```python
 from zeta import FlashAttention
-
-q = torch.randn(2, 4, 6, 8)
-k = torch.randn(2, 4, 10, 8)
-v = torch.randn(2, 4, 10, 8)
-
-attention = FlashAttention(causal=False, dropout=0.1, flash=False)
-output = attention(q, k, v)
-
-print(output.shape)  # torch.Size([2, 4, 6, 8])
+attn_module = FlashAttention()
+output = attn_module(query_tensor, key_tensor, value_tensor)
 ```
 
-
-In this example, we create random input tensors `q`, `k`, and `v` with appropriate shapes. We then create an instance of `FlashAttention` with causal masking disabled, dropout probability of `0.1`, and flash attention disabled. Finally, we pass the input tensors to the `FlashAttention` instance to compute the attention-weighted sum.
-
-### Example 2: Flash Attention
-
-```
-import torch
+2. **Using Flash Attention with Masking**:
+```python
 from zeta import FlashAttention
-
-q = torch.randn(2, 4, 6, 8)
-k = torch.randn(2, 4, 10, 8)
-v = torch.randn(2, 4, 10, 8)
-
-attention = FlashAttention(causal=True, dropout=0.1, flash=True)
-output = attention(q, k, v)
-
-print(output.shape)  # torch.Size([2, 4, 6, 8])
+attn_module = FlashAttention(flash=True)
+mask = attn_module.get_mask(query_length, key_length, device)
+output = attn_module(query_tensor, key_tensor, value_tensor, mask=mask)
 ```
 
-
-In this example, we perform the same computation as in Example 1, but with flash attention enabled. Flash attention leverages efficient GPU kernels to accelerate the attention computation process, providing faster computation times compared to regular attention.
-
-### Example 3: Masked Attention
-
-```
-import torch
+3. **Using Causal Flash Attention with Dropout**:
+```python
 from zeta import FlashAttention
-
-q = torch.randn(2, 4, 6, 8)
-k = torch.randn(2, 4, 10, 8)
-v = torch.randn(2, 4, 10, 8)
-mask = torch.ones(2, 4, 6, 10).bool()
-
-attention = FlashAttention(causal=False, dropout=0.1, flash=True)
-output = attention(q, k, v, mask=mask)
-
-print(output.shape)  # torch.Size([2, 4, 6, 8])
+attn_module = FlashAttention(causal=True, dropout=0.1, flash=True)
+output = attn_module(query_tensor, key_tensor, value_tensor)
 ```
 
-In this example, we compute masked attention by providing a mask tensor to the `FlashAttention` module. The mask tensor has the same shape as the attention tensor and is used to mask out certain elements during the attention computation. This is useful when dealing with sequences of varying lengths or when certain elements should be ignored during the attention computation.
+---
+
+## Additional Tips:
+
+- The `FlashAttention` module is optimized for NVIDIA A100 GPUs. On these GPUs, using `flash=True` is recommended for faster computation.
+- Ensure that PyTorch version is 2.0 or above when enabling flash attention.
+- The mask generated using `get_mask` method is useful for attention computations where certain positions need to be masked out.
+
+---
+
+## References:
+
+- Original Attention Mechanism: [Attention Is All You Need](https://arxiv.org/abs/1706.03762)
