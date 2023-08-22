@@ -3,11 +3,9 @@ import torch
 from torch.nn import nn
 from zeta import (
     AndromedaEmbedding,
-    Autoregressive,
+    AutoregressiveWrapper,
     Decoder,
-    Encoder,
     Transformer,
-    ViTransformerWrapper,
 )
 
 class GPT4(nn.Module):
