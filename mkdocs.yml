@@ -64,7 +64,6 @@ nav:
     - FAQ: "faq.md"
     - Purpose: "purpose.md"
     - Roadmap: "roadmap.md"
-    - Weaknesses: "failures.md"
     - Design: "design.md"
     - Flywheel: "flywheel.md"
     - Bounties: "bounties.md"
@@ -97,8 +96,3 @@ nav:
         - Count Tokens: "examples/count-tokens.md"
         - Using Text Generation Web UI: "examples/using-text-generation-web-ui.md"
         - Storing Conversation Memory in DynamoDB: "examples/store-conversation-memory-in-dynamodb.md"
-- Applications:
-    - CustomerSupport: 
-      - Overview: "applications/customer_support.md"
-    - Marketing: 
-      - Overview: "applications/marketing_agencies.md" 

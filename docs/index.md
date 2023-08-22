@@ -1,8 +1,8 @@
 # Zeta Docs
 
-Welcome to Swarm's Documentation!
+Welcome to Zeta's Documentation!
 
-Zeta is a modular framework that enables reliable and useful multi-agent collaboration at scale to automate real-world tasks.
+Zeta is a modular framework that enables for seamless, reliable, and fluid creation of zetascale AI models.
 
 Zeta is transforming the landscape of AI from siloed AI agents to a unified 'swarm' of intelligence. Through relentless iteration and the power of collective insight from our 1500+ Agora researchers, we're developing a groundbreaking framework for AI collaboration. Our mission is to catalyze a paradigm shift, advancing Humanity with the power of unified autonomous AI agent swarms.
 
@@ -15,7 +15,7 @@ The Zeta framework provides developers with the ability to create AI systems tha
 
 Zeta not only helps developers harness the potential of LLMs but also enforces trust boundaries, schema validation, and tool activity-level permissions. By doing so, Zeta maximizes LLMs’ reasoning while adhering to strict policies regarding their capabilities.
 
-[Learn more about swarms →](swarms/)
+[Click here for Zeta Documentation →](zeta/)
 
 
 ## Examples
