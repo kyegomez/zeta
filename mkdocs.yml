@@ -75,12 +75,12 @@ nav:
     - Checklist: "checklist.md"
     - Hiring: "hiring.md"
 - Zeta:
-  - Overview: "zeta/index.md"
-  - nn:
-    - modules: 
-      xpos: "zeta/workers/index.md"
-    - attention:
-      - FlashAttention: "zeta/nn/attention/flash_attention.md"
+    - Overview: "zeta/index.md"
+    - nn:
+      - modules: 
+        xpos: "zeta/workers/index.md"
+      - attention:
+        - FlashAttention: "zeta/nn/attention/flash_attention.md"
 - Examples:
     - Overview: "examples/index.md"
     - Agents:

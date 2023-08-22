@@ -773,10 +773,10 @@ class Attention(nn.Module):
             max_attend_past_mask = dist > self.max_attend_past
             masks.append(max_attend_past_mask)
 
-        if exists(self.sparse_topk) and self.sparse_topk < dots.shape[-1]:
-            top, _ = dots.topk(self.sparse_topk, dim = -1)
+        if exists(self.sparse_topk) and self.sparse_topk < dots.shape[-1]:  # noqa: F821
+            top, _ = dots.topk(self.sparse_topk, dim = -1)  # noqa: F821
             vk = rearrange(top[..., -1], '... -> ... 1')
-            sparse_topk_mask = dots < vk
+            sparse_topk_mask = dots < vk  # noqa: F821
             masks.append(sparse_topk_mask)
 
         if len(masks) > 0:
