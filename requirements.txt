@@ -5,6 +5,7 @@ einops
 apex
 memory-profiler
 triton
+lion-pytorch
 
 mkdocs
 mkdocs-material

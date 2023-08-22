@@ -22,4 +22,3 @@ def or_reduce(masks):
         head = head | rest
     return head
 
-
