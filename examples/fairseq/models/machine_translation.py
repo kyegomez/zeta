@@ -22,8 +22,8 @@ from fairseq.models.transformer import Embedding
 from fairseq.modules import PositionalEmbedding
 from torch import Tensor
 
-from zeta.nn.config import DecoderConfig, EncoderConfig
-from zeta.nn.encoder import Encoder
+from zeta.nn.architecture.config import DecoderConfig, EncoderConfig
+from zeta.nn.architecture.encoder import Encoder
 
 from .language_modeling import LMDecoder as MTDecoder
 

@@ -20,7 +20,7 @@ try:
 except ModuleNotFoundError:
     from torch.nn import LayerNorm
 
-from zeta.nn.config import EncoderConfig
+from zeta.nn.architecture.config import EncoderConfig
 
 from .machine_translation import MTEncoder as Encoder
 

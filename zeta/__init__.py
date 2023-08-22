@@ -8,5 +8,12 @@
 
 
 #attention
-from zeta.utils.attention.main import Attention, AttentionLayers
+#architecture
+from zeta.nn.architecture.transformer import (
+    AttentionLayers,
+    Decoder,
+    Encoder,
+    Transformer,
+    ViTransformerWrapper,
+)
 from zeta.nn.attention.multiquery_attention import MultiQueryAttention

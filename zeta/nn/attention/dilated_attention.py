@@ -1,13 +1,17 @@
+from typing import Optional, Sequence, Tuple, Union
 
 
 import torch
-import torch.nn as nn
+from torch import Tensor, nn
 import torch.nn.functional as F
+
+from einops import rearrange
 
 # from LongNet.attend import FlashAttention
 from zeta.nn.attention.flash_attention import FlashAttention
 from zeta.nn.modules.relative_position_bias import RelativePositionBias
 from zeta.nn.modules.xpos_relative_position import XPOS
+
 
 device = "cuda:0"
 dtype=torch.float16
@@ -152,3 +156,124 @@ class DilatedAttention(nn.Module):
 
 
 
+
+class MultiheadDilatedAttention(nn.Module):
+    def __init__(
+        self,
+        embed_dim: int,
+        num_heads: int,
+        dilation_rates: Sequence[int],
+        segment_lengths: Sequence[int],
+        dropout: float = 0.0,
+        bias: bool = True,
+        layer_norm: bool = True,
+        layer_norm_eps: float = 1e-5,
+        gamma_init: float = 1.0,
+        device: Optional[Union[torch.device, str]] = None,
+        dtype: Optional[torch.dtype] = None,
+    ):
+        super().__init__()
+        self.num_heads = num_heads
+        self.layer_norm = layer_norm
+        self.gamma_init = gamma_init
+
+        if not embed_dim % self.num_heads == 0:
+            raise ValueError(
+                f"embed_dim ({embed_dim}) must be divisible by "
+                f"num_heads ({num_heads})"
+            )
+        num_dilations = len(dilation_rates)
+        num_segments = len(segment_lengths)
+        if num_dilations != num_segments:
+            raise ValueError(
+                f"len(dilation_rates) ({num_dilations}) must be equal to "
+                f"len(segment_lengths) ({num_segments})"
+            )
+        head_dim = embed_dim // num_heads
+        if not head_dim % 8 == 0:
+            raise ValueError(
+                f"head_dim (embed_dim / num_heads = {head_dim}) must be divisible by 8"
+            )
+        if not head_dim <= 128:
+            raise ValueError(
+                f"head_dim (embed_dim / num_heads = {head_dim}) must be <= 128"
+            )
+
+        self.q_proj = nn.Linear(
+            embed_dim, embed_dim, bias=bias, device=device, dtype=dtype
+        )
+        self.k_proj = nn.Linear(
+            embed_dim, embed_dim, bias=bias, device=device, dtype=dtype
+        )
+        self.v_proj = nn.Linear(
+            embed_dim, embed_dim, bias=bias, device=device, dtype=dtype
+        )
+        self.attention = DilatedAttention(
+            segment_lengths=segment_lengths,
+            dilation_rates=dilation_rates,
+            dropout=dropout,
+            # op=op,
+        )
+        self.norm: Optional[nn.LayerNorm] = None
+        if layer_norm:
+            self.norm = nn.LayerNorm(
+                embed_dim, eps=layer_norm_eps, device=device, dtype=dtype
+            )
+        self.out_proj = nn.Linear(
+            embed_dim, embed_dim, bias=bias, device=device, dtype=dtype
+        )
+
+        self._reset_parameters()
+
+    def _reset_parameters(self):
+        nn.init.xavier_normal_(self.q_proj.weight)
+        if self.q_proj.bias is not None:
+            nn.init.constant_(self.q_proj.bias, 0)
+        nn.init.xavier_normal_(self.k_proj.weight)
+        if self.k_proj.bias is not None:
+            nn.init.constant_(self.k_proj.bias, 0)
+
+        # NOTE: We follow the initialization strategy from MAGNETO.  See:
+        # https://arxiv.org/pdf/2210.06423.pdf, Fig. 2
+        # Gain (self.gamma_init) should be provided as a keyword argument when
+        # initializing the larger Transformer model, since it requires knowledge
+        # of the number of encoder/decoder layers in the model.
+
+        nn.init.xavier_normal_(self.v_proj.weight, gain=self.gamma_init)
+        if self.v_proj.bias is not None:
+            nn.init.constant_(self.v_proj.bias, 0)
+        nn.init.xavier_normal_(self.out_proj.weight, gain=self.gamma_init)
+        if self.out_proj.bias is not None:
+            nn.init.constant_(self.out_proj.bias, 0)
+
+    def forward(
+        self, query: Tensor, key: Tensor, value: Tensor, is_causal: bool = False
+    ) -> Tuple[Tensor, None]:
+        # Notation:
+        #   b - batch size
+        #   n - sequence length
+        #   h - number of heads
+        #   d - embedding dimension
+        #
+        # Input shape: (b, n, d)
+        q = self.q_proj(query)
+        k = self.k_proj(key)
+        v = self.v_proj(value)
+
+        # Unfold 'd' dimension into 'h' separate attention heads.
+        q = rearrange(q, "b n (h d) -> b n h d", h=self.num_heads)
+        k = rearrange(k, "b n (h d) -> b n h d", h=self.num_heads)
+        v = rearrange(v, "b n (h d) -> b n h d", h=self.num_heads)
+        
+        # Apply attention, then fold 'h' attention heads back into 'd'.
+        x = self.attention(q, k, v, is_causal=is_causal)
+        x = rearrange(x, "b n h d -> b n (h d)")
+
+        if self.layer_norm:
+            assert self.norm is not None
+            x = self.norm(x)
+            
+        # Linear projection on attention outputs.
+        x = self.out_proj(x)
+
+        return x, None

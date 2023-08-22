@@ -4,7 +4,7 @@
 import torch
 import torch.nn as nn
 
-from zeta.nn.encoder import Encoder
+from zeta.nn.architecture.encoder import Encoder
 from zeta.utils.embedding import (
     PositionalEmbedding,
     TextEmbedding,

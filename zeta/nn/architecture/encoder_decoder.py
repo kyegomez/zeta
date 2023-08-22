@@ -3,8 +3,8 @@
 
 import torch.nn as nn
 
-from zeta.nn.decoder import Decoder
-from zeta.nn.encoder import Encoder
+from zeta.nn.architecture.decoder import Decoder
+from zeta.nn.architecture.encoder import Encoder
 
 
 class EncoderDecoder(nn.Module):
