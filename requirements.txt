@@ -1,8 +1,7 @@
-optimus-prime-transformers
 torch
 fairscale
 timm
 einops
-
+apex
 memory-profiler
 triton
