@@ -23,8 +23,8 @@ from fairseq.models.transformer import DEFAULT_MIN_PARAMS_TO_WRAP, Embedding
 from fairseq.modules import PositionalEmbedding
 from omegaconf import II
 
-from zeta.architecture.config import DecoderConfig
-from zeta.architecture.decoder import Decoder
+from zeta.nn.config import DecoderConfig
+from zeta.nn.decoder import Decoder
 
 DEFAULT_MAX_TARGET_POSITIONS = 1024
 logger = logging.getLogger(__name__)

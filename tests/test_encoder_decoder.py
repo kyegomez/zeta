@@ -4,8 +4,8 @@
 import pytest
 import torch
 
-from zeta.architecture.config import EncoderDecoderConfig
-from zeta.architecture.encoder_decoder import EncoderDecoder
+from zeta.nn.config import EncoderDecoderConfig
+from zeta.nn.encoder_decoder import EncoderDecoder
 from zeta.utils.embedding import PositionalEmbedding, TextEmbedding
 
 testcases = [

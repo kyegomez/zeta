@@ -12,7 +12,7 @@ try:
 except ModuleNotFoundError:
     from torch.nn import LayerNorm
 
-from zeta.architecture.utils import init_bert_params
+from zeta.nn.utils import init_bert_params
 from zeta.utils.droppath import DropPath
 from zeta.utils.feedforward_network import FeedForwardNetwork, make_experts
 from zeta.utils.attention.multihead_attention import MultiheadAttention

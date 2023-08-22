@@ -4,8 +4,8 @@
 import pytest
 import torch
 
-from zeta.architecture.config import EncoderConfig
-from zeta.architecture.encoder import Encoder
+from zeta.nn.config import EncoderConfig
+from zeta.nn.encoder import Encoder
 
 testcases = [
     {},
