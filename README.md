@@ -1,3 +1,5 @@
+[![Multi-Modality](agorabanner.png)](https://discord.gg/qUtxnK2NMf)
+
 # Zeta - A Library for Zetascale Transformations
 [![Docs](https://readthedocs.org/projects/swarms/badge/)](https://swarms.readthedocs.io)
 
