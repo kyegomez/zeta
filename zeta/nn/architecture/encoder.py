@@ -13,8 +13,8 @@ except ModuleNotFoundError:
     from torch.nn import LayerNorm
 
 from zeta.nn.nn.utils import init_bert_params
-from zeta.nn.utils.droppath import DropPath
-from zeta.nn.utils.feedforward_network import FeedForwardNetwork, make_experts
+from zeta.nn.modules.droppath import DropPath
+from zeta.nn.modules.feedforward_network import FeedForwardNetwork, make_experts
 from zeta.nn.utils.attention.multihead_attention import MultiheadAttention
 from zeta.nn.utils.module.multiway_network import MultiwayWrapper, set_split_position
 from zeta.nn.utils.module.relative_position_bias import RelativePositionBias
