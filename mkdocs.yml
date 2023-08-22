@@ -78,7 +78,7 @@ nav:
     - Overview: "zeta/index.md"
     - nn:
       - modules: 
-        xpos: "zeta/workers/index.md"
+        - xpos: "zeta/workers/index.md"
       - attention:
         - FlashAttention: "zeta/nn/attention/flash_attention.md"
 - Examples:

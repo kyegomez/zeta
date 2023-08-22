@@ -1,148 +1,101 @@
-from zeta import MultiheadAttention
-
-import time
-import unittest
+#building GPT4 with zeta is easy
 import torch
+from torch.nn import nn
+from zeta import (
+    AndromedaEmbedding,
+    Autoregressive,
+    Decoder,
+    Encoder,
+    Transformer,
+    ViTransformerWrapper,
+)
 
-from zeta import MultiheadAttention
+class GPT4(nn.Module):
+    """
+    GPT4 is a transformer-based model architecture. It initializes with 
+    a Transformer and AutoregressiveWrapper with default or user-specified parameters.
+        Initialize the model with specified or default parameters.
+        Args:
+        - num_tokens: Number of tokens in the vocabulary
+        - max_seq_len: Maximum sequence length
+        - dim: Dimension of the model
+        - depth: Depth of the model
+        - dim_head: Dimension of the model head
+        - heads: Number of heads
+        - use_abs_pos_emb: Whether to use absolute position embedding
+        - alibi_pos_bias: Alibi position bias
+        - alibi_num_heads: Number of alibi heads
+        - rotary_xpos: Rotary position
+        - attn_flash: Attention flash
+        - deepnorm: Deep normalization
+        - shift_tokens: Number of tokens to shift
+        - attn_one_kv_head: Attention one key/value head
+        - qk_norm: Query-key normalization
+        - attn_qk_norm: Attention query-key normalization
+        - attn_qk_norm_dim_scale: Attention query-key normalization dimension scale
+        - embedding_provider: Embedding provider module
+    """
+    def __init__(self, 
+                 num_tokens=50432, 
+                 max_seq_len=8192, 
+                 dim=2560, 
+                 depth=32, 
+                 dim_head=128, 
+                 heads=24,
+                 use_abs_pos_emb=False, 
+                 alibi_pos_bias=True, 
+                 alibi_num_heads=12, 
+                 rotary_xpos=True,
+                 attn_flash=True, 
+                #  shift_tokens=1, 
+                 attn_one_kv_head=True,  # multiquery attention
+                 qk_norm=True, 
+                 attn_qk_norm=True, 
+                 attn_qk_norm_dim_scale=True, 
+                 embedding_provider=AndromedaEmbedding()):
+        super().__init__()
 
-class TestMultiheadAttention(unittest.TestCase):
+        try:
+            self.decoder = Transformer(
+                num_tokens=num_tokens,
+                max_seq_len=max_seq_len,
+                use_abs_pos_emb=use_abs_pos_emb,
+                embedding_provider=embedding_provider,
+                attn_layers=Decoder(
+                    dim=dim,
+                    depth=depth,
+                    dim_head=dim_head,
+                    heads=heads,
+                    alibi_pos_bias=alibi_pos_bias,
+                    alibi_num_heads=alibi_num_heads,
+                    rotary_xpos=rotary_xpos,
+                    attn_flash=attn_flash,
+                    # deepnorm=deepnorm,
+                    # shift_tokens=shift_tokens,
+                    attn_one_kv_head=attn_one_kv_head,
+                    qk_norm=qk_norm,
+                    attn_qk_norm=attn_qk_norm,
+                    attn_qk_norm_dim_scale=attn_qk_norm_dim_scale
+                )
+            )
 
-    def test_output_shape(self):
-        # Setup
-        input_tensor = torch.randn(2, 128, 512)
-        dilated_attention = MultiheadAttention(512, 8, 2, 64)
+            self.decoder = AutoregressiveWrapper(self.decoder)
 
-        # Action
-        output = dilated_attention(input_tensor)
+        except Exception as e:
+            print("Failed to initialize Andromeda: ", e)
+            raise
 
-        # Assert
-        self.assertEqual(output.shape, (2, 128, 512))
+    def forward(self, text_tokens, **kwargs):
+        try:
+            model_input = self.decoder.forward(text_tokens)[0]
+            return self.decoder(model_input, padded_x=model_input[0])
+        except Exception as e:
+            print("Failed in forward method: ", e)
+            raise
 
-    def test_xpos(self):
-        # Setup
-        input_tensor = torch.randn(2, 128, 512)
-        dilated_attention = MultiheadAttention(512, 8, 2, 64, use_xpos=True)
 
-        # Action
-        output = dilated_attention(input_tensor)
+x = torch.randint(0, 256, (1, 1024))
 
-        # Assert
-        self.assertEqual(output.shape, (2, 128, 512))
+model = GPT4()
 
-    def test_relative_position_bias(self):
-        # Setup
-        input_tensor = torch.randn(2, 128, 512)
-        dilated_attention = MultiheadAttention(512, 8, 2, 64, use_rel_pos_bias=True)
-
-        # Action
-        output = dilated_attention(input_tensor)
-
-        # Assert
-        self.assertEqual(output.shape, (2, 128, 512))
-
-    
-    def test_attention_consistency(self):
-        # Setup
-        input_tensor = torch.randn(2, 128, 512)
-        dilated_attention = MultiheadAttention(512, 8, 2, 64)
-
-        # Action
-        output = dilated_attention(input_tensor)
-
-        # Assert
-        self.assertTrue((output.std(dim=-1) > 0).all())
-
-    def test_speed(self):
-        # Setup
-        input_tensor = torch.randn(2, 1024, 512)
-        dilated_attention = MultiheadAttention(512, 8, 2, 64)
-
-        # Action
-        start_time = time.time()
-        dilated_attention(input_tensor)
-        end_time = time.time()
-
-        # Assert
-        self.assertLess(end_time - start_time, 1)
-
-    def test_gradient_flow(self):
-        # Setup
-        input_tensor = torch.randn(2, 128, 512, requires_grad=True)
-        dilated_attention = MultiheadAttention(512, 8, 2, 64)
-
-        # Action
-        output = dilated_attention(input_tensor)
-        output.sum().backward()
-        grad_norm = input_tensor.grad.norm().item()
-
-        # Assert
-        self.assertLess(grad_norm, 1e6)
-        self.assertGreater(grad_norm, 1e-6)
-
-    def test_scaling(self):
-        input_tensor = torch.randn(2, 1024, 512)
-        dilated_attention = MultiheadAttention(512, 8, 2, 64)
-        start_time = time.time()
-        _ = dilated_attention(input_tensor)
-        time_for_1024 = time.time() - start_time
-        
-        input_tensor = torch.randn(2, 2048, 512)
-        start_time = time.time()
-        _ = dilated_attention(input_tensor)
-        time_for_2048 = time.time() - start_time
-        
-        self.assertLessEqual(time_for_2048/time_for_1024, 2)
-    
-    def test_reproducibility(self):
-        torch.manual_seed(0)
-        input_tensor = torch.randn(2, 128, 512)
-        dilated_attention = MultiheadAttention(512, 8, 2, 64)
-        output1 = dilated_attention(input_tensor)
-        
-        torch.manual_seed(0)
-        input_tensor = torch.randn(2, 128, 512)
-        dilated_attention = MultiheadAttention(512, 8, 2, 64)
-        output2 = dilated_attention(input_tensor)
-        
-        self.assertTrue(torch.allclose(output1, output2))
-    
-    def test_attention_distribution(self):
-        input_tensor = torch.randn(2, 128, 512)
-        dilated_attention = MultiheadAttention(512, 8, 2, 64)
-        _, attn_weights = dilated_attention(input_tensor)
-        
-        self.assertTrue(torch.allclose(attn_weights.sum(dim=-1), torch.tensor(1.)))
-
-        def setUp(self):
-            self.d_model = 128
-            self.num_heads = 4
-            self.dilation_rate = 2
-            self.segment_size = 32
-            self.dropout = 0.1
-            self.casual = False
-            self.use_xpos = False
-            self.use_rel_pos_bias = False
-
-            self.batch_size = 10
-            self.seq_len = 100
-
-            self.x = torch.rand(self.batch_size, self.seq_len, self.d_model)
-
-            self.sparse_dilated_attention = MultiheadAttention(self.d_model, self.num_heads, self.dilation_rate, self.segment_size, self.dropout, self.casual, self.use_xpos, self.use_rel_pos_bias)
-
-    def test_forward_pass(self):
-        output = self.sparse_dilated_attention(self.x)
-        self.assertEqual(output.size(), (self.batch_size, self.seq_len, self.d_model))
-
-    def test_attention_outputs(self):
-        output = self.sparse_dilated_attention(self.x)
-        self.assertTrue(torch.all(output >= 0))
-        self.assertTrue(torch.all(output <= 1))
-
-    def test_dropout(self):
-        self.sparse_dilated_attention.dropout.p = 1.0
-        output = self.sparse_dilated_attention(self.x)
-        self.assertTrue(torch.all(output == 0))
-    
-
+model(x)
