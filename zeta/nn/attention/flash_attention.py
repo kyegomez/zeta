@@ -36,16 +36,33 @@ print_once = once(print)
 # main class
 
 
+
 @dataclass
 class Intermediates:
+    """
+    Dataclass to store intermediate tensors during attention computation.
+
+    Args:
+        qk_similarities (torch.Tensor): Tensor storing the similarities between query and key.
+        pre_softmax_attn (torch.Tensor): Tensor storing the attention weights before softmax.
+        post_softmax_attn (torch.Tensor): Tensor storing the attention weights after softmax.
+
+    Methods:
+        to_tuple(): Convert the Intermediates object to a tuple.
+
+    """
     qk_similarities: Tensor = None
     pre_softmax_attn: Tensor = None
     post_softmax_attn: Tensor = None
 
     def to_tuple(self):
-        return (self.qk_similarities, self.pre_softmax_attn, self.post_softmax_attn)
+        """
+        Convert the Intermediates object to a tuple.
 
-# helpers
+        Returns:
+            tuple: Tuple representation of the Intermediates object.
+        """
+        return (self.qk_similarities, self.pre_softmax_attn, self.post_softmax_attn)
 
 
 class FlashAttention(nn.Module):
@@ -55,6 +72,15 @@ class FlashAttention(nn.Module):
         dropout = 0.,
         flash = True
     ):
+        """
+        FlashAttention module that performs attention computation.
+
+        Args:
+            causal (bool): Whether to apply causal masking (default: False).
+            dropout (float): Dropout probability (default: 0.).
+            flash (bool): Whether to use flash attention (default: True).
+
+        """
         super().__init__()
 
         self.dropout = dropout
@@ -82,6 +108,18 @@ class FlashAttention(nn.Module):
             self.cuda_config = EfficientAttentionConfig(False, True, True)
 
     def get_mask(self, i, j, device):
+        """
+        Generate a mask for attention computation.
+
+        Args:
+            i (int): Length of the query sequence.
+            j (int): Length of the key sequence.
+            device (torch.device): Device to place the mask tensor.
+
+        Returns:
+            torch.Tensor: Mask tensor of shape (i, j).
+
+        """
         return torch.ones((i, j), device=device, dtype=torch.bool).triu(j - i + 1)
 
 
@@ -91,6 +129,21 @@ class FlashAttention(nn.Module):
         mask = None,
         attn_bias = None
     ):
+        
+        """
+        Perform flash attention computation.
+
+        Args:
+            q (torch.Tensor): Query tensor of shape (batch, heads, q_len, dim).
+            k (torch.Tensor): Key tensor of shape (batch, heads, k_len, dim).
+            v (torch.Tensor): Value tensor of shape (batch, heads, v_len, dim).
+            mask (torch.Tensor): Mask tensor of shape (batch, heads, q_len, k_len) (default: None).
+            attn_bias (torch.Tensor): Attention bias tensor of shape (batch, heads, q_len, k_len) (default: None).
+
+        Returns:
+            torch.Tensor: Output tensor of shape (batch, heads, q_len, dim).
+
+        """
         batch, heads, q_len, _, k_len, is_cuda, device = *q.shape, k.shape[-2], q.is_cuda, q.device
 
         # Recommended for multi-query single-key-value attention by Tri Dao
@@ -160,12 +213,26 @@ class FlashAttention(nn.Module):
 
     def forward(self, q, k, v, mask = None, attn_bias = None):
         """
+        Perform attention computation.
+
         einstein notation
         b - batch
         h - heads
         n, i, j - sequence length (base sequence length, source, target)
         d - feature dimension
+
+        Args:
+            q (torch.Tensor): Query tensor of shape (batch, heads, q_len, dim).
+            k (torch.Tensor): Key tensor of shape (batch, heads, k_len, dim).
+            v (torch.Tensor): Value tensor of shape (batch, heads, v_len, dim).
+            mask (torch.Tensor): Mask tensor of shape (batch, heads, q_len, k_len) (default: None).
+            attn_bias (torch.Tensor): Attention bias tensor of shape (batch, heads, q_len, k_len) (default: None).
+
+        Returns:
+            torch.Tensor: Output tensor of shape (batch, heads, q_len, dim).
+
         """
+
 
         q_len, k_len, device = q.shape[-2], k.shape[-2], q.device
 

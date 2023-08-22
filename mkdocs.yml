@@ -76,9 +76,11 @@ nav:
     - Hiring: "hiring.md"
 - Zeta:
   - Overview: "zeta/index.md"
-  - AutoScaler: "zeta/zeta/autoscaler.md"
-  - Workers:
-    - Overview: "zeta/workers/index.md"
+  - nn:
+    - modules: 
+      Xpos: "zeta/workers/index.md"
+    - attention:
+      - FlashAttention: "zeta/nn/attention/flash_attention.md"
   - Agents:
     - Base Models:
       - Overview: "zeta/models/index.md"

@@ -71,13 +71,12 @@ The purpose of the XPOS module is to incorporate positional information into the
     output = xpos(x)
     ```
 
-    Copy code
 
 2.  Applying XPOS module with offset and downscaling:
 
     ```
     import torch
-    from xpos import XPOS
+    from zeta import XPOS
 
     # Create an instance of the XPOS module
     xpos = XPOS(head_dim=512)
@@ -88,14 +87,11 @@ The purpose of the XPOS module is to incorporate positional information into the
     # Apply the XPOS module to the input tensor with offset and downscaling
     output = xpos(x, offset=2, downscale=True)
     ```
-
-    Copy code
-
 3.  Using the individual functions of the XPOS module:
 
     ```
     import torch
-    from xpos import fixed_pos_embedding, apply_rotary_pos_emb
+    from zeta import fixed_pos_embedding, apply_rotary_pos_emb
 
     # Generate fixed positional embeddings
     scale = torch.randn(10, 256)
@@ -105,7 +101,5 @@ The purpose of the XPOS module is to incorporate positional information into the
     x = torch.randn(1, 10, 256)
     output = apply_rotary_pos_emb(x, sin, cos, scale=0.5)
     ```
-
-    Copy code
 
 Note: The above examples assume that the `xpos.py` file
