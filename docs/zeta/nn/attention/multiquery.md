@@ -89,8 +89,9 @@ output, attn_weights, _ = attention_layer(x, causal=True, needs_weights=True)
 
 For the self-attention mechanism, the computation involves using multiple queries (\( Q \)), keys (\( K \)), and values (\( V \)):
 
+```latex
 \[ \text{Attention}(Q, K, V) = \text{Softmax}\left(\frac{Q \times K^T}{\sqrt{d_k}} + \text{Bias}\right) \times V \]
-
+```
 Where:
 - \( Q \), \( K \), and \( V \) are the queries, keys, and values respectively.
 - \( d_k \) is the dimension of the keys.
