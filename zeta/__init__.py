@@ -18,6 +18,7 @@ from zeta.nn.attention.dilated_attention import DilatedAttention
 
 #models
 from zeta.models.gpt4 import GPT4, GPT4MultiModal
+from zeta.models.andromeda import Andromeda
 
 
 #######

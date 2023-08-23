@@ -88,9 +88,9 @@ nav:
       - architecture:
         - Decoder: "zeta/nn/architecture/decoder.md"
         - Transformer: "zeta/nn/architecture/transformer.md"
-  - training:
-    - MultiModalTokenizer: "zeta/training/multi_modal_tokenizer.md"
-    - LanguageTokenizerGPTX: "zeta/training/language_tokenizer.md"
+    - training:
+      - MultiModalTokenizer: "zeta/training/multi_modal_tokenizer.md"
+      - LanguageTokenizerGPTX: "zeta/training/language_tokenizer.md"
 - Examples:
     - Overview: "examples/index.md"
     - Agents:
