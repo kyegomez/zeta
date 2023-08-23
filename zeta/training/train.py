@@ -23,6 +23,9 @@ def print_num_params(model, accelerator: Accelerator):
     accelerator.print(f"Number of parameters in model: {n_params}")
 
 
+
+
+
 def Trainer(
         gradient_accumulate_every: int = None, 
         batch_size: int = None, 

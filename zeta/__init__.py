@@ -28,8 +28,11 @@ from zeta.training import *
 
 
 
-
+#training
 
 #tokenizers
 from zeta.training.multi_modal_tokenizer import MultiModalTokenizer
 from zeta.training.language_tokenizer import LanguageTokenizerGPTX
+
+#train 
+from zeta.training.train import Trainer, train
