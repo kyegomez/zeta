@@ -25,6 +25,7 @@ pytest = "*"
 einops = "*"
 bitsandbytes = "*"
 typing = "*"
+transformers = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
