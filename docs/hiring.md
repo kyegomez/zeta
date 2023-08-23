@@ -44,7 +44,6 @@ At Zeta, our mission transcends mere technological advancement. We envision a wo
 
 ### **Positions Open**:
 
-- **Customer Success Professionals**: Be the bridge between our revolutionary tech and its real-world impact.
 - **AI & Swarm Engineers**: Architect, design, and optimize the swarm systems powering global innovations.
 
 ---
