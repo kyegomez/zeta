@@ -46,6 +46,13 @@ class MultiwayNetwork(nn.Module):
 
 
 class MutliwayEmbedding(MultiwayNetwork):
+    """
+    A specialized version of the MultiwayNetwork to perform multi-way embeddings on an input tensor.
+
+    Parameters:
+    - modules (List[nn.Module]): A list containing exactly two PyTorch modules. Typically these would be embedding layers.
+    - dim (int): The dimension along which to split and concatenate the input tensor. Default is 1.
+    """
     def __init__(self, modules, dim=1):
         super(MultiwayNetwork, self).__init__()
         self.dim = dim
