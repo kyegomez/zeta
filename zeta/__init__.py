@@ -11,9 +11,11 @@ from zeta.nn.architecture.transformer import (
     ViTransformerWrapper,
 )
 
+
+#attentions
 from zeta.nn.attention.multiquery_attention import MultiQueryAttention
 from zeta.nn.attention.flash_attention import FlashAttention
-
+from zeta.nn.attention.dilated_attention import DilatedAttention
 
 #models
 from zeta.models.gpt4 import GPT4, GPT4MultiModal
