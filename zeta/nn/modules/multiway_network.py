@@ -45,7 +45,7 @@ class MultiwayNetwork(nn.Module):
         return torch.cat([y1, y2], dim=self.dim)
 
 
-class MutliwayEmbedding(MultiwayNetwork):
+class MultiwayEmbedding(MultiwayNetwork):
     """
     A specialized version of the MultiwayNetwork to perform multi-way embeddings on an input tensor.
 

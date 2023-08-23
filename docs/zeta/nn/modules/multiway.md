@@ -1,4 +1,4 @@
-# **Documentation for `MutliwayEmbedding` in Zeta Library**
+# **Documentation for `MultiwayEmbedding` in Zeta Library**
 
 **Table of Contents**
 
@@ -13,14 +13,14 @@
 
 ## 1. Overview
 
-The `MutliwayEmbedding` class in the Zeta library provides a way to apply two separate embeddings to two distinct parts of the input tensor. It splits the input tensor at the specified position and applies one embedding to the first part and another embedding to the second part. This can be particularly useful when dealing with inputs that require diverse representations or embeddings.
+The `MultiwayEmbedding` class in the Zeta library provides a way to apply two separate embeddings to two distinct parts of the input tensor. It splits the input tensor at the specified position and applies one embedding to the first part and another embedding to the second part. This can be particularly useful when dealing with inputs that require diverse representations or embeddings.
 
 ---
 
 ## 2. Class Definition and Parameters
 
 ```python
-class MutliwayEmbedding(MultiwayNetwork):
+class MultiwayEmbedding(MultiwayNetwork):
     """
     A specialized version of the MultiwayNetwork to perform multi-way embeddings on an input tensor.
 
@@ -60,12 +60,12 @@ def forward(self, x, **kwargs):
 
 **Example 1:** Basic Usage
 ```python
-from zeta import MutliwayEmbedding
+from zeta import MultiwayEmbedding
 import torch.nn as nn
 
 emb1 = nn.Embedding(10, 5)
 emb2 = nn.Embedding(10, 5)
-multiway_emb = MutliwayEmbedding([emb1, emb2])
+multiway_emb = MultiwayEmbedding([emb1, emb2])
 
 x = torch.LongTensor([[1,2,3],[4,5,6]])
 output = multiway_emb(x)
@@ -74,12 +74,12 @@ print(output)
 
 **Example 2:** Setting a Split Position
 ```python
-from zeta import MutliwayEmbedding, set_split_position
+from zeta import MultiwayEmbedding, set_split_position
 import torch.nn as nn
 
 emb1 = nn.Embedding(10, 5)
 emb2 = nn.Embedding(10, 5)
-multiway_emb = MutliwayEmbedding([emb1, emb2])
+multiway_emb = MultiwayEmbedding([emb1, emb2])
 multiway_emb.apply(set_split_position(2))
 
 x = torch.LongTensor([[1,2,3],[4,5,6]])
@@ -89,12 +89,12 @@ print(output)
 
 **Example 3:** Working with Different Embedding Dimensions
 ```python
-from zeta import MutliwayEmbedding
+from zeta import MultiwayEmbedding
 import torch.nn as nn
 
 emb1 = nn.Embedding(10, 5)
 emb2 = nn.Embedding(10, 7)
-multiway_emb = MutliwayEmbedding([emb1, emb2], dim=2)
+multiway_emb = MultiwayEmbedding([emb1, emb2], dim=2)
 
 x = torch.LongTensor([[1,2,3],[4,5,6]])
 output = multiway_emb(x)
