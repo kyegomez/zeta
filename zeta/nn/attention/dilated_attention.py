@@ -6,8 +6,8 @@ from einops import rearrange
 from torch import Tensor, nn
 
 from zeta.nn.attention.flash_attention import FlashAttention
-from zeta.nn.modules.relative_position_bias import RelativePositionBias
-from zeta.nn.modules.xpos_relative_position import XPOS
+from zeta.nn.biases.relative_position_bias import RelativePositionBias
+from zeta.nn.embeddings.xpos_relative_position import XPOS
 
 device = "cuda:0"
 dtype=torch.float16

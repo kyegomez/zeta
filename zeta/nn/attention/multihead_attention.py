@@ -12,8 +12,8 @@ try:
 except ModuleNotFoundError:
     from torch.nn import LayerNorm
 
-from zeta.nn.modules.multiway_network import MultiwayWrapper
-from zeta.nn.modules.xpos_relative_position import XPOS
+from zeta.nn.embeddings.multiway_network import MultiwayWrapper
+from zeta.nn.embeddings.xpos_relative_position import XPOS
 
 
 class MultiheadAttention(nn.Module):
