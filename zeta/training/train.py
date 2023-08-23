@@ -4,17 +4,17 @@ from datetime import timedelta
 
 import torch
 from accelerate import Accelerator
-from accelerate.utils import DummyScheduler, InitProcessGroupKwargs
+from accelerate.utils import InitProcessGroupKwargs
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 from transformers import default_data_collator, set_seed
 
 
-from zeta.training.dataloader import load_dataset, build_dataloaders, build_pre_tokenized
+from zeta.training.dataloader import build_dataloaders, build_pre_tokenized
 from zeta.training.fsdp import fsdp
 from zeta.training.optimizer import decoupled_optimizer
-from zeta.training.scheduler import get_linear_schedule_with_warmup, get_lr_scheduler_with_warmup, get_cosine_schedule_with_warmup
-from zeta.training.activation_checkpoint import activation_checkpointing, apply_activation_checkpointing
+from zeta.training.scheduler import get_lr_scheduler_with_warmup
+from zeta.training.activation_checkpoint import activation_checkpointing
 
 
 def print_num_params(model, accelerator: Accelerator):
@@ -123,20 +123,14 @@ def Trainer(
     NUM_WARMUP_STEPS = int(max_train_steps * 0.01)
     accelerator.print(f"Num warmup steps: {NUM_WARMUP_STEPS}")
 
-    if use_deepspeed:
-        lr_scheduler = DummyScheduler(
-            optim, 
-            total_num_steps=max_train_steps * accelerator.num_processes, 
-            warmup_num_steps=NUM_WARMUP_STEPS
-        )
-    else:
-        lr_scheduler = get_lr_scheduler_with_warmup(
-            optimizer=optim,
-            scheduler_type="cosine",
-            num_warmup_steps=NUM_WARMUP_STEPS,
-            max_train_steps=max_train_steps,
-            grad_accumulate_every=gradient_accumulate_every,
-        )
+
+    lr_scheduler = get_lr_scheduler_with_warmup(
+        optimizer=optim,
+        scheduler_type="cosine",
+        num_warmup_steps=NUM_WARMUP_STEPS,
+        max_train_steps=max_train_steps,
+        grad_accumulate_every=gradient_accumulate_every,
+    )
 
     # prepare
 
