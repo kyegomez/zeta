@@ -2,7 +2,6 @@
 
 # Zeta - Seamlessly Create Zetascale Transformers
 
-![ZetaBanner](zetalogo.png)
 
 [![Docs](https://readthedocs.org/projects/zeta/badge/)](https://zeta.readthedocs.io)
 
@@ -11,7 +10,7 @@
   <a href="https://pypi.org/project/zetascale"><img alt="MIT License" src="https://badge.fury.io/py/zetascale.svg" /></a>
 </p>
 
-Zeta is a PyTorch-powered library, forged in the heart of the Halo array, that empowers researchers and developers to scale up Transformers efficiently and effectively. It leverages seminal research advancements to enhance the generality, capability, and stability of scaling Transformers while optimizing training efficiency.
+The Zeta framework provides developers with the ability to create State of The Art Multi-Modality Models Models as seamlessly as possible through an radical emphasis on Modularity, Reliability, Use-Ability, and Speed.
 
 ## Installation
 
