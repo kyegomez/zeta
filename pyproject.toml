@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zetascale"
-version = "0.2.5"
+version = "0.2.6"
 description = "Transformers at zeta scales"
 authors = ["Zeta Team <kye@apac.ai>"]
 license = "MIT"
@@ -17,7 +17,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
-torch = "^1.8"
+torch = "*"
 fairscale = "0.4.0"
 timm = "*"
 triton = "*"
