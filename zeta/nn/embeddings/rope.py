@@ -31,4 +31,17 @@ class RoPE:
         modified_basis = torch.where(basis >= self.b, basis, torch.where(basis > self.a, self.rho, 0))
         return modified_basis
     
+#example usage
+d = 10
+k = 0.5
+a = 0.1
+b = 0.9
+rho = 0.01
 
+rope_power_scaling = RoPE(d=d, k=k)
+modified_basis_power_scaling = rope_power_scaling.power_scaling_basis()
+print(modified_basis_power_scaling)
+
+rope_truncated = RoPE(d=d, a=a, b=b, rho=rho)
+modified_basis_truncated = rope_truncated.truncated_basis()
+print(modified_basis_truncated)
