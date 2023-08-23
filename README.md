@@ -10,7 +10,7 @@
   <a href="https://pypi.org/project/zetascale"><img alt="MIT License" src="https://badge.fury.io/py/zetascale.svg" /></a>
 </p>
 
-The Zeta framework provides developers with the ability to create State of The Art Multi-Modality Models Models as seamlessly as possible through an radical emphasis on Modularity, Reliability, Use-Ability, and Speed.
+Create Ultra-Powerful Multi-Modality Models Seamlessly and Efficiently
 
 ## Installation
 
