@@ -79,7 +79,8 @@ nav:
     - nn:
       - modules: 
         - Xpos: "zeta/nn/modules/xpos.md"
-        - RelativePositionBias: "zeta/nn/modules/"
+        # - RelativePositionBias: "zeta/nn/modules/"
+        - AlibiPositionalBias: "zeta/nn/modules/alibi.md"
       - attention:
         - FlashAttention: "zeta/nn/attention/flash_attention.md"
         - MultiQueryAttention: "zeta/nn/attention/multiquery.md"
