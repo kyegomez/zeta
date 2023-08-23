@@ -7,7 +7,7 @@ memory-profiler
 triton
 lion-pytorch
 bitsandbytes
-typings
+typing
 
 mkdocs
 mkdocs-material

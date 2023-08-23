@@ -1,6 +1,6 @@
 import math
 import warnings
-from typings import Optional
+from typing import Optional
 
 import torch 
 import torch.nn as nn
