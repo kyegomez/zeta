@@ -38,9 +38,22 @@ print(output.shape)
 ## Unleash GPT-4 
 On top of the SOTA Attention mechanisms we provide, we also provide rough implementation of some of the best neural nets ever made like `GPT4`, here's an example on how to utilize our implementation of GPT-4
 
-```
+```python
+import torch
 from zeta import GPT4, GPT4MultiModal
 
+#text
+text = torch.randint(0, 256, (1, 1024)).cuda()
+img = torch.randn(1, 3, 256, 256)
 
+gpt4_language = GPT4()
+
+gpt4_language(x)
+
+#multimodal GPT4
+
+gpt4_multimodal = GPT4MultiModal()
+gpt4_multimodal_output = gpt4_multimodal(text, img)
 
 ```
+
