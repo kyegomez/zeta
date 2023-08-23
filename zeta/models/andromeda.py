@@ -1,11 +1,13 @@
 #the best llm ever made
 from torch.nn import Module
+
 from zeta.nn.architecture.transformer import (
     AndromedaEmbedding,
-    AutoregressiveWrapper,
     Decoder,
     Transformer,
 )
+
+from zeta.nn.architecture.auto_regressive_wrapper import AutoregressiveWrapper
 
 
 class Andromeda(Module):

@@ -1,13 +1,14 @@
-from torch.nn import nn
+from torch import nn 
 
 from zeta.nn.architecture.transformer import (
     AndromedaEmbedding,
-    AutoregressiveWrapper,
     Decoder,
     Encoder,
     Transformer,
     ViTransformerWrapper,
 )
+
+from zeta.nn.architecture.auto_regressive_wrapper import AutoregressiveWrapper
 
 
 class GPT4(nn.Module):
