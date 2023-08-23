@@ -36,3 +36,7 @@ from zeta.training.language_tokenizer import LanguageTokenizerGPTX
 
 #train 
 from zeta.training.train import Trainer, train
+
+
+#loss
+from zeta.training.loss.nebula import Nebula
