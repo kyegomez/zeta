@@ -13,7 +13,7 @@ from zeta.nn.utils.helpers import exists
 
 class BaseEmbedding(ABC):
     @abstractmethod
-    def get_embedding(self, num_tokens: int, dim: int) -> nn.Module:
+    def forward(self, num_tokens: int, dim: int) -> nn.Module:
         #custom embedding function
         embedding = ...
 
@@ -21,13 +21,13 @@ class BaseEmbedding(ABC):
     
 #Other embedding
 class AndromedaEmbedding(BaseEmbedding):
-    def get_embedding(self, num_tokens: int, dim: int) -> nn.Module:
+    def forward(self, num_tokens: int, dim: int) -> nn.Module:
         embedding = nn.Embedding(num_tokens, dim)
 
         return embedding
     
 class AndromedaBnBEmbedding(BaseEmbedding):
-    def get_embedding(self, num_tokens: int, dim: int, padding_idx) -> bnb.nn.modules:
+    def forward(self, num_tokens: int, dim: int, padding_idx) -> bnb.nn.modules:
         embedding = bnb.nn.modules.Embedding(num_tokens, dim, padding_idx)
 
         return embedding

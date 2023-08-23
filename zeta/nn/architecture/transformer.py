@@ -118,20 +118,20 @@ class CustomTokenizer(BaseTokenizer):
 
 class BaseEmbedding(ABC):
     @abstractmethod
-    def get_embedding(self, num_tokens: int, dim: int) -> nn.Module:
+    def forward(self, num_tokens: int, dim: int) -> nn.Module:
         # Custom embedding function or model
         embedding = ...
         
         return embedding
 
 class AndromedaEmbedding(BaseEmbedding):
-    def get_embedding(self, num_tokens: int, dim: int) -> nn.Module:
+    def forward(self, num_tokens: int, dim: int) -> nn.Module:
         embedding = nn.Embedding(num_tokens, dim)
 
         return embedding
     
 # class AndromedaBnBEmbedding(BaseEmbedding):
-#     def get_embedding(self, num_tokens: int, dim: int, padding_idx: int = 0) -> bnb.nn.modules:
+#     def forward(self, num_tokens: int, dim: int, padding_idx: int = 0) -> bnb.nn.modules:
 #         embedding = bnb.nn.modules.Embedding(num_tokens, dim, padding_idx)
 
 #         return embedding
@@ -140,7 +140,7 @@ class TokenEmbedding(nn.Module):
     def __init__(self, dim, num_tokens, embedding_provider: BaseEmbedding, l2norm_embed = False):
         super().__init__()
         self.l2norm_embed = l2norm_embed
-        self.emb = embedding_provider.get_embedding(num_tokens, dim)
+        self.emb = embedding_provider.forward(num_tokens, dim)
         # nn.Embedding(num_tokens, dim)
 
     def forward(self, x):
