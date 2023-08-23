@@ -7,6 +7,9 @@ import torch.nn.functional as F
 from abc import ABC, abstractmethod
 import bitsandbytes as bnb
 
+from zeta.nn.utils.tensor_helpers import l2norm
+from zeta.nn.utils.helpers import exists
+
 
 class BaseEmbedding(ABC):
     @abstractmethod
