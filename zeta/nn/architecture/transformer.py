@@ -24,8 +24,8 @@ from zeta.nn.utils.helpers import (  # noqa: E402
     maybe,
     not_equals,
     once,  # noqa: F401
-    )
-from zeta.nn.utils.tensor_helpers import l2norm, max_neg_value, or_reduce, pad_at_dim
+)
+from zeta.nn.utils.tensor_helpers import l2norm, max_neg_values, or_reduce, pad_at_dim
 
 
 @dataclass

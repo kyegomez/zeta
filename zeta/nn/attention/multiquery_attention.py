@@ -1,14 +1,12 @@
 import math
 import warnings
-from typing import Optional
+from typing import Dict, Optional, Type
 
-import torch 
+import torch
 import torch.nn as nn
 from einops import rearrange
 from packaging import version
 
-
-from typing import Dict, Type
 
 def _cast_if_autocast_enabled(tensor):
     if torch.is_autocast_enabled():
@@ -119,7 +117,7 @@ FC_CLASS_REGISTRY = {
 }
 
 
-NORM_CLASS_REGISTRY: Dict(str, Type[nn.Module]) = {
+NORM_CLASS_REGISTRY = {
     'layernornm': nn.LayerNorm,
     'low_precision_layernorm': LPLayerNorm,
     'rmsnorm': LPLayerNorm,
