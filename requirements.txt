@@ -6,6 +6,7 @@ apex
 memory-profiler
 triton
 lion-pytorch
+bitsandbytes
 
 mkdocs
 mkdocs-material
