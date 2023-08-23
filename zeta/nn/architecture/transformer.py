@@ -1191,6 +1191,27 @@ class ViTransformerWrapper(nn.Module):
     
 
 class Transformer(nn.Module):
+    """
+    Creates a Transformer model for sequence-to-sequence tasks.
+
+    Parameters:
+    - num_tokens (int): Number of tokens in the vocabulary.
+    - max_seq_len (int): Maximum sequence length.
+    - attn_layers (AttentionLayers): Attention layers for the model (Encoder or Decoder).
+    - embedding_provider (BaseEmbedding): Provider for token embeddings.
+    - emb_dim (int, optional): Dimensionality of the token embeddings. Default is None.
+    - max_mem_len (float, optional): Maximum memory length for relative positional embeddings. Default is 0.
+    - shift_mem_down (int, optional): Number of positions to shift memory tokens downward. Default is 0.
+    - emb_dropout (float, optional): Dropout probability on embeddings. Default is 0.
+    - post_emb_norm (bool, optional): Apply layer normalization after embeddings. Default is False.
+    - num_memory_tokens (int, optional): Number of memory tokens. Default is None.
+    - tie_embedding (bool, optional): Tie embedding and linear projection weights. Default is False.
+    - logits_dim (int, optional): Dimensionality of the logits. Default is None.
+    - use_abs_pos_emb (bool, optional): Use absolute positional embeddings. Default is True.
+    - scaled_sinu_pos_emb (bool, optional): Use scaled sinusoidal positional embeddings. Default is False.
+    - l2norm_embed (bool, optional): Apply L2 normalization to embeddings. Default is False.
+    - emb_frac_gradient (float, optional): Fraction of the gradient applied to embeddings. Default is 1.
+    """
     def __init__(
         self,
         *,
