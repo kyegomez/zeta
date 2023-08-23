@@ -2,10 +2,8 @@ import logging
 import torch
 from transformers import CLIPProcessor, AutoTokenizer
 
-
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Implement classes with type hints and error handling
 class MultiModalTokenizer:
     """
     A tokenizer class for the kosmos model
@@ -17,7 +15,10 @@ class MultiModalTokenizer:
         im_end_idx (int): The index of the "</image>" token.
     """
 
-    def __init__(self):
+    def __init__(self,
+                 max_length: int = 8192):
+        self.max_length = max_length
+    
         try:
             self.processor = CLIPProcessor.from_pretrained("laion/CLIP-ViT-L-14-laion2B-s32B-b82K")
             self.tokenizer = AutoTokenizer.from_pretrained(
@@ -26,7 +27,7 @@ class MultiModalTokenizer:
                 eos_token="<eos>",
                 pad_token="<pad>",
                 extra_ids=0,
-                model_max_length=8192
+                model_max_length=self.max_length
             )
         except Exception as e:
             logging.error(f"Failed to initialize KosmosTokenizer: {e}")
