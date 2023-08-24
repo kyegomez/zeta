@@ -85,6 +85,7 @@ nav:
       - attention:
         - FlashAttention: "zeta/nn/attention/flash_attention.md"
         - MultiQueryAttention: "zeta/nn/attention/multiquery.md"
+        - MultiheadAttention: "zeta/nn/attention/multihead.md"
       - architecture:
         - Decoder: "zeta/nn/architecture/decoder.md"
         - Transformer: "zeta/nn/architecture/transformer.md"
