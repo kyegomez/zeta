@@ -1,13 +1,12 @@
-from abc import ABC, abstractmethod
+from abc import  abstractmethod
 import torch.nn as nn
 
 class BaseAttention(nn.Module):
     @abstractmethod
-    def __init__(self, dim, heads, dim_head):
+    def __init__(self, dim):
         super().__init__()
         self.dim = dim
-        self.heads = heads
-        self.dim_head = dim_head
+
 
     @abstractmethod
     def forward(self, x, context=None, mask=None):
