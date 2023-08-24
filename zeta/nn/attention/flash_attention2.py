@@ -7,6 +7,8 @@ from torch.autograd.function import Function
 from torch.cuda.amp import GradScaler, autocast
 from torch.nn import DataParallel
 
+from zeta.nn.attention.base import BaseAttention
+
 # constants
 EPSILON = 1e-10
 
@@ -182,7 +184,7 @@ class FlashAttentionFunction(Function):
 # for tinkering and educational purposes
 
 
-class FlashAttentionTwo(nn.Module):
+class FlashAttentionTwo(nn.Module, BaseAttention):
     def __init__(
         self,
         *,
