@@ -182,7 +182,7 @@ class FlashAttentionFunction(Function):
 # for tinkering and educational purposes
 
 
-class FlashAttention(nn.Module):
+class FlashAttentionTwo(nn.Module):
     def __init__(
         self,
         *,
