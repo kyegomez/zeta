@@ -9,6 +9,9 @@ from zeta.nn.attention.flash_attention import FlashAttention
 from zeta.nn.biases.relative_position_bias import RelativePositionBias
 from zeta.nn.embeddings.xpos_relative_position import XPOS
 
+
+from zeta.nn.attention.base import BaseAttention
+
 device = "cuda:0"
 dtype=torch.float16
 
@@ -50,7 +53,7 @@ class ParallelWrapper:
     
 
 #add alibi, qk layer norm, one write head, multihway, 
-class DilatedAttention(nn.Module):
+class DilatedAttention(BaseAttention):
     """
     Dilated Attention Module.
 
@@ -73,7 +76,15 @@ class DilatedAttention(nn.Module):
 
         This will return the output tensor after applying dilated attention. The `use_xpos` and `use_rel_pos_bias` parameters allow for switching on positional encoding and relative positional bias respectively.
     """
-    def __init__(self, d_model, num_heads, dilation_rate, segment_size, dropout=0.0, casual=False, use_xpos=False, use_rel_pos_bias=False):
+    def __init__(self, 
+                 d_model: int = None, 
+                 num_heads: int = None, 
+                 dilation_rate: int = None, 
+                 segment_size: int = None, 
+                 dropout: int = 0.0, 
+                 casual: bool = False, 
+                 use_xpos: bool = False, 
+                 use_rel_pos_bias: bool = False):
         super(DilatedAttention, self).__init__()
         self.d_model = d_model
         self.num_heads = num_heads

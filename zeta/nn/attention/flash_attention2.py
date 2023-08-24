@@ -184,18 +184,18 @@ class FlashAttentionFunction(Function):
 # for tinkering and educational purposes
 
 
-class FlashAttentionTwo(nn.Module, BaseAttention):
+class FlashAttentionTwo(BaseAttention):
     def __init__(
         self,
         *,
-        dim,
-        heads = 8,
-        dim_head = 64,
-        causal = False,
-        q_bucket_size = 512,
-        k_bucket_size = 1024,
-        parallel = False,
-        mixed_precision = False
+        dim: int = None,
+        heads: int  = 8,
+        dim_head: int = 64,
+        causal: bool = False,
+        q_bucket_size: int = 512,
+        k_bucket_size: int = 1024,
+        parallel: bool = False,
+        mixed_precision: bool = False
     ):
         super().__init__()
         self.heads = heads

@@ -8,6 +8,9 @@ from einops import rearrange
 from packaging import version
 
 
+from zeta.nn.attention.base import BaseAttention
+
+
 def _cast_if_autocast_enabled(tensor):
     if torch.is_autocast_enabled():
         if tensor.device.type == 'cuda':
@@ -641,11 +644,13 @@ class MultiHeadAttention(nn.Module):
         return self.out_proj(context), attn_weights, past_key_value
 
 
-class MultiQueryAttention(nn.Module):
+class MultiQueryAttention(BaseAttention):
     """Multi-Query self attention.
 
     Using torch or triton attention implemetation enables user to also use
     additive bias.
+
+    Look for documentation
     """
 
     def __init__(

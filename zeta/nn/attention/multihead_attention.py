@@ -9,20 +9,21 @@ try:
 except ModuleNotFoundError:
     from torch.nn import LayerNorm
 
+from zeta.nn.attention.base import BaseAttention
 from zeta.nn.embeddings.multiway_network import MultiwayWrapper
 from zeta.nn.embeddings.xpos_relative_position import XPOS
 
 
-class MultiheadAttention(nn.Module):
+class MultiheadAttention(BaseAttention):
     def __init__(
         self,
         args,
-        embed_dim,
-        num_heads,
-        dropout=0.0,
-        self_attention=False,
-        encoder_decoder_attention=False,
-        subln=False,
+        embed_dim: int = None,
+        num_heads: int = None,
+        dropout: int = 0.0,
+        self_attention: bool =False,
+        encoder_decoder_attention: bool = False,
+        subln: bool =False,
     ):
         super().__init__()
         self.args = args

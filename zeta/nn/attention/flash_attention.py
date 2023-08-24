@@ -1,15 +1,15 @@
 
 from collections import namedtuple
+from dataclasses import dataclass
 from functools import wraps
-from packaging import version
 
 import torch
-from torch import nn, einsum, Tensor
 import torch.nn.functional as F
-
 from einops import rearrange
+from packaging import version
+from torch import Tensor, einsum, nn
 
-from dataclasses import dataclass
+from zeta.nn.attention.base import BaseAttention
 
 # constants
 
@@ -65,12 +65,12 @@ class Intermediates:
         return (self.qk_similarities, self.pre_softmax_attn, self.post_softmax_attn)
 
 
-class FlashAttention(nn.Module):
+class FlashAttention(BaseAttention):
     def __init__(
         self,
-        causal = False,
-        dropout = 0.,
-        flash = True
+        causal: bool = False,
+        dropout: float  = 0.,
+        flash: bool = True
     ):
         """
         FlashAttention module that performs attention computation.
