@@ -6,17 +6,22 @@ import math
 import torch
 import torch.nn as nn
 
+from zeta.nn.biases.base import BaseBias
 
-class RelativePositionBias(nn.Module):
+class RelativePositionBias(BaseBias):
     def __init__(
-        self, bidirectional=True, num_buckets=32, max_distance=128, n_heads=12
+        self, 
+        bidirectional: int = True, 
+        num_buckets: int =32, 
+        max_distance: int = 128, 
+        num_heads: int = 1
     ):
         super().__init__()
         self.bidirectional = bidirectional
         self.num_buckets = num_buckets
         self.max_distance = max_distance
-        self.n_heads = n_heads
-        self.relative_attention_bias = nn.Embedding(self.num_buckets, self.n_heads)
+        self.num_heads = num_heads
+        self.relative_attention_bias = nn.Embedding(self.num_buckets, self.num_heads)
 
     @staticmethod
     def _relative_position_bucket(

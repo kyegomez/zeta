@@ -68,7 +68,9 @@ def apply_rotary_pos_emb(x, sin, cos, scale=1):
 
 class XPOS(nn.Module):
     def __init__(
-        self, head_dim, scale_base=512
+        self, 
+        head_dim: int = None, 
+        scale_base: int = 512
     ):
         super().__init__()
         self.head_dim = head_dim
@@ -77,7 +79,10 @@ class XPOS(nn.Module):
             "scale", (torch.arange(0, head_dim, 2) + 0.4 * head_dim) / (1.4 * head_dim)
         )
 
-    def forward(self, x, offset=0, downscale=False):
+    def forward(self, 
+                x, 
+                offset=0, 
+                downscale=False):
         """
         Forward pass of the XPOS module.
         

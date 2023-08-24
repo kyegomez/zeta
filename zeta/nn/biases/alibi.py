@@ -3,10 +3,13 @@ import torch
 from torch import nn, Tensor
 import torch.nn.functional as F
 
+from zeta.nn.biases.base import BaseBias
 
 from einops import rearrange
 
 
+
+######## Helpers
 
 def exists(val):
     return val is not None
@@ -19,11 +22,13 @@ def pad_at_dim(t, pad, dim=-1, value=0.):
 
 
 
-class AlibiPositionalBias(nn.Module):
-    def __init__(self, heads, total_heads, **kwargs):
+
+
+class AlibiPositionalBias(BaseBias):
+    def __init__(self, heads, num_heads, **kwargs):
         super().__init__()
         self.heads = heads
-        self.total_heads = total_heads
+        self.num_heads = num_heads
 
         slopes = Tensor(self.__get_slopes(heads))
         slopes = rearrange(slopes, 'h -> h 1 1')
@@ -56,7 +61,7 @@ class AlibiPositionalBias(nn.Module):
         return next(self.buffers()).device
     
     def forward(self, i, j):
-        h, device = self.total_heads, self.device
+        h, device = self.num_heads, self.device
         
         if exists(self.bias) and self.bias.shape[-1] >= j and self.bias.shape[-2] >= i:
             return self.bias[..., :i, :j]
@@ -71,8 +76,8 @@ class AlibiPositionalBias(nn.Module):
         return self.bias
     
 class LearnedAlibiPositionalBias(AlibiPositionalBias):
-    def __init__(self, heads, total_heads):
-        super().__init__(heads, total_heads)
+    def __init__(self, heads, num_heads):
+        super().__init__(heads, num_heads)
         log_slopes = torch.log(self.slopes)
         self.learned_logslopes = nn.Parameter(log_slopes)
 
