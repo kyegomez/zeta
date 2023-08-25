@@ -24,7 +24,7 @@ def seek_all_images(img, channels = 3):
             break
         i += 1
 
-        
+
 #tensor of shape (channels, frames, height, width) -> GIF
 def video_tensor_to_gift(tensor, path, duration=120, loop=0, optimize=True):
     images = map(T.ToPilImage(), tensor.unbind(dim=1))
@@ -66,4 +66,7 @@ def cast_num_frames(t, *, frames):
         return t[:, :frames]
     
     return F.pad(t, (0, 0, 0, 0, 0, frames - f))
+
+
+
 

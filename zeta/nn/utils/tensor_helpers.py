@@ -1,9 +1,14 @@
+import numpy as np
 import math
 import torch
+
+import einops
 import torch.nn as nn
 import torch.functional as F
 from einops import rearrange
 
+
+####
 
 def max_neg_values(tensor):
     return -torch.info(tensor.dtype).max
@@ -93,3 +98,87 @@ def cosine_beta_schedule(timesteps, s=0.008):
     betas = 1 - (alphas_cumprod[1:] / alphas_cumprod[:-1])
     return torch.clip(betas, 0, 0.9999)
 
+
+class Normalize(nn.Module):
+    def __init__(self, dim: int) -> None:
+        super().__init__()
+        self.dim = dim
+    
+    def forward(self, x):
+        return torch.nn.functional.normalize(x, dim=self.dim, p=2)
+    
+class LearnableLogitScaling(nn.Module):
+    def __init__(
+            self,
+            logit_scale_init: float = 1 / 0.07,
+            learnable: bool = True,
+            max_logit_scale: float = 100,
+    ) -> None:
+        super().__init__()
+        self.max_logit_scale = max_logit_scale
+        self.logit_scale_init = logit_scale_init
+        self.learnable = learnable
+
+        log_logit_scale = torch.ones([]) * np.log(self.logit_scale_init)
+        if learnable:
+            self.log_logit_scale = nn.Parameter(log_logit_scale)
+        else:
+            self.register_bufffer("log_logit_scale", log_logit_scale)
+    
+    def forward(self, x):
+        return torch.clip(self.logit_scale.exp(),
+                          max=self.max_logit_scale) * x
+    
+    def extra_repr(self):
+        st = f"logit_scale_init={self.logit_scale_init}, learnable={self.learnable}," \
+            f"max_logit_scale={self.max_logit_scale}"
+        return st
+    
+
+
+class EinOpsRearrange(nn.Module):
+    def __init__(self, rearrange_expr: str,
+                 **kwargs) -> None:
+        super().__init__()
+        self.rearrange_expr = rearrange_expr
+        self.kwargs = kwargs
+    
+    def forward(self, x):
+        assert isinstance(x, torch.Tensor)
+        return einops.rearrange(x, self.rearrange_expr, **self.kwargs)
+    
+
+def cast_id_src_dtype(
+        tensor: torch.Tensor, 
+        src_dtype: torch.dtype, 
+        tgt_dtype: torch.dtype
+):
+    updated = False
+    if tensor.dtype == src_dtype:
+        tensor = tensor.to(dtype=tgt_dtype)
+        updated = True
+    return tensor, updated
+
+
+class SelectElements(nn.Module):
+    def __init__(self,
+                 index) -> None:
+        super().__init__()
+        self.index = index
+    
+    def forward(self, x):
+        assert x.ndim >= 3
+        return x[:, self.index, ...]
+    
+
+class SelectEOSAndProject(nn.Module):
+    def __init__(self, proj: nn.Module) -> None:
+        super().__init__()
+        self.proj = proj
+    
+    def forward(self, x, seq_len):
+        assert x.ndim == 3
+        x = x[torch.arange(x.shape[0]), seq_len]
+        x = self.proj(x)
+        return x
+    
