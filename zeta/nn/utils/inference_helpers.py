@@ -33,6 +33,12 @@ def top_a(
     logits[probs >= limit] = 1
     return logits
 
+def log(t, eps=1e-20):
+    return torch.log(t.clamp(min=eps))
 
+def gumbel_noise(t):
+    noise = torch.zeros_like(t).uniform_(0, 1)
+    return -log(-log(noise))
 
-
+def gumnel_sample(t, temperature=1., dim=-1):
+    return ((t / max(temperature, 1e-10)) + gumbel_noise(t)).argmax(dim=dim)

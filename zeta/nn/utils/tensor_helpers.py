@@ -220,3 +220,4 @@ def interpolate_pos_encoding_2d(target_spatial_size, pos_embed):
         pos_embed, _ = cast_if_src_dtype(pos_embed, torch.float32, torch.bfloat16)
     pos_embed = pos_embed.permute(0, 2, 3, 1).view(1, -1, dim)
     return pos_embed
+
