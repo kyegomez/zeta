@@ -1,13 +1,19 @@
 torch
 fairscale
+
 timm
 einops
 apex
+
 memory-profiler
 triton
 lion-pytorch
+
 bitsandbytes
 typing
+einops-exts 
+
+torchvision
 
 mkdocs
 mkdocs-material

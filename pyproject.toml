@@ -26,6 +26,8 @@ einops = "*"
 bitsandbytes = "*"
 typing = "*"
 transformers = "*"
+einops-exts = "*"
+torchvision = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
