@@ -7,14 +7,14 @@ from einops import pack, unpack, repeat, reduce, rearrange
 def pack_one(x, pattern):
     return pack([x], pattern)
 
-def unpack_one(x, pas, pattern):
-    return unpack(x, ps, pattern=)[0]
+def unpack_one(x, ps, pattern):
+    return unpack(x, ps, pattern)[0]
 
 class TokenLearner(nn.Module):
     def __init__(
             self,
             *,
-            dim,
+            dim: int = None,
             ff_mult: int = 2,
             num_output_tokens: int = 8,
             num_layers: int = 2
