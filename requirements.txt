@@ -15,6 +15,11 @@ einops-exts
 
 torchvision
 
+
+accelerate 
+datasets 
+lion-pytorch 
+
 mkdocs
 mkdocs-material
 mkdocs-glightbox

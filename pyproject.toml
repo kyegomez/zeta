@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zetascale"
-version = "0.3.2"
+version = "0.3.6"
 description = "Transformers at zeta scales"
 authors = ["Zeta Team <kye@apac.ai>"]
 license = "MIT"
@@ -28,6 +28,9 @@ typing = "*"
 transformers = "*"
 einops-exts = "*"
 torchvision = "*"
+accelerate = "*"
+datasets = "*"
+lion-pytorch = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
