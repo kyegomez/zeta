@@ -1,4 +1,5 @@
-import torch 
+#from lucirains rt-1
+
 from torch import nn
 from einops import pack, unpack, repeat, reduce, rearrange
 
@@ -10,6 +11,9 @@ def pack_one(x, pattern):
 def unpack_one(x, ps, pattern):
     return unpack(x, ps, pattern)[0]
 
+
+
+#main
 class TokenLearner(nn.Module):
     def __init__(
             self,

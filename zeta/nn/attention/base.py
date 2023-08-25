@@ -3,9 +3,8 @@ import torch.nn as nn
 
 class BaseAttention(nn.Module):
     @abstractmethod
-    def __init__(self, dim):
+    def __init__(self):
         super().__init__()
-        self.dim = dim
 
 
     @abstractmethod

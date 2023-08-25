@@ -3,9 +3,8 @@
 
 import torch.nn as nn
 
-from zeta.nn.utils.attention.multihead_attention import MultiheadAttention
-from zeta.nn.utils.module.multiway_network import MultiwayNetwork
-
+from zeta.nn.attention.multihead_attention import MultiheadAttention
+from zeta.nn.embeddings.multiway_network import MultiwayNetwork
 
 def init_bert_params(module):
     def normal_(data):
