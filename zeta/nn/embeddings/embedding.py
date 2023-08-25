@@ -163,3 +163,4 @@ class VisionEmbedding(nn.Module):
             x = torch.cat((cls_tokens, x), dim=1)
 
         return x
+
