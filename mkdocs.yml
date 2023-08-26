@@ -97,9 +97,12 @@ nav:
         - Transformer: "zeta/nn/architecture/transformer.md"
     - zeta.training:
       - train: "zeta/training/train.md"
-      - tokenizers:
+      - zeta.training.tokenizers:
         - MultiModalTokenizer: "zeta/training/multi_modal_tokenizer.md"
         - LanguageTokenizerGPTX: "zeta/training/language_tokenizer.md"
+      - zeta.training.optimizers:
+        - DecoupledLionW: "zeta/training/optimizers/decoupled_lion.md"
+        - SophiaG: "zeta/training/optimizers/sophia.md"
 - Examples:
     - Overview: "examples/index.md"
     - Agents:
