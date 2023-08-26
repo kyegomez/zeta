@@ -76,22 +76,22 @@ nav:
     - Hiring: "hiring.md"
 - Zeta:
     - Overview: "zeta/index.md"
-    - nn:
-      - modules: 
+    - zeta.nn:
+      - zeta.nn.modules: 
         - Xpos: "zeta/nn/modules/xpos.md"
         - RelativePositionBias: "zeta/nn/modules/relative_bias.md"
         - AlibiPositionalBias: "zeta/nn/modules/alibi.md"
         - MultiWay: "zeta/nn/modules/multiway.md"
-      - attention:
+      - zeta.nn.attention:
         - FlashAttention: "zeta/nn/attention/flash_attention.md"
         - MultiQueryAttention: "zeta/nn/attention/multiquery.md"
         - MultiheadAttention: "zeta/nn/attention/multihead.md"
         - FlashAttentionTwo: "zeta/nn/attention/flash2.md"
         - BaseAttention: "zeta/nn/attention/base.md"
-      - architecture:
+      - zeta.nn.architecture:
         - Decoder: "zeta/nn/architecture/decoder.md"
         - Transformer: "zeta/nn/architecture/transformer.md"
-    - training:
+    - zeta.training:
       - train: "zeta/training/train.md"
       - tokenizers:
         - MultiModalTokenizer: "zeta/training/multi_modal_tokenizer.md"
