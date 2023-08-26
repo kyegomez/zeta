@@ -12,7 +12,7 @@ from transformers import default_data_collator, set_seed
 
 from zeta.training.dataloader import build_dataloaders, build_pre_tokenized
 from zeta.training.fsdp import fsdp
-from zeta.training.optimizer import decoupled_optimizer
+from zeta.training.optimizers.decoupled_optimizer import decoupled_optimizer
 from zeta.training.scheduler import get_lr_scheduler_with_warmup
 from zeta.training.activation_checkpoint import activation_checkpointing
 
