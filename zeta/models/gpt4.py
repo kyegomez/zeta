@@ -4,6 +4,7 @@ from torch import nn
 from zeta.nn.architecture.transformer import (
     Decoder,
     Encoder,
+    AutoregressiveWrapper,
     Transformer,
     ViTransformerWrapper,
 )
