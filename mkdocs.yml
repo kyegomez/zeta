@@ -85,6 +85,7 @@ nav:
         - MultiWay: "zeta/nn/embeddings/multiway.md"
       - zeta.nn.modules:
         - Lora: "zeta/nn/modules/lora.md"
+        - TokenLearner: "zeta/nn/modules/token_learner.md"
       - zeta.nn.attention:
         - FlashAttention: "zeta/nn/attention/flash_attention.md"
         - MultiQueryAttention: "zeta/nn/attention/multiquery.md"
