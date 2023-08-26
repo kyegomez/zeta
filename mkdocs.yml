@@ -77,11 +77,14 @@ nav:
 - Zeta:
     - Overview: "zeta/index.md"
     - zeta.nn:
-      - zeta.nn.modules: 
-        - Xpos: "zeta/nn/modules/xpos.md"
-        - RelativePositionBias: "zeta/nn/modules/relative_bias.md"
-        - AlibiPositionalBias: "zeta/nn/modules/alibi.md"
-        - MultiWay: "zeta/nn/modules/multiway.md"
+      - zeta.nn.biases: 
+        - Xpos: "zeta/nn/biases/xpos.md"
+        - RelativePositionBias: "zeta/nn/biases/relative_bias.md"
+        - AlibiPositionalBias: "zeta/nn/biases/alibi.md"
+      - zeta.nn.embeddings:
+        - MultiWay: "zeta/nn/embeddings/multiway.md"
+      - zeta.nn.modules:
+        - Lora: "zeta/nn/modules/lora.md"
       - zeta.nn.attention:
         - FlashAttention: "zeta/nn/attention/flash_attention.md"
         - MultiQueryAttention: "zeta/nn/attention/multiquery.md"
