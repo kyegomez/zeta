@@ -8,9 +8,35 @@ from einops import rearrange, repeat
 from einops.layers.torch import Rearrange
 from torch import nn
 
+def log(t, eps=1e-10):
+    return torch.log(t.clamp(min=eps))
 
 def exists(val):
     return val is not None
+
+def gumbel_noise(t):
+    noise = torch.zeros_like(t).uniform_(0, 1)
+    return -log(-log(noise))
+
+def gumbel_sample(t, temperature = 1., dim = -1):
+    return ((t / max(temperature, 1e-10)) + gumbel_noise(t)).argmax(dim = dim)
+
+def masked_mean(seq, mask=None, dim=1, keepdim=False):
+    if not exists(mask):
+        return seq.mean(dim=dim)
+    
+    if seq.ndim == 3:
+        mask = rearrange(mask, 'b n -> b n 1')
+    
+    masked_seq = seq.masked_fill(~mask, 0.)
+    numer = masked_seq.sum(dim=dim, keepdim=keepdim)
+    denom = mask.sum(dim=dim, keepdim=keepdim)
+
+    masked_mean = numer / denom.clamp(min=1e-3)
+    masked_mean = masked_mean.masked_fill(denom == 0, 0.)
+    return masked_mean
+
+
 
 @beatype
 class RewardModel(nn.Module):
