@@ -4,10 +4,10 @@ from torch import nn
 from zeta.nn.architecture.transformer import (
     Decoder,
     Encoder,
-    AutoregressiveWrapper,
     Transformer,
     ViTransformerWrapper,
 )
+from zeta.nn.architecture.auto_regressive_wrapper import AutoregressiveWrapper
 
 
 class GPT4(nn.Module):
