@@ -1,13 +1,12 @@
 #the best llm ever made
 from torch.nn import Module
 
+from zeta.nn.architecture.auto_regressive_wrapper import AutoregressiveWrapper
 from zeta.nn.architecture.transformer import (
     AndromedaEmbedding,
     Decoder,
     Transformer,
 )
-
-from zeta.nn.architecture.auto_regressive_wrapper import AutoregressiveWrapper
 
 
 class Andromeda(Module):
@@ -27,8 +26,7 @@ class Andromeda(Module):
                  alibi_num_heads=12, 
                  rotary_xpos=True,
                  attn_flash=True, 
-                #  shift_tokens=1, 
-                 attn_one_kv_head=True,  # multiquery attention
+                 attn_kv_heads = 2,
                  qk_norm=True, 
                  attn_qk_norm=True, 
                  attn_qk_norm_dim_scale=True, 
@@ -72,9 +70,7 @@ class Andromeda(Module):
                     alibi_num_heads=alibi_num_heads,
                     rotary_xpos=rotary_xpos,
                     attn_flash=attn_flash,
-                    # deepnorm=deepnorm,
-                    # shift_tokens=shift_tokens,
-                    attn_one_kv_head=attn_one_kv_head,
+                    attn_kv_heads=attn_kv_heads,
                     qk_norm=qk_norm,
                     attn_qk_norm=attn_qk_norm,
                     attn_qk_norm_dim_scale=attn_qk_norm_dim_scale
