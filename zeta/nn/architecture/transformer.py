@@ -1,39 +1,20 @@
+from inspect import isfunction
 import math
 from abc import ABC, abstractmethod
 from collections import namedtuple
 from dataclasses import dataclass
-from functools import partial
+from functools import partial, wraps
 from random import random
-from typing import List
+from typing import Callable, List, Optional
 
 import torch
 import torch.nn.functional as F
-from einops import rearrange, repeat, reduce
+from einops import rearrange, reduce, repeat
 from torch import Tensor, einsum, nn
 
+from zeta.nn.attention.attend import Attend, Intermediates
+
 EfficientAttentionConfig = namedtuple('EfficientAttentionConfig', ['enable_flash', 'enable_math', 'enable_mem_efficient'])
-
-from zeta.nn.attention.attend import Attend
-from zeta.nn.utils.helpers import (  # noqa: E402
-    always,
-    cast_tuple,
-    default,
-    equals,
-    exists,
-    groupby_prefix_and_trim,
-    maybe,
-    not_equals,
-    once,  # noqa: F401,
-    divisible_by
-)
-from zeta.nn.utils.tensor_helpers import l2norm, max_neg_values, or_reduce, pad_at_dim
-
-
-@dataclass
-class Intermediates:
-    qk_similarities: Tensor = None
-    pre_softmax_attn: Tensor = None
-    post_softmax_attn: Tensor = None
 
 
 
@@ -41,14 +22,78 @@ DEFAULT_DIM_HEAD = 64
 
 @dataclass
 class LayerIntermediates:
-    hiddens: List[Tensor] = None
-    attn_intermediates: List[Intermediates] = None
+    hiddens: Optional[List[Tensor]] = None
+    attn_intermediates: Optional[List[Intermediates]] = None
+    layer_hiddens: Optional[List[Tensor]] = None
+    attn_z_loss: Optional[Tensor] = None
 
+# helpers
 
+def exists(val):
+    return val is not None
 
+def default(val, d):
+    if exists(val):
+        return val
+    return d() if isfunction(d) else d
 
-### helpers
+def cast_tuple(val, depth):
+    return val if isinstance(val, tuple) else (val,) * depth
 
+def divisible_by(num, den):
+    return (num % den) == 0
+
+def maybe(fn):
+    @wraps(fn)
+    def inner(x, *args, **kwargs):
+        if not exists(x):
+            return x
+        return fn(x, *args, **kwargs)
+    return inner
+
+class always():
+    def __init__(self, val):
+        self.val = val
+    def __call__(self, *args, **kwargs):
+        return self.val
+
+class not_equals():
+    def __init__(self, val):
+        self.val = val
+    def __call__(self, x, *args, **kwargs):
+        return x != self.val
+
+class equals():
+    def __init__(self, val):
+        self.val = val
+    def __call__(self, x, *args, **kwargs):
+        return x == self.val
+
+def Sequential(*modules):
+    return nn.Sequential(*filter(exists, modules))
+
+# tensor helpers
+
+def max_neg_value(tensor):
+    return -torch.finfo(tensor.dtype).max
+
+def l2norm(t, groups = 1):
+    t = rearrange(t, '... (g d) -> ... g d', g = groups)
+    t = F.normalize(t, p = 2, dim = -1)
+    return rearrange(t, '... g d -> ... (g d)')
+
+def pad_at_dim(t, pad, dim = -1, value = 0.):
+    dims_from_right = (- dim - 1) if dim < 0 else (t.ndim - dim - 1)
+    zeros = ((0, 0) * dims_from_right)
+    return F.pad(t, (*zeros, *pad), value = value)
+
+def or_reduce(masks):
+    head, *body = masks
+    for rest in body:
+        head = head | rest
+    return head
+
+# auxiliary loss helpers
 
 def calc_z_loss(
     pre_softmax_attns: List[Tensor],
@@ -73,15 +118,39 @@ def calc_z_loss(
     loss = loss[mask].sum() / mask.sum().clamp(min = 1e-5)
     return loss * weight
 
-def max_neg_value(tensor):
-    return -torch.finfo(tensor.dtype).max
-
+# init helpers
 
 def init_zero_(layer):
     nn.init.constant_(layer.weight, 0.)
     if exists(layer.bias):
         nn.init.constant_(layer.bias, 0.)
 
+# keyword argument helpers
+
+def pick_and_pop(keys, d):
+    values = list(map(lambda key: d.pop(key), keys))
+    return dict(zip(keys, values))
+
+def group_dict_by_key(cond, d):
+    return_val = [dict(),dict()]
+    for key in d.keys():
+        match = bool(cond(key))
+        ind = int(not match)
+        return_val[ind][key] = d[key]
+    return (*return_val,)
+
+def string_begins_with(prefix, str):
+    return str.startswith(prefix)
+
+def group_by_key_prefix(prefix, d):
+    return group_dict_by_key(partial(string_begins_with, prefix), d)
+
+def groupby_prefix_and_trim(prefix, d):
+    kwargs_with_prefix, kwargs = group_dict_by_key(partial(string_begins_with, prefix), d)
+    kwargs_without_prefix = dict(map(lambda x: (x[0][len(prefix):], x[1]), tuple(kwargs_with_prefix.items())))
+    return kwargs_without_prefix, kwargs
+
+# initializations
 
 def deepnorm_init(
     transformer,
@@ -132,54 +201,21 @@ def dropout_seq(seq, mask, dropout):
 class ReluSquared(nn.Module):
     def forward(self, x):
         return F.relu(x) ** 2
-    
-
-#tokenization
-class BaseTokenizer(ABC):
-    @abstractmethod
-    def tokenize(self, text: str) -> List[int]:
-        pass
-
-class CustomTokenizer(BaseTokenizer):
-    def tokenize(self, text: str) -> List[int]:
-        # Your custom tokenization algorithm
-        tokens = ...
-        return tokens
 
 # embedding
 
-class BaseEmbedding(ABC):
-    @abstractmethod
-    def forward(self, num_tokens: int, dim: int) -> nn.Module:
-        # Custom embedding function or model
-        embedding = ...
-        
-        return embedding
-
-class AndromedaEmbedding(BaseEmbedding):
-    def forward(self, num_tokens: int, dim: int) -> nn.Module:
-        embedding = nn.Embedding(num_tokens, dim)
-
-        return embedding
-    
-# class AndromedaBnBEmbedding(BaseEmbedding):
-#     def forward(self, num_tokens: int, dim: int, padding_idx: int = 0) -> bnb.nn.modules:
-#         embedding = bnb.nn.modules.Embedding(num_tokens, dim, padding_idx)
-
-#         return embedding
-
 class TokenEmbedding(nn.Module):
-    def __init__(self, dim, num_tokens, embedding_provider: BaseEmbedding, l2norm_embed = False):
+    def __init__(self, dim, num_tokens, l2norm_embed = False):
         super().__init__()
         self.l2norm_embed = l2norm_embed
-        self.emb = embedding_provider.forward(num_tokens, dim)
-        # nn.Embedding(num_tokens, dim)
+        self.emb = nn.Embedding(num_tokens, dim)
 
     def forward(self, x):
         token_emb = self.emb(x)
         return l2norm(token_emb) if self.l2norm_embed else token_emb
 
 # positional embeddings
+
 class AbsolutePositionalEmbedding(nn.Module):
     def __init__(self, dim, max_seq_len, l2norm_embed = False):
         super().__init__()
@@ -202,7 +238,7 @@ class AbsolutePositionalEmbedding(nn.Module):
 class ScaledSinusoidalEmbedding(nn.Module):
     def __init__(self, dim, theta = 10000):
         super().__init__()
-        assert (dim % 2) == 0
+        assert divisible_by(dim, 2)
         self.scale = nn.Parameter(torch.ones(1) * dim ** -0.5)
 
         half_dim = dim // 2
@@ -273,16 +309,16 @@ class DynamicPositionBias(nn.Module):
 
         self.mlp = nn.ModuleList([])
 
-        self.mlp.append(nn.Sequential(
+        self.mlp.append(Sequential(
             nn.Linear(1, dim),
-            nn.LayerNorm(dim) if norm else nn.Identity(),
+            nn.LayerNorm(dim) if norm else None,
             nn.SiLU()
         ))
 
         for _ in range(depth - 1):
-            self.mlp.append(nn.Sequential(
+            self.mlp.append(Sequential(
                 nn.Linear(dim, dim),
-                nn.LayerNorm(dim) if norm else nn.Identity(),
+                nn.LayerNorm(dim) if norm else None,
                 nn.SiLU()
             ))
 
@@ -354,7 +390,7 @@ class AlibiPositionalBias(nn.Module):
     def forward(self, i, j):
         h, device = self.total_heads, self.device
 
-        if exists(self.bias) and self.bias.shape[-1] >= j:
+        if exists(self.bias) and self.bias.shape[-1] >= j and self.bias.shape[-2] >= i:
             return self.bias[..., :i, :j]
 
         bias = self.get_bias(i, j, device)
@@ -366,45 +402,27 @@ class AlibiPositionalBias(nn.Module):
 
         return self.bias
 
-class LearnedAlibiPositionalBias(AlibiPositionalBias):
-    def __init__(self, heads, total_heads):
-        super().__init__(heads, total_heads)
-        log_slopes = torch.log(self.slopes)
-        self.learned_logslopes = nn.Parameter(log_slopes)
-
-    def forward(self, i, j):
-        h, i, j, device = self.heads, self.device
-
-        def get_slopes(param):
-            return pad_at_dim(param.exp(), (0, h - param.shape[0]), dim = -2)
-
-        if exists(self.bias) and self.bias.shape[-1] >= j:
-            bias = self.bias[..., :i, :j]
-        else:
-            bias = self.get_bias(i, j, device)
-            self.register_buffer('bias', bias, persistent = False)
-
-        slopes = get_slopes(self.learned_logslopes)
-        bias = bias * slopes
-
-        return bias
-
 class RotaryEmbedding(nn.Module):
     def __init__(
         self,
         dim,
         use_xpos = False,
         scale_base = 512,
-        interpolation_factor=1.,
-        base=10000,
-        base_rescale_factor=1.
+        interpolation_factor = 1.,
+        base = 10000,
+        base_rescale_factor = 1.
     ):
         super().__init__()
-        base *=  base_rescale_factor ** (dim / (dim - 2))
-        
-        inv_freq = 1. / (base ** (torch.arange(0, dim, 2).float() / dim))
+        # proposed by reddit user bloc97, to rescale rotary embeddings to longer sequence length without fine-tuning
+        # has some connection to NTK literature
+        # https://www.reddit.com/r/LocalLLaMA/comments/14lz7j5/ntkaware_scaled_rope_allows_llama_models_to_have/
+        base *= base_rescale_factor ** (dim / (dim - 2))
 
+        inv_freq = 1. / (base ** (torch.arange(0, dim, 2).float() / dim))
         self.register_buffer('inv_freq', inv_freq)
+
+        assert interpolation_factor >= 1.
+        self.interpolation_factor = interpolation_factor
 
         if not use_xpos:
             self.register_buffer('scale', None)
@@ -417,6 +435,8 @@ class RotaryEmbedding(nn.Module):
 
     def forward(self, seq_len, device):
         t = torch.arange(seq_len, device = device).type_as(self.inv_freq)
+        t = t / self.interpolation_factor
+
         freqs = torch.einsum('i , j -> i j', t, self.inv_freq)
         freqs = torch.cat((freqs, freqs), dim = -1)
 
@@ -450,8 +470,7 @@ class Scale(nn.Module):
 
     def forward(self, x, **kwargs):
         out = self.fn(x, **kwargs)
-        def scale_fn(t):
-            return t * self.value
+        scale_fn = lambda t: t * self.value
 
         if not isinstance(out, tuple):
             return scale_fn(out)
@@ -469,15 +488,21 @@ class ScaleNorm(nn.Module):
         return x / norm.clamp(min = self.eps) * self.g
 
 class RMSNorm(nn.Module):
-    def __init__(self, dim, eps = 1e-8):
+    def __init__(self, dim):
         super().__init__()
-        self.scale = dim ** -0.5
-        self.eps = eps
+        self.scale = dim ** 0.5
         self.g = nn.Parameter(torch.ones(dim))
 
     def forward(self, x):
-        norm = torch.norm(x, dim = -1, keepdim = True) * self.scale
-        return x / norm.clamp(min = self.eps) * self.g
+        return F.normalize(x, dim = -1) * self.scale * self.g
+
+class SimpleRMSNorm(nn.Module):
+    def __init__(self, dim):
+        super().__init__()
+        self.scale = dim ** 0.5
+
+    def forward(self, x):
+        return F.normalize(x, dim = -1) * self.scale
 
 # residual and residual gates
 
@@ -546,14 +571,21 @@ class ShiftTokens(nn.Module):
 # feedforward
 
 class GLU(nn.Module):
-    def __init__(self, dim_in, dim_out, activation):
+    def __init__(
+        self,
+        dim_in,
+        dim_out,
+        activation: Callable,
+        mult_bias = False
+    ):
         super().__init__()
         self.act = activation
         self.proj = nn.Linear(dim_in, dim_out * 2)
+        self.mult_bias = nn.Parameter(torch.ones(dim_out)) if mult_bias else 1.
 
     def forward(self, x):
         x, gate = self.proj(x).chunk(2, dim = -1)
-        return x * self.act(gate)
+        return x * self.act(gate) * self.mult_bias
 
 class FeedForward(nn.Module):
     def __init__(
@@ -562,6 +594,7 @@ class FeedForward(nn.Module):
         dim_out = None,
         mult = 4,
         glu = False,
+        glu_mult_bias = False,
         swish = False,
         relu_squared = False,
         post_act_ln = False,
@@ -580,14 +613,17 @@ class FeedForward(nn.Module):
         else:
             activation = nn.GELU()
 
-        project_in = nn.Sequential(
-            nn.Linear(dim, inner_dim, bias = not no_bias),
-            activation
-        ) if not glu else GLU(dim, inner_dim, activation)
+        if glu:
+            project_in = GLU(dim, inner_dim, activation, mult_bias = glu_mult_bias)
+        else:
+            project_in = nn.Sequential(
+                nn.Linear(dim, inner_dim, bias = not no_bias),
+                activation
+            )
 
-        self.ff = nn.Sequential(
+        self.ff = Sequential(
             project_in,
-            nn.LayerNorm(inner_dim) if post_act_ln else nn.Identity(),
+            nn.LayerNorm(inner_dim) if post_act_ln else None,
             nn.Dropout(dropout),
             nn.Linear(inner_dim, dim_out, bias = not no_bias)
         )
@@ -989,8 +1025,8 @@ class AttentionLayers(nn.Module):
             norm_class = ScaleNorm
         elif use_rmsnorm:
             norm_class = RMSNorm
-        # elif use_simple_rmsnorm:
-        #     norm_class = SimpleRMSNorm
+        elif use_simple_rmsnorm:
+            norm_class = SimpleRMSNorm
         else:
             norm_class = nn.LayerNorm
 
@@ -1432,6 +1468,92 @@ class TransformerWrapper(nn.Module):
             hiddens = intermediates.hiddens
             new_mems = list(map(lambda pair: torch.cat(pair, dim = -2), zip(mems, hiddens))) if exists(mems) else hiddens
             new_mems = list(map(lambda t: t[..., -self.max_mem_len:, :].detach(), new_mems))
+            return out, new_mems
+
+        if return_attn:
+            attn_maps = list(map(lambda t: t.post_softmax_attn, intermediates.attn_intermediates))
+            return out, attn_maps
+
+        return out
+
+class ContinuousTransformerWrapper(nn.Module):
+    def __init__(
+        self,
+        *,
+        max_seq_len,
+        attn_layers,
+        dim_in = None,
+        dim_out = None,
+        emb_dim = None,
+        max_mem_len = 0,
+        post_emb_norm = False,
+        emb_dropout = 0.,
+        use_abs_pos_emb = True,
+        scaled_sinu_pos_emb = False
+    ):
+        super().__init__()
+        assert isinstance(attn_layers, AttentionLayers), 'attention layers must be one of Encoder or Decoder'
+
+        dim = attn_layers.dim
+
+        self.max_seq_len = max_seq_len
+
+        self.max_mem_len = max_mem_len
+
+        if not (use_abs_pos_emb and not attn_layers.has_pos_emb):
+            self.pos_emb = always(0)
+        elif scaled_sinu_pos_emb:
+            self.pos_emb = ScaledSinusoidalEmbedding(dim)
+        else:
+            self.pos_emb = AbsolutePositionalEmbedding(dim, max_seq_len)
+
+        self.post_emb_norm = nn.LayerNorm(dim) if post_emb_norm else nn.Identity()
+        self.emb_dropout = nn.Dropout(emb_dropout)
+
+        self.project_in = nn.Linear(dim_in, dim) if exists(dim_in) else nn.Identity()
+
+        self.attn_layers = attn_layers
+
+        self.project_out = nn.Linear(dim, dim_out) if exists(dim_out) else nn.Identity()
+
+    def forward(
+        self,
+        x,
+        return_embeddings = False,
+        return_intermediates = False,
+        return_mems = False,
+        mask = None,
+        return_attn = False,
+        mems = None,
+        pos = None,
+        prepend_embeds = None,
+        **kwargs
+    ):
+        x = self.project_in(x)
+        x = x + self.pos_emb(x, pos = pos)
+
+        x = self.post_emb_norm(x)
+
+        # whether to append embeds, as in PaLI, for image embeddings
+
+        if exists(prepend_embeds):
+            _, prepend_dim = prepend_embeds.shape[1:]
+            assert prepend_dim == x.shape[-1], 'prepended embeddings need to have same dimensions as model dimensions'
+
+            x = torch.cat((prepend_embeds, x), dim = -2)
+
+        x = self.emb_dropout(x)
+
+        x, intermediates = self.attn_layers(x, mask = mask, mems = mems, return_hiddens = True, **kwargs)
+
+        out = self.project_out(x) if not return_embeddings else x
+
+        if return_intermediates:
+            return out, intermediates
+
+        if return_mems:
+            hiddens = intermediates.hiddens
+            new_mems = list(map(lambda t: t[..., -self.max_mem_len:, :].detach(), hiddens))
             return out, new_mems
 
         if return_attn:
