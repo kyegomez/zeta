@@ -1304,7 +1304,7 @@ class ViTransformerWrapper(nn.Module):
         x = x.mean(dim = -2)
         return self.mlp_head(x)
 
-class TransformerWrapper(nn.Module):
+class Transformer(nn.Module):
     def __init__(
         self,
         *,
@@ -1468,92 +1468,6 @@ class TransformerWrapper(nn.Module):
             hiddens = intermediates.hiddens
             new_mems = list(map(lambda pair: torch.cat(pair, dim = -2), zip(mems, hiddens))) if exists(mems) else hiddens
             new_mems = list(map(lambda t: t[..., -self.max_mem_len:, :].detach(), new_mems))
-            return out, new_mems
-
-        if return_attn:
-            attn_maps = list(map(lambda t: t.post_softmax_attn, intermediates.attn_intermediates))
-            return out, attn_maps
-
-        return out
-
-class ContinuousTransformerWrapper(nn.Module):
-    def __init__(
-        self,
-        *,
-        max_seq_len,
-        attn_layers,
-        dim_in = None,
-        dim_out = None,
-        emb_dim = None,
-        max_mem_len = 0,
-        post_emb_norm = False,
-        emb_dropout = 0.,
-        use_abs_pos_emb = True,
-        scaled_sinu_pos_emb = False
-    ):
-        super().__init__()
-        assert isinstance(attn_layers, AttentionLayers), 'attention layers must be one of Encoder or Decoder'
-
-        dim = attn_layers.dim
-
-        self.max_seq_len = max_seq_len
-
-        self.max_mem_len = max_mem_len
-
-        if not (use_abs_pos_emb and not attn_layers.has_pos_emb):
-            self.pos_emb = always(0)
-        elif scaled_sinu_pos_emb:
-            self.pos_emb = ScaledSinusoidalEmbedding(dim)
-        else:
-            self.pos_emb = AbsolutePositionalEmbedding(dim, max_seq_len)
-
-        self.post_emb_norm = nn.LayerNorm(dim) if post_emb_norm else nn.Identity()
-        self.emb_dropout = nn.Dropout(emb_dropout)
-
-        self.project_in = nn.Linear(dim_in, dim) if exists(dim_in) else nn.Identity()
-
-        self.attn_layers = attn_layers
-
-        self.project_out = nn.Linear(dim, dim_out) if exists(dim_out) else nn.Identity()
-
-    def forward(
-        self,
-        x,
-        return_embeddings = False,
-        return_intermediates = False,
-        return_mems = False,
-        mask = None,
-        return_attn = False,
-        mems = None,
-        pos = None,
-        prepend_embeds = None,
-        **kwargs
-    ):
-        x = self.project_in(x)
-        x = x + self.pos_emb(x, pos = pos)
-
-        x = self.post_emb_norm(x)
-
-        # whether to append embeds, as in PaLI, for image embeddings
-
-        if exists(prepend_embeds):
-            _, prepend_dim = prepend_embeds.shape[1:]
-            assert prepend_dim == x.shape[-1], 'prepended embeddings need to have same dimensions as model dimensions'
-
-            x = torch.cat((prepend_embeds, x), dim = -2)
-
-        x = self.emb_dropout(x)
-
-        x, intermediates = self.attn_layers(x, mask = mask, mems = mems, return_hiddens = True, **kwargs)
-
-        out = self.project_out(x) if not return_embeddings else x
-
-        if return_intermediates:
-            return out, intermediates
-
-        if return_mems:
-            hiddens = intermediates.hiddens
-            new_mems = list(map(lambda t: t[..., -self.max_mem_len:, :].detach(), hiddens))
             return out, new_mems
 
         if return_attn:
