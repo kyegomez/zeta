@@ -11,7 +11,7 @@
   <a href="https://pypi.org/project/zetascale"><img alt="MIT License" src="https://badge.fury.io/py/zetascale.svg" /></a>
 </p>
 
-Create Ultra-Powerful Multi-Modality Models Seamlessly and Efficiently
+Create Ultra-Powerful Multi-Modality Models Seamlessly and Efficiently in as minimal lines of code as possible.
 
 ## Installation
 
@@ -51,9 +51,6 @@ print(output.shape)
 
 Zeta is a masterpiece inspired by LucidRains's repositories and elements of [FairSeq](https://github.com/facebookresearch/fairseq) and [UniLM](https://github.com/kyegomez/unilm).
 
-## Citations
-
-If our work here in Zeta has aided you in your journey, please consider acknowledging our efforts in your work. You can find relevant citation details in our [Citations Document](citations.md).
 
 ## Contributing
 We're dependent on you for contributions, it's only Kye maintaining this repository and it's very difficult and with that said any contribution is infinitely appreciated by not just me but by Zeta's users who dependen on this repository to build the world's
