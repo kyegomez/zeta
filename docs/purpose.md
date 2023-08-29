@@ -1,7 +1,7 @@
 # Zeta's Purpose
 
 
-Eevery once in a while, a revolutionary product comes along that changes everything.
+Eevery once in a while, a revolutionary project comes along that changes everything.
 
 A landscape cluttered by rigid frameworks, plagued by inefficiencies, and where developers - our brightest minds - are bogged down by limitations.
 
