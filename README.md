@@ -46,6 +46,8 @@ print(output.shape)
 
 ```
 
+# Documentation
+[Click here for the documentation, it's at zeta.apac.ai](https://zeta.apac.ai)
 
 ## Acknowledgments
 
