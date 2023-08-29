@@ -1,5 +1,5 @@
-from zeta.training.multi_modal_tokenizer import MultiModalTokenizer
-from zeta.training.language_tokenizer import LanguageTokenizerGPTX
+from zeta.tokenizers.multi_modal_tokenizer import MultiModalTokenizer
+from zeta.tokenizers.language_tokenizer import LanguageTokenizerGPTX
 from zeta.training.train import Trainer, train
 
 
