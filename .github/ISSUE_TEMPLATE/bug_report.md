@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Create a detailed report on the bug and it's root cause. Conduct root cause error analysis
 title: "[BUG] "
 labels: bug
 assignees: kyegomez
@@ -8,7 +8,7 @@ assignees: kyegomez
 ---
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+A clear and concise description of what the bug is and what the main root cause error is. Test very thoroughly before submitting.
 
 **To Reproduce**
 Steps to reproduce the behavior:
