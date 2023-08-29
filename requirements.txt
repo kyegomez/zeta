@@ -19,7 +19,7 @@ torchvision
 accelerate 
 datasets 
 lion-pytorch 
-sentence-piece
+sentencepiece
 
 
 
