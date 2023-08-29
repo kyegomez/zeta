@@ -1,7 +1,6 @@
 [![Multi-Modality](images/agorabanner.png)](https://discord.gg/qUtxnK2NMf)
 
 # Zeta - Seamlessly Create Zetascale Transformers
-![Zeta banner](images/zetascale.png)
 
 
 [![Docs](https://readthedocs.org/projects/zeta/badge/)](https://zeta.readthedocs.io)
