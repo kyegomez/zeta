@@ -9,6 +9,22 @@ logger = getLogger()
 
 
 class SentencePieceTokenizer:
+    """
+    A SentencePieceTokenizer is a tokenizer that uses a pretrained SentencePiece model to convert text into tokens and vice versa. 
+    It includes the ability to add special tokens for infilling tasks and provides functionality to encode and decode text with or without implicit leading spaces.
+    Parameters:
+    - model_path (str): Path to the pretrained SentencePiece model file.
+
+    Attributes:
+    - n_words (int): Vocabulary size of the SentencePiece model.
+    - bos_id (int): Token ID of the beginning-of-sentence (BOS) token.
+    - eos_id (int): Token ID of the end-of-sentence (EOS) token.
+    - pad_id (int): Token ID of the padding (PAD) token.
+    - prefix_id (int, optional): Token ID of the prefix token. Default: None.
+    - middle_id (int, optional): Token ID of the middle token. Default: None.
+    - suffix_id (int, optional): Token ID of the suffix token. Default: None.
+    - eot_id (int, optional): Token ID of the end-of-turn (EOT) token. Default: None.
+    """
     def __init__(self, model_path: str):
         # reload tokenizer
         assert os.path.isfile(model_path), model_path

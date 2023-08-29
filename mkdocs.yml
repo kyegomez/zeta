@@ -103,6 +103,10 @@ nav:
       - zeta.training.optimizers:
         - DecoupledLionW: "zeta/training/optimizers/decoupled_lion.md"
         - SophiaG: "zeta/training/optimizers/sophia.md"
+    - zeta.tokenizers:
+        - MultiModalTokenizer: "zeta/training/multi_modal_tokenizer.md"
+        - LanguageTokenizerGPTX: "zeta/training/language_tokenizer.md"
+        - SentencePieceTokenizer: "zeta/tokenizers/sentencepiece.md"
 - Examples:
     - Overview: "examples/index.md"
     - Agents:
