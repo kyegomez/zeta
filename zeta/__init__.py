@@ -1,5 +1,3 @@
-# Copyright (c) 2022 Agora
-# Licensed under The MIT License [see LICENSE for details]
 
 #architecture
 from zeta.nn.architecture.transformer import (
@@ -31,8 +29,6 @@ from zeta.models import *
 from zeta.training import *
 
 
-
-#training
 
 #tokenizers
 from zeta.tokenizers.multi_modal_tokenizer import MultiModalTokenizer
