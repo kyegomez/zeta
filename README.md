@@ -62,3 +62,6 @@ best AI models
 
 ## Todo
 * Head over to the project board to look at open features to implement or bugs to tackle
+
+## Project Board
+[This weeks iteration is here](https://github.com/users/kyegomez/projects/7/views/2)
