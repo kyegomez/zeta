@@ -7,8 +7,11 @@ from zeta.nn.architecture.transformer import (
     Decoder,
     Encoder,
     Transformer,
-    ViTransformerWrapper,
 )
+from zeta.nn.architecture.attn_layers import AttentionLayers
+from zeta.nn.architecture.encoder import Encoder
+from zeta.nn.architecture.decoder import Decoder
+
 
 
 #attentions
