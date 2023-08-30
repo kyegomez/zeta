@@ -12,9 +12,9 @@ from zeta.nn.attention.flash_attention2 import FlashAttentionTwo
 
 
 #utils
-from zeta.nn.utils.utils import *
-from zeta.nn.utils.helpers import *
-from zeta.nn.utils.inference_helpers import *
-from zeta.nn.utils.model_utils import *
-from zeta.nn.utils.tensor_helpers import *
-from zeta.nn.utils.multi_modal_helpers import * 
+from zeta.utils.utils import *
+from zeta.utils.helpers import *
+from zeta.utils.inference_helpers import *
+from zeta.utils.model_utils import *
+from zeta.utils.tensor_helpers import *
+from zeta.utils.multi_modal_helpers import * 

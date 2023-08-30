@@ -3,7 +3,7 @@ import torch.nn as nn
 from accelerate import Accelerator
 from einops import rearrange
 
-from zeta.nn.utils.helpers import exists
+from zeta.utils.helpers import exists
 
 
 

@@ -2,13 +2,13 @@ import torch
 import torch.nn.functional as F
 from einops import pack, rearrange, unpack
 from torch import nn
-from zeta.nn.utils.helpers import (  # noqa: E402
+from zeta.utils.helpers import (  # noqa: E402
     eval_decorator,
     exists,
     once,  # noqa: F401
     
 )
-from zeta.nn.utils.inference_helpers import top_a, top_k, top_p
+from zeta.utils.inference_helpers import top_a, top_k, top_p
 
 class AutoregressiveWrapper(nn.Module):
     def __init__(
