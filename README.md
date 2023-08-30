@@ -12,6 +12,10 @@
 
 Create Ultra-Powerful Multi-Modality Models Seamlessly and Efficiently in as minimal lines of code as possible.
 
+# 🤝 Schedule a 1-on-1 Session
+Book a [1-on-1 Session with Kye](https://calendly.com/apacai/agora), the Creator, to discuss any issues, provide feedback, or explore how we can improve Zeta for you.
+
+
 ## Installation
 
 To install:
