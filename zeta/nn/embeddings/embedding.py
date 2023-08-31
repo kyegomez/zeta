@@ -20,14 +20,19 @@ class BaseEmbedding(ABC):
         return embedding
     
 #Other embedding
-class AndromedaEmbedding(BaseEmbedding):
-    def forward(self, num_tokens: int, dim: int) -> nn.Module:
+class Embedding(BaseEmbedding):
+    def forward(self, 
+                num_tokens: int, 
+                dim: int) -> nn.Module:
         embedding = nn.Embedding(num_tokens, dim)
 
         return embedding
     
-class AndromedaBnBEmbedding(BaseEmbedding):
-    def forward(self, num_tokens: int, dim: int, padding_idx) -> bnb.nn.modules:
+class BnBEmbedding(BaseEmbedding):
+    def forward(self, 
+                num_tokens: int, 
+                dim: int, 
+                padding_idx) -> bnb.nn.modules:
         embedding = bnb.nn.modules.Embedding(num_tokens, dim, padding_idx)
 
         return embedding
