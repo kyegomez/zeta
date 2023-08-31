@@ -84,6 +84,7 @@ nav:
       - zeta.nn.embeddings:
         - MultiWay: "zeta/nn/embeddings/multiway.md"
         - RotaryEmbeddings: "zeta/nn/embeddings/rope.md"
+        - TruncatedRotaryEmbedding: "zeta/nn/embeddings/truncated_rope.md"
       - zeta.nn.modules:
         - Lora: "zeta/nn/modules/lora.md"
         - TokenLearner: "zeta/nn/modules/token_learner.md"
