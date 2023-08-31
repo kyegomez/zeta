@@ -1,4 +1,4 @@
-# Module Name: SentencePieceTokenizer
+# SentencePieceTokenizer
 
 `SentencePieceTokenizer` is a class for tokenizing and detokenizing text using a pre-trained SentencePiece model. The SentencePiece model is a unsupervised text tokenizer and detokenizer mainly for Neural Network-based text generation tasks where the vocabulary size is predetermined prior to the neural model training. This class is a part of the zeta library which is a collection of various utility functions and classes for Natural Language Processing tasks.
 
