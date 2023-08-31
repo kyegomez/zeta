@@ -1,4 +1,12 @@
-site_name: Package Docs
+site_name: Zeta Docs
+site_url: https://zeta.apac.ai
+site_author: APAC AI
+site_description: Create Ultra-Powerful Multi-Modality Models Seamlessly and Efficiently in as minimal lines of code as possible.
+repo_name: kyegomez/zeta
+repo_url: https://github.com/kyegomez/zeta
+edit_uri: https://github.com/kyegomez/zeta/tree/main/docs
+copyright: APAC Corp 2023. All rights reserved.
+
 plugins:
   - glightbox
   - search
