@@ -1,6 +1,6 @@
 # RotaryEmbedding
 
-`RotaryEmbedding` is a PyTorch module implementing the rotary embedding mechanism described in the paper [Link to the paper](https://arxiv.org/pdf/2308.10882.pdf). It is designed to handle sequences of any length without the need for fine-tuning, and can also incorporate positional information into the embeddings.
+`RotaryEmbedding` is a PyTorch module implementing the rotary embedding mechanism. It is designed to handle sequences of any length without the need for fine-tuning, and can also incorporate positional information into the embeddings.
 
 ## Class Definition
 
@@ -57,6 +57,7 @@ The `freqs` and `scale` tensors are then concatenated along the last dimension a
 #### Example 1: Basic Usage
 
 ```python
+from zeta.nn import RotaryEmbedding
 import torch
 from torch import nn
 
@@ -75,6 +76,7 @@ print(scale)
 #### Example 2: Using a Different Scale Base
 
 ```python
+from zeta.nn import RotaryEmbedding
 import torch
 from torch import nn
 
@@ -93,6 +95,7 @@ print(scale)
 #### Example 3: Without Positional Information
 
 ```python
+from zeta.nn import RotaryEmbedding
 import torch
 from torch import nn
 
