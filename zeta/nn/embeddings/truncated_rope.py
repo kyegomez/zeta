@@ -2,10 +2,6 @@
 
 import torch
 from torch import nn
-from einops import rearrange
-
-def exists(val):
-    return val is not None
 
 class TruncatedRotaryEmbedding(nn.Module):
     def __init__(
@@ -31,7 +27,8 @@ class TruncatedRotaryEmbedding(nn.Module):
 
         theta = self.base ** (-2 * torch.arange(0, self.dim, 2).float() / self.dim)
         theta_star = torch.where(theta >= self.b, theta, 
-                                 torch.where(theta < self.a, torch.zeros_like(theta), self.rho * torch.ones_like(theta)))
+                                 torch.where(theta < self.a, torch.zeros_like(theta),
+                                            self.rho * torch.ones_like(theta)))
         theta_star = torch.cat((theta_star, theta_star), dim=-1)
 
         result = freqs * theta_star
