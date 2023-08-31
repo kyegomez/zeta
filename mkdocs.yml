@@ -83,6 +83,7 @@ nav:
         - AlibiPositionalBias: "zeta/nn/biases/alibi.md"
       - zeta.nn.embeddings:
         - MultiWay: "zeta/nn/embeddings/multiway.md"
+        - RotaryEmbeddings: "zeta/nn/embeddings/rope.md"
       - zeta.nn.modules:
         - Lora: "zeta/nn/modules/lora.md"
         - TokenLearner: "zeta/nn/modules/token_learner.md"
