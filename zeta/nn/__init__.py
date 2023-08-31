@@ -28,11 +28,10 @@ from zeta.nn.embeddings.xpos_relative_position import XPOS, rotate_every_two, ap
 from zeta.nn.embeddings.multiway_network import MultiwayEmbedding, MultiwayNetwork, MultiwayWrapper
 from zeta.nn.embeddings.bnb_embedding import BnBEmbedding
 from zeta.nn.embeddings.base import BaseEmbedding
-
+from zeta.nn.embeddings.nominal_embeddings import NominalEmbedding
 
 # modules
 from zeta.nn.modules.lora import Lora
 from zeta.nn.modules.feedforward_network import FeedForwardNetwork
 from zeta.nn.modules.droppath import DropPath
 from zeta.nn.modules.token_learner import TokenLearner
-
