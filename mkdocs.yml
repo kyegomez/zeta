@@ -1,4 +1,4 @@
-site_name: Zeta Docs
+site_name: Package Docs
 plugins:
   - glightbox
   - search
@@ -25,13 +25,13 @@ theme:
     palette:
       # Palette toggle for light mode
     - scheme: default
-      primary: black
+      primary: 'custom'
       toggle:
         icon: material/brightness-7 
         name: Switch to dark mode
     # Palette toggle for dark mode
     - scheme: slate
-      primary: black
+      primary: 'custom'
       accent: light blue
       toggle:
         icon: material/brightness-4
@@ -44,6 +44,13 @@ theme:
         - navigation.expand
         - navigation.top
         - announce.dismiss
+    font:
+      text: Roboto
+      code: Roboto Mono
+
+extra_css:
+  - stylesheets/extra.css
+
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
@@ -58,6 +65,8 @@ markdown_extensions:
   - tables
   - def_list
   - footnotes
+
+
 nav:
 - Home:
     - Overview: "index.md"
