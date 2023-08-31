@@ -97,6 +97,8 @@ nav:
         - Transformer: "zeta/nn/architecture/transformer.md"
     - zeta.training:
       - train: "zeta/training/train.md"
+      - zeta.training.loss:
+        - Nebula: "zeta/training/nebula.md"
       - zeta.training.optimizers:
         - DecoupledLionW: "zeta/training/optimizers/decoupled_lion.md"
         - SophiaG: "zeta/training/optimizers/sophia.md"
