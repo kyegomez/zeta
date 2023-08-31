@@ -8,7 +8,7 @@ from lion_pytorch import Lion
 from torch.nn import LayerNorm
 from torch.optim import AdamW
 
-from zeta.training.optimizers.stable_adam import StableAdamWUnfused
+from zeta.optim.stable_adam import StableAdamWUnfused
 
 
 def decoupled_optimizer(
