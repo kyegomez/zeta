@@ -16,7 +16,8 @@ class AutoregressiveWrapper(nn.Module):
         net,
         ignore_index = -100,
         pad_value = 0,
-        mask_prob = 0.
+        mask_prob = 0.,
+        speculative = False
     ):
         super().__init__()
         self.pad_value = pad_value
@@ -41,6 +42,7 @@ class AutoregressiveWrapper(nn.Module):
         filter_thres = 0.9,
         min_p_pow = 2.0,
         min_p_ratio = 0.02,
+        gamma=5, #number of guesses for speculative decoding
         **kwargs
     ):
 
@@ -50,38 +52,90 @@ class AutoregressiveWrapper(nn.Module):
 
         out = start_tokens
 
-        for _ in range(seq_len):
-            x = out[:, -self.max_seq_len:]
+        if self.speculative:
+            for _ in range(seq_len):
+                x = out[:, -self.max_seq_len]
+                logits = self.net(x, **kwargs)[:, -1]
 
-            logits = self.net(x, **kwargs)[:, -1]
+                if filter_logits_fn in {top_k, top_p}:
+                    filtered_logits = filter_logits_fn(logits, thres=filter_thres)
+                    probs = F.softmax(filtered_logits / temperature, dim=-1)
+                elif filter_logits_fn is top_a:
+                    filtered_logits = filter_logits_fn(logits, min_p_pow=min_p_pow, min_p_ratio=min_p_ratio)
+                    probs = F.softmax(filtered_logits / temperature, dim=-1)
+                
+                #speculative decoding
+                guesses = torch.multinomial(probs, gamma, replacement=True)
 
-            if filter_logits_fn in {top_k, top_p}:
-                filtered_logits = filter_logits_fn(logits, thres = filter_thres)
-                probs = F.softmax(filtered_logits / temperature, dim=-1)
+                p_values = []
+                for guess in guesses:
+                    x_prime = torch.cat((x, guess.unsqueeze(0)), dim=1)
+                    logits_prime = self.net(x_prime, **kwargs)[:, -1]
+                    p_values.append(F.softmax(logits_prime / temperature, dim=-1))
+                
+                n = gamma
+                for i in range(gamma):
+                    ri = torch.rand(1).item()
+                    if ri > p_values[i][guesses[i].item()] / probs[guesses[i].item()]:
+                        n = i - 1
+                        break
+                
+                p_0 = p_values[n]
+                if n < gamma:
+                    q_n = probs[guesses[n].item()]
+                    p_0 = F.normalize(torch.clamp(p_0 - q_n, min=0), p=1, dim=0)
+                
+                sample = torch.multinomial(p_0, 1)
 
-            elif filter_logits_fn is top_a:
-                filtered_logits = filter_logits_fn(logits, min_p_pow = min_p_pow, min_p_ratio= min_p_ratio)
-                probs = F.softmax(filtered_logits / temperature, dim=-1)
+                out = torch.cat((out, sample), dim=-1)
 
-            sample = torch.multinomial(probs, 1)
 
-            out = torch.cat((out, sample), dim=-1)
+                if exists(eos_token):
+                    is_eos_tokens = (out == eos_token)
 
-            if exists(eos_token):
-                is_eos_tokens = (out == eos_token)
+                    if is_eos_tokens.any(dim = -1).all():
+                        # mask out everything after the eos tokens
+                        shifted_is_eos_tokens = F.pad(is_eos_tokens, (1, -1))
+                        mask = shifted_is_eos_tokens.float().cumsum(dim = -1) >= 1
+                        out = out.masked_fill(mask, self.pad_value)
+                        break
+        
+                out = out[:, t:]
+                out, = unpack(out, ps, '* n')
+                return out
+        else:
+            for _ in range(seq_len):
+                x = out[:, -self.max_seq_len:]
 
-                if is_eos_tokens.any(dim = -1).all():
-                    # mask out everything after the eos tokens
-                    shifted_is_eos_tokens = F.pad(is_eos_tokens, (1, -1))
-                    mask = shifted_is_eos_tokens.float().cumsum(dim = -1) >= 1
-                    out = out.masked_fill(mask, self.pad_value)
-                    break
+                logits = self.net(x, **kwargs)[:, -1]
 
-        out = out[:, t:]
+                if filter_logits_fn in {top_k, top_p}:
+                    filtered_logits = filter_logits_fn(logits, thres = filter_thres)
+                    probs = F.softmax(filtered_logits / temperature, dim=-1)
 
-        out, = unpack(out, ps, '* n')
+                elif filter_logits_fn is top_a:
+                    filtered_logits = filter_logits_fn(logits, min_p_pow = min_p_pow, min_p_ratio= min_p_ratio)
+                    probs = F.softmax(filtered_logits / temperature, dim=-1)
 
-        return out
+                sample = torch.multinomial(probs, 1)
+
+                out = torch.cat((out, sample), dim=-1)
+
+                if exists(eos_token):
+                    is_eos_tokens = (out == eos_token)
+
+                    if is_eos_tokens.any(dim = -1).all():
+                        # mask out everything after the eos tokens
+                        shifted_is_eos_tokens = F.pad(is_eos_tokens, (1, -1))
+                        mask = shifted_is_eos_tokens.float().cumsum(dim = -1) >= 1
+                        out = out.masked_fill(mask, self.pad_value)
+                        break
+
+            out = out[:, t:]
+
+            out, = unpack(out, ps, '* n')
+
+            return out
 
     def forward(self, x, return_loss=True, **kwargs):
         seq, ignore_index = x.shape[1], self.ignore_index
