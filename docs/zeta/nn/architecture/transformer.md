@@ -101,7 +101,7 @@ The method returns the output logits or embeddings based on the specified return
 Here are three usage examples of the `Transformer` class from the Zeta library:
 
 ```python
-from zeta import Transformer
+from zeta.nn import Transformer
 
 # Example 1: Basic Usage
 transformer = Transformer(
