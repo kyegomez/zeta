@@ -57,12 +57,11 @@ The `freqs` and `scale` tensors are then concatenated along the last dimension a
 #### Example 1: Basic Usage
 
 ```python
-from zeta import x
 import torch
 from torch import nn
 
 # Initialize the RotaryEmbedding module
-rotary_embedding = x.RotaryEmbedding(dim=64, use_xpos=True)
+rotary_embedding = RotaryEmbedding(dim=64, use_xpos=True)
 
 # Compute the embeddings for a sequence of length 10
 seq_len = 10
@@ -76,12 +75,11 @@ print(scale)
 #### Example 2: Using a Different Scale Base
 
 ```python
-from zeta import x
 import torch
 from torch import nn
 
 # Initialize the RotaryEmbedding module with a different scale base
-rotary_embedding = x.RotaryEmbedding(dim=64, use_xpos=True, scale_base=1024)
+rotary_embedding = RotaryEmbedding(dim=64, use_xpos=True, scale_base=1024)
 
 # Compute the embeddings for a sequence of length 10
 seq_len = 10
@@ -95,12 +93,11 @@ print(scale)
 #### Example 3: Without Positional Information
 
 ```python
-from zeta import x
 import torch
 from torch import nn
 
 # Initialize the RotaryEmbedding module without positional information
-rotary_embedding = x.RotaryEmbedding(dim=64, use_xpos=False)
+rotary_embedding = RotaryEmbedding(dim=64, use_xpos=False)
 
 # Compute the embeddings for a sequence of length 10
 seq_len = 10
@@ -139,7 +136,7 @@ Where:
 ## References and Resources
 
 - [Paper: Link to the paper](https://arxiv.org/pdf/2308.10882.pdf)
-- [PyTorch Documentation](https://pytorch.org/docs/stable/index.html)
+- [PyTorch Documentation](https://pytorch.org/docs/stable/indehtml)
 - [Einops Documentation](https://einops.rocks/pytorch-examples.html)
 
 Note: The above template includes the class definition, parameters, description, functionality, usage examples, mathematical formula, additional information and tips, and references and resources. To replicate the documentation for any other module or framework, follow the same structure and provide the specific details for that module or framework.
