@@ -1,47 +1,63 @@
 #from paper:: https://arxiv.org/pdf/2308.10882.pdf
 
-import torch 
+import torch
+from torch import nn
+from einops import rearrange
 
-class RoPE:
+def exists(val):
+    return val is not None
+
+class RotaryEmbedding(nn.Module):
     def __init__(
-            self,
-            d,
-            k=None,
-            a=None,
-            b=None,
-            rho=None
-    ):
-        self.d = d
-        self.k = k
-        self.a = a
+        self,
+        dim,
+        use_xpos=False,
+        scale_base=512,
+        interpolation_factor=1.,
+        base=10000,
+        base_rescale_factor=1.,
+        ):
+        super().__init__()
+        #rscal rotary embeddings to long sequence length without finetuning
+        base *= base_rescale_factor ** (dim / (dim - 2))
+
+        inv_freq = 1. / (base ** (torch.arange(0, dim, 2).float() / dim))
+        self.register_buffer('inv_freq', inv_freq)
+
+        assert interpolation_factor >= 1
+        self.interpolation_factor = interpolation_factor
+
+        if not use_xpos:
+            self.register_buffer('scale', None)
+            return
         
-        self.b = b
-        self.rho = rho
-    
-    def power_scaling_basis(self):
-        basis = torch.pow(10000 - 2 * torch.arange(self.d)[:, None] / self.d, 2 * 
-                          torch.arange(self.d)[None, :] / self.d)
-        modified_basis = (1 - 2 * torch.arange(self.d)[:, None] / 
-                          self.d).pow(self.k) * basis
-        return modified_basis
-    
-    def truncated_basis(self):
-        basis = torch.pow(10000 - 2 * torch.arange(self.d)[:, None] / self.d, 2 * 
-                          torch.arange(self.d)[None, :] / self.d)
-        modified_basis = torch.where(basis >= self.b, basis, torch.where(basis > self.a, self.rho, 0))
-        return modified_basis
-    
-#example usage
-d = 10
-k = 0.5
-a = 0.1
-b = 0.9
-rho = 0.01
+        scale = (torch.arange(0, dim, 2) + 0.4 * dim) / (1.4 * dim)
+        self.scale_base = scale_base
+        self.register_buffer('scale', scale)
 
-rope_power_scaling = RoPE(d=d, k=k)
-modified_basis_power_scaling = rope_power_scaling.power_scaling_basis()
-print(modified_basis_power_scaling)
+    def forward(self, seq_len, device):
+        t = torch.arange(seq_len, device=device).type_as(self.inv_freq)
+        t = t / self.interpolation_factor
 
-rope_truncated = RoPE(d=d, a=a, b=b, rho=rho)
-modified_basis_truncated = rope_truncated.truncated_basis()
-print(modified_basis_truncated)
+        freqs = torch.einsum('i, j -> i j', t, self.inv_freq)
+        freqs = torch.cat((freqs, freqs), dim=-1)
+
+        if not exists(self.scale):
+            return freqs, 1.
+        
+        power = (torch.arange(seq_len, device=device) - (seq_len // 2)) / self.scale_base
+        scale = self.scale ** rearrange(power, 'n -> n 1')
+        scale = torch.cat((scale, scale), dim=-1)
+
+        return freqs, scale
+    
+def rotate_half(x):
+    x = rearrange(x, '... (j d) -> ... j d', j=2)
+    x1, x2 = x.unbind(dim=-1)
+    return torch.cat((-x2, x1), dim=-1)
+
+def apply_rotary_pos_emb(t, freqs, scale=1):
+    seq_len = t.shape[-2]
+    freqs = freqs[-seq_len:, :]
+    return (t * freqs.cos() * scale) + (rotate_half(t) * freqs.sin() * scale)
+
