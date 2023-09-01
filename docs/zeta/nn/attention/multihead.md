@@ -15,7 +15,7 @@ The `MultiheadAttention` class extends from the `nn.Module` base class. Internal
 ## Class Definition
 
 ```python
-class zeta.nn.embeddings.MultiheadAttention(nn.Module):
+class zeta.nn.MultiheadAttention(nn.Module):
 ```
 
 ### Parameters:
@@ -58,7 +58,7 @@ Where \( d_k \) is the dimension of the key.
 ### Example 1: Basic Usage
 
 ```python
-from zeta.nn.embeddings import MultiheadAttention
+from zeta.nn import MultiheadAttention
 import torch
 
 args = ...  # Some configuration
@@ -73,7 +73,7 @@ attn, attn_weights = attention(query, key, value)
 ### Example 2: With Masking
 
 ```python
-from zeta.nn.embeddings import MultiheadAttention
+from zeta.nn import MultiheadAttention
 import torch
 
 args = ...  # Some configuration
@@ -89,7 +89,7 @@ attn, attn_weights = attention(query, key, value, attn_mask=attn_mask)
 ### Example 3: Encoder-Decoder Attention
 
 ```python
-from zeta.nn.embeddings import MultiheadAttention
+from zeta.nn import MultiheadAttention
 import torch
 
 args = ...  # Some configuration
