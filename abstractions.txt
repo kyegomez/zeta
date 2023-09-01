@@ -1,0 +1,6 @@
+1st level of abstraction: pytorch -> math operations like sin and cos and pre_softmax_attn
+
+2nd level of abstraction: zeta -> Grouped math ops (ultimate easy to use, radical emphasis on user)
+
+3nd level of abstraction: Lavis and Transformers by HF (pretraind/inference level/finetuning/ NOT PRETRAINING)
+

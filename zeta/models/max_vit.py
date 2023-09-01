@@ -1,9 +1,15 @@
-import torch
-from einops import Rearrange
+from typing import Callable, Optional, Tuple, List
+
+from beartype import beartype
+from einops import Rearrange, Reduce
 from torch import nn
 
-from zeta.nn.modules.mbconv import MBConv, Residual
+from zeta.nn.architecture.transformer import FeedForward
 from zeta.nn.attention.attend import Attend
+from zeta.nn.modules.mbconv import MBConv, Residual
+from zeta.utils.helpers import default, exists
+from zeta.utils.tensor_helpers import LayerNorm
+
 
 class MaxVit(nn.Module):
     def __init__(
@@ -84,5 +90,49 @@ class MaxVit(nn.Module):
                             dim_head=dim_head, 
                             dropout=dropout
                         )
-                    )
+                    ),
+                    Residual(
+                        FeedForward(
+                            dim=layer_dim,
+                            dropout=dropout
+                        )
+                    ),
+                    
+                    Rearrange('b x y w1 w2 d -> b d (w1 x) (w2 y)')
                 )
+
+                self.layers.append(block)
+        
+        embed_dim = dims[-1]
+        self.embed_dim = dims[-1]
+
+        self.mlp_head = nn.Sequential(
+            Reduce('b d h w -> b d', 'mean'),
+            LayerNorm,
+            nn.Linear(embed_dim, num_classes)
+        )
+
+    @beartype
+    def forward(
+        self,
+        x,
+        texts: Optional[List[str]] = None,
+        cond_fns: Optional[Tuple[Callable, ...]] = None,
+        cond_drop_prob = 0.,
+        return_embeddings=False
+    ):
+        x = self.conv_stem(x)
+
+        if not exists(cond_fns):
+            cond_fns = (None,) * len(self.layers)
+
+        for stage, cond_fn in zip(self.layers, cond_fns):
+            if exists(cond_fn):
+                x = cond_fn(x)
+            
+            x = stage(x)
+
+        if return_embeddings:
+            return x
+        
+        return self.mlp_head(x)
