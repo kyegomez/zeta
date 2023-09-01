@@ -12,7 +12,6 @@ class LLama2:
         heads=24,
         rotary_xpos=True,
         attn_flash=True, 
-        rmsnorm=False
     ):
         super().__init__()
 
@@ -24,8 +23,7 @@ class LLama2:
                 depth=depth,
                 dim_head=dim_head,
                 heads=heads,
-                rmsnorm=True,
-                attn_flash=True,
+                attn_flash=attn_flash,
                 rotary_xpos=rotary_xpos
             )
         )
