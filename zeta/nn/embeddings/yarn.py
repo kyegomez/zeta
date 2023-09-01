@@ -60,13 +60,13 @@ class LLamaDynamicYarnScaledRotaryEmbedding(nn.Module):
     def __init__(
             self,
             dim,
-            max_position_embeddings=2048,
-            base=10000,
-            original_max_position_embeddings=2048,
-            extrapolation_factor=1,
-            attn_factor=1,
-            beta_fast=32,
-            beta_slow=1,
+            max_position_embeddings: int = 2048,
+            base: int = 10000,
+            original_max_position_embeddings: int = 2048,
+            extrapolation_factor: int = 1,
+            attn_factor: int =1,
+            beta_fast: int = 32,
+            beta_slow: int = 1,
             finetuned=False,
             device=None
     ):
