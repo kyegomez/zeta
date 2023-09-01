@@ -22,4 +22,5 @@ class MultiGroupQueryAttention(nn.Module):
         self.device = device
         self.kv_heads = kv_heads
 
-        self
+    def forward(self):
+        pass
