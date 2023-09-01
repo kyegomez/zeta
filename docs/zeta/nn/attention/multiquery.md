@@ -63,7 +63,7 @@ def forward(
 
 1. Basic Usage:
 ```python
-from zeta import MultiQueryAttention
+from zeta.nn import MultiQueryAttention
 import torch
 
 # Initialize the attention module

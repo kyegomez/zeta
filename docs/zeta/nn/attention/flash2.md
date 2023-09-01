@@ -75,7 +75,7 @@ Performs the forward pass of the attention mechanism.
 
 ```python
 from torch import nn
-from zeta import FlashAttentionTwo
+from zeta.nn import FlashAttentionTwo
 
 model = FlashAttentionTwo(dim=512)
 x = torch.randn(1, 10, 512)
@@ -88,7 +88,7 @@ Copy code
 
 ```python
 from torch import nn
-from zeta import FlashAttentionTwo
+from zeta.nn import FlashAttentionTwo
 
 model = FlashAttentionTwo(dim=512)
 x = torch.randn(1, 10, 512)
@@ -102,7 +102,7 @@ out = model(x, mask=mask)
 
 ```python
 from torch import nn
-from zeta import FlashAttentionTwo
+from zeta.nn import FlashAttentionTwo
 
 model = FlashAttentionTwo(dim=512)
 x = torch.randn(1, 10, 512)
