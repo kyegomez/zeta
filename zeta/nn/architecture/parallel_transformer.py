@@ -4,6 +4,8 @@ import torch.nn.functional as F
 
 from einops import rearrange
 
+from zeta.nn.attention.attend import Attend as Attention
+
 # functions and decorators
 
 def exists(val):
