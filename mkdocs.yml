@@ -19,7 +19,7 @@ extra:
   #   property: G-QM8EDPSCB6
   social:
     - icon: fontawesome/solid/house
-      link: assets/img/ZetaLogoIcon.png
+      link: assets/img/zeta-logo.png
     - icon: fontawesome/brands/discord
       link: https://discord.gg/qUtxnK2NMf
     - icon: fontawesome/brands/github
@@ -29,7 +29,7 @@ extra:
 theme:
     name: material
     custom_dir: docs/overrides
-    logo: assets/img/ZetaLogoIcon.png
+    logo: assets/img/zeta-logo.png
     palette:
       # Palette toggle for light mode
     - scheme: default
