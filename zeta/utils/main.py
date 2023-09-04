@@ -730,3 +730,38 @@ def init_bert_params(module):
             normal_(module.q_proj.weight.data)
             normal_(module.k_proj.weight.data)
             normal_(module.v_proj.weight.data)
+
+
+
+######
+def pad_to_multiple(
+    tensor,
+    multiple,
+    dim=-1,
+    value=0
+):
+    seqlen = tensor.shape[dim]
+    m = seqlen / multiple
+    if m.is_integer():
+        return False, tensor
+    remainder = math.ceil(m) * multiple - seqlen
+    pad_offset = (0,) * (-1 - dim) * 2
+    return True, F.pad(tensor, (*pad_offset, 0, remainder), value=value)
+
+def look_around(
+    x,
+    backward=1,
+    forward=0,
+    pad_value=-1,
+    dim=2
+):
+    t = x.shape[1]
+    dims = (len(x.shape) - dim) * (0, 0)
+    padded_x = F.pad(
+        x, 
+        (*dims, backward, forward),
+        value=pad_value
+    )
+
+    tensors = [padded_x[:, ind:(ind + t), ...] for ind in range(forward + backward + 1)]
+    return torch.cat(tensors, dim=dim)
