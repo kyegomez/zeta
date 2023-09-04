@@ -126,6 +126,8 @@ nav:
         - MultiModalTokenizer: "zeta/tokenizers/multi_modal_tokenizer.md"
         - LanguageTokenizerGPTX: "zeta/tokenizers/language_tokenizer.md"
         - SentencePieceTokenizer: "zeta/tokenizers/sentencepiece.md"
+    - zeta.utils:
+      - main: "zeta/utils/main.md"
 - Examples:
     - Overview: "examples/index.md"
     - FlashAttention: "examples/nn/attentions/flash.md"
