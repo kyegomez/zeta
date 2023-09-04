@@ -7,7 +7,7 @@ from torch import nn
 from zeta.nn.architecture.transformer import FeedForward
 from zeta.nn.attention.attend import Attend
 from zeta.nn.modules.mbconv import MBConv, Residual
-from zeta.utils.helpers import default, exists
+from zeta.utils.main import default, exists
 from zeta.utils.tensor_helpers import LayerNorm
 
 

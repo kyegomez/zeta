@@ -8,7 +8,7 @@ from abc import ABC, abstractmethod
 import bitsandbytes as bnb
 
 from zeta.utils.tensor_helpers import l2norm
-from zeta.utils.helpers import exists
+from zeta.utils.main import exists
 
 
 class BaseEmbedding(ABC):
