@@ -15,7 +15,7 @@ Zeta’s design philosophy is based on the following tenets:
 Install **zeta**
 
 ```
-pip3 install zeta 
+pip3 install zetascale
 ```
 
 ## Unleash FlashAttention
