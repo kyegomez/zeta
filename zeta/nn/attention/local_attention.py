@@ -16,7 +16,6 @@ class LocalAttention(nn.Module):
     The LocalAttention module provides a mechanism to perform local attention operations. 
     Unlike global attention where every token can attend to every other token, in local attention each token can only attend to a subset of tokens within a defined window. This reduces the computational cost and captures the local structure in sequences like text or time-series data.
 
-    
     window_size: (int) The size of the attention window.
 
     causal: (bool, optional) If set to True, ensures causal attention. Default: False.
@@ -44,8 +43,6 @@ class LocalAttention(nn.Module):
     use_xpos: (bool, optional) If set to True, allows for extrapolation of window sizes. Requires use_rotary_pos_emb to be True. Default: False.
 
     xpos_scale_base: (Optional) Base scaling factor for extrapolated window sizes.
-        
-    
     """
     def __init__(
         self,

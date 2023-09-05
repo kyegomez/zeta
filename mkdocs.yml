@@ -113,6 +113,7 @@ nav:
         - FlashAttentionTwo: "zeta/nn/attention/flash2.md"
         - BaseAttention: "zeta/nn/attention/base.md"
         - LocalAttention: "zeta/nn/attention/local.md"
+        - LocalMHA: "zeta/nn/attention/localmha.md"
       - zeta.nn.architecture:
         - Decoder: "zeta/nn/architecture/decoder.md"
         - Transformer: "zeta/nn/architecture/transformer.md"
