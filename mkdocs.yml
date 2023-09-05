@@ -99,6 +99,7 @@ nav:
         - Xpos: "zeta/nn/biases/xpos.md"
         - RelativePositionBias: "zeta/nn/biases/relative_bias.md"
         - AlibiPositionalBias: "zeta/nn/biases/alibi.md"
+        - DynamicPositionBias: "zeta/nn/biases/dynamic.md"
       - zeta.nn.embeddings:
         - MultiWay: "zeta/nn/embeddings/multiway.md"
         - RotaryEmbeddings: "zeta/nn/embeddings/rope.md"
