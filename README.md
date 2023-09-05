@@ -52,8 +52,10 @@ print(output.shape)
 # Documentation
 [Click here for the documentation, it's at zeta.apac.ai](https://zeta.apac.ai)
 
-## Acknowledgments
+# Vision
+Zeta hopes to be the leading framework and library to effortlessly enable you to create the most capable and reliable foundation models out there with infinite scalability.
 
+## Acknowledgments
 Zeta is a masterpiece inspired by LucidRains's repositories and elements of [FairSeq](https://github.com/facebookresearch/fairseq) and [UniLM](https://github.com/kyegomez/unilm).
 
 
