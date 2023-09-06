@@ -3,7 +3,7 @@
 
 
 # attention
-from zeta.nn.architecture.transformer import Transformer
+# from zeta.nn.architecture.transformer import Transformer
 from zeta.nn.architecture.local_transformer import LocalTransformer
 from zeta.nn.architecture.parallel_transformer import ParallelTransformerBlock
 from zeta.nn.architecture.auto_regressive_wrapper import AutoregressiveWrapper
@@ -19,15 +19,6 @@ from zeta.nn.attention.multihead_attention import MultiheadAttention
 from zeta.nn.attention.flash_attention2 import FlashAttentionTwo
 from zeta.nn.attention.local_attention import LocalAttention
 from zeta.nn.attention.local_attention_mha import LocalMHA
-
-
-
-
-
-#utils
-from zeta.utils.main import *
-from zeta.utils.main import *
-from zeta.utils.main import *
 
 
 
