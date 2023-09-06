@@ -2,7 +2,7 @@ import torch
 from torch import nn, einsum
 from einops import rearrange, repeat, pack, unpack
 from zeta.nn.embeddings.sinusoidal import SinusoidalEmbeddings, apply_rotary_pos_emb
-from zeta.utils.main import exists, default, pad_to_multiple, l2norm, look_around, max_neg_value
+from zeta.utils.main import exists, default, pad_to_multiple, l2norm, look_around, max_neg_values
 
 #constant
 TOKEN_SELF_ATTN_VALUE = -5e4
@@ -196,7 +196,7 @@ class LocalAttention(nn.Module):
             attn_bias = repeat(attn_bias, 'h i j -> (b h) 1 i j', b = b // heads)
             sim = sim + attn_bias
 
-        mask_value = max_neg_value(sim)
+        mask_value = max_neg_values(sim)
 
         if shared_qk:
             self_mask = bq_t == bq_k
