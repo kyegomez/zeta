@@ -21,8 +21,7 @@ datasets
 lion-pytorch 
 sentencepiece
 
-
-
+vector-quantize-pytorch>=1.1.5
 
 mkdocs
 mkdocs-material

@@ -765,3 +765,21 @@ def look_around(
 
     tensors = [padded_x[:, ind:(ind + t), ...] for ind in range(forward + backward + 1)]
     return torch.cat(tensors, dim=dim)
+
+
+
+
+####
+
+def is_power_of_two(n):
+    return math.log2(n).is_integer()
+
+def all_unique(arr):
+    return len(set(arr)) == len(arr)
+
+def apply_fns(fns, tensors):
+    return [fn(tensors) for fn, tensor in zip(fns, tensors)]
+
+def cast_tuple(t, length=1):
+    return t if isinstance(t, tuple) else((t,) * length)
+
