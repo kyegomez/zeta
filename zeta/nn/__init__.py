@@ -44,7 +44,10 @@ from zeta.nn.modules.feedforward_network import FeedForwardNetwork
 # modules
 from zeta.nn.modules.lora import Lora
 from zeta.nn.modules.token_learner import TokenLearner
+from zeta.nn.modules.dynamic_module import DynamicModule
 
 
 from zeta.nn.architecture.hierarchical_transformer import HierarchicalTransformer
+
+
 
