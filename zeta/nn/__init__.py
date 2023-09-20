@@ -1,5 +1,3 @@
-# Copyright (c) 2022 Agora
-# Licensed under The MIT License [see LICENSE for details]
 
 
 # attention
@@ -12,24 +10,14 @@ from zeta.nn.architecture.transformer import (
     Transformer,
     ViTransformerWrapper,
 )
+
+######### Attention
 from zeta.nn.attention.flash_attention2 import FlashAttentionTwo
 from zeta.nn.attention.local_attention import LocalAttention
 from zeta.nn.attention.local_attention_mha import LocalMHA
-
-# from zeta.nn.attention.cross_attention import CrossAttend
 from zeta.nn.attention.multihead_attention import MultiheadAttention
-
-# from zeta.nn.architecture.cross_attender import CrossAttender
-######### Attention
 from zeta.nn.attention.multiquery_attention import MultiQueryAttention
-from zeta.nn.embeddings.base import BaseEmbedding
-from zeta.nn.embeddings.bnb_embedding import BnBEmbedding
-from zeta.nn.embeddings.multiway_network import (
-    MultiwayEmbedding,
-    MultiwayNetwork,
-    MultiwayWrapper,
-)
-from zeta.nn.embeddings.nominal_embeddings import NominalEmbedding
+
 
 # embeddings
 from zeta.nn.embeddings.rope import RotaryEmbedding
@@ -38,16 +26,30 @@ from zeta.nn.embeddings.xpos_relative_position import (
     apply_rotary_pos_emb,
     rotate_every_two,
 )
-from zeta.nn.modules.droppath import DropPath
-from zeta.nn.modules.feedforward_network import FeedForwardNetwork
+from zeta.nn.embeddings.base import BaseEmbedding
+from zeta.nn.embeddings.bnb_embedding import BnBEmbedding
+from zeta.nn.embeddings.multiway_network import (
+    MultiwayEmbedding,
+    MultiwayNetwork,
+    MultiwayWrapper,
+)
+
+from zeta.nn.embeddings.nominal_embeddings import NominalEmbedding
+
+
+
+
+
 
 # modules
 from zeta.nn.modules.lora import Lora
 from zeta.nn.modules.token_learner import TokenLearner
 from zeta.nn.modules.dynamic_module import DynamicModule
-
-
-from zeta.nn.architecture.hierarchical_transformer import HierarchicalTransformer
-
-
+from zeta.nn.modules.droppath import DropPath
+from zeta.nn.modules.feedforward_network import FeedForwardNetwork
+from zeta.nn.modules.layernorm import LayerNorm, l2norm
+from zeta.nn.modules.positional_embedding import PositionalEmbedding
+from zeta.nn.modules.relative_positional_embedding import RelativePositionalEmbedding
+from zeta.nn.modules.residual import Residual
+from zeta.nn.modules.mlp import MLP
 
