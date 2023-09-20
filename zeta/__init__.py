@@ -21,6 +21,7 @@ from zeta.nn.attention.flash_attention2 import FlashAttentionTwo
 
 # from zeta.nn.attention.cross_attention import CrossAttend
 from zeta.nn.attention.multihead_attention import MultiheadAttention
+from zeta.nn.attention.cross_attention import CrossAttention
 
 # from zeta.nn.architecture.attn_layers import AttentionLayers
 # from zeta.nn.architecture.encoder import Encoder
@@ -39,3 +40,10 @@ from zeta.training.loss.nebula import Nebula
 
 #train 
 from zeta.training.train import Trainer, train
+
+#modules
+from zeta.nn.modules.lora import Lora
+from zeta.nn.modules.layernorm import LayerNorm, l2norm
+from zeta.nn.modules.positional_embedding import PositionalEmbedding
+from zeta.nn.modules.relative_positional_embedding import RelativePositionalEmbedding
+from zeta.nn.modules.residual import Residual
