@@ -1,6 +1,6 @@
 
 
-# attention
+# architecture
 from zeta.nn.architecture.auto_regressive_wrapper import AutoregressiveWrapper
 from zeta.nn.architecture.local_transformer import LocalTransformer
 from zeta.nn.architecture.parallel_transformer import ParallelTransformerBlock
@@ -17,7 +17,7 @@ from zeta.nn.attention.local_attention import LocalAttention
 from zeta.nn.attention.local_attention_mha import LocalMHA
 from zeta.nn.attention.multihead_attention import MultiheadAttention
 from zeta.nn.attention.multiquery_attention import MultiQueryAttention
-
+from zeta.nn.attention.cross_attention import CrossAttention
 
 # embeddings
 from zeta.nn.embeddings.rope import RotaryEmbedding
@@ -35,10 +35,6 @@ from zeta.nn.embeddings.multiway_network import (
 )
 
 from zeta.nn.embeddings.nominal_embeddings import NominalEmbedding
-
-
-
-
 
 
 # modules
