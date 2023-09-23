@@ -135,6 +135,8 @@ nav:
         - SentencePieceTokenizer: "zeta/tokenizers/sentencepiece.md"
     - zeta.utils:
       - main: "zeta/utils/main.md"
+    - zeta.ops:
+      - main: "zeta/ops/main.md"
 - Examples:
     - Overview: "examples/index.md"
     - FlashAttention: "examples/nn/attentions/flash.md"
