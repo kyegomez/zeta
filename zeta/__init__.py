@@ -1,3 +1,5 @@
+from zeta.zeta import zeta
+print(zeta)
 
 #architecture
 from zeta.models import *
