@@ -25,7 +25,7 @@
 
 ### 1. Introduction <a name="introduction"></a>
 
-Welcome to the zeta documentation! zeta is a Python library designed to handle matrix operations related to matrix inverse root computation and other related tasks. It provides functionality for computing matrix inverse roots, working with diagonal matrices, performing eigen decomposition, and more.
+Welcome to the `zeta.ops` documentation! `zeta.ops` is a Python library designed to handle matrix operations related to matrix inverse root computation and other related tasks. It provides functionality for computing matrix inverse roots, working with diagonal matrices, performing eigen decomposition, and more.
 
 This documentation will guide you through the installation process, provide an overview of the module, and explain the various functions and their usage with examples.
 
@@ -34,14 +34,14 @@ This documentation will guide you through the installation process, provide an o
 You can install zeta using the Python package manager pip:
 
 ```bash
-pip install zetaSCALE
+pip install zetascale
 ```
 
 Once installed, you can import the library in your Python scripts and start using its functionality.
 
 ### 3. Module Overview <a name="module-overview"></a>
 
-zeta primarily focuses on matrix operations and computations related to matrix inverse roots. Here are some key features of the zeta library:
+`zeta.ops` primarily focuses on matrix operations and computations related to matrix inverse roots. Here are some key features of the zeta library:
 
 - Computing matrix inverse roots of square symmetric positive definite matrices.
 - Handling diagonal matrices efficiently.
