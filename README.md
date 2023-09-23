@@ -3,6 +3,14 @@
 # Zeta - Seamlessly Create Zetascale Transformers
 
 
+               __          
+________ _____/  |______   
+\___   // __ \   __\__  \  
+ /    /\  ___/|  |  / __ \_
+/_____ \\___  >__| (____  /
+      \/    \/          \/ 
+
+
 [![Docs](https://readthedocs.org/projects/zeta/badge/)](https://zeta.readthedocs.io)
 
 <p>
