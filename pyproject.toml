@@ -34,6 +34,7 @@ lion-pytorch = "*"
 sentencepiece = "*"
 colt5-attention = "0.10.14"
 vector-quantize-pytorch = "1.1.5"
+tokenmonster = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
