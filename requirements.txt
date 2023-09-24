@@ -15,7 +15,7 @@ einops-exts
 
 torchvision
 
-
+tokenmonster
 accelerate 
 datasets 
 lion-pytorch 
