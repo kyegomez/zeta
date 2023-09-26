@@ -9,7 +9,7 @@ from zeta.nn.modules.layernorm import LayerNorm
 from zeta.utils.main import exists, l2norm
 
 
-class ParallelTransformerBlock(nn.Module):
+class TransformerBloc(nn.Module):
     def __init__(
         self,
         dim,

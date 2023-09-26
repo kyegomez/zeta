@@ -1,13 +1,11 @@
 import math
-import torch 
-from torch import nn, Tensor
+
+import torch
 import torch.nn.functional as F
+from einops import rearrange
+from torch import Tensor, nn
 
 from zeta.nn.biases.base import BaseBias
-
-from einops import rearrange
-
-
 
 ######## Helpers
 
