@@ -101,22 +101,30 @@ The method returns the output logits or embeddings based on the specified return
 Here are three usage examples of the `Transformer` class from the Zeta library:
 
 ```python
-from zeta.nn import Transformer
+import torch
+from zeta.nn import Transformer, Decoder
+
+logits = torch.randint(0, 256, (1, 1024))
 
 # Example 1: Basic Usage
 transformer = Transformer(
-    num_tokens=10000,
-    max_seq_len=256,
-    attn_layers=attn_layers_instance,
-    embedding_provider=embedding_provider_instance
+    num_tokens=20000,
+    max_seq_len=1024,
+    attn_layers=Decoder(
+        dim = 512,
+        depth=12,
+        heads=8
+    ),
 )
-logits = transformer(input_tokens)
 
-# Example 2: Return Embeddings
-embeddings = transformer(input_tokens, return_embeddings=True)
+logits = transformer(logits)
+print(logits)
 
-# Example 3: Return Intermediate Attention Maps
-logits, attn_maps = transformer(input_tokens, return_attn=True)
+# # Example 2: Return Embeddings
+# embeddings = transformer(input_tokens, return_embeddings=True)
+
+# # Example 3: Return Intermediate Attention Maps
+# logits, attn_maps = transformer(input_tokens, return_attn=True)
 ```
 
 In these examples, replace `attn_layers_instance` and `embedding_provider_instance` with actual instances of `AttentionLayers` and `BaseEmbedding`, respectively, and `input_tokens` with your input tensor containing token indices.
