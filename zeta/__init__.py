@@ -3,27 +3,28 @@ print(zeta)
 
 
 #nn
-from zeta.nn import *
+import zeta.nn
+
 
 #models
-from zeta.models import *
+import zeta.models
 
 
 #utils
-from zeta.utils import *
+import zeta.utils
 
 
 #training
-from zeta.training import *
+import zeta.training
 
 #tokenizers
-from zeta.tokenizers import *
+import zeta.tokenizers
 
 #rl
-from zeta.rl import *
+import zeta.rl
 
 #optim
-from zeta.optim import *
+import zeta.optim
 
 #ops
-from zeta.ops import *
+import zeta.ops

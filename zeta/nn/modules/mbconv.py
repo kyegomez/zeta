@@ -1,6 +1,6 @@
 import torch 
 from torch import nn
-from einops import Reduce, Rearrange
+from einops import reduce, rearrange
 
 
 class DropSample(nn.Module):
@@ -22,15 +22,15 @@ class DropSample(nn.Module):
 
 class SqueezeExcitation(nn.Module):
     def __init__(
-            self,
-            dim,
-            shrinkage_rate=0.25
+        self,
+        dim,
+        shrinkage_rate=0.25
     ):
         super().__init__()
         hidden_dim = int(dim * shrinkage_rate)
 
         self.gate = nn.Sequential(
-            Reduce('b c h w -> b c', 'mean'),
+            reduce('b c h w -> b c', 'mean'),
             nn.Linear(
                 dim,
                 hidden_dim,
@@ -43,7 +43,7 @@ class SqueezeExcitation(nn.Module):
                 bias=False
             ),
             nn.Sigmoid(),
-            Rearrange('b c -> b c 11')
+            rearrange('b c -> b c 11')
         )
     
     def forward(self, x):
@@ -53,9 +53,9 @@ class SqueezeExcitation(nn.Module):
 
 class MBConvResidual(nn.Module):
     def __init__(
-            self,
-            fn,
-            dropout=0.
+        self,
+        fn,
+        dropout=0.
     ):
         super().__init__()
         self.fn = fn
@@ -68,13 +68,13 @@ class MBConvResidual(nn.Module):
     
 
 def MBConv(
-        dim_in,
-        dim_out,
-        *,
-        downsample,
-        expansion_rate=4,
-        shrinkage_rate=0.25,
-        dropout=0.
+    dim_in,
+    dim_out,
+    *,
+    downsample,
+    expansion_rate=4,
+    shrinkage_rate=0.25,
+    dropout=0.
 ):
     hidden_dim = int(expansion_rate * dim_out)
     stride = 2 if downsample else 1

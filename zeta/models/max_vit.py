@@ -1,30 +1,31 @@
 from typing import Callable, Optional, Tuple, List
 
 from beartype import beartype
-from einops import Rearrange, Reduce
+from einops.layers.torch import Rearrange, Reduce
 from torch import nn
 
-from zeta.nn.architecture.transformer import FeedForward
+from zeta.nn.architecture.transformer import FeedForward, Residual
 from zeta.nn.attention.attend import Attend
-from zeta.nn.modules.mbconv import MBConv, Residual
+from zeta.nn.modules.layernorm import LayerNorm
+from zeta.nn.modules.mbconv import MBConv
 from zeta.utils.main import default, exists
-from zeta.utils.tensor_helpers import LayerNorm
+
 
 
 class MaxVit(nn.Module):
     def __init__(
-            self,
-            *,
-            num_classes,
-            dim,
-            depth,
-            dim_head: int = 32,
-            dim_conv_stem = None,
-            window_size: int = 7,
-            mbconv_expansion_rate: int = 4,
-            mbconv_shrinkage_rate = 0.25,
-            dropout = 0.01,
-            channels = 3
+        self,
+        *,
+        num_classes,
+        dim,
+        depth,
+        dim_head: int = 32,
+        dim_conv_stem = None,
+        window_size: int = 7,
+        mbconv_expansion_rate: int = 4,
+        mbconv_shrinkage_rate = 0.25,
+        dropout = 0.01,
+        channels = 3
     ):
         super().__init__()
         assert isinstance(depth, tuple), "depth needs to be tuple of integers indicating number of transformer blocks at that stage"

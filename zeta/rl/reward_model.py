@@ -3,7 +3,7 @@ from pathlib import Path
 
 import torch
 import torch.nn.functional as F
-from beartype import beatype
+from beartype import beartype
 from einops import rearrange, repeat
 from einops.layers.torch import Rearrange
 from torch import nn
@@ -38,7 +38,7 @@ def masked_mean(seq, mask=None, dim=1, keepdim=False):
 
 
 
-@beatype
+@beartype
 class RewardModel(nn.Module):
     def __init__(
             self,

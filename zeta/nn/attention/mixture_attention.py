@@ -6,7 +6,7 @@ from torch import Tensor, nn, einsum
 from typing import Tuple, Optional
 from einops import rearrange, repeat, reduce, pack, unpack
 from zeta.models.vit import exists
-from zeta.nn.architecture.attn_layers import RMSNorm, apply_rotary_pos_emb
+from zeta.nn.architecture.transformer import RMSNorm, apply_rotary_pos_emb
 
 from zeta.nn.attention.attend import Attend
 from zeta.nn.attention.local_attention_mha import LocalMHA
