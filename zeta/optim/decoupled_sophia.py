@@ -1,16 +1,26 @@
+from typing import List
+
 import torch
 from torch import Tensor
 from torch.optim.optimizer import Optimizer
-from typing import List
 
 
 class SophiaG(Optimizer):
     """
     SophiaG optimizer class.
     """
-    def __init__(self, params, lr=1e-4, betas=(0.965, 0.99), rho = 0.04,
-         weight_decay=1e-1, *, maximize: bool = False,
-         capturable: bool = False, dynamic: bool = False):
+    def __init__(
+        self, 
+        params, 
+        lr=1e-4, 
+        betas=(0.965, 0.99), 
+        rho = 0.04,
+        weight_decay=1e-1, 
+        *, 
+        maximize: bool = False,
+        capturable: bool = False, 
+        dynamic: bool = False
+    ):
         """
         Initialize the optimizer.
         """

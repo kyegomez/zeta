@@ -2,7 +2,11 @@ import torch
 from torch import nn
 
 class VisionLanguageEmbedding(nn.Module):
-    def __init__(self, text_embed, vision_embed):
+    def __init__(
+            self, 
+            text_embed, 
+            vision_embed
+        ):
         super().__init__()
         self.text_embed = text_embed
         self.vision_embed = vision_embed

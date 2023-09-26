@@ -16,7 +16,7 @@ class RotaryEmbedding(nn.Module):
         interpolation_factor=1.,
         base=10000,
         base_rescale_factor=1.,
-        ):
+    ):
         super().__init__()
         #rscal rotary embeddings to long sequence length without finetuning
         base *= base_rescale_factor ** (dim / (dim - 2))

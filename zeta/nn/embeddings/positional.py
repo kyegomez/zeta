@@ -1,6 +1,7 @@
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
+
 
 class PositionalEmbedding(nn.Embedding):
     def forward(
@@ -14,6 +15,7 @@ class PositionalEmbedding(nn.Embedding):
             positions = (
                 torch.arange(2, x.size(1) + 2, device=x.device).long().unsqueeze(0)
             )
+            
         return F.embedding(
             positions,
             self.weight,

@@ -1,13 +1,13 @@
 import torch
-from torch import nn 
+from torch import nn
 
+from zeta.nn.architecture.auto_regressive_wrapper import AutoregressiveWrapper
 from zeta.nn.architecture.transformer import (
     Decoder,
     Encoder,
     Transformer,
     ViTransformerWrapper,
 )
-from zeta.nn.architecture.auto_regressive_wrapper import AutoregressiveWrapper
 
 
 class GPT4(nn.Module):
@@ -35,23 +35,24 @@ class GPT4(nn.Module):
         - attn_qk_norm_dim_scale: Attention query-key normalization dimension scale
         - embedding_provider: Embedding provider module
     """
-    def __init__(self, 
-                 num_tokens=50432, 
-                 max_seq_len=8192, 
-                 dim=2560, 
-                 depth=32, 
-                 dim_head=128, 
-                 heads=24,
-                 use_abs_pos_emb=False, 
-                 alibi_pos_bias=True, 
-                 alibi_num_heads=12, 
-                 rotary_xpos=True,
-                 attn_flash=True, 
-                 attn_one_kv_head=True,  # multiquery attention
-                 qk_norm=True, 
-                 attn_qk_norm=True, 
-                 attn_qk_norm_dim_scale=True,
-                 ):
+    def __init__(
+            self, 
+            num_tokens=50432, 
+            max_seq_len=8192, 
+            dim=2560, 
+            depth=32, 
+            dim_head=128, 
+            heads=24,
+            use_abs_pos_emb=False, 
+            alibi_pos_bias=True, 
+            alibi_num_heads=12, 
+            rotary_xpos=True,
+            attn_flash=True, 
+            attn_one_kv_head=True,  # multiquery attention
+            qk_norm=True, 
+            attn_qk_norm=True, 
+            attn_qk_norm_dim_scale=True,
+        ):
         super().__init__()
 
         try:

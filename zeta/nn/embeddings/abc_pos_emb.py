@@ -4,7 +4,12 @@ from torch import nn
 from zeta.utils.main import exists, l2norm
 
 class AbsolutePositionalEmbedding(nn.Module):
-    def __init__(self, dim, max_seq_len, l2norm_embed=False):
+    def __init__(
+        self, 
+        dim, 
+        max_seq_len, 
+        l2norm_embed=False
+    ):
         super().__init__()
         self.scale = dim ** -0.5 if not l2norm_embed else 1.
         self.max_seq_len = max_seq_len

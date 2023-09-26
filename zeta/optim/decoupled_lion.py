@@ -65,7 +65,16 @@ class DecoupledLionW(Optimizer):
             group['initial_lr'] = group['lr']
 
     @staticmethod
-    def lionw(p, grad, exp_avg, lr, initial_lr, wd, beta1, beta2) -> None:
+    def lionw(
+        p, 
+        grad, 
+        exp_avg, 
+        lr, 
+        initial_lr, 
+        wd, 
+        beta1, 
+        beta2
+    ) -> None:
         if wd != 0:
             decay_factor = (lr / initial_lr) if initial_lr else 1.0
             p.data.mul_(1 - decay_factor * wd)
@@ -111,18 +120,35 @@ class DecoupledLionW(Optimizer):
 
         return optimizer_metrics
 
-    def report_per_parameter_metrics(self, param: torch.Tensor, name: str, optimizer_metrics: dict):
+    def report_per_parameter_metrics(
+        self, 
+        param: torch.Tensor, 
+        name: str, 
+        optimizer_metrics: dict
+    ):
         lr = self.param_groups[0]['lr']
         weight_decay = self.param_groups[0]['weight_decay']
         initial_lr = self.param_groups[0]['initial_lr']
 
         beta1, _ = self.param_groups[0]['betas']
+
         if param in self.state:
             param_optim_state = self.state[param]
-            step_tensor = param_optim_state['exp_avg'].clone().lerp_(param.grad, 1 - beta1).sign_().mul_(lr)
+            step_tensor = param_optim_state['exp_avg'].clone().lerp_(
+                param.grad, 1 - beta1
+            ).sign_().mul_(lr)
+
             decay_factor = (lr / initial_lr) if initial_lr else 1.0
+
             step_tensor.add_(param, alpha=-weight_decay * decay_factor)
+
             for metric in self.metric_functions:
-                optimizer_metrics[f'{metric}/{name}'] = self.metric_functions[metric](param, param_optim_state, step_tensor)
+                optimizer_metrics[
+                    f'{metric}/{name}'
+                ] = self.metric_functions[metric](
+                    param, 
+                    param_optim_state, 
+                    step_tensor
+                )
 
         return optimizer_metrics
