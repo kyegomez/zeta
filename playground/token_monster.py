@@ -1,5 +1,5 @@
 import torch
-from zeta.tokenizers.tokenmonster import TokenMonster
+from zeta.tokenizers import TokenMonster
 
 tokenizer = TokenMonster("englishcode-32000-consistent-v1")
 
