@@ -1,4 +1,4 @@
-# `Zeta` Documentation
+# `XPOS` Documentation
 
 ## Table of Contents
 1. [Introduction](#introduction)
@@ -126,7 +126,7 @@ Let's explore some usage examples of the `XPOS` class and related functions to u
 ### Using the `XPOS` Class <a name="using-the-xpos-class"></a>
 
 ```python
-from zeta import XPOS
+from zeta.nn import XPOS
 import torch
 
 # Create an XPOS instance
@@ -140,7 +140,7 @@ output = xpos(input_tensor, offset=0, downscale=False)
 ### Using the Functions <a name="using-the-functions"></a>
 
 ```python
-from zeta import fixed_pos_embedding, rotate_every_two, duplicate_interleave, apply_rotary_pos_emb
+from zeta.nn import fixed_pos_embedding, rotate_every_two, duplicate_interleave, apply_rotary_pos_emb
 import torch
 
 # Generate fixed positional embeddings
