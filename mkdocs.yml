@@ -137,6 +137,10 @@ nav:
       - main: "zeta/utils/main.md"
     - zeta.ops:
       - main: "zeta/ops/main.md"
+    - zeta.optim:
+      - StableAdamWUnfused: "zeta/optims/adamw.md"
+    - zeta.training:
+      - fsdp: "zeta/training/fsdp.md"
 - Examples:
     - Overview: "examples/index.md"
     - FlashAttention: "examples/nn/attentions/flash.md"
