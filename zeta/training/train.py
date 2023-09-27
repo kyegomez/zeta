@@ -9,12 +9,11 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 from transformers import default_data_collator, set_seed
 
-
+from zeta.optim.decoupled_optimizer import decoupled_optimizer
+from zeta.training.activation_checkpoint import activation_checkpointing
 from zeta.training.dataloader import build_dataloaders, build_pre_tokenized
 from zeta.training.fsdp import fsdp
-from zeta.optim.decoupled_optimizer import decoupled_optimizer
 from zeta.training.scheduler import get_lr_scheduler_with_warmup
-from zeta.training.activation_checkpoint import activation_checkpointing
 
 
 def print_num_params(model, accelerator: Accelerator):
