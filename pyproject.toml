@@ -37,6 +37,8 @@ vector-quantize-pytorch = "1.1.5"
 tokenmonster = "*"
 scipy = "*"
 beartype = "*"
+xformers = "*"
+
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

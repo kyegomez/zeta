@@ -21,6 +21,7 @@ datasets
 lion-pytorch 
 sentencepiece
 beartype
+xformers
 
 vector-quantize-pytorch>=1.1.5
 scipy
