@@ -107,6 +107,7 @@ nav:
         - PositionalEmbedding: "zeta/nn/embeddings/positional_embeddings.md"
         - XPOS: "zeta/nn/embeddings/xpos.md"
         - YarnEmbedding: "zeta/nn/embeddings/yarn.md"
+        - VisionEmbedding: "zeta/nn/embeddings/vis_emb.md"
       - zeta.nn.modules:
         - Lora: "zeta/nn/modules/lora.md"
         - TokenLearner: "zeta/nn/modules/token_learner.md"
