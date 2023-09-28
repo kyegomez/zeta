@@ -21,6 +21,6 @@ model = MGQA(
 x = torch.randn(10, 512)  # batch size of 10, sequence length of 512
 
 # Forward pass
-output = model(x,)
+output = model(x)
 
 print(output.shape)  # should be the same shape as x

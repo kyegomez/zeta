@@ -109,6 +109,7 @@ nav:
         - YarnEmbedding: "zeta/nn/embeddings/yarn.md"
         - VisionEmbedding: "zeta/nn/embeddings/vis_emb.md"
         - SinusoidalEmbeddings: "zeta/nn/embeddings/sinusoidal.md"
+        - PatchEmbeddings: "zeta/nn/embeddings/patch_embeddings.md"
       - zeta.nn.modules:
         - Lora: "zeta/nn/modules/lora.md"
         - TokenLearner: "zeta/nn/modules/token_learner.md"
