@@ -4,7 +4,8 @@ print(zeta)
 
 #nn
 import zeta.nn
-
+from zeta.nn.architecture.transformer import FeedForward
+from zeta.nn.modules.layernorm import LayerNorm
 
 #models
 import zeta.models
