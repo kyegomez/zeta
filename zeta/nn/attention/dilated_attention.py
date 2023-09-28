@@ -5,12 +5,10 @@ import torch.nn.functional as F
 from einops import rearrange
 from torch import Tensor, nn
 
+from zeta.nn.attention.base import BaseAttention
 from zeta.nn.attention.flash_attention import FlashAttention
 from zeta.nn.biases.relative_position_bias import RelativePositionBias
 from zeta.nn.embeddings.xpos_relative_position import XPOS
-
-
-from zeta.nn.attention.base import BaseAttention
 
 device = "cuda:0"
 dtype=torch.float16

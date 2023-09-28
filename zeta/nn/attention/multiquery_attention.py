@@ -7,7 +7,6 @@ import torch.nn as nn
 from einops import rearrange
 from packaging import version
 
-
 from zeta.nn.attention.base import BaseAttention
 
 

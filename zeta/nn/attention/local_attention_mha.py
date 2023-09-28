@@ -1,10 +1,11 @@
 import torch
-from torch import nn
 import torch.nn.functional as F
 from einops import rearrange
+from torch import nn
 
 from zeta.nn.attention.local_attention import LocalAttention
 from zeta.utils.main import default, exists, l2norm
+
 
 class LocalMHA(nn.Module):
     def __init__(

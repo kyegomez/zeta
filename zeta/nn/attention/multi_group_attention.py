@@ -1,7 +1,10 @@
-import torch 
+from typing import Any, Optional
+
+import torch
 from torch import nn
-from typing import Optional, Any
+
 from zeta.nn.attention.attend import Attend
+
 
 class MultiGroupQueryAttention(nn.Module):
     def __init__(

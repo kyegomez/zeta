@@ -1,8 +1,16 @@
 import torch
-from torch import nn, einsum
-from einops import rearrange, repeat, pack, unpack
+from einops import pack, rearrange, repeat, unpack
+from torch import einsum, nn
+
 from zeta.nn.embeddings.sinusoidal import SinusoidalEmbeddings, apply_rotary_pos_emb
-from zeta.utils.main import exists, default, pad_to_multiple, l2norm, look_around, max_neg_values
+from zeta.utils.main import (
+    default,
+    exists,
+    l2norm,
+    look_around,
+    max_neg_values,
+    pad_to_multiple,
+)
 
 #constant
 TOKEN_SELF_ATTN_VALUE = -5e4
