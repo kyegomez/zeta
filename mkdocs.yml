@@ -148,6 +148,7 @@ nav:
       - main: "zeta/utils/main.md"
     - zeta.ops:
       - main: "zeta/ops/main.md"
+      - softmaxes: "zeta/ops/softmaxes.md"
     - zeta.optim:
       - StableAdamWUnfused: "zeta/optims/adamw.md"
     - zeta.training:
