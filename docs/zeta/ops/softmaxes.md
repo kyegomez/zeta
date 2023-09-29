@@ -1,4 +1,4 @@
-# `softmaxes` in `zeta.ops``
+# `softmaxes` in `zeta.ops`
 
 ## Overview
 
