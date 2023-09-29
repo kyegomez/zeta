@@ -12,7 +12,7 @@ import zeta.models
 
 
 #utils
-import zeta.utils
+from zeta.utils import *
 
 
 #training
