@@ -8,13 +8,23 @@ def exists(val):
     return val is not None
 
 class RotaryEmbedding(nn.Module):
+    """
+    Rotary Embeddings
+
+    Args:
+
+    # Future improvements
+    - add z value, how far along is sequence is particular embedding, => Z access would be giving a way to rotary embeddings 
+    tell the difference between the first instance of a phrase and the last phrase of a doc,
+    
+    """
     def __init__(
         self,
         dim,
         use_xpos=False,
         scale_base=512,
         interpolation_factor=1.,
-        base=10000,
+        base=10000, #500,000 for long content
         base_rescale_factor=1.,
     ):
         super().__init__()
