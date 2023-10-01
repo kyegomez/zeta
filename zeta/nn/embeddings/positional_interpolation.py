@@ -4,7 +4,39 @@ from torch import nn
 class PositionInterpolationEmbeddings(nn.Module):
     """
     PositionInterpolation
-
+    Overview
+    ========
+    Positional embeddings that interpolate between sinusoidal and learned embeddings.
+    
+    Parameters
+    ==========
+    dim: int
+        Dimension of the input embedding.
+    max_positions: int
+        Maximum number of positions to embed.
+    base: int
+        Base of the sinusoidal embedding.
+    device: torch.device
+        Device to store the embeddings on.
+    
+    Attributes
+    ==========
+    inv_freq: torch.Tensor
+        Cached inverse frequencies.
+    max_seq_len_cached: int
+        Maximum sequence length cached.
+    scale: float
+        Scale of the sinusoidal embedding.
+    cos_cached: torch.Tensor
+        Cached cosine values.
+    sin_cached: torch.Tensor
+        Cached sine values.
+    
+    Methods
+    =======
+    forward(x, seq_len=None)
+        Forward pass of the PositionInterpolationEmbeddings.
+    
     
     """
     def __init__(
