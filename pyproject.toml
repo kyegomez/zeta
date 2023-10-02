@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zetascale"
-version = "0.6.8"
+version = "0.6.9"
 description = "Transformers at zeta scales"
 authors = ["Zeta Team <kye@apac.ai>"]
 license = "MIT"
@@ -38,6 +38,7 @@ tokenmonster = "*"
 scipy = "*"
 beartype = "*"
 xformers = "*"
+tiktoken = "*"
 
 
 [build-system]
