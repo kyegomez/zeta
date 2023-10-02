@@ -3,7 +3,7 @@ print(zeta)
 
 
 #nn
-import zeta.nn
+from zeta import nn
 from zeta.nn.architecture.transformer import FeedForward
 from zeta.nn.modules.layernorm import LayerNorm
 
@@ -16,13 +16,13 @@ from zeta.utils import *
 
 
 #training
-import zeta.training
+from zeta import training
 
 #tokenizers
-import zeta.tokenizers
+from zeta import tokenizers
 
 #rl
-import zeta.rl
+from zeta import rl
 
 #optim
 import zeta.optim
