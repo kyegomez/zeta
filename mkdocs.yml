@@ -134,6 +134,7 @@ nav:
         - Decoder: "zeta/nn/architecture/decoder.md"
         - Transformer: "zeta/nn/architecture/transformer.md"
         - TransformerBlock: "zeta/nn/architecture/transformerblock.md"
+      - zeta.nn.models: "zeta/nn/models/megavit.md"
     - zeta.training:
       - train: "zeta/training/train.md"
       - zeta.training.loss:
