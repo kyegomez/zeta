@@ -10,3 +10,4 @@ from zeta.models.llama import LLama2
 from zeta.models.max_vit import MaxVit
 from zeta.models.palme import PalmE
 from zeta.models.vit import ViT
+from zeta.models.mega_vit import MegaVit
