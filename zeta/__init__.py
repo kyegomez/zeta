@@ -8,11 +8,11 @@ from zeta.nn.architecture.transformer import FeedForward
 from zeta.nn.modules.layernorm import LayerNorm
 
 #models
-import zeta.models
+from zeta import models
 
 
 #utils
-from zeta.utils import *
+from zeta import utils
 
 
 #training
@@ -25,7 +25,7 @@ from zeta import tokenizers
 from zeta import rl
 
 #optim
-import zeta.optim
+from zeta import optim
 
 #ops
-import zeta.ops
+from zeta import ops
