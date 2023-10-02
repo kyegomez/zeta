@@ -110,6 +110,7 @@ nav:
         - VisionEmbedding: "zeta/nn/embeddings/vis_emb.md"
         - SinusoidalEmbeddings: "zeta/nn/embeddings/sinusoidal.md"
         - PatchEmbeddings: "zeta/nn/embeddings/patch_embeddings.md"
+        - PositionInterpolationEmbeddings: "zeta/nn/pi.md"
       - zeta.nn.modules:
         - Lora: "zeta/nn/modules/lora.md"
         - TokenLearner: "zeta/nn/modules/token_learner.md"
