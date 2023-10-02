@@ -15,7 +15,10 @@ from zeta.nn.embeddings.multiway_network import (
     MultiwayWrapper,
 )
 from zeta.nn.embeddings.nominal_embeddings import NominalEmbedding
+
 from zeta.nn.embeddings.positional import PositionalEmbedding
+from zeta.nn.embeddings.positional_interpolation import PositionInterpolationEmbeddings
+
 from zeta.nn.embeddings.rope import RotaryEmbedding
 from zeta.nn.embeddings.sinusoidal import SinusoidalEmbeddings
 from zeta.nn.embeddings.truncated_rope import TruncatedRotaryEmbedding
@@ -27,4 +30,3 @@ from zeta.nn.embeddings.xpos_relative_position import (
 )
 from zeta.nn.embeddings.yarn import *
 from zeta.nn.embeddings.yarn import YarnEmbedding
-from zeta.nn.embeddings.positional_interpolation import PositionalInterpolation
