@@ -1,4 +1,3 @@
-
 import torch
 
 
@@ -15,11 +14,7 @@ class StableAdamWUnfused(torch.optim.Optimizer):
         custom_scalar=65536,
     ):
         beta1, beta2 = betas[0], betas[1]
-        defaults = dict(
-            lr=lr,
-            weight_decay=weight_decay,
-            beta1=beta1,
-            beta2=beta2)
+        defaults = dict(lr=lr, weight_decay=weight_decay, beta1=beta1, beta2=beta2)
         super(StableAdamWUnfused, self).__init__(params, defaults)
 
         self.eps = eps
@@ -70,10 +65,8 @@ class StableAdamWUnfused(torch.optim.Optimizer):
                     v = param_state["exp_avg"]
                     u = param_state["exp_avg_sq"]
 
-                beta1hat = beta1 * (1 - beta1 ** (step - 1)
-                                    ) / (1 - beta1**step)
-                beta2hat = beta2 * (1 - beta2 ** (step - 1)
-                                    ) / (1 - beta2**step)
+                beta1hat = beta1 * (1 - beta1 ** (step - 1)) / (1 - beta1**step)
+                beta2hat = beta2 * (1 - beta2 ** (step - 1)) / (1 - beta2**step)
 
                 v = v.mul_(beta1hat).add_(g, alpha=1.0 - beta1hat)
                 u = u.mul_(beta2hat).addcmul_(g, g, value=1.0 - beta2hat)
@@ -84,11 +77,12 @@ class StableAdamWUnfused(torch.optim.Optimizer):
                 # (https://arxiv.org/abs/1804.04235) applied tensor-wise.
                 rms = (
                     torch.div(
-                        g.pow(2),
-                        torch.maximum(
-                            u,
-                            (self.eps**2) *
-                            torch.ones_like(u))) .mean() .sqrt() .item())
+                        g.pow(2), torch.maximum(u, (self.eps**2) * torch.ones_like(u))
+                    )
+                    .mean()
+                    .sqrt()
+                    .item()
+                )
 
                 theta = theta.mul_(1.0 - lr * weight_decay).addcdiv_(
                     v, denominator, value=-lr * (1.0 / max(1.0, rms / self.d))

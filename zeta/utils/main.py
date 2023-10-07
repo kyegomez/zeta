@@ -63,6 +63,7 @@ def once(fn):
             return
         called = True
         return fn(x)
+
     return inner
 
 
@@ -87,6 +88,7 @@ def eval_decorator(fn):
         out = fn(self, *args, **kwargs)
         self.train(was_training)
         return out
+
     return inner
 
 
@@ -114,15 +116,17 @@ def maybe(fn):
     Returns:
         function: The wrapped function.
     """
+
     @wraps(fn)
     def inner(x, *args, **kwargs):
         if not exists(x):
             return x
         return fn(x, *args, **kwargs)
+
     return inner
 
 
-class always():
+class always:
     """
     Class that always returns a specified value when called.
     """
@@ -146,7 +150,7 @@ class always():
         return self.val
 
 
-class not_equals():
+class not_equals:
     """
     Class that checks if a value does not equal the specified value.
     """
@@ -170,7 +174,7 @@ class not_equals():
         return x != self.val
 
 
-class equals():
+class equals:
     """
     Class that checks if a value equals the specified value.
     """
@@ -201,9 +205,9 @@ def init_zero_(layer):
     Args:
         layer (torch.nn.Module): The layer to initialize.
     """
-    nn.init.constant_(layer.weight, 0.)
+    nn.init.constant_(layer.weight, 0.0)
     if exists(layer.bias):
-        nn.init.constant_(layer.bias, 0.)
+        nn.init.constant_(layer.bias, 0.0)
 
 
 def pick_and_pop(keys, d):
@@ -280,9 +284,11 @@ def groupby_prefix_and_trim(prefix, d):
         tuple: Dictionary with the prefix removed and another dictionary with remaining items.
     """
     kwargs_with_prefix, kwargs = group_dict_by_key(
-        partial(string_begins_with, prefix), d)
+        partial(string_begins_with, prefix), d
+    )
     kwargs_without_prefix = dict(
-        map(lambda x: (x[0][len(prefix):], x[1]), tuple(kwargs_with_prefix.items())))
+        map(lambda x: (x[0][len(prefix):], x[1]), tuple(kwargs_with_prefix.items()))
+    )
     return kwargs_without_prefix, kwargs
 
 
@@ -304,17 +310,16 @@ def top_p(logits, thres=0.9):
 
 def top_k(logits, thres=0.9):
     k = ceil((1 - thres) * logits.shape[-1])
-    val, ind, = torch.topk(logits, k)
+    (
+        val,
+        ind,
+    ) = torch.topk(logits, k)
     probs = torch.full_like(logits, float("-inf"))
     probs.scatter_(1, ind, val)
     return probs
 
 
-def top_a(
-        logits,
-        min_p_pow=2.0,
-        min_p_ratio=0.02
-):
+def top_a(logits, min_p_pow=2.0, min_p_ratio=0.02):
     probs = F.softmax(logits, dim=-1)
     limit = torch.pow(torch.max(probs), min_p_pow) * min_p_ratio
 
@@ -332,14 +337,12 @@ def gumbel_noise(t):
     return -log(-log(noise))
 
 
-def gumnel_sample(t, temperature=1., dim=-1):
+def gumnel_sample(t, temperature=1.0, dim=-1):
     return ((t / max(temperature, 1e-10)) + gumbel_noise(t)).argmax(dim=dim)
 
 
 class ContrastiveTopK(nn.Module):
-    def __init__(self,
-                 alpha,
-                 k):
+    def __init__(self, alpha, k):
         super(ContrastiveTopK, self).__init__()
         self.alpha = alpha
         self.k = k
@@ -348,14 +351,12 @@ class ContrastiveTopK(nn.Module):
         k = ceil((1 - self.alpha) * logits.shape[-1])
         val, ind = torch.topk(logits, k)
 
-        probs = torch.full_like(logits, float('-inf'))
+        probs = torch.full_like(logits, float("-inf"))
         probs.scatter_(1, ind, val)
 
         return probs
 
-    def forward(self,
-                logits_exp,
-                logits_ama):
+    def forward(self, logits_exp, logits_ama):
         logits_exp_topk = self.top_k(logits_exp)
         logits_ama_topk = self.top_k(logits_ama)
 
@@ -369,12 +370,14 @@ class ContrastiveTopK(nn.Module):
         mask.scatter_(1, ind, p_exp[ind] >= self.alpha * p_exp[ind[-1]])
 
         # scores
-        scores = torch.where(mask.bool(), torch.log(p_exp / (p_ama + 1e-8)),
-                             torch.tensor(-float('inf')))
+        scores = torch.where(
+            mask.bool(), torch.log(p_exp / (p_ama + 1e-8)), torch.tensor(-float("inf"))
+        )
 
         return scores
 
-#alpha = 0.5
+
+# alpha = 0.5
 
 
 def print_num_params(model, accelerator: Accelerator):
@@ -384,18 +387,13 @@ def print_num_params(model, accelerator: Accelerator):
 
 
 class Block(nn.Module):
-    def __init__(self,
-                 dim,
-                 dim_out,
-                 groups=8):
+    def __init__(self, dim, dim_out, groups=8):
         super().__init__()
         self.proj = nn.Conv3d(dim, dim_out, (1, 3, 3), padding=(0, 1, 1))
         self.norm = nn.GroupNorm(groups, dim_out)
         self.act = nn.SiLU()
 
-    def forward(self,
-                x,
-                scale_shift=None):
+    def forward(self, x, scale_shift=None):
         x = self.proj(x)
         x = self.norm(x)
 
@@ -407,31 +405,24 @@ class Block(nn.Module):
 
 
 class ResnetBlock(nn.Module):
-    def __init__(self,
-                 dim,
-                 dim_out,
-                 *,
-                 time_emb_dim=None,
-                 groups=8):
+    def __init__(self, dim, dim_out, *, time_emb_dim=None, groups=8):
         super().__init__()
-        self.mlp = nn.Sequential(
-            nn.SiLU(),
-            nn.Linear(time_emb_dim, dim_out * 2)
-        ) if exists(time_emb_dim) else None
+        self.mlp = (
+            nn.Sequential(nn.SiLU(), nn.Linear(time_emb_dim, dim_out * 2))
+            if exists(time_emb_dim)
+            else None
+        )
 
         self.block1 = Block(dim, dim_out, groups=groups)
         self.block2 = Block(dim_out, dim_out, groups=groups)
-        self.res_conv = nn.Conv3d(
-            dim, dim_out, 1) if dim != dim_out else nn.Identity()
+        self.res_conv = nn.Conv3d(dim, dim_out, 1) if dim != dim_out else nn.Identity()
 
-    def forward(self,
-                x,
-                time_emb=None):
+    def forward(self, x, time_emb=None):
         scale_shift = None
         if exists(self.mlp):
-            assert exists(time_emb), 'time_emb must be passed in'
+            assert exists(time_emb), "time_emb must be passed in"
             time_emb = self.mlp(time_emb)
-            time_emb = rearrange(time_emb, 'b c -> b c 1 1 1')
+            time_emb = rearrange(time_emb, "b c -> b c 1 1 1")
             scale_shift = time_emb.chunk(2, dim=1)
 
         h = self.block1(x, scale_shift=scale_shift)
@@ -441,19 +432,15 @@ class ResnetBlock(nn.Module):
 
 
 def load_model(path):
-    with open(path, 'rb') as f:
-        return torch.load(f, map_location=torch.device('cpu'))
+    with open(path, "rb") as f:
+        return torch.load(f, map_location=torch.device("cpu"))
 
 
-CHANNELS_TO_MODE = {
-    1: 'L',
-    3: 'RGB',
-    4: 'RGBA'
-}
+CHANNELS_TO_MODE = {1: "L", 3: "RGB", 4: "RGBA"}
 
 
 def seek_all_images(img, channels=3):
-    assert channels in CHANNELS_TO_MODE, f'channels {channels} invalid'
+    assert channels in CHANNELS_TO_MODE, f"channels {channels} invalid"
     mode = CHANNELS_TO_MODE[channels]
 
     i = 0
@@ -470,20 +457,19 @@ def seek_all_images(img, channels=3):
 def video_tensor_to_gift(tensor, path, duration=120, loop=0, optimize=True):
     images = map(T.ToPilImage(), tensor.unbind(dim=1))
     first_img, *rest_imgs = images
-    first_img.save(path,
-                   save_all=True,
-                   appeqnd_images=rest_imgs,
-                   duration=duration,
-                   loop=loop,
-                   optimize=optimize
-                   )
+    first_img.save(
+        path,
+        save_all=True,
+        appeqnd_images=rest_imgs,
+        duration=duration,
+        loop=loop,
+        optimize=optimize,
+    )
     return images
 
 
 # gif -> (channels, frame, height, width) tensor
-def gif_to_tensor(path,
-                  channels=3,
-                  transform=T.ToTensor()):
+def gif_to_tensor(path, channels=3, transform=T.ToTensor()):
     img = Image.open(path)
     tensors = tuple(map(transform, seek_all_images(img, chanels=channels)))
     return torch.stack(tensors, dim=1)
@@ -518,14 +504,14 @@ def max_neg_values(tensor):
 
 
 def l2norm(t, groups=1):
-    t = rearrange(t, '... (g d) -> ... g d', g=groups)
+    t = rearrange(t, "... (g d) -> ... g d", g=groups)
     t = F.normalize(t, p=2, dim=-1)
-    return rearrange(t, '... g d -> ... (g d)')
+    return rearrange(t, "... g d -> ... (g d)")
 
 
-def pad_at_dim(t, pad, dim=-1, value=0.):
-    dims_from_right = (- dim - 1) if dim < 0 else (t.ndim - dim - 1)
-    zeros = ((0, 0) * dims_from_right)
+def pad_at_dim(t, pad, dim=-1, value=0.0):
+    dims_from_right = (-dim - 1) if dim < 0 else (t.ndim - dim - 1)
+    zeros = (0, 0) * dims_from_right
     return F.pad(t, (*zeros, *pad), value=value)
 
 
@@ -571,9 +557,7 @@ def downsample(dim):
 
 
 class LayerNorm(nn.Module):
-    def __init__(self,
-                 dim,
-                 eps=1e-5):
+    def __init__(self, dim, eps=1e-5):
         super().__init__()
         self.eps = eps
         self.gamma = nn.Parameter(torch.ones(1, dim, 1, 1, 1))
@@ -585,9 +569,7 @@ class LayerNorm(nn.Module):
 
 
 class PreNorm(nn.Module):
-    def __init__(self,
-                 dim,
-                 fn):
+    def __init__(self, dim, fn):
         self.fn = fn
         self.norm = LayerNorm(dim)
 
@@ -598,12 +580,8 @@ class PreNorm(nn.Module):
 
 def cosine_beta_schedule(timesteps, s=0.008):
     steps = timesteps + 1
-    x = torch.linspace(0,
-                       timesteps,
-                       steps,
-                       dtype=torch.float64)
-    alphas_cumprod = torch.cos(
-        ((x / timesteps) + s) / (1 + s) * torch.pi * 0.5) ** 2
+    x = torch.linspace(0, timesteps, steps, dtype=torch.float64)
+    alphas_cumprod = torch.cos(((x / timesteps) + s) / (1 + s) * torch.pi * 0.5) ** 2
     alphas_cumprod = alphas_cumprod / alphas_cumprod[0]
     betas = 1 - (alphas_cumprod[1:] / alphas_cumprod[:-1])
     return torch.clip(betas, 0, 0.9999)
@@ -620,10 +598,10 @@ class Normalize(nn.Module):
 
 class LearnableLogitScaling(nn.Module):
     def __init__(
-            self,
-            logit_scale_init: float = 1 / 0.07,
-            learnable: bool = True,
-            max_logit_scale: float = 100,
+        self,
+        logit_scale_init: float = 1 / 0.07,
+        learnable: bool = True,
+        max_logit_scale: float = 100,
     ) -> None:
         super().__init__()
         self.max_logit_scale = max_logit_scale
@@ -637,18 +615,18 @@ class LearnableLogitScaling(nn.Module):
             self.register_bufffer("log_logit_scale", log_logit_scale)
 
     def forward(self, x):
-        return torch.clip(self.logit_scale.exp(),
-                          max=self.max_logit_scale) * x
+        return torch.clip(self.logit_scale.exp(), max=self.max_logit_scale) * x
 
     def extra_repr(self):
-        st = f"logit_scale_init={self.logit_scale_init}, learnable={self.learnable}," \
+        st = (
+            f"logit_scale_init={self.logit_scale_init}, learnable={self.learnable},"
             f"max_logit_scale={self.max_logit_scale}"
+        )
         return st
 
 
 class EinOpsRearrange(nn.Module):
-    def __init__(self, rearrange_expr: str,
-                 **kwargs) -> None:
+    def __init__(self, rearrange_expr: str, **kwargs) -> None:
         super().__init__()
         self.rearrange_expr = rearrange_expr
         self.kwargs = kwargs
@@ -659,9 +637,7 @@ class EinOpsRearrange(nn.Module):
 
 
 def cast_if_src_dtype(
-        tensor: torch.Tensor,
-        src_dtype: torch.dtype,
-        tgt_dtype: torch.dtype
+    tensor: torch.Tensor, src_dtype: torch.dtype, tgt_dtype: torch.dtype
 ):
     updated = False
     if tensor.dtype == src_dtype:
@@ -671,8 +647,7 @@ def cast_if_src_dtype(
 
 
 class SelectElements(nn.Module):
-    def __init__(self,
-                 index) -> None:
+    def __init__(self, index) -> None:
         super().__init__()
         self.index = index
 
@@ -715,18 +690,16 @@ def interpolate_pos_encoding_2d(target_spatial_size, pos_embed):
     if N == target_spatial_size:
         return pos_embed
     dim = pos_embed.shape[-1]
-    pos_embed, updated = cast_if_src_dtype(
-        pos_embed, torch.bfloat16, torch.float32)
+    pos_embed, updated = cast_if_src_dtype(pos_embed, torch.bfloat16, torch.float32)
     pos_embed = nn.functional.interpolate(
-        pos_embed.reshape(
-            1, int(
-                math.sqrt(N)), int(
-                math.sqrt(N)), dim).permute(
-                    0, 3, 1, 2), scale_factor=math.sqrt(
-                        target_spatial_size / N), mode="bicubic", )
+        pos_embed.reshape(1, int(math.sqrt(N)), int(math.sqrt(N)), dim).permute(
+            0, 3, 1, 2
+        ),
+        scale_factor=math.sqrt(target_spatial_size / N),
+        mode="bicubic",
+    )
     if updated:
-        pos_embed, _ = cast_if_src_dtype(
-            pos_embed, torch.float32, torch.bfloat16)
+        pos_embed, _ = cast_if_src_dtype(pos_embed, torch.float32, torch.bfloat16)
     pos_embed = pos_embed.permute(0, 2, 3, 1).view(1, -1, dim)
     return pos_embed
 
@@ -761,12 +734,7 @@ def init_bert_params(module):
 
 
 ######
-def pad_to_multiple(
-    tensor,
-    multiple,
-    dim=-1,
-    value=0
-):
+def pad_to_multiple(tensor, multiple, dim=-1, value=0):
     seqlen = tensor.shape[dim]
     m = seqlen / multiple
     if m.is_integer():
@@ -776,27 +744,19 @@ def pad_to_multiple(
     return True, F.pad(tensor, (*pad_offset, 0, remainder), value=value)
 
 
-def look_around(
-    x,
-    backward=1,
-    forward=0,
-    pad_value=-1,
-    dim=2
-):
+def look_around(x, backward=1, forward=0, pad_value=-1, dim=2):
     t = x.shape[1]
     dims = (len(x.shape) - dim) * (0, 0)
-    padded_x = F.pad(
-        x,
-        (*dims, backward, forward),
-        value=pad_value
-    )
+    padded_x = F.pad(x, (*dims, backward, forward), value=pad_value)
 
-    tensors = [padded_x[:, ind:(ind + t), ...]
-               for ind in range(forward + backward + 1)]
+    tensors = [
+        padded_x[:, ind: (ind + t), ...] for ind in range(forward + backward + 1)
+    ]
     return torch.cat(tensors, dim=dim)
 
 
 ####
+
 
 def is_power_of_two(n):
     return math.log2(n).is_integer()

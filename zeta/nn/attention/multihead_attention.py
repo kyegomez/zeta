@@ -36,24 +36,17 @@ class MultiheadAttention(BaseAttention):
         self.encoder_decoder_attention = encoder_decoder_attention
         assert self.self_attention ^ self.encoder_decoder_attention
 
-        self.k_proj = MultiwayWrapper(
-            args, nn.Linear(
-                embed_dim, embed_dim, bias=True))
-        self.v_proj = MultiwayWrapper(
-            args, nn.Linear(
-                embed_dim, embed_dim, bias=True))
-        self.q_proj = MultiwayWrapper(
-            args, nn.Linear(
-                embed_dim, embed_dim, bias=True))
+        self.k_proj = MultiwayWrapper(args, nn.Linear(embed_dim, embed_dim, bias=True))
+        self.v_proj = MultiwayWrapper(args, nn.Linear(embed_dim, embed_dim, bias=True))
+        self.q_proj = MultiwayWrapper(args, nn.Linear(embed_dim, embed_dim, bias=True))
         self.out_proj = MultiwayWrapper(
             args, nn.Linear(embed_dim, embed_dim, bias=True)
         )
         self.inner_attn_ln = (
-            MultiwayWrapper(
-                args,
-                LayerNorm(
-                    self.embed_dim,
-                    eps=args.layernorm_eps)) if subln and self.self_attention else None)
+            MultiwayWrapper(args, LayerNorm(self.embed_dim, eps=args.layernorm_eps))
+            if subln and self.self_attention
+            else None
+        )
         self.dropout_module = torch.nn.Dropout(dropout)
         self.xpos = (
             XPOS(self.head_dim, args.xpos_scale_base)
@@ -134,32 +127,24 @@ class MultiheadAttention(BaseAttention):
             attn_weights += attn_mask
 
         if key_padding_mask is not None:
-            attn_weights = attn_weights.view(
-                bsz, self.num_heads, tgt_len, src_len)
+            attn_weights = attn_weights.view(bsz, self.num_heads, tgt_len, src_len)
             attn_weights = attn_weights.masked_fill(
                 key_padding_mask.unsqueeze(1).unsqueeze(2).to(torch.bool),
                 float("-inf"),
             )
-            attn_weights = attn_weights.view(
-                bsz * self.num_heads, tgt_len, src_len)
+            attn_weights = attn_weights.view(bsz * self.num_heads, tgt_len, src_len)
 
         if rel_pos is not None:
             rel_pos = rel_pos.view(attn_weights.size())
             attn_weights = attn_weights + rel_pos
 
-        attn_weights = F.softmax(attn_weights, dim=-
-                                 1, dtype=torch.float32).type_as(attn_weights)
+        attn_weights = F.softmax(attn_weights, dim=-1, dtype=torch.float32).type_as(
+            attn_weights
+        )
         attn_probs = self.dropout_module(attn_weights)
 
         attn = torch.bmm(attn_probs, v)
-        attn = attn.transpose(
-            0,
-            1).reshape(
-            tgt_len,
-            bsz,
-            embed_dim).transpose(
-            0,
-            1)
+        attn = attn.transpose(0, 1).reshape(tgt_len, bsz, embed_dim).transpose(0, 1)
 
         if self.inner_attn_ln is not None:
             attn = self.inner_attn_ln(attn)

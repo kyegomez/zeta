@@ -1,10 +1,10 @@
-
 import torch
 import torch.nn.functional as F
 
 
 def standard_softmax(tensor):
     return F.softmax(tensor, dim=0)
+
 
 # selu softmax
 
@@ -19,6 +19,7 @@ def selu_softmax(x):
     # selu params
     alpha, scale = 1.6732632423543772848170429916717, 1.0507009873554804934193349852946
     return F.softmax(scale * F.selu(x, alpha), dim=0)
+
 
 # 2. Sparsemax
 
@@ -47,10 +48,7 @@ def sparsemax(x, k):
     x = x - torch.max(x, dim=dim, keepdim=True).values
     sorted_x, _ = torch.sort(x, dim=dim, descending=True)
     cumulative_values = torch.cumsum(sorted_x, dim=dim) - 1
-    range_values = torch.arange(
-        start=1,
-        end=number_of_logits + 1,
-        device=x.device)
+    range_values = torch.arange(start=1, end=number_of_logits + 1, device=x.device)
     bound = (sorted_x - cumulative_values / range_values) > 0
     rho = torch.count_nonzero(bound, dim=dim)
 
@@ -60,8 +58,7 @@ def sparsemax(x, k):
 
     tau = cumulative_values.gather(dim, rho.unsqueeze(dim) - 1)
     tau /= rho.to(dtype=torch.float32)
-    return torch.max(torch.zeros_like(x), x -
-                     tau.unsqueeze(dim)).view(original_size)
+    return torch.max(torch.zeros_like(x), x - tau.unsqueeze(dim)).view(original_size)
 
 
 # 3. Local Softmax
@@ -80,14 +77,13 @@ def local_softmax(tensor, num_chunks: int = 2):
     tensors = torch.chunk(tensor, num_chunks, dim=0)
 
     # apply softmax on each chunk and collect the results in a list
-    results = [
-        F.softmax(t, dim=0) for t in tensors
-    ]
+    results = [F.softmax(t, dim=0) for t in tensors]
 
     # concat results
     concated_results = torch.cat(results, dim=0)
 
     return concated_results
+
 
 # 4. Fast Softmax
 
@@ -131,6 +127,7 @@ def sparse_softmax(z, k: int = 3):
 
     return values
 
+
 # 6. gumbelmax
 
 
@@ -150,13 +147,10 @@ def gumbelmax(x, temp=1.0, hard=False):
     y = F.softmax(y / temp, dim=-1)
 
     if hard:
-        y_hard = torch.zeros_like(x).scatter_(
-            -1,
-            y.argmax(dim=-1, keepdim=True),
-            1.0
-        )
+        y_hard = torch.zeros_like(x).scatter_(-1, y.argmax(dim=-1, keepdim=True), 1.0)
         y = y_hard - y.detach() + y
     return y
+
 
 # 7. Softmax with temp
 
@@ -172,6 +166,7 @@ def temp_softmax(x, temp=1.0):
     """
     return F.softmax(x / temp, dim=-1)
 
+
 # 8. logit scaled softmax
 
 
@@ -184,6 +179,7 @@ def logit_scaled_softmax(x, scale=1.0):
     scale: scale parameter
     """
     return F.softmax(x * scale, dim=-1)
+
 
 # 9. norm exponential softmax
 
@@ -198,8 +194,4 @@ def norm_exp_softmax(x, scale=1.0):
     x: input tensor
     scale: scale parameter
     """
-    return torch.exp(
-        scale * x
-    ) / torch.exp(
-        scale * x
-    ).sum(dim=-1, keepdim=True)
+    return torch.exp(scale * x) / torch.exp(scale * x).sum(dim=-1, keepdim=True)

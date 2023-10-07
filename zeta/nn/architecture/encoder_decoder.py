@@ -51,8 +51,7 @@ class EncoderDecoder(nn.Module):
         features_only=False,
         **kwargs
     ):
-        encoder_out = self.encoder(
-            src_tokens, return_all_hiddens=return_all_hiddens)
+        encoder_out = self.encoder(src_tokens, return_all_hiddens=return_all_hiddens)
         decoder_out = self.decoder(
             prev_output_tokens,
             encoder_out=encoder_out,

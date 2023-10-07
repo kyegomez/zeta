@@ -21,5 +21,4 @@ from zeta.ops.softmax import (
     logit_scaled_softmax,
     # 9. norm exponential softmax,
     norm_exp_softmax,
-
 )

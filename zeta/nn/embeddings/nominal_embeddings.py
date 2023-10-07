@@ -8,9 +8,7 @@ from zeta.nn.embeddings.base import BaseEmbedding
 
 
 class NominalEmbedding(BaseEmbedding):
-    def forward(self,
-                num_tokens: int,
-                dim: int) -> nn.Module:
+    def forward(self, num_tokens: int, dim: int) -> nn.Module:
         embedding = nn.Embedding(num_tokens, dim)
 
         return embedding

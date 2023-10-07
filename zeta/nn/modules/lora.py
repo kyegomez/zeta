@@ -3,13 +3,7 @@ from torch import nn
 
 
 class Lora(nn.Module):
-    def __init__(
-        self,
-        dim,
-        dim_out,
-        r=8,
-        alpha=None
-    ):
+    def __init__(self, dim, dim_out, r=8, alpha=None):
         super().__init__()
         self.scale = alpha / r
 

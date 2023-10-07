@@ -15,7 +15,7 @@ class LocalMHA(nn.Module):
         window_size,
         dim_head=64,
         heads=8,
-        dropout=0.,
+        dropout=0.0,
         causal=False,
         prenorm=False,
         qk_rmsnorm=False,
@@ -51,31 +51,20 @@ class LocalMHA(nn.Module):
 
         self.to_out = nn.Linear(inner_dim, dim, bias=False)
 
-    def forward(
-        self,
-        x,
-        mask=None,
-        attn_bias=None
-    ):
+    def forward(self, x, mask=None, attn_bias=None):
         if exists(self.norm):
             x = self.norm(x)
 
         q, k, v = self.to_qkv(x).chunk(3, dim=-1)
         q, k, v = map(
-            lambda t: rearrange(
-                t, 'b n (h d) -> b h n d', h=self.heads), (q, k, v))
+            lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads), (q, k, v)
+        )
 
         if self.qk_rmsnorm:
             q, k = map(l2norm, (q, k))
             q = q * self.q_scale
             k = k * self.k_scale
 
-        out = self.attn_fn(
-            q,
-            k,
-            v,
-            mask=mask,
-            attn_bias=attn_bias
-        )
-        out = rearrange(out, 'b h n d -> b n (h d)')
+        out = self.attn_fn(q, k, v, mask=mask, attn_bias=attn_bias)
+        out = rearrange(out, "b h n d -> b n (h d)")
         return self.to_out(out)

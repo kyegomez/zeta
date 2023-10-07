@@ -1,5 +1,3 @@
-
-
 # architecture
 # from zeta.nn.architecture import *
 from zeta.nn import architecture

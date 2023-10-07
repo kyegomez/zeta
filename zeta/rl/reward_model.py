@@ -22,7 +22,7 @@ def gumbel_noise(t):
     return -log(-log(noise))
 
 
-def gumbel_sample(t, temperature=1., dim=-1):
+def gumbel_sample(t, temperature=1.0, dim=-1):
     return ((t / max(temperature, 1e-10)) + gumbel_noise(t)).argmax(dim=dim)
 
 
@@ -31,27 +31,27 @@ def masked_mean(seq, mask=None, dim=1, keepdim=False):
         return seq.mean(dim=dim)
 
     if seq.ndim == 3:
-        mask = rearrange(mask, 'b n -> b n 1')
+        mask = rearrange(mask, "b n -> b n 1")
 
-    masked_seq = seq.masked_fill(~mask, 0.)
+    masked_seq = seq.masked_fill(~mask, 0.0)
     numer = masked_seq.sum(dim=dim, keepdim=keepdim)
     denom = mask.sum(dim=dim, keepdim=keepdim)
 
     masked_mean = numer / denom.clamp(min=1e-3)
-    masked_mean = masked_mean.masked_fill(denom == 0, 0.)
+    masked_mean = masked_mean.masked_fill(denom == 0, 0.0)
     return masked_mean
 
 
 @beartype
 class RewardModel(nn.Module):
     def __init__(
-            self,
-            model,
-            dropout=0.1,
-            num_binned_output=0.,
-            use_lora=True,
-            lora_r=8,
-            reward_lora_scope="reward",
+        self,
+        model,
+        dropout=0.1,
+        num_binned_output=0.0,
+        use_lora=True,
+        lora_r=8,
+        reward_lora_scope="reward",
     ):
         super().__init__()
 
@@ -75,8 +75,7 @@ class RewardModel(nn.Module):
 
         else:
             self.to_pred = nn.Sequential(
-                nn.Linear(dim, 1, bias=False),
-                Rearrange('... 1 -> ...')
+                nn.Linear(dim, 1, bias=False), Rearrange("... 1 -> ...")
             )
 
     def load(self, path):
@@ -87,32 +86,32 @@ class RewardModel(nn.Module):
     def finetune_parameters(self):
         return [
             *self.to_pred.parameters(),
-            *(self.model.finetune_parameters(self.reward_lora_scope)
-              if exists(self.reward_lora_scope) else self.model.parameters())
+            *(
+                self.model.finetune_parameters(self.reward_lora_scope)
+                if exists(self.reward_lora_scope)
+                else self.model.parameters()
+            ),
         ]
 
     def forward(
-            self,
-            x,
-            mask=None,
-            prompt_mask=None,
-            prompt_lengths=None,
-            labels=None,
-            sample=None,
-            sample_temperature=1.,
-            disable_lora=False
+        self,
+        x,
+        mask=None,
+        prompt_mask=None,
+        prompt_lengths=None,
+        labels=None,
+        sample=None,
+        sample_temperature=1.0,
+        disable_lora=False,
     ):
         assert not (exists(prompt_mask) and exists(prompt_lengths))
 
         if exists(prompt_lengths):
             batch, seq_len = x.shape
             arange = torch.arange(seq_len, device=x.device)
-            prompt_mask = repeat(
-                arange,
-                'n -> b n',
-                b=batch) < rearrange(
-                prompt_lengths,
-                'b -> b 1')
+            prompt_mask = repeat(arange, "n -> b n", b=batch) < rearrange(
+                prompt_lengths, "b -> b 1"
+            )
 
         # model need to know what is prompt and what is response
 
@@ -120,9 +119,9 @@ class RewardModel(nn.Module):
 
         if exists(prompt_mask):
             extra_embed = torch.where(
-                rearrange(prompt_mask, 'b n -> b n 1'),
+                rearrange(prompt_mask, "b n -> b n 1"),
                 self.prompt_embed,
-                self.response_embed
+                self.response_embed,
             )
 
         embeds = self.model(
@@ -130,7 +129,7 @@ class RewardModel(nn.Module):
             extra_embed=extra_embed,
             return_only_embedding=True,
             disable_lora=disable_lora,
-            finetune_scope=self.reward_lora_scope
+            finetune_scope=self.reward_lora_scope,
         )
 
         pooled = masked_mean(embeds, mask, dim=1)

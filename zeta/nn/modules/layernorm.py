@@ -44,13 +44,7 @@ class LayerNorm(nn.Module):
 
     """
 
-    def __init__(
-        self,
-        dim,
-        eps=1e-5,
-        fp16_eps=1e-3,
-        stable=False
-    ):
+    def __init__(self, dim, eps=1e-5, fp16_eps=1e-3, stable=False):
         super().__init__()
         self.eps = eps
         self.fp16_eps = fp16_eps

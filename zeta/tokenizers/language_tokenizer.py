@@ -8,15 +8,13 @@ class LanguageTokenizerGPTX:
             eos_token="<eos>",
             pad_token="<pad>",
             extra_ids=0,
-            model_max_length=8192
+            model_max_length=8192,
         )
 
     def tokenize_texts(self, texts):
         return self.tokenizer(
-            texts,
-            return_tensors='pt',
-            padding=True,
-            truncation=True).input_ids
+            texts, return_tensors="pt", padding=True, truncation=True
+        ).input_ids
 
     def decode(self, texts):
         return self.tokenizer.decode(texts)

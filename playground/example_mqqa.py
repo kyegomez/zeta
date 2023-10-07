@@ -14,7 +14,7 @@ model = MGQA(
     vocab_size=30522,
     max_batch_size=0,
     attn_dropout=0.1,
-    flash=True
+    flash=True,
 )
 
 # Create random inputs

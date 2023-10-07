@@ -40,7 +40,6 @@ def benchmark(
     min_iterations: int = 2,
     **kwargs,
 ) -> BenchmarkResult:
-
     if min_iterations < 2:
         raise ValueError("min_iterations must be >= 2")
 

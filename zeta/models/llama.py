@@ -25,8 +25,8 @@ class LLama2:
                 dim_head=dim_head,
                 heads=heads,
                 attn_flash=attn_flash,
-                rotary_xpos=rotary_xpos
-            )
+                rotary_xpos=rotary_xpos,
+            ),
         )
         self.decoder = AutoregressiveWrapper(self.decoder)
 

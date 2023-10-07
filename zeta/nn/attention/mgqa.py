@@ -7,31 +7,14 @@ from zeta.nn.attention.attend import Attend
 from zeta.utils.cache import CacheView
 
 
-def repeat_kv(
-    keys: torch.Tensor,
-    values: torch.Tensor,
-    repeats: int,
-    dim: int
-):
-    keys = torch.repeat_interleave(
-        keys,
-        repeats=repeats,
-        dim=dim
-    )
-    values = torch.repeat_interleave(
-        values,
-        repeats=repeats,
-        dim=dim
-    )
+def repeat_kv(keys: torch.Tensor, values: torch.Tensor, repeats: int, dim: int):
+    keys = torch.repeat_interleave(keys, repeats=repeats, dim=dim)
+    values = torch.repeat_interleave(values, repeats=repeats, dim=dim)
     return keys, values
 
 
-def precompute_freqs_cis(
-        dim: int,
-        end: int,
-        theta: float = 10000.0) -> torch.Tensor:
-    freqs = 1.0 / (theta ** (torch.arange(0, dim, 2)
-                   [: (dim // 2)].float() / dim))
+def precompute_freqs_cis(dim: int, end: int, theta: float = 10000.0) -> torch.Tensor:
+    freqs = 1.0 / (theta ** (torch.arange(0, dim, 2)[: (dim // 2)].float() / dim))
     t = torch.arange(end, device=freqs.device)  # type: ignore
     freqs = torch.outer(t, freqs).float()  # type: ignore
     return torch.polar(torch.ones_like(freqs), freqs)  # complex64
@@ -65,7 +48,7 @@ class MGQA(nn.Module):
         vocab_size: int,
         attn_dropout: float = 0.0,  # moved to the end
         max_batch_size: int = 0,  # default argument
-        flash: bool = False  # non-default argument
+        flash: bool = False,  # non-default argument
     ):
         super().__init__()
 
@@ -83,28 +66,14 @@ class MGQA(nn.Module):
         self.flash = flash
 
         self.repeats = self.n_heads // self.n_kv_heads
-        self.scale = self.head_dim ** -0.5
+        self.scale = self.head_dim**-0.5
 
-        self.wq = nn.Linear(
-            self.dim,
-            self.n_heads * self.head_dim,
-            bias=False
-        )
-        self.wk = nn.Linear(
-            self.dim,
-            self.n_kv_heads * self.head_dim,
-            bias=False
-        )
+        self.wq = nn.Linear(self.dim, self.n_heads * self.head_dim, bias=False)
+        self.wk = nn.Linear(self.dim, self.n_kv_heads * self.head_dim, bias=False)
         self.wv = nn.Linear(
-            self.n_heads * self.head_dim,
-            self.n_kv_heads * self.head_dim,
-            bias=False
+            self.n_heads * self.head_dim, self.n_kv_heads * self.head_dim, bias=False
         )
-        self.wo = nn.Linear(
-            self.n_heads * self.head_dim,
-            self.dim,
-            bias=False
-        )
+        self.wo = nn.Linear(self.n_heads * self.head_dim, self.dim, bias=False)
 
         self.attn = Attend(
             dropout=self.attn_dropout,
@@ -118,28 +87,15 @@ class MGQA(nn.Module):
         freqs_cis: torch.Tensor,
         cache: CacheView,
     ) -> torch.Tensor:
-
         seqlen_sum, _ = x.shape
 
         xq, xk, xv = self.wq(x), self.wk(x), self.wv(x)
 
-        xq = xq.view(
-            seqlen_sum,
-            self.n_heads,
-            self.head_dim
-        )
+        xq = xq.view(seqlen_sum, self.n_heads, self.head_dim)
 
-        xk = xk.view(
-            seqlen_sum,
-            self.n_kv_heads,
-            self.head_dim
-        )
+        xk = xk.view(seqlen_sum, self.n_kv_heads, self.head_dim)
 
-        xv = xv.view(
-            seqlen_sum,
-            self.n_kv_heads,
-            self.head_dim
-        )
+        xv = xv.view(seqlen_sum, self.n_kv_heads, self.head_dim)
 
         xq, xk = apply_rotary_emb(
             xq,
@@ -154,21 +110,15 @@ class MGQA(nn.Module):
             key, val = cache.keys, cache.values
 
             key = key.view(
-                seqlen_sum * cache.sliding_window,
-                self.n_kv_heads,
-                self.head_dim
+                seqlen_sum * cache.sliding_window, self.n_kv_heads, self.head_dim
             )
 
             val = val.view(
-                seqlen_sum * cache.sliding_window,
-                self.n_kv_heads,
-                self.head_dim
+                seqlen_sum * cache.sliding_window, self.n_kv_heads, self.head_dim
             )
 
         # repeat keys and values to match number of query heads
-        key, val = repeat_kv(
-            key, val, self.repeats, dim=1
-        )
+        key, val = repeat_kv(key, val, self.repeats, dim=1)
 
         # attention
         xq, key, val = xq[None, ...], key[None, ...], val[None, ...]

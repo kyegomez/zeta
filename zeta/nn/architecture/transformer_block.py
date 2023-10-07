@@ -19,8 +19,8 @@ class TransformerBlock(nn.Module):
         qk_rmsnorm=False,
         qk_scale=8,
         ff_mult=4,
-        attn_dropout=0.,
-        ff_dropout=0.,
+        attn_dropout=0.0,
+        ff_dropout=0.0,
         use_xpos=True,
         xpos_scale_base=512,
         flash_attn=False,
@@ -30,11 +30,7 @@ class TransformerBlock(nn.Module):
 
         attn_inner_dim = dim_head * heads
         ff_inner_dim = dim * ff_mult
-        self.fused_dims = (
-            attn_inner_dim,
-            dim_head,
-            dim_head,
-            (ff_inner_dim * 2))
+        self.fused_dims = (attn_inner_dim, dim_head, dim_head, (ff_inner_dim * 2))
 
         self.qk_rmsnorm = qk_rmsnorm
 
@@ -43,23 +39,18 @@ class TransformerBlock(nn.Module):
             self.k_scale = nn.Parameter(torch.ones(dim_head))
 
         self.attend = Attention(
-            causal=causal,
-            dropout=attn_dropout,
-            use_flash_attn=flash_attn
+            causal=causal, dropout=attn_dropout, use_flash_attn=flash_attn
         )
 
         self.heads = heads
-        self.scale = (dim_head ** -0.5) if not qk_rmsnorm else qk_scale
+        self.scale = (dim_head**-0.5) if not qk_rmsnorm else qk_scale
         self.causal = causal
 
         self.rotary_emb = RotaryEmbedding(
-            dim_head,
-            scale_base=xpos_scale_base,
-            use_xpos=use_xpos and causal
+            dim_head, scale_base=xpos_scale_base, use_xpos=use_xpos and causal
         )
 
-        self.fused_attn_ff_proj = nn.Linear(
-            dim, sum(self.fused_dims), bias=False)
+        self.fused_attn_ff_proj = nn.Linear(dim, sum(self.fused_dims), bias=False)
 
         self.flash_attn = flash_attn
         self.attn_out = nn.Linear(attn_inner_dim, dim, bias=False)
@@ -69,9 +60,7 @@ class TransformerBlock(nn.Module):
         # parallel feedforward tail
 
         self.ff_out = nn.Sequential(
-            SwiGLU(),
-            nn.Dropout(ff_dropout),
-            nn.Linear(ff_inner_dim, dim, bias=False)
+            SwiGLU(), nn.Dropout(ff_dropout), nn.Linear(ff_inner_dim, dim, bias=False)
         )
 
         # for caching causal mask and rotary embeddings
@@ -88,12 +77,7 @@ class TransformerBlock(nn.Module):
         self.register_buffer("pos_emb_scale", scale, persistent=False)
         return pos_emb, scale
 
-    def forward(
-        self,
-        x,
-        mask=None,
-        finetune_modules=None
-    ):
+    def forward(self, x, mask=None, finetune_modules=None):
         """
         einstein notation
         b - batch
@@ -141,7 +125,7 @@ class TransformerBlock(nn.Module):
         positions, scale = self.get_rotary_embedding(n, device)
 
         q = apply_rotary_pos_emb(positions, q, scale)
-        k = apply_rotary_pos_emb(positions, k, scale ** -1)
+        k = apply_rotary_pos_emb(positions, k, scale**-1)
 
         # attention function, either regular or flash
 
@@ -159,5 +143,6 @@ class TransformerBlock(nn.Module):
             attn_out = attn_out + lora_o(out)
 
         return attn_out + ff_out
+
 
 # transformer

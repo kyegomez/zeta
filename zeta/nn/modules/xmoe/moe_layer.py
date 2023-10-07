@@ -37,14 +37,14 @@ try:
 
     has_tutel, fused_cumsum_sub_one = True, tutel_moe.fast_cumsum_sub_one
 except ModuleNotFoundError:
-    has_tutel, fused_cumsum_sub_one = False, lambda mask: torch.cumsum(
-        mask, dim=0) - 1
+    has_tutel, fused_cumsum_sub_one = False, lambda mask: torch.cumsum(mask, dim=0) - 1
 
 logger = logging.getLogger(__name__)
 
 
 # einsum dimensions: (g)roup, (s)equence, (e)xpert, (m)odel, (c)apacity
 # See https://arxiv.org/pdf/2006.16668.pdf for details.
+
 
 # Based on https://github.com/pytorch/pytorch/pull/40762
 class _AllToAll(torch.autograd.Function):
@@ -105,11 +105,7 @@ class MOELayer(Base):
         self.a2a_cuda_event_intervals = []
         self.a2a_cpu_time_ms = 0.0
 
-    def forward(
-            self,
-            *input: Tensor,
-            input_padding_mask=None,
-            **kwargs: Any) -> Tensor:
+    def forward(self, *input: Tensor, input_padding_mask=None, **kwargs: Any) -> Tensor:
         assert len(input) == 1, "only single input Tensor supported"
         input = input[0]
         assert (
@@ -165,8 +161,7 @@ class MOELayer(Base):
                 device=input.device,
             )
             if input_padding_mask is not None:
-                padded_input_padding_mask[: input_shape[0],
-                                          :] = input_padding_mask
+                padded_input_padding_mask[: input_shape[0], :] = input_padding_mask
             else:
                 padded_input_padding_mask[: input_shape[0], :] = False
             input_padding_mask = padded_input_padding_mask
@@ -186,10 +181,7 @@ class MOELayer(Base):
             expected_dim = reshaped_input_shape[0] * torch.ones(
                 (1,), dtype=torch.long, device=input.device
             )
-            dist.all_reduce(
-                expected_dim,
-                group=dist.group.WORLD,
-                op=dist.ReduceOp.MAX)
+            dist.all_reduce(expected_dim, group=dist.group.WORLD, op=dist.ReduceOp.MAX)
             expected_dim = int(expected_dim.item())
             padded_input = torch.zeros(
                 (expected_dim, reshaped_input_shape[1]),
@@ -213,15 +205,15 @@ class MOELayer(Base):
 
         if has_tutel:
             l_aux, self.metadata, C, E, indices_, locations_, gates_ = self.gate(
-                reshaped_input, reshaped_input_padding_mask)
+                reshaped_input, reshaped_input_padding_mask
+            )
             S, M = reshaped_input.size(0), reshaped_input.size(1)
 
             if not hasattr(self, "_tutel_dispatcher"):
                 self._tutel_dispatcher = tutel_moe.fast_dispatcher(
                     E, C, M, dispatch_dtype=reshaped_input.dtype
                 )
-            self._tutel_dispatcher.update(
-                indices_, locations_, gates_, capacity=C)
+            self._tutel_dispatcher.update(indices_, locations_, gates_, capacity=C)
             dispatched_input = self._tutel_dispatcher.encode(reshaped_input)
         else:
             l_aux, combine_weights, dispatch_mask, self.metadata = self.gate(
@@ -305,8 +297,7 @@ class MOELayer(Base):
     def record_all_to_all_stats(self):
         # controlled via an argument as we want to minimize any impact from
         # torch.cuda.synchronize()
-        record_a2a_perf_stats = getattr(
-            self.args, "record_a2a_perf_stats", False)
+        record_a2a_perf_stats = getattr(self.args, "record_a2a_perf_stats", False)
         if record_a2a_perf_stats:
             torch.cuda.synchronize()
             self.metadata["all_to_all_cpu_time_ms"] = self.a2a_cpu_time_ms

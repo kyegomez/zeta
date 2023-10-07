@@ -23,21 +23,21 @@ def print_num_params(model, accelerator: Accelerator):
 
 
 def Trainer(
-        gradient_accumulate_every: int = None,
-        batch_size: int = None,
-        seq_len: int = None,
-        entity_name: str = None,
-        model=None,
-        use_fsdp: bool = False,
-        use_activation_checkpointing: bool = False,
-        learning_rate=None,
-        seed=None,
-        use_pretokenized: bool = False,
-        resume_from_checkpoint=None,
-        checkpointing_steps=None,
-        output_dir=None,
-        weight_decay=None,
-        use_deepspeed=None
+    gradient_accumulate_every: int = None,
+    batch_size: int = None,
+    seq_len: int = None,
+    entity_name: str = None,
+    model=None,
+    use_fsdp: bool = False,
+    use_activation_checkpointing: bool = False,
+    learning_rate=None,
+    seed=None,
+    use_pretokenized: bool = False,
+    resume_from_checkpoint=None,
+    checkpointing_steps=None,
+    output_dir=None,
+    weight_decay=None,
+    use_deepspeed=None,
 ):
     # accelerator
 
@@ -73,11 +73,7 @@ def Trainer(
     print_num_params(model, accelerator)
 
     if use_fsdp:
-        model = fsdp(
-            model,
-            mp="fp16",
-            shard_strat="SHARD_GRAD"
-        )
+        model = fsdp(model, mp="fp16", shard_strat="SHARD_GRAD")
 
     if use_activation_checkpointing:
         activation_checkpointing(model, accelerator)
@@ -92,7 +88,9 @@ def Trainer(
         train_dataset = build_dataloaders()
 
     train_loader = DataLoader(
-        train_dataset, batch_size=batch_size, collate_fn=default_data_collator,
+        train_dataset,
+        batch_size=batch_size,
+        collate_fn=default_data_collator,
     )
 
     # optimizer
@@ -103,9 +101,9 @@ def Trainer(
         weight_decay=weight_decay,
         beta_1=0.90,
         beta_2=0.95,
-        optimizer_type='Adam8bit',
+        optimizer_type="Adam8bit",
         use_fsdp=True,
-        accelerator=accelerator
+        accelerator=accelerator,
     )
 
     # Determine number of training steps
@@ -157,21 +155,18 @@ def Trainer(
 
     if resume_from_checkpoint:
         if resume_from_checkpoint is not None or resume_from_checkpoint != "":
-            accelerator.print(
-                f"Resuming from checkpoint {resume_from_checkpoint}")
+            accelerator.print(f"Resuming from checkpoint {resume_from_checkpoint}")
             accelerator.load_state(resume_from_checkpoint)
             path = os.path.basename(resume_from_checkpoint)
         training_difference = os.path.splitext(path)[0]
 
         # need to multiply `gradient_accumulation_steps` to reflect real steps
         resume_step = (
-            int(training_difference.replace("step_", ""))
-            * gradient_accumulate_every
+            int(training_difference.replace("step_", "")) * gradient_accumulate_every
         )
 
     if resume_from_checkpoint and resume_step is not None:
-        train_loader = accelerator.skip_first_batches(
-            train_loader, resume_step)
+        train_loader = accelerator.skip_first_batches(train_loader, resume_step)
         completed_steps += resume_step
         progress_bar.update(resume_step)
 
@@ -220,24 +215,20 @@ def Trainer(
         unwrapped_model = accelerator.unwrap_model(model)
         with accelerator.main_process_first():
             accelerator.save(
-                unwrapped_model.state_dict(),
-                f"{output_dir}/final/final_model.pt")
+                unwrapped_model.state_dict(), f"{output_dir}/final/final_model.pt"
+            )
 
 
-def train(
-        MASTER_ADDR=None,
-        MASTER_PORT=None,
-        RANK=None,
-        WORLD_SIZE=None):
-    os.environ['MASTER_ADDR'] or MASTER_ADDR  # = 'localhost'
-    os.environ['MASTER_PORT'] or MASTER_PORT  # = '9994'
+def train(MASTER_ADDR=None, MASTER_PORT=None, RANK=None, WORLD_SIZE=None):
+    os.environ["MASTER_ADDR"] or MASTER_ADDR  # = 'localhost'
+    os.environ["MASTER_PORT"] or MASTER_PORT  # = '9994'
 
     # # [CRITICAL] Pay attention to this when scaling to multiple GPUs and clusters
 
     # # Pay attention to this, use "accelerate config"
 
-    os.environ['RANK'] or RANK  # = str(0) # Number of nodes (servers)
-    os.environ['WORLD_SIZE'] or WORLD_SIZE  # = str(torch.cuda.device_count())
+    os.environ["RANK"] or RANK  # = str(0) # Number of nodes (servers)
+    os.environ["WORLD_SIZE"] or WORLD_SIZE  # = str(torch.cuda.device_count())
 
     torch.distributed.init_process_group()
 

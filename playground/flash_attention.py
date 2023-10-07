@@ -8,4 +8,4 @@ v = torch.randn(2, 4, 10, 8)
 attention = FlashAttention(causal=False, dropout=0.1, flash=False)
 output = attention(q, k, v)
 
-print(output.shape) 
+print(output.shape)

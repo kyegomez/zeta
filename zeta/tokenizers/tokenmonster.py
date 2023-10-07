@@ -205,12 +205,13 @@ class TokenMonster:
         return self.vocab.token_to_id(token)
 
     def modify(
-            self,
-            add_special_tokens=None,
-            add_regular_tokens=None,
-            delete_tokens=None,
-            resize=None,
-            change_unk=None):
+        self,
+        add_special_tokens=None,
+        add_regular_tokens=None,
+        delete_tokens=None,
+        resize=None,
+        change_unk=None,
+    ):
         """
         Modifies the vocabulary.
 
@@ -225,11 +226,8 @@ class TokenMonster:
             int: The new size of the vocabulary.
         """
         return self.vocab.modify(
-            add_special_tokens,
-            add_regular_tokens,
-            delete_tokens,
-            resize,
-            change_unk)
+            add_special_tokens, add_regular_tokens, delete_tokens, resize, change_unk
+        )
 
     def add_token(self, token):
         """

@@ -58,6 +58,5 @@ def get_all2all_group(moe_expert_count):
                 dist.new_group(g) for g in all2all_groups
             ]
 
-        my_group_idx = _find_my_group_index(
-            get_all2all_group._all2all_group_idx)
+        my_group_idx = _find_my_group_index(get_all2all_group._all2all_group_idx)
         return get_all2all_group._all2all_groups[my_group_idx]

@@ -15,23 +15,20 @@ def one_hot_encoding(y_true, num_classes):
 
 
 def is_multi_label_classification(y_true: torch.Tensor) -> bool:
-    return len(
-        y_true.shape) > 1 and y_true.shape[1] > 1 and y_true.dtype == torch.float
+    return len(y_true.shape) > 1 and y_true.shape[1] > 1 and y_true.dtype == torch.float
 
 
 def contains_non_negative_integers(y_true):
-    return torch.all(
-        y_true >= 0) and torch.all(
-        y_true == y_true.to(
-            torch.int64))
+    return torch.all(y_true >= 0) and torch.all(y_true == y_true.to(torch.int64))
 
 
 def are_probability_distributions(y_pred, y_true):
-    return torch.all(
-        y_pred >= 0) and torch.all(
-        y_pred <= 1) and torch.all(
-            y_true >= 0) and torch.all(
-                y_true <= 1)
+    return (
+        torch.all(y_pred >= 0)
+        and torch.all(y_pred <= 1)
+        and torch.all(y_true >= 0)
+        and torch.all(y_true <= 1)
+    )
 
 
 def are_log_probabilities(y_pred):
@@ -48,9 +45,11 @@ class HashableTensorWrapper:
         return hash((self.tensor_shape, self.tensor_dtype))
 
     def __eq__(self, other):
-        return isinstance(
-            other,
-            HashableTensorWrapper) and self.tensor_shape == other.tensor_shape and self.tensor_dtype == other.tensor_dtype
+        return (
+            isinstance(other, HashableTensorWrapper)
+            and self.tensor_shape == other.tensor_shape
+            and self.tensor_dtype == other.tensor_dtype
+        )
 
 
 def generate_tensor_key(tensor):
@@ -58,6 +57,7 @@ def generate_tensor_key(tensor):
     for dim in tensor.shape:
         shape_tuple += (dim,)
     return (shape_tuple, str(tensor.dtype))
+
 
 # Losses
 
@@ -143,8 +143,9 @@ class Nebula(LossFunction):
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)
         handler = logging.StreamHandler()
-        handler.setFormatter(logging.Formatter(
-            '%(asctime)s - %(levelname)s - %(message)s'))
+        handler.setFormatter(
+            logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+        )
         self.logger.addHandler(handler)
 
     def determine_loss_function(self, y_pred, y_true):
@@ -160,10 +161,10 @@ class Nebula(LossFunction):
 
         # Cache class balance
         if dataset_id not in self.class_balance_cache:
-            value_counts = torch.bincount(
-                y_true.flatten().to(dtype=torch.int64))
-            self.class_balance_cache[dataset_id] = value_counts / \
-                torch.sum(value_counts)
+            value_counts = torch.bincount(y_true.flatten().to(dtype=torch.int64))
+            self.class_balance_cache[dataset_id] = value_counts / torch.sum(
+                value_counts
+            )
         class_balance = self.class_balance_cache[dataset_id]
 
         # Optimization 2: Use PyTorch functions instead of NumPy
@@ -172,11 +173,7 @@ class Nebula(LossFunction):
         # The remaining code remains unchanged as it already incorporates the
         # suggested optimizations
         if is_classification is None:
-            if len(unique_values) <= 10 and torch.all(
-                torch.eq(
-                    unique_values %
-                    1,
-                    0)):
+            if len(unique_values) <= 10 and torch.all(torch.eq(unique_values % 1, 0)):
                 is_classification = True
 
         if is_classification is None:
@@ -196,13 +193,10 @@ class Nebula(LossFunction):
         y_pred_flat = y_pred.flatten()
         y_true_flat = y_true.flatten()
         if y_pred_flat.shape != y_true_flat.shape:
-            y_pred_flat = y_pred_flat[:y_true_flat.numel()]
+            y_pred_flat = y_pred_flat[: y_true_flat.numel()]
         correlation = torch.tensor(
-            np.corrcoef(
-                y_pred_flat.cpu().numpy(),
-                y_true_flat.cpu().numpy())[
-                0,
-                1])
+            np.corrcoef(y_pred_flat.cpu().numpy(), y_true_flat.cpu().numpy())[0, 1]
+        )
 
         if is_classification is None:
             if self.domain_knowledge == "classification":
@@ -249,7 +243,8 @@ class Nebula(LossFunction):
         # Set the loss function based on the determined problem type
         if is_classification:
             self.logger.info(
-                "Determined problem as classification. Using CrossEntropyLoss")
+                "Determined problem as classification. Using CrossEntropyLoss"
+            )
             self.loss_function = CrossEntropyLoss()
         else:
             self.logger.info("Determining loss function for this dataset")

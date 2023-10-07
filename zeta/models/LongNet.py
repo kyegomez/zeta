@@ -16,35 +16,23 @@ class LongNetTokenizer:
             eos_token="<eos>",
             pad_token="<pad>",
             extra_ids=0,
-            model_max_length=8192
+            model_max_length=8192,
         )
 
     def tokenize_texts(self, texts):
         return self.tokenizer(
-            texts,
-            return_tensors="pt",
-            padding=True,
-            truncation=True).input_ids
+            texts, return_tensors="pt", padding=True, truncation=True
+        ).input_ids
 
 
 class LongNet(Module):
     def __init__(self):
         super().__init__()
-        self.embed = bitsandbytes.nn.modules.Embedding(
-            320002,
-            2048,
-            padding_idx=1
-        )
+        self.embed = bitsandbytes.nn.modules.Embedding(320002, 2048, padding_idx=1)
 
-        self.embed_positions = PositionalEmbedding(
-            2048,
-            2048,
-            1
-        )
+        self.embed_positions = PositionalEmbedding(2048, 2048, 1)
 
-        self.output_projection = torch.nn.Linear(
-            2048, 32002, bias=False
-        )
+        self.output_projection = torch.nn.Linear(2048, 32002, bias=False)
 
         self.config = DecoderConfig(
             decoder_layers=24,
@@ -63,7 +51,7 @@ class LongNet(Module):
             self.config,
             embed_tokens=self.embed,
             embed_positions=self.embed_positions,
-            output_projection=self.output_projection
+            output_projection=self.output_projection,
         )
 
     def forward(self, text_tokens, **kwargs):

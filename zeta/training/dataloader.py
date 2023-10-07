@@ -1,12 +1,9 @@
 from itertools import chain
 from datasets import load_dataset
-from transformers import (AutoTokenizer)
+from transformers import AutoTokenizer
 
 
-def build_dataloaders(
-        seq_len: int = None,
-        num_cpu: int = None
-):
+def build_dataloaders(seq_len: int = None, num_cpu: int = None):
     """
     Build data loaders for training.
 
@@ -35,8 +32,7 @@ def build_dataloaders(
     # dataset and generate chunks of block_size.
     def group_texts(examples):
         # Concatenate all texts.
-        concatenated_examples = {
-            k: list(chain(*examples[k])) for k in examples.keys()}
+        concatenated_examples = {k: list(chain(*examples[k])) for k in examples.keys()}
         total_length = len(concatenated_examples[list(examples.keys())[0]])
         # We drop the small remainder, we could add padding if the model supported it instead of this drop, you can
         # customize this part to your needs.
@@ -50,15 +46,15 @@ def build_dataloaders(
         return result
 
     train_dataset = tokenized_dataset.map(
-        group_texts, batched=True, num_proc=num_cpu,
+        group_texts,
+        batched=True,
+        num_proc=num_cpu,
     )
 
     return train_dataset
 
 
-def build_pre_tokenized(
-        dataset_name: str = None
-):
+def build_pre_tokenized(dataset_name: str = None):
     d0 = load_dataset(dataset_name)
     # d1 = load_dataset("conceptofmind/c4_21-to-40_neox_with_eos_8k", split="train")
     # d2 = load_dataset("conceptofmind/c4_41-to-60_neox_with_eos_8k", split="train")

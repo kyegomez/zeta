@@ -9,6 +9,7 @@ from zeta.nn.modules.layernorm import LayerNorm
 from zeta.nn.architecture.transformer import FeedForward
 from zeta import nn
 from zeta.zeta import zeta
+
 print(zeta)
 
 

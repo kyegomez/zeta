@@ -59,7 +59,9 @@ def eval_decorator(fn):
         out = fn(model, *args, **kwargs)
         model.train(was_training)
         return out
+
     return inner
+
 
 # sampling helpers
 
@@ -73,7 +75,7 @@ def gumbel_noise(t):
     return -log(-log(noise))
 
 
-def gumbel_sample(t, temperature=1., dim=-1):
+def gumbel_sample(t, temperature=1.0, dim=-1):
     return ((t / max(temperature, 1e-10)) + gumbel_noise(t)).argmax(dim=dim)
 
 
@@ -84,12 +86,13 @@ def top_k(logits, thres=0.9):
     probs.scatter_(1, ind, val)
     return probs
 
+
 # rotary positional embedding w/ xpos
 # https://arxiv.org/abs/2104.09864
 # https://arxiv.org/abs/2212.10554v1
 
 
-def apply_rotary_pos_emb(pos, t, scale=1.):
+def apply_rotary_pos_emb(pos, t, scale=1.0):
     seq_len = t.shape[-2]
 
     pos = pos[..., -seq_len:, :]
@@ -102,8 +105,9 @@ def apply_rotary_pos_emb(pos, t, scale=1.):
 def apply_rotary_pos_emb_qk(rotary_emb, q, k):
     freqs, scale = rotary_emb
     q = apply_rotary_pos_emb(freqs, q, scale)
-    k = apply_rotary_pos_emb(freqs, k, scale ** -1)
+    k = apply_rotary_pos_emb(freqs, k, scale**-1)
     return q, k
+
 
 # token shift, from Peng et al of RWKV
 
@@ -112,6 +116,7 @@ def token_shift(t):
     t, t_shift = t.chunk(2, dim=-1)
     t_shift = F.pad(t_shift, (0, 0, 1, -1))
     return torch.cat((t, t_shift), dim=-1)
+
 
 # hierarchy related classes
 
@@ -124,7 +129,7 @@ def pad_seq_to_multiple(t, mult):
     if remainder == 0:
         return t, seq_len
 
-    t = F.pad(t, (0, 0, 0, remainder), value=0.)
+    t = F.pad(t, (0, 0, 0, remainder), value=0.0)
     return t, seq_len
 
 
@@ -146,21 +151,14 @@ def hierarchical_cat(tokens, strides: Tuple[int, ...]):
     if all([s == 1 for s in strides]):
         return torch.cat(tokens, dim=-1)
 
-    tokens = [repeat(t, 'b n d -> b (n s) d', s=s)
-              for t, s in zip(tokens, strides)]
+    tokens = [repeat(t, "b n d -> b (n s) d", s=s) for t, s in zip(tokens, strides)]
     min_seq_len = min([t.shape[-2] for t in tokens])
     tokens = [t[..., :min_seq_len, :] for t in tokens]
     return torch.cat(tokens, dim=-1)
 
 
 class CausalConv(nn.Module):
-    def __init__(
-        self,
-        dim_in,
-        dim_out,
-        kernel_size,
-        stride=1
-    ):
+    def __init__(self, dim_in, dim_out, kernel_size, stride=1):
         super().__init__()
         self.causal_padding = kernel_size - 1
         self.conv = nn.Conv1d(dim_in, dim_out, kernel_size, stride=stride)
@@ -185,7 +183,7 @@ class Compress(nn.Module):
         ignore_index=0,
         should_recon=False,
         should_prophet=False,
-        prophet_num_predictions=None
+        prophet_num_predictions=None,
     ):
         super().__init__()
         assert compress_factor > 0 and is_power_of_two(compress_factor)
@@ -198,18 +196,17 @@ class Compress(nn.Module):
         self.should_prophet = should_prophet
 
         if self.no_compress:
-            self.compress_fn = Linear(
-                dim, dim_out) if dim != dim_out else nn.Identity()
+            self.compress_fn = Linear(dim, dim_out) if dim != dim_out else nn.Identity()
             return
 
         dim_inner = int(dim * expansion_factor)
 
         self.compress_fn = nn.Sequential(
-            Rearrange('b n d -> b d n'),
+            Rearrange("b n d -> b d n"),
             CausalConv(dim, dim_inner, compress_factor, stride=stride),
             nn.SiLU(),
             nn.Conv1d(dim_inner, dim_out, 1),
-            Rearrange('b d n -> b n d')
+            Rearrange("b d n -> b n d"),
         )
 
         if should_recon:
@@ -230,21 +227,19 @@ class Compress(nn.Module):
         seq_len = ids.shape[-1]
 
         prophet_logits = self.to_prophet(h)
-        prophet_logits = rearrange(
-            prophet_logits, 'b n (c d) -> (b c) d n', c=c)
+        prophet_logits = rearrange(prophet_logits, "b n (c d) -> (b c) d n", c=c)
 
         prophet_ids = F.pad(ids, (-1, c), value=self.ignore_index)
-        prophet_ids = tuple(prophet_ids[:, i:(seq_len + i)] for i in range(c))
+        prophet_ids = tuple(prophet_ids[:, i: (seq_len + i)] for i in range(c))
         prophet_ids = torch.stack(prophet_ids, dim=1)
-        prophet_ids = rearrange(prophet_ids, 'b c n -> (b c) n')
+        prophet_ids = rearrange(prophet_ids, "b c n -> (b c) n")
 
         if self.stride > 1:
-            prophet_ids = prophet_ids[..., ::self.stride]
+            prophet_ids = prophet_ids[..., :: self.stride]
 
         prophet_loss = F.cross_entropy(
-            prophet_logits,
-            prophet_ids,
-            ignore_index=self.ignore_index)
+            prophet_logits, prophet_ids, ignore_index=self.ignore_index
+        )
         return prophet_loss
 
     def recon(self, h, ids):
@@ -257,18 +252,19 @@ class Compress(nn.Module):
         seq_len = ids.shape[-1]
 
         recon_logits = self.to_recon(h)
-        recon_logits = rearrange(recon_logits, 'b n (c d) -> (b c) d n', c=c)
+        recon_logits = rearrange(recon_logits, "b n (c d) -> (b c) d n", c=c)
 
         recon_ids = F.pad(ids, (c - 1, 0), value=self.ignore_index)
-        recon_ids = tuple(recon_ids[:, i:(seq_len + i)] for i in range(c))
+        recon_ids = tuple(recon_ids[:, i: (seq_len + i)] for i in range(c))
         recon_ids = torch.stack(recon_ids, dim=1)
-        recon_ids = rearrange(recon_ids, 'b c n -> (b c) n')
+        recon_ids = rearrange(recon_ids, "b c n -> (b c) n")
 
         if self.stride > 1:
-            recon_ids = recon_ids[..., ::self.stride]
+            recon_ids = recon_ids[..., :: self.stride]
 
         recon_loss = F.cross_entropy(
-            recon_logits, recon_ids, ignore_index=self.ignore_index)
+            recon_logits, recon_ids, ignore_index=self.ignore_index
+        )
         return recon_loss
 
     def forward(self, x):
@@ -276,12 +272,7 @@ class Compress(nn.Module):
 
 
 class HierarchicalMerge(nn.Module):
-    def __init__(
-        self,
-        dims: Tuple[int, ...],
-        dim_out,
-        h_strides=1
-    ):
+    def __init__(self, dims: Tuple[int, ...], dim_out, h_strides=1):
         super().__init__()
         dim = sum(dims)
 
@@ -294,12 +285,13 @@ class HierarchicalMerge(nn.Module):
             RMSNorm(dim),
             nn.Linear(dim, dim_out * 2),
             nn.SiLU(),
-            nn.Linear(dim_out * 2, dim_out)
+            nn.Linear(dim_out * 2, dim_out),
         )
 
     def forward(self, tokens):
         x = hierarchical_cat(tokens, self.strides)
         return self.net(x)
+
 
 # classes
 
@@ -307,7 +299,7 @@ class HierarchicalMerge(nn.Module):
 class RMSNorm(nn.Module):
     def __init__(self, dim):
         super().__init__()
-        self.scale = dim ** 0.5
+        self.scale = dim**0.5
         self.gamma = nn.Parameter(torch.ones(dim))
 
     def forward(self, x):
@@ -320,10 +312,7 @@ class FeedForward(nn.Module):
         dim_inner = int(dim * mult)
 
         self.net = nn.Sequential(
-            RMSNorm(dim),
-            Linear(dim, dim_inner),
-            nn.GELU(),
-            Linear(dim_inner, dim)
+            RMSNorm(dim), Linear(dim, dim_inner), nn.GELU(), Linear(dim_inner, dim)
         )
 
     def forward(self, x):
@@ -331,15 +320,9 @@ class FeedForward(nn.Module):
 
 
 class Attention(nn.Module):
-    def __init__(
-        self,
-        dim,
-        dim_head=64,
-        heads=8,
-        use_flash_attn=False
-    ):
+    def __init__(self, dim, dim_head=64, heads=8, use_flash_attn=False):
         super().__init__()
-        self.scale = dim_head ** -0.5
+        self.scale = dim_head**-0.5
         self.heads = heads
         dim_inner = dim_head * heads
 
@@ -357,15 +340,15 @@ class Attention(nn.Module):
 
         q, k, v = self.to_qkv(x).chunk(3, dim=-1)
         q, k, v = map(
-            lambda t: rearrange(
-                t, 'b n (h d) -> b h n d', h=self.heads), (q, k, v))
+            lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads), (q, k, v)
+        )
 
         rotary_emb = self.rotary_emb(n)
         q, k = apply_rotary_pos_emb_qk(rotary_emb, q, k)
 
         out = self.attend(q, k, v)
 
-        out = rearrange(out, 'b h n d -> b n (h d)')
+        out = rearrange(out, "b h n d -> b n (h d)")
         return self.to_out(out)
 
 
@@ -378,9 +361,8 @@ class HierarchicalBlock(nn.Module):
         window_size=None,
         compress_factor=1,
         stride=1,
-        ff_mult=4
+        ff_mult=4,
     ):
-
         super().__init__()
         self.stride = stride
 
@@ -418,7 +400,7 @@ class HierarchicalBlock(nn.Module):
         # will have a c - 1 token gap to the last hierarchical token
 
         if not self.no_compress:
-            x = rearrange(x, 'b (n c) d -> (b c) n d', c=axial_dim)
+            x = rearrange(x, "b (n c) d -> (b c) n d", c=axial_dim)
 
         if exists(self.attn):
             x = self.attn(token_shift(x)) + x
@@ -426,7 +408,7 @@ class HierarchicalBlock(nn.Module):
         x = self.ff(token_shift(x)) + x
 
         if not self.no_compress:
-            x = rearrange(x, '(b c) n d -> b (n c) d', c=axial_dim)
+            x = rearrange(x, "(b c) n d -> b (n c) d", c=axial_dim)
 
         return x[:, :orig_seq_len]
 
@@ -451,7 +433,7 @@ class HierarchicalTransformer(nn.Module):
         ignore_index=0,
         use_flash_attn=False,
         recon_loss_weight=0.1,
-        prophet_loss_weight=0.,
+        prophet_loss_weight=0.0,
         prophet_loss_use_quantized=False,
         # for prophet, whether to use the next 1x token ids, or use the ids
         # from random projection quantization
@@ -493,9 +475,11 @@ class HierarchicalTransformer(nn.Module):
 
         hierarchies = cast_tuple(hierarchies)
         assert all_unique(
-            hierarchies), 'hierarchies compression factors must be all unique integers'
-        assert all([*map(is_power_of_two, hierarchies)]
-                   ), 'only powers of two allowed for hierarchies'
+            hierarchies
+        ), "hierarchies compression factors must be all unique integers"
+        assert all(
+            [*map(is_power_of_two, hierarchies)]
+        ), "only powers of two allowed for hierarchies"
 
         self.hierarchies = hierarchies
 
@@ -521,10 +505,12 @@ class HierarchicalTransformer(nn.Module):
 
         hierarchical_stride = cast_tuple(hierarchical_stride, num_hierarchies)
 
-        assert all([*map(is_power_of_two, hierarchical_stride)]
-                   ), 'all hierarchical strides must be power of two'
-        assert all([s <= h for s, h in zip(hierarchical_stride, hierarchies)]
-                   ), 'all strides must be less than the compression factor of the hierarchy'
+        assert all(
+            [*map(is_power_of_two, hierarchical_stride)]
+        ), "all hierarchical strides must be power of two"
+        assert all(
+            [s <= h for s, h in zip(hierarchical_stride, hierarchies)]
+        ), "all strides must be less than the compression factor of the hierarchy"
 
         self.h_strides = hierarchical_stride
 
@@ -539,8 +525,9 @@ class HierarchicalTransformer(nn.Module):
         hierarchy_predict_dim = dims[self.predict_hierarchy_index]
 
         self.hierarchy_merge_all = hierarchy_merge_all
-        assert hierarchy_merge_all or self.h_strides[
-            self.predict_hierarchy_index] == 1, 'the hierarchy level being used for final next token prediction must have compression stride of 1'
+        assert (
+            hierarchy_merge_all or self.h_strides[self.predict_hierarchy_index] == 1
+        ), "the hierarchy level being used for final next token prediction must have compression stride of 1"
 
         # training related loss weights
 
@@ -565,8 +552,7 @@ class HierarchicalTransformer(nn.Module):
 
         self.compressors = mlist([])
 
-        for dim, hierarchy, stride in zip(
-                dims, hierarchies, hierarchical_stride):
+        for dim, hierarchy, stride in zip(dims, hierarchies, hierarchical_stride):
             self.compressors.append(
                 Compress(
                     dim=dim_token_emb,
@@ -577,10 +563,12 @@ class HierarchicalTransformer(nn.Module):
                     should_recon=should_recon,
                     should_prophet=should_prophet,
                     prophet_num_predictions=(
-                        (hierarchy *
-                         num_tokens) if not prophet_loss_use_quantized else (
-                            rq_num_codebooks *
-                            rq_codebook_size))))
+                        (hierarchy * num_tokens)
+                        if not prophet_loss_use_quantized
+                        else (rq_num_codebooks * rq_codebook_size)
+                    ),
+                )
+            )
 
         # post token embedding norms
 
@@ -600,9 +588,23 @@ class HierarchicalTransformer(nn.Module):
 
             # add a transformer block for each layer in the hierarchy
 
-            for hierarchy, h_stride, h_dim, h_window_size, h_dim_head, h_heads, h_ff_mult in zip(
-                    hierarchies, hierarchical_stride, dims, window_sizes, dim_head, heads, ff_mult):
-
+            for (
+                hierarchy,
+                h_stride,
+                h_dim,
+                h_window_size,
+                h_dim_head,
+                h_heads,
+                h_ff_mult,
+            ) in zip(
+                hierarchies,
+                hierarchical_stride,
+                dims,
+                window_sizes,
+                dim_head,
+                heads,
+                ff_mult,
+            ):
                 # make sure the window size never exceeds the effective
                 # sequence length
 
@@ -610,7 +612,8 @@ class HierarchicalTransformer(nn.Module):
 
                 if exists(h_window_size) and h_window_size > effective_seq_len:
                     print(
-                        f'window size for hierarchy {hierarchy}x is greater than effective sequence length - setting window size to None (which would use normal full attention)')
+                        f"window size for hierarchy {hierarchy}x is greater than effective sequence length - setting window size to None (which would use normal full attention)"
+                    )
                     h_window_size = None
 
                 # add attention and feedforward
@@ -623,7 +626,7 @@ class HierarchicalTransformer(nn.Module):
                         window_size=h_window_size,
                         compress_factor=hierarchy,
                         stride=h_stride,
-                        ff_mult=h_ff_mult
+                        ff_mult=h_ff_mult,
                     )
                 )
 
@@ -639,8 +642,11 @@ class HierarchicalTransformer(nn.Module):
 
             merge = HierarchicalMerge(
                 dims=dims,
-                dim_out=hierarchy_predict_dim if not self.hierarchy_merge_all else sum(dims),
-                h_strides=hierarchical_stride)
+                dim_out=hierarchy_predict_dim
+                if not self.hierarchy_merge_all
+                else sum(dims),
+                h_strides=hierarchical_stride,
+            )
 
             self.hierarchical_merges.append(merge)
 
@@ -656,19 +662,17 @@ class HierarchicalTransformer(nn.Module):
                 RandomProjectionQuantizer,
                 num_codebooks=rq_num_codebooks,
                 codebook_dim=rq_codebook_dim,
-                codebook_size=rq_codebook_size
+                codebook_size=rq_codebook_size,
             )
 
-            self.rand_proj_quantizers = mlist(
-                [rpq_klass(dim=dim) for dim in dims])
+            self.rand_proj_quantizers = mlist([rpq_klass(dim=dim) for dim in dims])
             self.rq_num_codebooks = rq_num_codebooks
 
         # to logit, for hierarchy set at predict_hierarchy_index, or all
         # hierarchies
 
         self.predict_use_all_hierarchy = predict_use_all_hierarchy
-        logit_dim_in = sum(
-            dims) if predict_use_all_hierarchy else hierarchy_predict_dim
+        logit_dim_in = sum(dims) if predict_use_all_hierarchy else hierarchy_predict_dim
 
         self.to_logits = Linear(logit_dim_in, num_tokens)
 
@@ -678,14 +682,7 @@ class HierarchicalTransformer(nn.Module):
 
     @torch.no_grad()
     @eval_decorator
-    def generate(
-        self,
-        prompt,
-        seq_len,
-        temperature=1.0,
-        filter_thres=0.9,
-        **kwargs
-    ):
+    def generate(self, prompt, seq_len, temperature=1.0, filter_thres=0.9, **kwargs):
         b, t, device = *prompt.shape, prompt.device
 
         out = prompt
@@ -694,7 +691,7 @@ class HierarchicalTransformer(nn.Module):
             logits = self.forward(out[:, -self.seq_len:], **kwargs)[:, -1]
             filtered_logits = top_k(logits, thres=filter_thres)
             sample = gumbel_sample(filtered_logits, temperature=temperature)
-            sample = rearrange(sample, 'b -> b 1')
+            sample = rearrange(sample, "b -> b 1")
             out = torch.cat((out, sample), dim=-1)
 
         return out[:, t:]
@@ -710,7 +707,7 @@ class HierarchicalTransformer(nn.Module):
         return_hierarchical_token_embeds=False,
         return_hierarchical_embeds=False,
         ablate_hierarchical_merge=False,
-        return_random_proj_quantize_ids=False
+        return_random_proj_quantize_ids=False,
     ):
         """
         einops notation:
@@ -760,7 +757,6 @@ class HierarchicalTransformer(nn.Module):
         # layers
 
         for layer, merge in zip_longest(self.layers, self.hierarchical_merges):
-
             tokens = apply_fns(layer, tokens)
 
             # pool the information all hierarchies
@@ -773,8 +769,12 @@ class HierarchicalTransformer(nn.Module):
             pooled = merge(tokens)
 
             if self.hierarchy_merge_all:
-                tokens = [(t + p[..., ::s, :]) for t, p, s in zip(tokens,
-                                                                  pooled.split(self.dims, dim=-1), self.h_strides)]
+                tokens = [
+                    (t + p[..., ::s, :])
+                    for t, p, s in zip(
+                        tokens, pooled.split(self.dims, dim=-1), self.h_strides
+                    )
+                ]
             else:
                 predict_tokens = tokens[self.predict_hierarchy_index]
                 predict_tokens = predict_tokens + pooled
@@ -790,9 +790,10 @@ class HierarchicalTransformer(nn.Module):
         if return_random_proj_quantize_ids:
             assert self.prophet_loss_use_quantized
 
-            quantize_input = embeds if self.prophet_quantized_use_embed else post_compressed_tokens
-            hierarchical_ids = apply_fns(
-                self.rand_proj_quantizers, quantize_input)
+            quantize_input = (
+                embeds if self.prophet_quantized_use_embed else post_compressed_tokens
+            )
+            hierarchical_ids = apply_fns(self.rand_proj_quantizers, quantize_input)
             return hierarchical_ids
 
         # if one wants all the normalized hierarchical embeds
@@ -818,13 +819,14 @@ class HierarchicalTransformer(nn.Module):
 
         # autoregressive loss (predictive coding)
 
-        logits = rearrange(logits, 'b n c -> b c n')
+        logits = rearrange(logits, "b n c -> b c n")
         ce_loss = ce_loss_fn(logits, labels)
 
         # reconstruction losses for hierarchy tokens
 
         recon_losses = prophet_losses = torch.zeros(
-            (), device=self.device).requires_grad_()
+            (), device=self.device
+        ).requires_grad_()
 
         if self.should_recon:
             for compress, t in zip(self.compressors, embeds):
@@ -838,13 +840,21 @@ class HierarchicalTransformer(nn.Module):
                 # using random projected quantizer of the next hierarchical
                 # token
 
-                quantize_input = embeds if self.prophet_quantized_use_embed else post_compressed_tokens
+                quantize_input = (
+                    embeds
+                    if self.prophet_quantized_use_embed
+                    else post_compressed_tokens
+                )
 
-                hierarchical_ids = apply_fns(
-                    self.rand_proj_quantizers, quantize_input)
+                hierarchical_ids = apply_fns(self.rand_proj_quantizers, quantize_input)
 
                 for hierarchy, stride, compress, embed, pred_ids in zip(
-                        self.hierarchies, self.h_strides, self.compressors, embeds, hierarchical_ids):
+                    self.hierarchies,
+                    self.h_strides,
+                    self.compressors,
+                    embeds,
+                    hierarchical_ids,
+                ):
                     if hierarchy == 1:
                         continue
 
@@ -852,16 +862,22 @@ class HierarchicalTransformer(nn.Module):
 
                     axial_dim = hierarchy // stride
 
-                    prophet_logits = curtail_seq_to_multiple(
-                        prophet_logits, axial_dim)
+                    prophet_logits = curtail_seq_to_multiple(prophet_logits, axial_dim)
                     pred_ids = curtail_seq_to_multiple(pred_ids, axial_dim)
 
-                    prophet_logits, pred_ids = map(lambda t: rearrange(
-                        t, 'b (n c) ... -> (b c) n ...', c=axial_dim), (prophet_logits, pred_ids))
+                    prophet_logits, pred_ids = map(
+                        lambda t: rearrange(
+                            t, "b (n c) ... -> (b c) n ...", c=axial_dim
+                        ),
+                        (prophet_logits, pred_ids),
+                    )
 
                     prophet_logits = rearrange(
-                        prophet_logits[:, :-1], 'b n (q c) -> (b q) c n', q=self.rq_num_codebooks)
-                    pred_ids = rearrange(pred_ids[:, 1:], 'b n q -> (b q) n')
+                        prophet_logits[:, :-1],
+                        "b n (q c) -> (b q) c n",
+                        q=self.rq_num_codebooks,
+                    )
+                    pred_ids = rearrange(pred_ids[:, 1:], "b n q -> (b q) n")
 
                     prophet_loss = ce_loss_fn(prophet_logits, pred_ids)
                     prophet_losses = prophet_losses + prophet_loss
@@ -876,7 +892,10 @@ class HierarchicalTransformer(nn.Module):
 
         # total loss
 
-        total_loss = ce_loss + recon_losses * self.recon_loss_weight + \
-            prophet_losses * self.prophet_loss_weight
+        total_loss = (
+            ce_loss
+            + recon_losses * self.recon_loss_weight
+            + prophet_losses * self.prophet_loss_weight
+        )
 
         return total_loss, (ce_loss, recon_losses, prophet_losses)

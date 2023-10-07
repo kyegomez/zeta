@@ -1,4 +1,3 @@
-
 from functools import partial
 
 import torch
@@ -10,9 +9,7 @@ from torch.distributed.fsdp import (
 )
 
 
-from torch.distributed.fsdp.wrap import (
-    transformer_auto_wrap_policy
-)
+from torch.distributed.fsdp.wrap import transformer_auto_wrap_policy
 
 
 def fsdp(
@@ -20,7 +17,7 @@ def fsdp(
     auto_wrap: bool = False,
     mp: str = "fp32",
     shard_strat: str = "NO_SHARD",
-    TransformerBlock=None
+    TransformerBlock=None,
 ):
     """
     This function wraps a given PyTorch model with the FullyShardedDataParallel (FSDP) wrapper to enable efficient data parallelism and model sharding.

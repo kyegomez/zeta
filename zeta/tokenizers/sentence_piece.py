@@ -39,17 +39,14 @@ class SentencePieceTokenizer:
         self.pad_id: int = self.sp_model.pad_id()
 
         # token IDs for special infilling tokens
-        self.prefix_id: Optional[int] = self.sp_model.piece_to_id(
-            "▁<PRE>") or None
-        self.middle_id: Optional[int] = self.sp_model.piece_to_id(
-            "▁<MID>") or None
-        self.suffix_id: Optional[int] = self.sp_model.piece_to_id(
-            "▁<SUF>") or None
-        self.eot_id: Optional[int] = self.sp_model.piece_to_id(
-            "▁<EOT>") or None
+        self.prefix_id: Optional[int] = self.sp_model.piece_to_id("▁<PRE>") or None
+        self.middle_id: Optional[int] = self.sp_model.piece_to_id("▁<MID>") or None
+        self.suffix_id: Optional[int] = self.sp_model.piece_to_id("▁<SUF>") or None
+        self.eot_id: Optional[int] = self.sp_model.piece_to_id("▁<EOT>") or None
         logger.info(
             f"#words: {self.n_words} - BOS ID: {self.bos_id} - EOS ID: {self.eos_id} "
-            f"- PRE ID: {self.prefix_id} - MID ID: {self.middle_id} - SUF ID: {self.suffix_id} - EOT ID: {self.eot_id}")
+            f"- PRE ID: {self.prefix_id} - MID ID: {self.middle_id} - SUF ID: {self.suffix_id} - EOT ID: {self.eot_id}"
+        )
         assert self.sp_model.vocab_size() == self.sp_model.get_piece_size()
 
     def encode(self, s: str, bos: bool, eos: bool) -> List[int]:

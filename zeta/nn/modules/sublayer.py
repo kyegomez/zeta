@@ -3,10 +3,7 @@ from torch import nn
 
 
 class LN(nn.Module):
-    def __init__(self,
-                 dim=None,
-                 eps=None
-                 ):
+    def __init__(self, dim=None, eps=None):
         self.dim = dim
         self.eps = eps
 

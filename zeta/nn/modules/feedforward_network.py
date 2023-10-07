@@ -4,6 +4,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
 try:
     from apex.normalization import FusedLayerNorm as LayerNorm
 except ModuleNotFoundError:
@@ -113,18 +114,13 @@ class FeedForwardNetwork(nn.Module):
     ):
         super().__init__()
         self.embed_dim = embed_dim
-        self.activation_fn = get_activation_fn(
-            activation=str(activation_fn)
-        )
+        self.activation_fn = get_activation_fn(activation=str(activation_fn))
 
-        self.activation_dropout_module = torch.nn.Dropout(
-            activation_dropout
-        )
+        self.activation_dropout_module = torch.nn.Dropout(activation_dropout)
         self.dropout_module = torch.nn.Dropout(dropout)
         self.fc1 = nn.Linear(self.embed_dim, ffn_dim)
         self.fc2 = nn.Linear(ffn_dim, self.embed_dim)
-        self.ffn_layernorm = LayerNorm(
-            ffn_dim, eps=layernorm_eps) if subln else None
+        self.ffn_layernorm = LayerNorm(ffn_dim, eps=layernorm_eps) if subln else None
 
     def reset_parameters(self):
         self.fc1.reset_parameters()

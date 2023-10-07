@@ -111,9 +111,10 @@ def matrix_inverse_root(
             )
     else:
         raise NotImplementedError(
-            "Root inverse method is not implemented! Specified root inverse method is " +
-            str(root_inv_method) +
-            ".")
+            "Root inverse method is not implemented! Specified root inverse method is "
+            + str(root_inv_method)
+            + "."
+        )
 
     return X
 
@@ -338,12 +339,9 @@ def compute_matrix_root_inverse_residuals(
 
     # compute error by comparing against double precision
     X = matrix_inverse_root(
-        A.double(),
-        root,
-        epsilon=epsilon,
-        exponent_multiplier=exponent_multiplier)
-    relative_error = torch.dist(
-        X, X_hat, p=torch.inf) / torch.norm(X, p=torch.inf)
+        A.double(), root, epsilon=epsilon, exponent_multiplier=exponent_multiplier
+    )
+    relative_error = torch.dist(X, X_hat, p=torch.inf) / torch.norm(X, p=torch.inf)
 
     # compute residual
     if exponent_multiplier == 1.0:
@@ -368,10 +366,7 @@ def compute_matrix_root_inverse_residuals(
     return relative_error, relative_residual
 
 
-def merge_small_dims(
-    tensor_shape: List[int],
-    threshold: int
-) -> List[int]:
+def merge_small_dims(tensor_shape: List[int], threshold: int) -> List[int]:
     """
     Reshapes tensor by merging small dimenions
 
@@ -415,16 +410,12 @@ def multi_dim_split(
     split_tensors = [tensor]
     for dim, split in enumerate(splits):
         split_tensors = [
-            s for t in split_tensors for s in torch.split(
-                t, split, dim=dim
-            )
+            s for t in split_tensors for s in torch.split(t, split, dim=dim)
         ]
     return split_tensors
 
 
-def multi_dim_cat(
-        split_tensors: List[Tensor],
-        num_splits: List[int]) -> Tensor:
+def multi_dim_cat(split_tensors: List[Tensor], num_splits: List[int]) -> Tensor:
     """Concatenates multiple tensors to form single tensor across multiple dimensions.
 
     Args:

@@ -4,13 +4,9 @@ import torch.nn.functional as F
 
 
 class RMSNorm(nn.Module):
-    def __init__(
-        self,
-        dim,
-        groups=1
-    ):
+    def __init__(self, dim, groups=1):
         super().__init__()
-        self.scale = dim ** -0.5
+        self.scale = dim**-0.5
         self.gamma = nn.Parameter(torch.ones(groups, dim, 1))
 
     def forward(self, x):

@@ -24,12 +24,7 @@ class ParallelWrapper:
         use_data_parallel (optional): A boolean flag to indicate whether to use data parallelism or not. Default: True.
     """
 
-    def __init__(
-            self,
-            model,
-            device="cuda",
-            use_data_parallel=True
-    ):
+    def __init__(self, model, device="cuda", use_data_parallel=True):
         self.model = model.to(device)
         self.use_data_parallel = use_data_parallel
         self.device = device
@@ -77,15 +72,17 @@ class DilatedAttention(BaseAttention):
         This will return the output tensor after applying dilated attention. The `use_xpos` and `use_rel_pos_bias` parameters allow for switching on positional encoding and relative positional bias respectively.
     """
 
-    def __init__(self,
-                 d_model: int = None,
-                 num_heads: int = None,
-                 dilation_rate: int = None,
-                 segment_size: int = None,
-                 dropout: int = 0.0,
-                 casual: bool = False,
-                 use_xpos: bool = False,
-                 use_rel_pos_bias: bool = False):
+    def __init__(
+        self,
+        d_model: int = None,
+        num_heads: int = None,
+        dilation_rate: int = None,
+        segment_size: int = None,
+        dropout: int = 0.0,
+        casual: bool = False,
+        use_xpos: bool = False,
+        use_rel_pos_bias: bool = False,
+    ):
         super(DilatedAttention, self).__init__()
         self.d_model = d_model
         self.num_heads = num_heads
@@ -99,22 +96,20 @@ class DilatedAttention(BaseAttention):
         self.use_xpos = use_xpos
         self.use_rel_pos_bias = use_rel_pos_bias
 
-        self.attention = FlashAttention(
-            causal=self.casual, dropout=dropout).to(device)
+        self.attention = FlashAttention(causal=self.casual, dropout=dropout).to(device)
 
         if use_xpos:
             self.xpos = XPOS(head_dim=d_model // num_heads)
         if use_rel_pos_bias:
             self.relative_bias = RelativePositionBias(
-                num_buckets=32, max_distance=128, n_heads=num_heads)
+                num_buckets=32, max_distance=128, n_heads=num_heads
+            )
 
         # head offsets
         self.head_offsets = nn.Parameter(torch.randn(num_heads, d_model))
 
     def get_mask(self, i, j):
-        return torch.ones(
-            (i, j), device=device, dtype=torch.bool).triu(
-            j - i + 2)
+        return torch.ones((i, j), device=device, dtype=torch.bool).triu(j - i + 2)
 
     def forward(self, x):
         print(f"X original shape: {x.shape} and x dtype: {x.dtype}")
@@ -137,34 +132,38 @@ class DilatedAttention(BaseAttention):
 
         # Perform attention
         attn_output = self.attention(x, x, x)
-        print(
-            f"Attn output: {attn_output.shape} and dtype: {attn_output.dtype}")
+        print(f"Attn output: {attn_output.shape} and dtype: {attn_output.dtype}")
 
         # if use rel pos => apply relative positioning bias
         if self.use_rel_pos_bias:
-            attn_output += self.relative_bias(batch_size,
-                                              attn_output.size(1), attn_output.size(1))
+            attn_output += self.relative_bias(
+                batch_size, attn_output.size(1), attn_output.size(1)
+            )
             print(
-                f"attn_output: {attn_output.shape} and attn output: {attn_output.dtype}")
+                f"attn_output: {attn_output.shape} and attn output: {attn_output.dtype}"
+            )
 
         # if casual create a mask and apply to the output
         if self.casual:
             mask = self.get_mask(attn_output.size(1), attn_output.size(1))
             print(f"mask shape: {mask.shape} and mask dtype: {x.dtype}")
 
-            attn_output = attn_output.masked_fill(mask, float('-inf'))
+            attn_output = attn_output.masked_fill(mask, float("-inf"))
             print(
-                f"attn output shape: {attn_output.shape} and attn_output: {attn_output.dtype}")
+                f"attn output shape: {attn_output.shape} and attn_output: {attn_output.dtype}"
+            )
 
         # apply dropout
         attn_output = self.dropout(attn_output)
         print(
-            f"attn output after dropout: {attn_output.shape} and dtype: {attn_output.dtype}")
+            f"attn output after dropout: {attn_output.shape} and dtype: {attn_output.dtype}"
+        )
 
         # Scatter and concatenate
         attn_output = attn_output.reshape(batch_size, -1, self.d_model)
         print(
-            f"attn_output scatter and concatenate: {attn_output.shape} and {attn_output.dtype}")
+            f"attn_output scatter and concatenate: {attn_output.shape} and {attn_output.dtype}"
+        )
         return attn_output
 
 
@@ -257,8 +256,9 @@ class MultiheadDilatedAttention(nn.Module):
         if self.out_proj.bias is not None:
             nn.init.constant_(self.out_proj.bias, 0)
 
-    def forward(self, query: Tensor, key: Tensor, value: Tensor,
-                is_causal: bool = False) -> Tuple[Tensor, None]:
+    def forward(
+        self, query: Tensor, key: Tensor, value: Tensor, is_causal: bool = False
+    ) -> Tuple[Tensor, None]:
         # Notation:
         #   b - batch size
         #   n - sequence length

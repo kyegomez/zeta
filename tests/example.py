@@ -6,8 +6,8 @@ import torch
 
 from zeta import MultiheadAttention
 
-class TestMultiheadAttention(unittest.TestCase):
 
+class TestMultiheadAttention(unittest.TestCase):
     def test_output_shape(self):
         # Setup
         input_tensor = torch.randn(2, 128, 512)
@@ -41,7 +41,6 @@ class TestMultiheadAttention(unittest.TestCase):
         # Assert
         self.assertEqual(output.shape, (2, 128, 512))
 
-    
     def test_attention_consistency(self):
         # Setup
         input_tensor = torch.randn(2, 128, 512)
@@ -86,33 +85,33 @@ class TestMultiheadAttention(unittest.TestCase):
         start_time = time.time()
         _ = dilated_attention(input_tensor)
         time_for_1024 = time.time() - start_time
-        
+
         input_tensor = torch.randn(2, 2048, 512)
         start_time = time.time()
         _ = dilated_attention(input_tensor)
         time_for_2048 = time.time() - start_time
-        
-        self.assertLessEqual(time_for_2048/time_for_1024, 2)
-    
+
+        self.assertLessEqual(time_for_2048 / time_for_1024, 2)
+
     def test_reproducibility(self):
         torch.manual_seed(0)
         input_tensor = torch.randn(2, 128, 512)
         dilated_attention = MultiheadAttention(512, 8, 2, 64)
         output1 = dilated_attention(input_tensor)
-        
+
         torch.manual_seed(0)
         input_tensor = torch.randn(2, 128, 512)
         dilated_attention = MultiheadAttention(512, 8, 2, 64)
         output2 = dilated_attention(input_tensor)
-        
+
         self.assertTrue(torch.allclose(output1, output2))
-    
+
     def test_attention_distribution(self):
         input_tensor = torch.randn(2, 128, 512)
         dilated_attention = MultiheadAttention(512, 8, 2, 64)
         _, attn_weights = dilated_attention(input_tensor)
-        
-        self.assertTrue(torch.allclose(attn_weights.sum(dim=-1), torch.tensor(1.)))
+
+        self.assertTrue(torch.allclose(attn_weights.sum(dim=-1), torch.tensor(1.0)))
 
         def setUp(self):
             self.d_model = 128
@@ -129,7 +128,16 @@ class TestMultiheadAttention(unittest.TestCase):
 
             self.x = torch.rand(self.batch_size, self.seq_len, self.d_model)
 
-            self.sparse_dilated_attention = MultiheadAttention(self.d_model, self.num_heads, self.dilation_rate, self.segment_size, self.dropout, self.casual, self.use_xpos, self.use_rel_pos_bias)
+            self.sparse_dilated_attention = MultiheadAttention(
+                self.d_model,
+                self.num_heads,
+                self.dilation_rate,
+                self.segment_size,
+                self.dropout,
+                self.casual,
+                self.use_xpos,
+                self.use_rel_pos_bias,
+            )
 
     def test_forward_pass(self):
         output = self.sparse_dilated_attention(self.x)
@@ -144,5 +152,3 @@ class TestMultiheadAttention(unittest.TestCase):
         self.sparse_dilated_attention.dropout.p = 1.0
         output = self.sparse_dilated_attention(self.x)
         self.assertTrue(torch.all(output == 0))
-    
-

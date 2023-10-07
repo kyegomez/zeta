@@ -34,7 +34,7 @@ class DynamicModule(nn.Module):
             module(nn.Module) the module to add
         """
         if isinstance(name, list):
-            name = '.'.join(name)
+            name = ".".join(name)
         if not isinstance(module, nn.Module):
             raise ValueError("Module must be a nn.Module")
         if name in self.module_dict:
@@ -49,7 +49,7 @@ class DynamicModule(nn.Module):
             name (str) the name of the module to remove
         """
         if isinstance(name, list):
-            name = '.'.join(name, list)
+            name = ".".join(name, list)
         if name not in self.module_dict:
             raise ValueError("module name does not exist")
         del self.module_dict[name]

@@ -1,4 +1,3 @@
-
 from functools import partial
 
 import torch
@@ -6,14 +5,17 @@ from accelerate import Accelerator
 
 
 from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
-    CheckpointImpl, apply_activation_checkpointing, checkpoint_wrapper)
+    CheckpointImpl,
+    apply_activation_checkpointing,
+    checkpoint_wrapper,
+)
 
 
 def activation_checkpointing(
     model: torch.nn.Module,
     offload_to_cpu: bool = False,
     accelerator: Accelerator = None,
-    TransformerBlock=None
+    TransformerBlock=None,
 ):
     """
     Apply activation checkpointing to a model.
@@ -28,6 +30,7 @@ def activation_checkpointing(
 
     def check_fn(submodule):
         return isinstance(submodule, TransformerBlock)
+
     non_reentrant_wrapper = partial(
         checkpoint_wrapper,
         offload_to_cpu=offload_to_cpu,
