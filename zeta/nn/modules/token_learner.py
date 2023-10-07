@@ -1,19 +1,20 @@
-#from lucirains rt-1
+# from lucirains rt-1
 
 from torch import nn
 from einops import pack, unpack, repeat, reduce, rearrange
+from functools import reduce
 
 
-#helpers
+# helpers
 def pack_one(x, pattern):
     return pack([x], pattern)
+
 
 def unpack_one(x, ps, pattern):
     return unpack(x, ps, pattern)[0]
 
 
-
-#main
+# main
 class TokenLearner(nn.Module):
     def __init__(
             self,
@@ -28,9 +29,17 @@ class TokenLearner(nn.Module):
 
         self.num_output_tokens = num_output_tokens
         self.net = nn.Sequential(
-            nn.Comv2d(dim * num_output_tokens, inner_dim, 1, groups=num_output_tokens),
+            nn.Comv2d(
+                dim * num_output_tokens,
+                inner_dim,
+                1,
+                groups=num_output_tokens),
             nn.GELU(),
-            nn.Conv2d(inner_dim, num_output_tokens, 1, groups=num_output_tokens),
+            nn.Conv2d(
+                inner_dim,
+                num_output_tokens,
+                1,
+                groups=num_output_tokens),
         )
 
     def forward(self, x):
@@ -44,5 +53,3 @@ class TokenLearner(nn.Module):
         x = reduce(x * attn, 'b c g h w -> b c g', 'mean')
         x = unpack_one(x, ps, '* c n')
         return x
-    
-

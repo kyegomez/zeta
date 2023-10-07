@@ -1,4 +1,4 @@
-#modularize the decoder to accept any attemtion, dilated or multihead
+# modularize the decoder to accept any attemtion, dilated or multihead
 
 import torch
 from torch.nn import Module
@@ -20,7 +20,11 @@ class LongNetTokenizer:
         )
 
     def tokenize_texts(self, texts):
-        return self.tokenizer(texts, return_tensors="pt", padding=True, truncation=True).input_ids
+        return self.tokenizer(
+            texts,
+            return_tensors="pt",
+            padding=True,
+            truncation=True).input_ids
 
 
 class LongNet(Module):
@@ -62,8 +66,6 @@ class LongNet(Module):
             output_projection=self.output_projection
         )
 
-
     def forward(self, text_tokens, **kwargs):
         model_input = self.decoder.forward_embedding(text_tokens)[0]
         return self.decoder(model_input, passed_x=model_input)[0]
-        

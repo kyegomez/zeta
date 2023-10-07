@@ -27,6 +27,9 @@ vector-quantize-pytorch>=1.1.5
 scipy
 tiktoken
 
+autopep8
+
+
 mkdocs
 mkdocs-material
 mkdocs-glightbox

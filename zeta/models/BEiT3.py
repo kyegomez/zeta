@@ -20,7 +20,8 @@ class BEiT3(nn.Module):
         assert args.multiway
         assert args.vocab_size > 0
         assert not args.share_encoder_input_output_embed
-        self.text_embed = TextEmbedding(args.vocab_size, args.encoder_embed_dim)
+        self.text_embed = TextEmbedding(
+            args.vocab_size, args.encoder_embed_dim)
         self.vision_embed = VisionEmbedding(
             args.img_size,
             args.patch_size,
@@ -29,11 +30,16 @@ class BEiT3(nn.Module):
             contain_mask_token=True,
             prepend_cls_token=True,
         )
-        # being consistent with Fairseq, which starts from 2 for position embedding
+        # being consistent with Fairseq, which starts from 2 for position
+        # embedding
         embed_positions = MutliwayEmbedding(
             modules=[
-                PositionalEmbedding(self.vision_embed.num_position_embeddings() + 2, args.encoder_embed_dim),
-                PositionalEmbedding(args.max_source_positions, args.encoder_embed_dim),
+                PositionalEmbedding(
+                    self.vision_embed.num_position_embeddings() + 2,
+                    args.encoder_embed_dim),
+                PositionalEmbedding(
+                    args.max_source_positions,
+                    args.encoder_embed_dim),
             ],
             dim=1,
         )

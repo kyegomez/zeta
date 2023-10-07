@@ -11,7 +11,6 @@ from zeta.nn.modules.mbconv import MBConv
 from zeta.utils.main import default, exists
 
 
-
 class MaxVit(nn.Module):
     def __init__(
         self,
@@ -20,23 +19,24 @@ class MaxVit(nn.Module):
         dim,
         depth,
         dim_head: int = 32,
-        dim_conv_stem = None,
+        dim_conv_stem=None,
         window_size: int = 7,
         mbconv_expansion_rate: int = 4,
-        mbconv_shrinkage_rate = 0.25,
-        dropout = 0.01,
-        channels = 3
+        mbconv_shrinkage_rate=0.25,
+        dropout=0.01,
+        channels=3
     ):
         super().__init__()
-        assert isinstance(depth, tuple), "depth needs to be tuple of integers indicating number of transformer blocks at that stage"
+        assert isinstance(
+            depth, tuple), "depth needs to be tuple of integers indicating number of transformer blocks at that stage"
 
-        #conv stem
+        # conv stem
         dim_conv_stem = default(dim_conv_stem, dim)
 
         self.conv_stem = nn.Sequential(
             nn.Conv2d(
                 channels,
-                dim_conv_stem, 
+                dim_conv_stem,
                 3,
                 stride=2,
                 padding=1,
@@ -49,7 +49,7 @@ class MaxVit(nn.Module):
             )
         )
 
-        #vars
+        # vars
         num_stages = len(depth)
         dims = tuple(
             map(
@@ -61,10 +61,10 @@ class MaxVit(nn.Module):
 
         self.layers = nn.ModuleList([])
 
-        #shorthand for window size for efficient block - griid like attention
+        # shorthand for window size for efficient block - griid like attention
         w = window_size
 
-        #iterate through stages
+        # iterate through stages
         cond_hidden_dims = []
 
         for ind, ((layer_dim_in, layer_dim), layer_depth) in enumerate(zip(
@@ -72,7 +72,7 @@ class MaxVit(nn.Module):
         )):
             for stage_ind in range(layer_depth):
                 is_first = stage_ind == 0
-                stage_dim_in = layer_dim_in if is_first else layer_dim 
+                stage_dim_in = layer_dim_in if is_first else layer_dim
 
                 cond_hidden_dims.append(stage_dim_in)
 
@@ -82,28 +82,24 @@ class MaxVit(nn.Module):
                         layer_dim,
                         downsample=is_first,
                         expansion_rate=mbconv_expansion_rate,
-                        shrinkage_rate=mbconv_shrinkage_rate
-                    ),
-                    Rearrange('b d (x w1) (y w2) -> b x y w1 w2 d', w1=w, w2=w),
+                        shrinkage_rate=mbconv_shrinkage_rate),
+                    Rearrange(
+                        'b d (x w1) (y w2) -> b x y w1 w2 d',
+                        w1=w,
+                        w2=w),
                     Residual(
                         Attend(
-                            dim=layer_dim, 
-                            dim_head=dim_head, 
-                            dropout=dropout
-                        )
-                    ),
+                            dim=layer_dim,
+                            dim_head=dim_head,
+                            dropout=dropout)),
                     Residual(
                         FeedForward(
                             dim=layer_dim,
-                            dropout=dropout
-                        )
-                    ),
-                    
-                    Rearrange('b x y w1 w2 d -> b d (w1 x) (w2 y)')
-                )
+                            dropout=dropout)),
+                    Rearrange('b x y w1 w2 d -> b d (w1 x) (w2 y)'))
 
                 self.layers.append(block)
-        
+
         embed_dim = dims[-1]
         self.embed_dim = dims[-1]
 
@@ -119,7 +115,7 @@ class MaxVit(nn.Module):
         x,
         texts: Optional[List[str]] = None,
         cond_fns: Optional[Tuple[Callable, ...]] = None,
-        cond_drop_prob = 0.,
+        cond_drop_prob=0.,
         return_embeddings=False
     ):
         x = self.conv_stem(x)
@@ -130,10 +126,10 @@ class MaxVit(nn.Module):
         for stage, cond_fn in zip(self.layers, cond_fns):
             if exists(cond_fn):
                 x = cond_fn(x)
-            
+
             x = stage(x)
 
         if return_embeddings:
             return x
-        
+
         return self.mlp_head(x)

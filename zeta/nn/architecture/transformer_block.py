@@ -13,24 +13,28 @@ class TransformerBlock(nn.Module):
     def __init__(
         self,
         dim,
-        dim_head = 64,
-        causal = True,
-        heads = 8,
-        qk_rmsnorm = False,
-        qk_scale = 8,
-        ff_mult = 4,
-        attn_dropout = 0.,
-        ff_dropout = 0.,
-        use_xpos = True,
-        xpos_scale_base = 512,
-        flash_attn = False,
+        dim_head=64,
+        causal=True,
+        heads=8,
+        qk_rmsnorm=False,
+        qk_scale=8,
+        ff_mult=4,
+        attn_dropout=0.,
+        ff_dropout=0.,
+        use_xpos=True,
+        xpos_scale_base=512,
+        flash_attn=False,
     ):
         super().__init__()
         self.norm = LayerNorm(dim)
 
         attn_inner_dim = dim_head * heads
         ff_inner_dim = dim * ff_mult
-        self.fused_dims = (attn_inner_dim, dim_head, dim_head, (ff_inner_dim * 2))
+        self.fused_dims = (
+            attn_inner_dim,
+            dim_head,
+            dim_head,
+            (ff_inner_dim * 2))
 
         self.qk_rmsnorm = qk_rmsnorm
 
@@ -39,9 +43,9 @@ class TransformerBlock(nn.Module):
             self.k_scale = nn.Parameter(torch.ones(dim_head))
 
         self.attend = Attention(
-            causal = causal,
-            dropout = attn_dropout,
-            use_flash_attn = flash_attn
+            causal=causal,
+            dropout=attn_dropout,
+            use_flash_attn=flash_attn
         )
 
         self.heads = heads
@@ -49,12 +53,13 @@ class TransformerBlock(nn.Module):
         self.causal = causal
 
         self.rotary_emb = RotaryEmbedding(
-            dim_head, 
-            scale_base = xpos_scale_base, 
-            use_xpos = use_xpos and causal
+            dim_head,
+            scale_base=xpos_scale_base,
+            use_xpos=use_xpos and causal
         )
 
-        self.fused_attn_ff_proj = nn.Linear(dim, sum(self.fused_dims), bias=False)
+        self.fused_attn_ff_proj = nn.Linear(
+            dim, sum(self.fused_dims), bias=False)
 
         self.flash_attn = flash_attn
         self.attn_out = nn.Linear(attn_inner_dim, dim, bias=False)
@@ -86,8 +91,8 @@ class TransformerBlock(nn.Module):
     def forward(
         self,
         x,
-        mask = None,
-        finetune_modules = None
+        mask=None,
+        finetune_modules=None
     ):
         """
         einstein notation
@@ -140,7 +145,7 @@ class TransformerBlock(nn.Module):
 
         # attention function, either regular or flash
 
-        out = self.attend(q, k, v, mask = mask)
+        out = self.attend(q, k, v, mask=mask)
 
         # merge heads
 

@@ -22,25 +22,22 @@ def print_num_params(model, accelerator: Accelerator):
     accelerator.print(f"Number of parameters in model: {n_params}")
 
 
-
-
-
 def Trainer(
-        gradient_accumulate_every: int = None, 
-        batch_size: int = None, 
+        gradient_accumulate_every: int = None,
+        batch_size: int = None,
         seq_len: int = None,
         entity_name: str = None,
-        model = None,
+        model=None,
         use_fsdp: bool = False,
         use_activation_checkpointing: bool = False,
-        learning_rate = None,
-        seed = None,
+        learning_rate=None,
+        seed=None,
         use_pretokenized: bool = False,
-        resume_from_checkpoint = None,
-        checkpointing_steps = None,
-        output_dir = None,
-        weight_decay = None,
-        use_deepspeed = None
+        resume_from_checkpoint=None,
+        checkpointing_steps=None,
+        output_dir=None,
+        weight_decay=None,
+        use_deepspeed=None
 ):
     # accelerator
 
@@ -52,8 +49,7 @@ def Trainer(
         log_with="wandb",
         kwargs_handlers=[timeout],
     )
-    # AcceleratorState().deepspeed_plugin.deepspeed_config['train_micro_batch_size_per_gpu'] = 4 #??????
-
+    # AcceleratorState().deepspeed_plugin.deepspeed_config['train_micro_batch_
 
     accelerator.init_trackers(
         project_name="LongNet",
@@ -103,11 +99,11 @@ def Trainer(
 
     optim = decoupled_optimizer(
         model=model,
-        learning_rate=learning_rate, 
-        weight_decay=weight_decay, 
-        beta_1=0.90, 
-        beta_2=0.95, 
-        optimizer_type='Adam8bit',  
+        learning_rate=learning_rate,
+        weight_decay=weight_decay,
+        beta_1=0.90,
+        beta_2=0.95,
+        optimizer_type='Adam8bit',
         use_fsdp=True,
         accelerator=accelerator
     )
@@ -121,7 +117,6 @@ def Trainer(
 
     NUM_WARMUP_STEPS = int(max_train_steps * 0.01)
     accelerator.print(f"Num warmup steps: {NUM_WARMUP_STEPS}")
-
 
     lr_scheduler = get_lr_scheduler_with_warmup(
         optimizer=optim,
@@ -162,7 +157,8 @@ def Trainer(
 
     if resume_from_checkpoint:
         if resume_from_checkpoint is not None or resume_from_checkpoint != "":
-            accelerator.print(f"Resuming from checkpoint {resume_from_checkpoint}")
+            accelerator.print(
+                f"Resuming from checkpoint {resume_from_checkpoint}")
             accelerator.load_state(resume_from_checkpoint)
             path = os.path.basename(resume_from_checkpoint)
         training_difference = os.path.splitext(path)[0]
@@ -174,7 +170,8 @@ def Trainer(
         )
 
     if resume_from_checkpoint and resume_step is not None:
-        train_loader = accelerator.skip_first_batches(train_loader, resume_step)
+        train_loader = accelerator.skip_first_batches(
+            train_loader, resume_step)
         completed_steps += resume_step
         progress_bar.update(resume_step)
 
@@ -223,25 +220,25 @@ def Trainer(
         unwrapped_model = accelerator.unwrap_model(model)
         with accelerator.main_process_first():
             accelerator.save(
-                unwrapped_model.state_dict(), f"{output_dir}/final/final_model.pt"
-            )
+                unwrapped_model.state_dict(),
+                f"{output_dir}/final/final_model.pt")
 
 
 def train(
-        MASTER_ADDR = None,
-        MASTER_PORT = None,
-        RANK = None,
-        WORLD_SIZE = None):
-    os.environ['MASTER_ADDR'] or MASTER_ADDR # = 'localhost'
-    os.environ['MASTER_PORT'] or MASTER_PORT #= '9994'
-    
+        MASTER_ADDR=None,
+        MASTER_PORT=None,
+        RANK=None,
+        WORLD_SIZE=None):
+    os.environ['MASTER_ADDR'] or MASTER_ADDR  # = 'localhost'
+    os.environ['MASTER_PORT'] or MASTER_PORT  # = '9994'
+
     # # [CRITICAL] Pay attention to this when scaling to multiple GPUs and clusters
-    
+
     # # Pay attention to this, use "accelerate config"
 
-    os.environ['RANK'] or RANK      #= str(0) # Number of nodes (servers)
-    os.environ['WORLD_SIZE'] or WORLD_SIZE #= str(torch.cuda.device_count())
+    os.environ['RANK'] or RANK  # = str(0) # Number of nodes (servers)
+    os.environ['WORLD_SIZE'] or WORLD_SIZE  # = str(torch.cuda.device_count())
 
     torch.distributed.init_process_group()
-    
+
     Trainer()

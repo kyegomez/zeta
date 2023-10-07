@@ -23,7 +23,7 @@
 #         self.to_out = nn.Conv2d(hidden_dim,
 #                                 dim,
 #                                 1)
-        
+
 #     def forward(self, x):
 #         b, c, f, h, w = x.shape
 #         x = rearrange(x, 'b c f h w -> (b f) c h w')
@@ -40,9 +40,9 @@
 #         out = torch.einsum('b h d e, b h d n -> b h e n', context, q)
 #         out = rearrange(out, 'b h c (x y) -> b (h c) x y', h=self.heads, x=h, y=w)
 #         out = self.to_out(out)
-        
+
 #         return rearrange(out, '(b f) c h w -> b c f h w', b=b)
-    
+
 
 # class EinopsToAndFrom(nn.Module):
 #     def __init_(self, from_einops, to_einops, fn):
@@ -50,7 +50,7 @@
 #         self.from_einops = from_einops
 #         self.to_einops = to_einops
 #         self.fn = fn
-    
+
 #     def forward(self, x, **kwargs):
 #         shape = x.shape
 #         reconstruction_kwargs = dict(tuple(zip(self.from_einops.split(' '), shape)))

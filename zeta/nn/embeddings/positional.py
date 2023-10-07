@@ -13,9 +13,11 @@ class PositionalEmbedding(nn.Embedding):
         if positions is None:
             # being consistent with Fairseq, which starts from 2.
             positions = (
-                torch.arange(2, x.size(1) + 2, device=x.device).long().unsqueeze(0)
-            )
-            
+                torch.arange(
+                    2,
+                    x.size(1) + 2,
+                    device=x.device).long().unsqueeze(0))
+
         return F.embedding(
             positions,
             self.weight,

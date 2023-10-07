@@ -4,10 +4,12 @@
 from torch import nn
 from zeta.nn.embeddings.base import BaseEmbedding
 
-#Other embedding
+# Other embedding
+
+
 class NominalEmbedding(BaseEmbedding):
-    def forward(self, 
-                num_tokens: int, 
+    def forward(self,
+                num_tokens: int,
                 dim: int) -> nn.Module:
         embedding = nn.Embedding(num_tokens, dim)
 

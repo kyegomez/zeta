@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 
+
 class VisionEmbedding(nn.Module):
     """Image to Patch Embedding"""
 
@@ -16,8 +17,11 @@ class VisionEmbedding(nn.Module):
         super().__init__()
         img_size = (img_size, img_size)
         patch_size = (patch_size, patch_size)
-        num_patches = (img_size[1] // patch_size[1]) * (img_size[0] // patch_size[0])
-        self.patch_shape = (img_size[0] // patch_size[0], img_size[1] // patch_size[1])
+        num_patches = (img_size[1] // patch_size[1]) * \
+            (img_size[0] // patch_size[0])
+        self.patch_shape = (
+            img_size[0] // patch_size[0],
+            img_size[1] // patch_size[1])
         self.img_size = img_size
         self.patch_size = patch_size
         self.num_patches = num_patches
@@ -64,4 +68,3 @@ class VisionEmbedding(nn.Module):
             x = torch.cat((cls_tokens, x), dim=1)
 
         return x
-

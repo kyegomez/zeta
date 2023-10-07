@@ -32,18 +32,18 @@ class LocalMHA(nn.Module):
         self.heads = heads
         self.to_qkv = nn.Linear(dim, inner_dim * 3, bias=False)
         self.qk_rmsnorm = qk_rmsnorm
-        
+
         if qk_rmsnorm:
             self.q_scale = nn.Parameter(torch.ones(dim_head))
             self.k_scale = nn.Parameter(torch.ones(dim_head))
-        
+
         self.attn_fn = LocalAttention(
-            dim = dim_head,
+            dim=dim_head,
             window_size=window_size,
             causal=causal,
             autopad=True,
-            scale = (qk_scale if qk_rmsnorm else None),
-            exact_windowsize = default(exact_windowsize, True),
+            scale=(qk_scale if qk_rmsnorm else None),
+            exact_windowsize=default(exact_windowsize, True),
             use_xpos=use_xpos,
             xpos_scale_base=xpos_scale_base,
             **kwargs
@@ -59,15 +59,17 @@ class LocalMHA(nn.Module):
     ):
         if exists(self.norm):
             x = self.norm(x)
-        
+
         q, k, v = self.to_qkv(x).chunk(3, dim=-1)
-        q, k, v = map(lambda t: rearrange(t, 'b n (h d) -> b h n d', h=self.heads), (q, k, v))
-        
+        q, k, v = map(
+            lambda t: rearrange(
+                t, 'b n (h d) -> b h n d', h=self.heads), (q, k, v))
+
         if self.qk_rmsnorm:
             q, k = map(l2norm, (q, k))
             q = q * self.q_scale
             k = k * self.k_scale
-        
+
         out = self.attn_fn(
             q,
             k,

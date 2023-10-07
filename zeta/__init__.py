@@ -1,31 +1,31 @@
+from zeta import ops
+from zeta import optim
+from zeta import rl
+from zeta import tokenizers
+from zeta import training
+from zeta import utils
+from zeta import models
+from zeta.nn.modules.layernorm import LayerNorm
+from zeta.nn.architecture.transformer import FeedForward
+from zeta import nn
 from zeta.zeta import zeta
 print(zeta)
 
 
-#nn
-from zeta import nn
-from zeta.nn.architecture.transformer import FeedForward
-from zeta.nn.modules.layernorm import LayerNorm
+# nn
 
-#models
-from zeta import models
+# models
 
 
-#utils
-from zeta import utils
+# utils
 
 
-#training
-from zeta import training
+# training
 
-#tokenizers
-from zeta import tokenizers
+# tokenizers
 
-#rl
-from zeta import rl
+# rl
 
-#optim
-from zeta import optim
+# optim
 
-#ops
-from zeta import ops
+# ops

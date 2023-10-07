@@ -4,12 +4,14 @@ from einops import rearrange
 from torch import nn
 from zeta.nn.architecture.transformer import Encoder
 
+
 def exists(val):
     return val is not None
 
 
 def divisible_by(num, den):
     return (num % den) == 0
+
 
 class ViT(nn.Module):
     def __init__(self,
@@ -23,9 +25,11 @@ class ViT(nn.Module):
                  emb_dropout=0.
                  ):
         super().__init__()
-        assert isinstance(attn_layers, Encoder), "Attention layers must be an encoder find the encoder"
-        assert divisible_by(image_size, patch_size), "image dimenions must be divisible by the patch size"
-        
+        assert isinstance(
+            attn_layers, Encoder), "Attention layers must be an encoder find the encoder"
+        assert divisible_by(
+            image_size, patch_size), "image dimenions must be divisible by the patch size"
+
         dim = attn_layers.dim
         num_patches = (image_size // patch_size) ** 2
         patch_dim = channels * patch_size ** 2
@@ -38,10 +42,12 @@ class ViT(nn.Module):
             nn.LayerNorm(dim)
         )
 
-        self.post_emb_norm = nn.LayerNorm(dim) if post_emb_norm else nn.Identity()
+        self.post_emb_norm = nn.LayerNorm(
+            dim) if post_emb_norm else nn.Identity()
         self.dropout = nn.Dropout(emb_dropout)
         self.attn_layers = attn_layers
-        self.mlp_head = nn.Linear(dim, num_classes) if exists(num_classes) else nn.Identity()
+        self.mlp_head = nn.Linear(dim, num_classes) if exists(
+            num_classes) else nn.Identity()
 
     def forward(
             self,
@@ -62,4 +68,3 @@ class ViT(nn.Module):
             return x
         x = x.mean(dim=-2)
         return self.mlp_head
-    

@@ -2,6 +2,7 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 
+
 class LayerNorm(nn.Module):
     """
     Layer normalization module.
@@ -55,7 +56,7 @@ class LayerNorm(nn.Module):
         self.fp16_eps = fp16_eps
         self.stable = stable
         self.g = nn.Parameter(torch.ones(dim))
-    
+
     def forward(self, x):
         """
         Forward pass of the layer normalization module.
@@ -71,11 +72,11 @@ class LayerNorm(nn.Module):
 
         if self.stable:
             x = x / x.amax(dim=-1, keepdim=True).detach()
-        
+
         var = torch.var(x, dim=-1, unbiased=False, keepdim=True)
         mean = torch.mean(x, dim=-1, keepdim=True)
         return (x - mean) * (var + eps).rsqrt() * self.g
-    
+
 
 def l2norm(t):
     """

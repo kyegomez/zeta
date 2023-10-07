@@ -6,41 +6,37 @@ from abc import ABC, abstractmethod
 import bitsandbytes as bnb
 
 
-
 class BaseEmbedding(ABC):
     @abstractmethod
     def forward(self, num_tokens: int, dim: int) -> nn.Module:
-        #custom embedding function
+        # custom embedding function
         embedding = ...
 
         return embedding
-    
-#Other embedding
+
+# Other embedding
+
+
 class Embedding(BaseEmbedding):
-    def forward(self, 
-                num_tokens: int, 
+    def forward(self,
+                num_tokens: int,
                 dim: int) -> nn.Module:
         embedding = nn.Embedding(num_tokens, dim)
 
         return embedding
-    
+
+
 class BnBEmbedding(BaseEmbedding):
-    def forward(self, 
-                num_tokens: int, 
-                dim: int, 
+    def forward(self,
+                num_tokens: int,
+                dim: int,
                 padding_idx) -> bnb.nn.modules:
         embedding = bnb.nn.modules.Embedding(num_tokens, dim, padding_idx)
 
         return embedding
-    
+
+
 class TextEmbedding(nn.Embedding):
     def reset_parameters(self):
         nn.init.normal_(self.weight, mean=0, std=self.embedding_dim**-0.5)
         self._fill_padding_idx_with_zero()
-
-
-
-    
-
-
-

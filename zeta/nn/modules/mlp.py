@@ -1,5 +1,6 @@
 from torch import nn
 
+
 class MLP(nn.Module):
     """
     Multi-Layer Perceptron (MLP) module.
@@ -17,7 +18,7 @@ class MLP(nn.Module):
     #Usage
     ```
     from zeta.nn import MLP
-    
+
     mlp = MLP(
         dim_in=256,
         dim_out=10,
@@ -48,6 +49,7 @@ class MLP(nn.Module):
     ):
         super().__init__()
         hidden_dim = int(expansion_factor * dim_out)
+
         def norm_fn():
             return nn.LayerNorm(hidden_dim) if norm else nn.Identity()
 
@@ -65,7 +67,7 @@ class MLP(nn.Module):
             ))
         layers.append(nn.Linear(hidden_dim, dim_out))
         self.net = nn.Sequential(*layers)
-    
+
     def forward(self, x):
         """
         Forward pass of the MLP module.

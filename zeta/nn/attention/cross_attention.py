@@ -69,13 +69,14 @@ class CrossAttention(nn.Module):
         cosine_sim_scale=16
     ):
         super().__init__()
-        self.cosine_sim = cosine_sim 
+        self.cosine_sim = cosine_sim
         self.scale = cosine_sim_scale if cosine_sim else (dim_head ** -0.5)
         self.heads = heads
         inner_dim = dim_head * heads
 
         self.norm = LayerNorm(dim)
-        self.norm_context = LayerNorm(context_dim) if norm_context else nn.Identity()
+        self.norm_context = LayerNorm(
+            context_dim) if norm_context else nn.Identity()
         self.dropout = nn.Dropout(dropout)
 
         self.null_kv = nn.Parameter(torch.randn(inner_dim))
@@ -86,7 +87,7 @@ class CrossAttention(nn.Module):
             nn.Linear(inner_dim, dim, bias=False),
             LayerNorm(dim)
         )
-    
+
     def forward(
         self,
         x,
@@ -117,9 +118,9 @@ class CrossAttention(nn.Module):
             h=self.heads
         ), (q, k, v))
 
-        #add null key value for classifier free guidance in propr
+        # add null key value for classifier free guidance in propr
         nk, nv = map(
-            lambda t: repeat(t, 'd -> b h 1 d', h=self.heads, b=b), 
+            lambda t: repeat(t, 'd -> b h 1 d', h=self.heads, b=b),
             self.null_kv.unbind(dim=-2)
         )
 
@@ -145,4 +146,3 @@ class CrossAttention(nn.Module):
         out = einsum('b h i j, b h j d -> b h i d', attn, v)
         out = rearrange(out, 'b h n d -> b n (h d)')
         return self.to_out(out)
-    

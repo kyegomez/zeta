@@ -123,7 +123,8 @@ class FeedForwardNetwork(nn.Module):
         self.dropout_module = torch.nn.Dropout(dropout)
         self.fc1 = nn.Linear(self.embed_dim, ffn_dim)
         self.fc2 = nn.Linear(ffn_dim, self.embed_dim)
-        self.ffn_layernorm = LayerNorm(ffn_dim, eps=layernorm_eps) if subln else None
+        self.ffn_layernorm = LayerNorm(
+            ffn_dim, eps=layernorm_eps) if subln else None
 
     def reset_parameters(self):
         self.fc1.reset_parameters()

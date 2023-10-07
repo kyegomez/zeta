@@ -15,13 +15,12 @@ from torch.distributed.fsdp.wrap import (
 )
 
 
-
 def fsdp(
     model: torch.nn.Module,
     auto_wrap: bool = False,
     mp: str = "fp32",
     shard_strat: str = "NO_SHARD",
-    TransformerBlock = None
+    TransformerBlock=None
 ):
     """
     This function wraps a given PyTorch model with the FullyShardedDataParallel (FSDP) wrapper to enable efficient data parallelism and model sharding.
@@ -81,7 +80,7 @@ def fsdp(
         )
 
     if shard_strat == "SHARD_GRAD":
-        sharding_strat_fsdp = ShardingStrategy.SHARD_GRAD_OP 
+        sharding_strat_fsdp = ShardingStrategy.SHARD_GRAD_OP
     elif shard_strat == "FULL_SHARD":
         sharding_strat_fsdp = ShardingStrategy.FULL_SHARD
     elif shard_strat == "NO_SHARD":
@@ -104,4 +103,3 @@ def fsdp(
     )
 
     return model
-

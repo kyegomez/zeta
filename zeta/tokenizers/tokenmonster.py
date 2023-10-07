@@ -1,6 +1,7 @@
 import numpy as np
 import tokenmonster
 
+
 class TokenMonster:
     """
     A class that encapsulates the functionality of the tokenmonster library.
@@ -9,6 +10,7 @@ class TokenMonster:
     >>> tokenizer = TokenMonster("englishcode-32000-consistent-v1")
     >>> tokenizer.tokenize("Hello world!")
     """
+
     def __init__(self, path):
         """
         Initializes the TokenMonster class and loads a vocabulary.
@@ -38,7 +40,7 @@ class TokenMonster:
 
     def load_multiprocess_safe(self, path):
         """
-        Loads a TokenMonster vocabulary from file, URL or by name. It's safe for multiprocessing, 
+        Loads a TokenMonster vocabulary from file, URL or by name. It's safe for multiprocessing,
         but vocabulary modification is disabled and tokenization is slightly slower.
 
         Args:
@@ -202,7 +204,13 @@ class TokenMonster:
         """
         return self.vocab.token_to_id(token)
 
-    def modify(self, add_special_tokens=None, add_regular_tokens=None, delete_tokens=None, resize=None, change_unk=None):
+    def modify(
+            self,
+            add_special_tokens=None,
+            add_regular_tokens=None,
+            delete_tokens=None,
+            resize=None,
+            change_unk=None):
         """
         Modifies the vocabulary.
 
@@ -216,7 +224,12 @@ class TokenMonster:
         Returns:
             int: The new size of the vocabulary.
         """
-        return self.vocab.modify(add_special_tokens, add_regular_tokens, delete_tokens, resize, change_unk)
+        return self.vocab.modify(
+            add_special_tokens,
+            add_regular_tokens,
+            delete_tokens,
+            resize,
+            change_unk)
 
     def add_token(self, token):
         """

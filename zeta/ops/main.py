@@ -111,10 +111,9 @@ def matrix_inverse_root(
             )
     else:
         raise NotImplementedError(
-            "Root inverse method is not implemented! Specified root inverse method is "
-            + str(root_inv_method)
-            + "."
-        )
+            "Root inverse method is not implemented! Specified root inverse method is " +
+            str(root_inv_method) +
+            ".")
 
     return X
 
@@ -339,9 +338,12 @@ def compute_matrix_root_inverse_residuals(
 
     # compute error by comparing against double precision
     X = matrix_inverse_root(
-        A.double(), root, epsilon=epsilon, exponent_multiplier=exponent_multiplier
-    )
-    relative_error = torch.dist(X, X_hat, p=torch.inf) / torch.norm(X, p=torch.inf)
+        A.double(),
+        root,
+        epsilon=epsilon,
+        exponent_multiplier=exponent_multiplier)
+    relative_error = torch.dist(
+        X, X_hat, p=torch.inf) / torch.norm(X, p=torch.inf)
 
     # compute residual
     if exponent_multiplier == 1.0:
@@ -392,8 +394,9 @@ def merge_small_dims(
             new_tensor_shape[-1] = new_dimension
         else:
             new_tensor_shape.append(next_tensor_shape)
-    
+
     return new_tensor_shape
+
 
 def multi_dim_split(
     tensor: Tensor,
@@ -405,7 +408,7 @@ def multi_dim_split(
     Args;
         tensor(tensor): gradient or tensor to split
         splits (List[int]) List of sizes for each block or chunk along each dimension
-    
+
     Returns:
         split_grad(List[Tensor]): List of tensors
     """
@@ -418,7 +421,10 @@ def multi_dim_split(
         ]
     return split_tensors
 
-def multi_dim_cat(split_tensors: List[Tensor], num_splits: List[int]) -> Tensor:
+
+def multi_dim_cat(
+        split_tensors: List[Tensor],
+        num_splits: List[int]) -> Tensor:
     """Concatenates multiple tensors to form single tensor across multiple dimensions.
 
     Args:
@@ -433,9 +439,8 @@ def multi_dim_cat(split_tensors: List[Tensor], num_splits: List[int]) -> Tensor:
     for dim, split in reversed(list(enumerate(num_splits))):
         if split > 0:
             merged_tensor = [
-                torch.cat(merged_tensor[i : i + split], dim=dim)
+                torch.cat(merged_tensor[i: i + split], dim=dim)
                 for i in range(0, len(merged_tensor), split)
             ]
     assert len(merged_tensor) == 1
     return merged_tensor[0]
-

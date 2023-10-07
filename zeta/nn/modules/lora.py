@@ -1,4 +1,4 @@
-import torch 
+import torch
 from torch import nn
 
 
@@ -19,7 +19,6 @@ class Lora(nn.Module):
     @property
     def weight(self):
         return (self.A @ self.B) * self.scale
-    
+
     def forward(self, x):
         return x @ self.weight
-    

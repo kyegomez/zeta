@@ -10,17 +10,17 @@ from zeta.nn.architecture.transformer import (
 
 
 class PalmE(torch.nn.Module):
-    def __init__(self, 
-                 image_size=256, 
-                 patch_size=32, 
-                 encoder_dim=512, 
-                 encoder_depth=6, 
+    def __init__(self,
+                 image_size=256,
+                 patch_size=32,
+                 encoder_dim=512,
+                 encoder_depth=6,
                  encoder_heads=8,
-                 num_tokens=20000, 
-                 max_seq_len=1024, 
-                 decoder_dim=512, 
-                 decoder_depth=6, 
-                 decoder_heads=8, 
+                 num_tokens=20000,
+                 max_seq_len=1024,
+                 decoder_dim=512,
+                 decoder_depth=6,
+                 decoder_heads=8,
                  alibi_num_heads=4,
                  use_abs_pos_emb=False,
                  cross_attend=True,
@@ -28,9 +28,9 @@ class PalmE(torch.nn.Module):
                  rotary_xpos=True,
                  attn_flash=True,
                  qk_norm=True):
-        
+
         super(PalmE, self).__init__()
-        
+
         self.encoder = ViTransformerWrapper(
             image_size=image_size,
             patch_size=patch_size,
@@ -61,11 +61,9 @@ class PalmE(torch.nn.Module):
         self.decoder = AutoregressiveWrapper(self.decoder)
 
     def forward(self, img, text):
-        try:    
+        try:
             encoded = self.encoder(img, return_embeddings=True)
             return self.decoder(text, context=encoded)
         except Exception as error:
             print(f"Failed in forward method: {error}")
             raise
-
-

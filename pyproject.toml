@@ -38,9 +38,15 @@ scipy = "*"
 beartype = "*"
 xformers = "*"
 tiktoken = "*"
-
+autopep8 = "*'
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.autopep8]
+max_line_length = 120
+ignore = "E501,W6"  # or ["E501", "W6"]
+in-place = true
+recursive = true
+aggressive = 3

@@ -3,7 +3,7 @@ from zeta.ops.softmax import *
 
 from zeta.ops.softmax import (
     standard_softmax,
-    #selu softmax,
+    # selu softmax,
     selu_softmax,
     # 2. Sparsemax,
     sparsemax,
@@ -23,6 +23,3 @@ from zeta.ops.softmax import (
     norm_exp_softmax,
 
 )
-
-
-

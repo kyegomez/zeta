@@ -1,23 +1,23 @@
-#prompts to jquesnelle 
+# prompts to jquesnelle
 # https://github.com/jquesnelle/yarn/blob/master/scaled_rope/LlamaDynamicYaRNScaledRotaryEmbedding.py
 import torch
 from torch import nn
 import math
 
 
-#helpers
-#inveerse dim formula to find dim based on number of rotations
+# helpers
+# inveerse dim formula to find dim based on number of rotations
 def find_correction_dim(
         num_rotations,
         dim,
         base=10000,
         max_position_embeddings=2048
 ):
-    return (dim * math.log(
-        max_position_embeddings/ (num_rotations * 2 * math.pi))) / (2 * math.log(base))
+    return (dim * math.log(max_position_embeddings /
+            (num_rotations * 2 * math.pi))) / (2 * math.log(base))
 
 
-#find dim range bounds based on rotations
+# find dim range bounds based on rotations
 def find_correction_range(
         low_rot,
         high_rot,
@@ -34,7 +34,7 @@ def find_correction_range(
         base,
         max_position_embeddings
     ))
-    return max(low, 0), min(high, dim-1) #clamp values just in case
+    return max(low, 0), min(high, dim - 1)  # clamp values just in case
 
 
 def linear_ramp_mask(
@@ -43,7 +43,7 @@ def linear_ramp_mask(
         dim):
     if min == max:
         max += 0.001
-    
+
     linear_func = (torch.arange(
         dim,
         dtype=torch.float32
@@ -51,10 +51,12 @@ def linear_ramp_mask(
     ramp_func = torch.clamp(linear_func, 0, 1)
     return ramp_func
 
+
 def get_mscale(scale=1):
     if scale <= 1:
         return 1.0
     return 0.1 * math.log(scale) + 1.0
+
 
 class YarnEmbedding(nn.Module):
     def __init__(
@@ -64,7 +66,7 @@ class YarnEmbedding(nn.Module):
             base: int = 10000,
             original_max_position_embeddings: int = 2048,
             extrapolation_factor: int = 1,
-            attn_factor: int =1,
+            attn_factor: int = 1,
             beta_fast: int = 32,
             beta_slow: int = 1,
             finetuned=False,
@@ -80,19 +82,18 @@ class YarnEmbedding(nn.Module):
         self.attn_factor = attn_factor
 
         self.beta_fast = beta_fast
-        self.beta_slow = beta_slow 
+        self.beta_slow = beta_slow
 
         if finetuned:
-            self.yarn(
-                self.max_position_embedding / self.original_max_position_embeddings, device
-            )
+            self.yarn(self.max_position_embedding /
+                      self.original_max_position_embeddings, device)
         else:
             inv_freq = 1.0 / \
                 (base ** (torch.arange(0, dim, 2).float().to(device) / dim))
             self.register_buffer("inv_freq", inv_freq)
             self.mscale = 1
 
-        #build
+        # build
         self.max_seq_len_cached = max_position_embeddings
         t = torch.arange(
             self.max_seq_len_cached,
@@ -106,14 +107,24 @@ class YarnEmbedding(nn.Module):
         dtype = torch.get_default_dtype()
 
         self.register_buffer(
-            "cos_cached", 
-            (emb.cos() * self.mscale)[None, None, :, :].to(dtype), persistent=False
-        )
+            "cos_cached",
+            (emb.cos() *
+             self.mscale)[
+                None,
+                None,
+                :,
+                :].to(dtype),
+            persistent=False)
 
         self.register_buffer(
             "sin_cached",
-            (emb.sin() * self.mscale)[None, None, :, :].to(dtype), persistent=False
-        )
+            (emb.sin() *
+             self.mscale)[
+                None,
+                None,
+                :,
+                :].to(dtype),
+            persistent=False)
 
     def forward(
             self,
@@ -135,25 +146,38 @@ class YarnEmbedding(nn.Module):
 
             freqs = torch.einsum(
                 'i,j->ij',
-                 t,
-                 self.inv_freq
-                  )
-            
+                t,
+                self.inv_freq
+            )
+
             emb = torch.cat((freqs, freqs), dim=-1).to(x.device)
 
             self.register_buffer(
                 "cos_cached",
-                (emb.cos() * self.mscale)[None, None, :, :].to(x.dtype), persistent=False
-            )
+                (emb.cos() *
+                 self.mscale)[
+                    None,
+                    None,
+                    :,
+                    :].to(
+                    x.dtype),
+                persistent=False)
             self.register_buffer(
-                "sin_cached", (emb.sin() * self.mscale)[None, None, :, :].to(x.dtype), persistent=False
-            )
+                "sin_cached",
+                (emb.sin() *
+                 self.mscale)[
+                    None,
+                    None,
+                    :,
+                    :].to(
+                    x.dtype),
+                persistent=False)
 
         return (
             self.cos_cached[:, :, :seq_len, ...].to(dtype=x.dtype),
             self.sin_cached[:, :, :seq_len, ...].to(dtype=x.dtype),
         )
-    
+
     def yarn(
             self,
             scale,

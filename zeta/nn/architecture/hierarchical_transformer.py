@@ -18,32 +18,39 @@ from zeta.nn.embeddings.rope import RotaryEmbedding
 # constants
 mlist = nn.ModuleList
 
-Linear = partial(nn.Linear, bias = False)
+Linear = partial(nn.Linear, bias=False)
 
-LocalMHA = partial(LocalMHA, causal = True, prenorm = True)
+LocalMHA = partial(LocalMHA, causal=True, prenorm=True)
 
 # helper functions
+
 
 def exists(val):
     return val is not None
 
+
 def is_power_of_two(n):
     return math.log2(n).is_integer()
+
 
 def all_unique(arr):
     return len(set(arr)) == len(arr)
 
+
 def apply_fns(fns, tensors):
     return [fn(tensor) for fn, tensor in zip(fns, tensors)]
 
-def cast_tuple(t, length = 1):
+
+def cast_tuple(t, length=1):
     return t if isinstance(t, tuple) else ((t,) * length)
+
 
 def default(*vals):
     for val in vals:
         if exists(val):
             return val
     return None
+
 
 def eval_decorator(fn):
     def inner(model, *args, **kwargs):
@@ -56,17 +63,21 @@ def eval_decorator(fn):
 
 # sampling helpers
 
-def log(t, eps = 1e-20):
-    return t.clamp(min = eps).log()
+
+def log(t, eps=1e-20):
+    return t.clamp(min=eps).log()
+
 
 def gumbel_noise(t):
     noise = torch.zeros_like(t).uniform_(0, 1)
     return -log(-log(noise))
 
-def gumbel_sample(t, temperature = 1., dim = -1):
-    return ((t / max(temperature, 1e-10)) + gumbel_noise(t)).argmax(dim = dim)
 
-def top_k(logits, thres = 0.9):
+def gumbel_sample(t, temperature=1., dim=-1):
+    return ((t / max(temperature, 1e-10)) + gumbel_noise(t)).argmax(dim=dim)
+
+
+def top_k(logits, thres=0.9):
     k = int((1 - thres) * logits.shape[-1])
     val, ind = torch.topk(logits, k)
     probs = torch.full_like(logits, -torch.finfo(logits.dtype).max)
@@ -78,8 +89,7 @@ def top_k(logits, thres = 0.9):
 # https://arxiv.org/abs/2212.10554v1
 
 
-
-def apply_rotary_pos_emb(pos, t, scale = 1.):
+def apply_rotary_pos_emb(pos, t, scale=1.):
     seq_len = t.shape[-2]
 
     pos = pos[..., -seq_len:, :]
@@ -87,6 +97,7 @@ def apply_rotary_pos_emb(pos, t, scale = 1.):
         scale = scale[..., -seq_len:, :]
 
     return (t * pos.cos() * scale) + (rotate_half(t) * pos.sin() * scale)
+
 
 def apply_rotary_pos_emb_qk(rotary_emb, q, k):
     freqs, scale = rotary_emb
@@ -96,12 +107,14 @@ def apply_rotary_pos_emb_qk(rotary_emb, q, k):
 
 # token shift, from Peng et al of RWKV
 
+
 def token_shift(t):
-    t, t_shift = t.chunk(2, dim = -1)
+    t, t_shift = t.chunk(2, dim=-1)
     t_shift = F.pad(t_shift, (0, 0, 1, -1))
-    return torch.cat((t, t_shift), dim = -1)
+    return torch.cat((t, t_shift), dim=-1)
 
 # hierarchy related classes
+
 
 def pad_seq_to_multiple(t, mult):
     seq_len = t.shape[-2]
@@ -111,8 +124,9 @@ def pad_seq_to_multiple(t, mult):
     if remainder == 0:
         return t, seq_len
 
-    t = F.pad(t, (0, 0, 0, remainder), value = 0.)
+    t = F.pad(t, (0, 0, 0, remainder), value=0.)
     return t, seq_len
+
 
 def curtail_seq_to_multiple(t, mult):
     seq_len = t.shape[-2]
@@ -125,16 +139,19 @@ def curtail_seq_to_multiple(t, mult):
     t = t[..., :prev_seq_len_mult, :]
     return t
 
+
 def hierarchical_cat(tokens, strides: Tuple[int, ...]):
     assert len(tokens) == len(strides)
 
     if all([s == 1 for s in strides]):
-        return torch.cat(tokens, dim = -1)
+        return torch.cat(tokens, dim=-1)
 
-    tokens = [repeat(t, 'b n d -> b (n s) d', s = s) for t, s in zip(tokens, strides)]
+    tokens = [repeat(t, 'b n d -> b (n s) d', s=s)
+              for t, s in zip(tokens, strides)]
     min_seq_len = min([t.shape[-2] for t in tokens])
     tokens = [t[..., :min_seq_len, :] for t in tokens]
-    return torch.cat(tokens, dim = -1)
+    return torch.cat(tokens, dim=-1)
+
 
 class CausalConv(nn.Module):
     def __init__(
@@ -142,15 +159,16 @@ class CausalConv(nn.Module):
         dim_in,
         dim_out,
         kernel_size,
-        stride = 1
+        stride=1
     ):
         super().__init__()
         self.causal_padding = kernel_size - 1
-        self.conv = nn.Conv1d(dim_in, dim_out, kernel_size, stride = stride)
+        self.conv = nn.Conv1d(dim_in, dim_out, kernel_size, stride=stride)
 
     def forward(self, x):
         x = F.pad(x, (self.causal_padding, 0))
         return self.conv(x)
+
 
 class Compress(nn.Module):
     def __init__(
@@ -158,16 +176,16 @@ class Compress(nn.Module):
         *,
         dim,
         dim_out,
-        num_tokens = None,
-        stride = 1,
-        compress_factor = 1,
-        expansion_factor = 4,
-        dim_head = 64,
-        heads = 8,
-        ignore_index = 0,
-        should_recon = False,
-        should_prophet = False,
-        prophet_num_predictions = None
+        num_tokens=None,
+        stride=1,
+        compress_factor=1,
+        expansion_factor=4,
+        dim_head=64,
+        heads=8,
+        ignore_index=0,
+        should_recon=False,
+        should_prophet=False,
+        prophet_num_predictions=None
     ):
         super().__init__()
         assert compress_factor > 0 and is_power_of_two(compress_factor)
@@ -180,14 +198,15 @@ class Compress(nn.Module):
         self.should_prophet = should_prophet
 
         if self.no_compress:
-            self.compress_fn = Linear(dim, dim_out) if dim != dim_out else nn.Identity()
+            self.compress_fn = Linear(
+                dim, dim_out) if dim != dim_out else nn.Identity()
             return
 
         dim_inner = int(dim * expansion_factor)
 
         self.compress_fn = nn.Sequential(
             Rearrange('b n d -> b d n'),
-            CausalConv(dim, dim_inner, compress_factor, stride = stride),
+            CausalConv(dim, dim_inner, compress_factor, stride=stride),
             nn.SiLU(),
             nn.Conv1d(dim_inner, dim_out, 1),
             Rearrange('b d n -> b n d')
@@ -205,57 +224,63 @@ class Compress(nn.Module):
 
     def prophet(self, h, ids):
         if not self.should_prophet:
-            return torch.zeros((), device = h.device).requires_grad_()
+            return torch.zeros((), device=h.device).requires_grad_()
 
         c = self.compress_factor
         seq_len = ids.shape[-1]
 
         prophet_logits = self.to_prophet(h)
-        prophet_logits = rearrange(prophet_logits, 'b n (c d) -> (b c) d n', c = c)
+        prophet_logits = rearrange(
+            prophet_logits, 'b n (c d) -> (b c) d n', c=c)
 
-        prophet_ids = F.pad(ids, (-1, c), value = self.ignore_index)
+        prophet_ids = F.pad(ids, (-1, c), value=self.ignore_index)
         prophet_ids = tuple(prophet_ids[:, i:(seq_len + i)] for i in range(c))
-        prophet_ids = torch.stack(prophet_ids, dim = 1)
+        prophet_ids = torch.stack(prophet_ids, dim=1)
         prophet_ids = rearrange(prophet_ids, 'b c n -> (b c) n')
 
         if self.stride > 1:
             prophet_ids = prophet_ids[..., ::self.stride]
 
-        prophet_loss = F.cross_entropy(prophet_logits, prophet_ids, ignore_index = self.ignore_index)
+        prophet_loss = F.cross_entropy(
+            prophet_logits,
+            prophet_ids,
+            ignore_index=self.ignore_index)
         return prophet_loss
 
     def recon(self, h, ids):
         assert self.should_recon
 
         if self.no_compress:
-            return torch.zeros((), device = h.device).requires_grad_()
+            return torch.zeros((), device=h.device).requires_grad_()
 
         c = self.compress_factor
         seq_len = ids.shape[-1]
 
         recon_logits = self.to_recon(h)
-        recon_logits = rearrange(recon_logits, 'b n (c d) -> (b c) d n', c = c)
+        recon_logits = rearrange(recon_logits, 'b n (c d) -> (b c) d n', c=c)
 
-        recon_ids = F.pad(ids, (c - 1, 0), value = self.ignore_index)
+        recon_ids = F.pad(ids, (c - 1, 0), value=self.ignore_index)
         recon_ids = tuple(recon_ids[:, i:(seq_len + i)] for i in range(c))
-        recon_ids = torch.stack(recon_ids, dim = 1)
+        recon_ids = torch.stack(recon_ids, dim=1)
         recon_ids = rearrange(recon_ids, 'b c n -> (b c) n')
 
         if self.stride > 1:
             recon_ids = recon_ids[..., ::self.stride]
 
-        recon_loss = F.cross_entropy(recon_logits, recon_ids, ignore_index = self.ignore_index)
+        recon_loss = F.cross_entropy(
+            recon_logits, recon_ids, ignore_index=self.ignore_index)
         return recon_loss
 
     def forward(self, x):
         return self.compress_fn(x)
+
 
 class HierarchicalMerge(nn.Module):
     def __init__(
         self,
         dims: Tuple[int, ...],
         dim_out,
-        h_strides = 1
+        h_strides=1
     ):
         super().__init__()
         dim = sum(dims)
@@ -278,6 +303,7 @@ class HierarchicalMerge(nn.Module):
 
 # classes
 
+
 class RMSNorm(nn.Module):
     def __init__(self, dim):
         super().__init__()
@@ -285,10 +311,11 @@ class RMSNorm(nn.Module):
         self.gamma = nn.Parameter(torch.ones(dim))
 
     def forward(self, x):
-        return F.normalize(x, dim = -1) * self.scale * self.gamma
+        return F.normalize(x, dim=-1) * self.scale * self.gamma
+
 
 class FeedForward(nn.Module):
-    def __init__(self, dim, mult = 4):
+    def __init__(self, dim, mult=4):
         super().__init__()
         dim_inner = int(dim * mult)
 
@@ -302,13 +329,14 @@ class FeedForward(nn.Module):
     def forward(self, x):
         return self.net(x)
 
+
 class Attention(nn.Module):
     def __init__(
         self,
         dim,
-        dim_head = 64,
-        heads = 8,
-        use_flash_attn = False
+        dim_head=64,
+        heads=8,
+        use_flash_attn=False
     ):
         super().__init__()
         self.scale = dim_head ** -0.5
@@ -318,7 +346,7 @@ class Attention(nn.Module):
         self.norm = RMSNorm(dim)
         self.rotary_emb = RotaryEmbedding(dim_head)
 
-        self.attend = Attend(causal = True, use_flash_attn = use_flash_attn)
+        self.attend = Attend(causal=True, use_flash_attn=use_flash_attn)
 
         self.to_qkv = Linear(dim, dim_inner * 3)
         self.to_out = Linear(dim_inner, dim)
@@ -327,8 +355,10 @@ class Attention(nn.Module):
         n = x.shape[-2]
         x = self.norm(x)
 
-        q, k, v = self.to_qkv(x).chunk(3, dim = -1)
-        q, k, v = map(lambda t: rearrange(t, 'b n (h d) -> b h n d', h = self.heads), (q, k, v))
+        q, k, v = self.to_qkv(x).chunk(3, dim=-1)
+        q, k, v = map(
+            lambda t: rearrange(
+                t, 'b n (h d) -> b h n d', h=self.heads), (q, k, v))
 
         rotary_emb = self.rotary_emb(n)
         q, k = apply_rotary_pos_emb_qk(rotary_emb, q, k)
@@ -338,18 +368,19 @@ class Attention(nn.Module):
         out = rearrange(out, 'b h n d -> b n (h d)')
         return self.to_out(out)
 
+
 class HierarchicalBlock(nn.Module):
     def __init__(
         self,
         dim,
-        dim_head = 64,
-        heads = 8,
-        window_size = None,
-        compress_factor = 1,
-        stride = 1,
-        ff_mult = 4
+        dim_head=64,
+        heads=8,
+        window_size=None,
+        compress_factor=1,
+        stride=1,
+        ff_mult=4
     ):
-        
+
         super().__init__()
         self.stride = stride
 
@@ -365,11 +396,11 @@ class HierarchicalBlock(nn.Module):
         if self.has_attn:
             attn_klass = Attention
             if exists(window_size):
-                attn_klass = partial(LocalMHA, window_size = window_size)
+                attn_klass = partial(LocalMHA, window_size=window_size)
 
-            self.attn = attn_klass(dim = dim, dim_head = dim_head, heads = heads)
+            self.attn = attn_klass(dim=dim, dim_head=dim_head, heads=heads)
 
-        self.ff = FeedForward(dim = dim, mult = ff_mult)
+        self.ff = FeedForward(dim=dim, mult=ff_mult)
 
     def forward(self, x):
         c = self.compress_factor
@@ -382,10 +413,12 @@ class HierarchicalBlock(nn.Module):
         # this, and using a convolution for compressing at the beginning
         # is one of the improvements on top of hourglass transformer
         # the downside is that the savings are only O(c) instead of O(c ** 2) as in hourglass transformer
-        # you can get the O(c ** 2) saving by setting the hierarchical stride == c, but you'll see that performance is much worse, as some tokens will have a c - 1 token gap to the last hierarchical token
+        # you can get the O(c ** 2) saving by setting the hierarchical stride
+        # == c, but you'll see that performance is much worse, as some tokens
+        # will have a c - 1 token gap to the last hierarchical token
 
         if not self.no_compress:
-            x = rearrange(x, 'b (n c) d -> (b c) n d', c = axial_dim)
+            x = rearrange(x, 'b (n c) d -> (b c) n d', c=axial_dim)
 
         if exists(self.attn):
             x = self.attn(token_shift(x)) + x
@@ -393,9 +426,10 @@ class HierarchicalBlock(nn.Module):
         x = self.ff(token_shift(x)) + x
 
         if not self.no_compress:
-            x = rearrange(x, '(b c) n d -> b (n c) d', c = axial_dim)
+            x = rearrange(x, '(b c) n d -> b (n c) d', c=axial_dim)
 
         return x[:, :orig_seq_len]
+
 
 class HierarchicalTransformer(nn.Module):
     def __init__(
@@ -404,31 +438,35 @@ class HierarchicalTransformer(nn.Module):
         num_tokens,
         dim,
         depth,
-        seq_len = 2048,
-        dim_head = 64,
-        heads = 8,
-        ff_mult = 4,
-        hierarchies = 1,
-        window_sizes = None,
-        hierarchical_stride = 1,
-        hierarchy_merge_all = False,  # whether to pass the pooled hierarchical information back to all hierarchies or just one doing the prediction
-        ignore_index = 0,
-        use_flash_attn = False,
-        recon_loss_weight = 0.1,
-        prophet_loss_weight = 0.,
-        prophet_loss_use_quantized = False, # for prophet, whether to use the next 1x token ids, or use the ids from random projection quantization
-        prophet_quantized_use_embed = False,
-        predict_hierarchy = None,
-        predict_use_all_hierarchy = False,
-        rq_num_codebooks = 4,
-        rq_codebook_dim = 256,
-        rq_codebook_size = 1024,
+        seq_len=2048,
+        dim_head=64,
+        heads=8,
+        ff_mult=4,
+        hierarchies=1,
+        window_sizes=None,
+        hierarchical_stride=1,
+        hierarchy_merge_all=False,
+        # whether to pass the pooled hierarchical information back to all
+        # hierarchies or just one doing the prediction
+        ignore_index=0,
+        use_flash_attn=False,
+        recon_loss_weight=0.1,
+        prophet_loss_weight=0.,
+        prophet_loss_use_quantized=False,
+        # for prophet, whether to use the next 1x token ids, or use the ids
+        # from random projection quantization
+        prophet_quantized_use_embed=False,
+        predict_hierarchy=None,
+        predict_use_all_hierarchy=False,
+        rq_num_codebooks=4,
+        rq_codebook_dim=256,
+        rq_codebook_size=1024,
     ):
         """
         By not specifying hierarchies and window_sizes, you basically default to a regular autoregressive transformer with attention across full sequence length,
         Three hierarchies, all servicing predicting the next token
 
-        from zeta.nn import HierarchicalTransformer 
+        from zeta.nn import HierarchicalTransformer
 
         model = HierarchicalTransformer(
             num_tokens = 256,
@@ -454,12 +492,15 @@ class HierarchicalTransformer(nn.Module):
         self.seq_len = seq_len
 
         hierarchies = cast_tuple(hierarchies)
-        assert all_unique(hierarchies), 'hierarchies compression factors must be all unique integers'
-        assert all([*map(is_power_of_two, hierarchies)]), 'only powers of two allowed for hierarchies'
+        assert all_unique(
+            hierarchies), 'hierarchies compression factors must be all unique integers'
+        assert all([*map(is_power_of_two, hierarchies)]
+                   ), 'only powers of two allowed for hierarchies'
 
         self.hierarchies = hierarchies
 
-        # just use a simple tuple list per hyperparameter to customize each hierarchy
+        # just use a simple tuple list per hyperparameter to customize each
+        # hierarchy
 
         num_hierarchies = len(hierarchies)
 
@@ -480,22 +521,26 @@ class HierarchicalTransformer(nn.Module):
 
         hierarchical_stride = cast_tuple(hierarchical_stride, num_hierarchies)
 
-        assert all([*map(is_power_of_two, hierarchical_stride)]), 'all hierarchical strides must be power of two'
-        assert all([s <= h for s, h in zip(hierarchical_stride, hierarchies)]), 'all strides must be less than the compression factor of the hierarchy'
+        assert all([*map(is_power_of_two, hierarchical_stride)]
+                   ), 'all hierarchical strides must be power of two'
+        assert all([s <= h for s, h in zip(hierarchical_stride, hierarchies)]
+                   ), 'all strides must be less than the compression factor of the hierarchy'
 
         self.h_strides = hierarchical_stride
 
         assert len(hierarchical_stride) == num_hierarchies
 
         # this determines to which hierarchy is everything pooled into for final prediction
-        # however, final next token prediction can also use all hierarchies with `predict_use_all_hierarchy`
+        # however, final next token prediction can also use all hierarchies
+        # with `predict_use_all_hierarchy`
 
         predict_hierarchy = default(predict_hierarchy, min(hierarchies))
         self.predict_hierarchy_index = hierarchies.index(predict_hierarchy)
         hierarchy_predict_dim = dims[self.predict_hierarchy_index]
 
         self.hierarchy_merge_all = hierarchy_merge_all
-        assert hierarchy_merge_all or self.h_strides[self.predict_hierarchy_index] == 1, 'the hierarchy level being used for final next token prediction must have compression stride of 1'
+        assert hierarchy_merge_all or self.h_strides[
+            self.predict_hierarchy_index] == 1, 'the hierarchy level being used for final next token prediction must have compression stride of 1'
 
         # training related loss weights
 
@@ -520,17 +565,22 @@ class HierarchicalTransformer(nn.Module):
 
         self.compressors = mlist([])
 
-        for dim, hierarchy, stride in zip(dims, hierarchies, hierarchical_stride):
-            self.compressors.append(Compress(
-                dim = dim_token_emb,
-                dim_out = dim,
-                num_tokens = num_tokens,
-                compress_factor = hierarchy,
-                stride = stride,
-                should_recon = should_recon,
-                should_prophet = should_prophet,
-                prophet_num_predictions = ((hierarchy * num_tokens) if not prophet_loss_use_quantized else (rq_num_codebooks * rq_codebook_size))
-            ))
+        for dim, hierarchy, stride in zip(
+                dims, hierarchies, hierarchical_stride):
+            self.compressors.append(
+                Compress(
+                    dim=dim_token_emb,
+                    dim_out=dim,
+                    num_tokens=num_tokens,
+                    compress_factor=hierarchy,
+                    stride=stride,
+                    should_recon=should_recon,
+                    should_prophet=should_prophet,
+                    prophet_num_predictions=(
+                        (hierarchy *
+                         num_tokens) if not prophet_loss_use_quantized else (
+                            rq_num_codebooks *
+                            rq_codebook_size))))
 
         # post token embedding norms
 
@@ -550,43 +600,47 @@ class HierarchicalTransformer(nn.Module):
 
             # add a transformer block for each layer in the hierarchy
 
-            for hierarchy, h_stride, h_dim, h_window_size, h_dim_head, h_heads, h_ff_mult in zip(hierarchies, hierarchical_stride, dims, window_sizes, dim_head, heads, ff_mult):
+            for hierarchy, h_stride, h_dim, h_window_size, h_dim_head, h_heads, h_ff_mult in zip(
+                    hierarchies, hierarchical_stride, dims, window_sizes, dim_head, heads, ff_mult):
 
-                # make sure the window size never exceeds the effective sequence length
+                # make sure the window size never exceeds the effective
+                # sequence length
 
                 effective_seq_len = seq_len // hierarchy
 
                 if exists(h_window_size) and h_window_size > effective_seq_len:
-                    print(f'window size for hierarchy {hierarchy}x is greater than effective sequence length - setting window size to None (which would use normal full attention)')
+                    print(
+                        f'window size for hierarchy {hierarchy}x is greater than effective sequence length - setting window size to None (which would use normal full attention)')
                     h_window_size = None
 
                 # add attention and feedforward
 
                 hierarchical_layer.append(
                     HierarchicalBlock(
-                        dim = h_dim,
-                        dim_head = h_dim_head,
-                        heads = h_heads,
-                        window_size = h_window_size,
-                        compress_factor = hierarchy,
-                        stride = h_stride,
-                        ff_mult = h_ff_mult
+                        dim=h_dim,
+                        dim_head=h_dim_head,
+                        heads=h_heads,
+                        window_size=h_window_size,
+                        compress_factor=hierarchy,
+                        stride=h_stride,
+                        ff_mult=h_ff_mult
                     )
                 )
 
             self.layers.append(hierarchical_layer)
 
             # for merging the information across hierarchies
-            # for now, only one direction, from all hierarchies to the hierarchy that is being used to make predictions on, set by predict_hierarchy_index above
+            # for now, only one direction, from all hierarchies to the
+            # hierarchy that is being used to make predictions on, set by
+            # predict_hierarchy_index above
 
             if not self.need_hierarchical_merge:
                 continue
 
             merge = HierarchicalMerge(
-                dims = dims,
-                dim_out = hierarchy_predict_dim if not self.hierarchy_merge_all else sum(dims),
-                h_strides = hierarchical_stride
-            )
+                dims=dims,
+                dim_out=hierarchy_predict_dim if not self.hierarchy_merge_all else sum(dims),
+                h_strides=hierarchical_stride)
 
             self.hierarchical_merges.append(merge)
 
@@ -594,23 +648,27 @@ class HierarchicalTransformer(nn.Module):
 
         self.norms = mlist([nn.LayerNorm(dim) for dim in dims])
 
-        # random projection quantizer, for another approach to hierarchical predictive coding
+        # random projection quantizer, for another approach to hierarchical
+        # predictive coding
 
         if self.prophet_loss_use_quantized:
             rpq_klass = partial(
                 RandomProjectionQuantizer,
-                num_codebooks = rq_num_codebooks,
-                codebook_dim = rq_codebook_dim,
-                codebook_size = rq_codebook_size
+                num_codebooks=rq_num_codebooks,
+                codebook_dim=rq_codebook_dim,
+                codebook_size=rq_codebook_size
             )
 
-            self.rand_proj_quantizers = mlist([rpq_klass(dim = dim) for dim in dims])
+            self.rand_proj_quantizers = mlist(
+                [rpq_klass(dim=dim) for dim in dims])
             self.rq_num_codebooks = rq_num_codebooks
 
-        # to logit, for hierarchy set at predict_hierarchy_index, or all hierarchies
+        # to logit, for hierarchy set at predict_hierarchy_index, or all
+        # hierarchies
 
         self.predict_use_all_hierarchy = predict_use_all_hierarchy
-        logit_dim_in = sum(dims) if predict_use_all_hierarchy else hierarchy_predict_dim
+        logit_dim_in = sum(
+            dims) if predict_use_all_hierarchy else hierarchy_predict_dim
 
         self.to_logits = Linear(logit_dim_in, num_tokens)
 
@@ -624,8 +682,8 @@ class HierarchicalTransformer(nn.Module):
         self,
         prompt,
         seq_len,
-        temperature = 1.0,
-        filter_thres = 0.9,
+        temperature=1.0,
+        filter_thres=0.9,
         **kwargs
     ):
         b, t, device = *prompt.shape, prompt.device
@@ -634,25 +692,25 @@ class HierarchicalTransformer(nn.Module):
 
         for _ in range(seq_len):
             logits = self.forward(out[:, -self.seq_len:], **kwargs)[:, -1]
-            filtered_logits = top_k(logits, thres = filter_thres)
-            sample = gumbel_sample(filtered_logits, temperature = temperature)
+            filtered_logits = top_k(logits, thres=filter_thres)
+            sample = gumbel_sample(filtered_logits, temperature=temperature)
             sample = rearrange(sample, 'b -> b 1')
-            out = torch.cat((out, sample), dim = -1)
+            out = torch.cat((out, sample), dim=-1)
 
         return out[:, t:]
 
     @property
     def device(self):
         return next(self.parameters()).device
-    
+
     def forward(
         self,
         ids,
-        return_loss = False,
-        return_hierarchical_token_embeds = False,
-        return_hierarchical_embeds = False,
-        ablate_hierarchical_merge = False,
-        return_random_proj_quantize_ids = False
+        return_loss=False,
+        return_hierarchical_token_embeds=False,
+        return_hierarchical_embeds=False,
+        ablate_hierarchical_merge=False,
+        return_random_proj_quantize_ids=False
     ):
         """
         einops notation:
@@ -676,14 +734,16 @@ class HierarchicalTransformer(nn.Module):
 
         x = self.token_emb(ids)
 
-        # for every hierarchy, compress token embeddings appropriately to the hierarchical embeddings
+        # for every hierarchy, compress token embeddings appropriately to the
+        # hierarchical embeddings
 
         tokens = []
 
         for compress in self.compressors:
             tokens.append(compress(x))
 
-        # save hierarchical tokens right before norm for random projection quantization, if needed
+        # save hierarchical tokens right before norm for random projection
+        # quantization, if needed
 
         post_compressed_tokens = tokens
 
@@ -704,7 +764,8 @@ class HierarchicalTransformer(nn.Module):
             tokens = apply_fns(layer, tokens)
 
             # pool the information all hierarchies
-            # and then update the tokens that will be used to make the final autoregressive prediction
+            # and then update the tokens that will be used to make the final
+            # autoregressive prediction
 
             if not self.need_hierarchical_merge or ablate_hierarchical_merge:
                 continue
@@ -712,7 +773,8 @@ class HierarchicalTransformer(nn.Module):
             pooled = merge(tokens)
 
             if self.hierarchy_merge_all:
-                tokens = [(t + p[..., ::s, :]) for t, p, s in zip(tokens, pooled.split(self.dims, dim = -1), self.h_strides)]
+                tokens = [(t + p[..., ::s, :]) for t, p, s in zip(tokens,
+                                                                  pooled.split(self.dims, dim=-1), self.h_strides)]
             else:
                 predict_tokens = tokens[self.predict_hierarchy_index]
                 predict_tokens = predict_tokens + pooled
@@ -722,13 +784,15 @@ class HierarchicalTransformer(nn.Module):
 
         embeds = apply_fns(self.norms, tokens)
 
-        # if the researcher wants the randomly projected ids of either compressed tokens or embeddings of the hierarchies
+        # if the researcher wants the randomly projected ids of either
+        # compressed tokens or embeddings of the hierarchies
 
         if return_random_proj_quantize_ids:
             assert self.prophet_loss_use_quantized
 
             quantize_input = embeds if self.prophet_quantized_use_embed else post_compressed_tokens
-            hierarchical_ids = apply_fns(self.rand_proj_quantizers, quantize_input)
+            hierarchical_ids = apply_fns(
+                self.rand_proj_quantizers, quantize_input)
             return hierarchical_ids
 
         # if one wants all the normalized hierarchical embeds
@@ -750,7 +814,7 @@ class HierarchicalTransformer(nn.Module):
         if not return_loss:
             return logits
 
-        ce_loss_fn = partial(F.cross_entropy, ignore_index = self.ignore_index)
+        ce_loss_fn = partial(F.cross_entropy, ignore_index=self.ignore_index)
 
         # autoregressive loss (predictive coding)
 
@@ -759,7 +823,8 @@ class HierarchicalTransformer(nn.Module):
 
         # reconstruction losses for hierarchy tokens
 
-        recon_losses = prophet_losses = torch.zeros((), device = self.device).requires_grad_()
+        recon_losses = prophet_losses = torch.zeros(
+            (), device=self.device).requires_grad_()
 
         if self.should_recon:
             for compress, t in zip(self.compressors, embeds):
@@ -770,13 +835,16 @@ class HierarchicalTransformer(nn.Module):
 
         if self.should_prophet:
             if self.prophet_loss_use_quantized:
-                # using random projected quantizer of the next hierarchical token
+                # using random projected quantizer of the next hierarchical
+                # token
 
                 quantize_input = embeds if self.prophet_quantized_use_embed else post_compressed_tokens
 
-                hierarchical_ids = apply_fns(self.rand_proj_quantizers, quantize_input)
+                hierarchical_ids = apply_fns(
+                    self.rand_proj_quantizers, quantize_input)
 
-                for hierarchy, stride, compress, embed, pred_ids in zip(self.hierarchies, self.h_strides, self.compressors, embeds, hierarchical_ids):
+                for hierarchy, stride, compress, embed, pred_ids in zip(
+                        self.hierarchies, self.h_strides, self.compressors, embeds, hierarchical_ids):
                     if hierarchy == 1:
                         continue
 
@@ -784,12 +852,15 @@ class HierarchicalTransformer(nn.Module):
 
                     axial_dim = hierarchy // stride
 
-                    prophet_logits = curtail_seq_to_multiple(prophet_logits, axial_dim)
+                    prophet_logits = curtail_seq_to_multiple(
+                        prophet_logits, axial_dim)
                     pred_ids = curtail_seq_to_multiple(pred_ids, axial_dim)
 
-                    prophet_logits, pred_ids = map(lambda t: rearrange(t, 'b (n c) ... -> (b c) n ...', c = axial_dim), (prophet_logits, pred_ids))
+                    prophet_logits, pred_ids = map(lambda t: rearrange(
+                        t, 'b (n c) ... -> (b c) n ...', c=axial_dim), (prophet_logits, pred_ids))
 
-                    prophet_logits = rearrange(prophet_logits[:, :-1], 'b n (q c) -> (b q) c n', q = self.rq_num_codebooks)
+                    prophet_logits = rearrange(
+                        prophet_logits[:, :-1], 'b n (q c) -> (b q) c n', q=self.rq_num_codebooks)
                     pred_ids = rearrange(pred_ids[:, 1:], 'b n q -> (b q) n')
 
                     prophet_loss = ce_loss_fn(prophet_logits, pred_ids)
@@ -805,6 +876,7 @@ class HierarchicalTransformer(nn.Module):
 
         # total loss
 
-        total_loss = ce_loss + recon_losses * self.recon_loss_weight + prophet_losses * self.prophet_loss_weight
+        total_loss = ce_loss + recon_losses * self.recon_loss_weight + \
+            prophet_losses * self.prophet_loss_weight
 
         return total_loss, (ce_loss, recon_losses, prophet_losses)

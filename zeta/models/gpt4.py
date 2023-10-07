@@ -12,7 +12,7 @@ from zeta.nn.architecture.transformer import (
 
 class GPT4(nn.Module):
     """
-    GPT4 is a transformer-based model architecture. It initializes with 
+    GPT4 is a transformer-based model architecture. It initializes with
     a Transformer and AutoregressiveWrapper with default or user-specified parameters.
         Initialize the model with specified or default parameters.
         Args:
@@ -35,24 +35,25 @@ class GPT4(nn.Module):
         - attn_qk_norm_dim_scale: Attention query-key normalization dimension scale
         - embedding_provider: Embedding provider module
     """
+
     def __init__(
-            self, 
-            num_tokens=50432, 
-            max_seq_len=8192, 
-            dim=2560, 
-            depth=32, 
-            dim_head=128, 
-            heads=24,
-            use_abs_pos_emb=False, 
-            alibi_pos_bias=True, 
-            alibi_num_heads=12, 
-            rotary_xpos=True,
-            attn_flash=True, 
-            attn_one_kv_head=True,  # multiquery attention
-            qk_norm=True, 
-            attn_qk_norm=True, 
-            attn_qk_norm_dim_scale=True,
-        ):
+        self,
+        num_tokens=50432,
+        max_seq_len=8192,
+        dim=2560,
+        depth=32,
+        dim_head=128,
+        heads=24,
+        use_abs_pos_emb=False,
+        alibi_pos_bias=True,
+        alibi_num_heads=12,
+        rotary_xpos=True,
+        attn_flash=True,
+        attn_one_kv_head=True,  # multiquery attention
+        qk_norm=True,
+        attn_qk_norm=True,
+        attn_qk_norm_dim_scale=True,
+    ):
         super().__init__()
 
         try:
@@ -91,19 +92,18 @@ class GPT4(nn.Module):
             raise
 
 
-
 class GPT4MultiModal(torch.nn.Module):
-    def __init__(self, 
-                 image_size=256, 
-                 patch_size=32, 
-                 encoder_dim=512, 
-                 encoder_depth=6, 
+    def __init__(self,
+                 image_size=256,
+                 patch_size=32,
+                 encoder_dim=512,
+                 encoder_depth=6,
                  encoder_heads=8,
-                 num_tokens=20000, 
-                 max_seq_len=1024, 
-                 decoder_dim=512, 
-                 decoder_depth=6, 
-                 decoder_heads=8, 
+                 num_tokens=20000,
+                 max_seq_len=1024,
+                 decoder_dim=512,
+                 decoder_depth=6,
+                 decoder_heads=8,
                  alibi_num_heads=4,
                  use_abs_pos_emb=False,
                  cross_attend=True,
@@ -111,9 +111,9 @@ class GPT4MultiModal(torch.nn.Module):
                  rotary_xpos=True,
                  attn_flash=True,
                  qk_norm=True):
-        
+
         super(GPT4MultiModal, self).__init__()
-        
+
         self.encoder = ViTransformerWrapper(
             image_size=image_size,
             patch_size=patch_size,
@@ -142,11 +142,9 @@ class GPT4MultiModal(torch.nn.Module):
         )
 
     def forward(self, img, text):
-        try:    
+        try:
             encoded = self.encoder(img, return_embeddings=True)
             return self.decoder(text, context=encoded)
         except Exception as error:
             print(f"Failed in forward method: {error}")
             raise
-
-

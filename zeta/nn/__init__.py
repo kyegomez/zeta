@@ -4,7 +4,7 @@
 # from zeta.nn.architecture import *
 from zeta.nn import architecture
 
-######### Attention
+# Attention
 # from zeta.nn.attention import *
 from zeta.nn import attention
 
@@ -18,6 +18,6 @@ from zeta.nn import embeddings
 from zeta.nn import modules
 
 
-#biases
+# biases
 # from zeta.nn.biases import *
 from zeta.nn import biases

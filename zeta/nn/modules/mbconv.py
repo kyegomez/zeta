@@ -1,23 +1,23 @@
-import torch 
+import torch
 from torch import nn
 from einops import reduce, rearrange
+from functools import reduce
 
 
 class DropSample(nn.Module):
     def __init__(self, prob=0):
         super().__init__()
         self.prob = prob
-    
+
     def forward(self, x):
         device = x.device
 
         if self.prob == 0. or (not self.training):
             return x
-        
-        keep_mask = torch.FloatTensor((x.shape[0], 1, 1, 1), device=device).uniform_() > self.prob
+
+        keep_mask = torch.FloatTensor(
+            (x.shape[0], 1, 1, 1), device=device).uniform_() > self.prob
         return x + keep_mask / (1 - self.prob)
-
-
 
 
 class SqueezeExcitation(nn.Module):
@@ -38,17 +38,16 @@ class SqueezeExcitation(nn.Module):
             ),
             nn.SiLU(),
             nn.Linear(
-                hidden_dim, 
-                dim, 
+                hidden_dim,
+                dim,
                 bias=False
             ),
             nn.Sigmoid(),
             rearrange('b c -> b c 11')
         )
-    
+
     def forward(self, x):
         return x + self.gate(x)
-
 
 
 class MBConvResidual(nn.Module):
@@ -65,7 +64,7 @@ class MBConvResidual(nn.Module):
         out = self.fn(x)
         out = self.dropsample(out)
         return out + x
-    
+
 
 def MBConv(
     dim_in,
@@ -110,5 +109,5 @@ def MBConv(
             net,
             dropout=dropout
         )
-    
+
     return net

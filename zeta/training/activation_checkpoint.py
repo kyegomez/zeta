@@ -13,7 +13,7 @@ def activation_checkpointing(
     model: torch.nn.Module,
     offload_to_cpu: bool = False,
     accelerator: Accelerator = None,
-    TransformerBlock = None
+    TransformerBlock=None
 ):
     """
     Apply activation checkpointing to a model.
@@ -25,6 +25,7 @@ def activation_checkpointing(
     """
     if accelerator is not None:
         accelerator.print("Using activation checkpointing")
+
     def check_fn(submodule):
         return isinstance(submodule, TransformerBlock)
     non_reentrant_wrapper = partial(

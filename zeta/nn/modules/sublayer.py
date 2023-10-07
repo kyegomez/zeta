@@ -1,8 +1,9 @@
-import torch 
+import torch
 from torch import nn
 
+
 class LN(nn.Module):
-    def __init__(self, 
+    def __init__(self,
                  dim=None,
                  eps=None
                  ):

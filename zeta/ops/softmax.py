@@ -6,7 +6,9 @@ import torch.nn.functional as F
 def standard_softmax(tensor):
     return F.softmax(tensor, dim=0)
 
-#selu softmax
+# selu softmax
+
+
 def selu_softmax(x):
     """
     selu_softmax works by first applying the scaled exponential linear unit
@@ -14,11 +16,13 @@ def selu_softmax(x):
 
     x: input tensor
     """
-    #selu params
+    # selu params
     alpha, scale = 1.6732632423543772848170429916717, 1.0507009873554804934193349852946
     return F.softmax(scale * F.selu(x, alpha), dim=0)
 
 # 2. Sparsemax
+
+
 def sparsemax(x, k):
     """
     sparsemax works by first sorting the input tensor in descending order and
@@ -29,7 +33,7 @@ def sparsemax(x, k):
     z: input tensor
     k: number of elements to keep
 
-    
+
     """
     original_size = x.size()
     x = x.view(-1, original_size[-1])
@@ -43,7 +47,10 @@ def sparsemax(x, k):
     x = x - torch.max(x, dim=dim, keepdim=True).values
     sorted_x, _ = torch.sort(x, dim=dim, descending=True)
     cumulative_values = torch.cumsum(sorted_x, dim=dim) - 1
-    range_values = torch.arange(start=1, end=number_of_logits + 1, device=x.device)
+    range_values = torch.arange(
+        start=1,
+        end=number_of_logits + 1,
+        device=x.device)
     bound = (sorted_x - cumulative_values / range_values) > 0
     rho = torch.count_nonzero(bound, dim=dim)
 
@@ -53,7 +60,8 @@ def sparsemax(x, k):
 
     tau = cumulative_values.gather(dim, rho.unsqueeze(dim) - 1)
     tau /= rho.to(dtype=torch.float32)
-    return torch.max(torch.zeros_like(x), x - tau.unsqueeze(dim)).view(original_size)
+    return torch.max(torch.zeros_like(x), x -
+                     tau.unsqueeze(dim)).view(original_size)
 
 
 # 3. Local Softmax
@@ -68,20 +76,22 @@ def local_softmax(tensor, num_chunks: int = 2):
 
 
     """
-    #split the tensor into num chunks smaller tensor
+    # split the tensor into num chunks smaller tensor
     tensors = torch.chunk(tensor, num_chunks, dim=0)
 
-    #apply softmax on each chunk and collect the results in a list
+    # apply softmax on each chunk and collect the results in a list
     results = [
         F.softmax(t, dim=0) for t in tensors
     ]
 
-    #concat results
+    # concat results
     concated_results = torch.cat(results, dim=0)
 
     return concated_results
 
 # 4. Fast Softmax
+
+
 def fast_softmax(tensor):
     """
     LogSumExp trick for numerical stability
@@ -89,7 +99,7 @@ def fast_softmax(tensor):
     tensor = torch.rand(10, 5)
     result = fast_softmax(tensor)
     print(result)
-    
+
     """
     shiftx = tensor - torch.max(tensor)
 
@@ -113,7 +123,7 @@ def sparse_softmax(z, k: int = 3):
     _, top_k_indices = z.topk(k, dim=0)
     omega_k = top_k_indices
 
-    #compute sparse softmax transformation
+    # compute sparse softmax transformation
     exp_z = torch.exp(z)
     masked_sum_exp = exp_z[omega_k].sum()
     values = torch.zeros_like(z)
@@ -122,6 +132,8 @@ def sparse_softmax(z, k: int = 3):
     return values
 
 # 6. gumbelmax
+
+
 def gumbelmax(x, temp=1.0, hard=False):
     """
     Gumbelmax works by adding Gumbel noise to the input tensor x and then
@@ -147,6 +159,8 @@ def gumbelmax(x, temp=1.0, hard=False):
     return y
 
 # 7. Softmax with temp
+
+
 def temp_softmax(x, temp=1.0):
     """
     Temp softmax works by dividing the input tensor by the temperature
@@ -159,6 +173,8 @@ def temp_softmax(x, temp=1.0):
     return F.softmax(x / temp, dim=-1)
 
 # 8. logit scaled softmax
+
+
 def logit_scaled_softmax(x, scale=1.0):
     """
     logit scaled softmax works by multiplying the input tensor by the scale
@@ -170,6 +186,8 @@ def logit_scaled_softmax(x, scale=1.0):
     return F.softmax(x * scale, dim=-1)
 
 # 9. norm exponential softmax
+
+
 def norm_exp_softmax(x, scale=1.0):
     """
     norm exponential softmax works by applying the following formula to the

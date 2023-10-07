@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
 
+
 class BaseModel(ABC):
     def __init__(self, *args, **kwargs):
-        pass 
+        pass
 
     def forward(self):
         pass

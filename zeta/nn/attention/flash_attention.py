@@ -13,15 +13,20 @@ from zeta.nn.attention.base import BaseAttention
 
 # constants
 
-EfficientAttentionConfig = namedtuple('EfficientAttentionConfig', ['enable_flash', 'enable_math', 'enable_mem_efficient'])
+EfficientAttentionConfig = namedtuple(
+    'EfficientAttentionConfig', [
+        'enable_flash', 'enable_math', 'enable_mem_efficient'])
 
 # helpers
+
 
 def exists(val):
     return val is not None
 
+
 def once(fn):
     called = False
+
     @wraps(fn)
     def inner(x):
         nonlocal called
@@ -31,10 +36,10 @@ def once(fn):
         return fn(x)
     return inner
 
+
 print_once = once(print)
 
 # main class
-
 
 
 @dataclass
@@ -62,14 +67,17 @@ class Intermediates:
         Returns:
             tuple: Tuple representation of the Intermediates object.
         """
-        return (self.qk_similarities, self.pre_softmax_attn, self.post_softmax_attn)
+        return (
+            self.qk_similarities,
+            self.pre_softmax_attn,
+            self.post_softmax_attn)
 
 
 class FlashAttention(BaseAttention):
     def __init__(
         self,
         causal: bool = False,
-        dropout: float  = 0.,
+        dropout: float = 0.,
         flash: bool = True
     ):
         """
@@ -88,7 +96,8 @@ class FlashAttention(BaseAttention):
 
         self.causal = causal
         self.flash = flash
-        assert not (flash and version.parse(torch.__version__) < version.parse('2.0.0')), 'in order to use flash attention, you must be using pytorch 2.0 or above'
+        assert not (flash and version.parse(torch.__version__) < version.parse(
+            '2.0.0')), 'in order to use flash attention, you must be using pytorch 2.0 or above'
 
         # determine efficient attention configs for cuda and cpu
 
@@ -98,13 +107,16 @@ class FlashAttention(BaseAttention):
         if not torch.cuda.is_available() or not flash:
             return
 
-        device_properties = torch.cuda.get_device_properties(torch.device('cuda'))
+        device_properties = torch.cuda.get_device_properties(
+            torch.device('cuda'))
 
         if device_properties.major == 8 and device_properties.minor == 0:
-            print_once('A100 GPU detected, using flash attention if input tensor is on cuda')
+            print_once(
+                'A100 GPU detected, using flash attention if input tensor is on cuda')
             self.cuda_config = EfficientAttentionConfig(True, False, False)
         else:
-            print_once('Non-A100 GPU detected, using math or mem efficient attention if input tensor is on cuda')
+            print_once(
+                'Non-A100 GPU detected, using math or mem efficient attention if input tensor is on cuda')
             self.cuda_config = EfficientAttentionConfig(False, True, True)
 
     def get_mask(self, i, j, device):
@@ -120,16 +132,16 @@ class FlashAttention(BaseAttention):
             torch.Tensor: Mask tensor of shape (i, j).
 
         """
-        return torch.ones((i, j), device=device, dtype=torch.bool).triu(j - i + 1)
-
+        return torch.ones(
+            (i, j), device=device, dtype=torch.bool).triu(
+            j - i + 1)
 
     def flash_attn(
         self,
         q, k, v,
-        mask = None,
-        attn_bias = None
+        mask=None,
+        attn_bias=None
     ):
-        
         """
         Perform flash attention computation.
 
@@ -144,7 +156,8 @@ class FlashAttention(BaseAttention):
             torch.Tensor: Output tensor of shape (batch, heads, q_len, dim).
 
         """
-        batch, heads, q_len, _, k_len, is_cuda, device = *q.shape, k.shape[-2], q.is_cuda, q.device
+        batch, heads, q_len, _, k_len, is_cuda, device = * \
+            q.shape, k.shape[-2], q.is_cuda, q.device
 
         # Recommended for multi-query single-key-value attention by Tri Dao
         # kv shape torch.Size([1, 512, 64]) -> torch.Size([1, 8, 512, 64])
@@ -168,7 +181,8 @@ class FlashAttention(BaseAttention):
             # manually handle causal mask, if another mask was given
 
             if causal:
-                causal_mask = self.create_causal_mask(q_len, k_len, device = device)
+                causal_mask = self.create_causal_mask(
+                    q_len, k_len, device=device)
                 mask = mask & ~causal_mask
                 causal = False
 
@@ -176,17 +190,20 @@ class FlashAttention(BaseAttention):
         # convert from bool to float
 
         if exists(attn_bias):
-            attn_bias = rearrange(attn_bias, 'h i j -> 1 h i j').expand(batch, heads, -1, -1)
+            attn_bias = rearrange(
+                attn_bias, 'h i j -> 1 h i j').expand(batch, heads, -1, -1)
 
             # if mask given, the mask would already contain the causal mask from above logic
-            # otherwise, if no mask given but still causal, mask out alibi positional bias to a large negative number
+            # otherwise, if no mask given but still causal, mask out alibi
+            # positional bias to a large negative number
 
             mask_value = -torch.finfo(q.dtype).max
 
             if exists(mask):
                 attn_bias = attn_bias.masked_fill(~mask, mask_value // 2)
             elif causal:
-                causal_mask = self.create_causal_mask(q_len, k_len, device = device)
+                causal_mask = self.create_causal_mask(
+                    q_len, k_len, device=device)
                 attn_bias = attn_bias.masked_fill(causal_mask, mask_value // 2)
                 causal = False
 
@@ -200,18 +217,18 @@ class FlashAttention(BaseAttention):
         config = self.cuda_config if is_cuda else self.cpu_config
 
         # pytorch 2.0 flash attn: q, k, v, mask, dropout, causal, softmax_scale
-        
+
         with torch.backends.cuda.sdp_kernel(**config._asdict()):
             out = F.scaled_dot_product_attention(
                 q, k, v,
-                attn_mask = mask,
-                dropout_p = self.dropout if self.training else 0., 
-                is_causal = causal
+                attn_mask=mask,
+                dropout_p=self.dropout if self.training else 0.,
+                is_causal=causal
             )
 
             return out
 
-    def forward(self, q, k, v, mask = None, attn_bias = None):
+    def forward(self, q, k, v, mask=None, attn_bias=None):
         """
         Perform attention computation.
 
@@ -233,7 +250,6 @@ class FlashAttention(BaseAttention):
 
         """
 
-
         q_len, k_len, device = q.shape[-2], k.shape[-2], q.device
 
         scale = q.shape[-1] ** -0.5
@@ -241,7 +257,7 @@ class FlashAttention(BaseAttention):
         kv_einsum_eq = 'b j d' if k.ndim == 3 else 'b h j d'
 
         if self.flash:
-            return self.flash_attn(q, k, v, mask = mask, attn_bias = attn_bias)
+            return self.flash_attn(q, k, v, mask=mask, attn_bias=attn_bias)
 
         # similarity
 
@@ -268,4 +284,3 @@ class FlashAttention(BaseAttention):
         out = einsum(f"b h i j, {kv_einsum_eq} -> b h i d", attn, v)
 
         return out
-    

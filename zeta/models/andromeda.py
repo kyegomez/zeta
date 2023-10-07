@@ -1,4 +1,4 @@
-#the best llm ever made
+# the best llm ever made
 from torch.nn import Module
 
 from zeta.nn.architecture.auto_regressive_wrapper import AutoregressiveWrapper
@@ -10,24 +10,25 @@ from zeta.nn.architecture.transformer import (
 
 class Andromeda(Module):
     """
-    Andromeda is a transformer-based model architecture. It initializes with 
+    Andromeda is a transformer-based model architecture. It initializes with
     a Transformer and AutoregressiveWrapper with default or user-specified parameters.
     """
-    def __init__(self, 
-                 num_tokens=50432, 
-                 max_seq_len=8192, 
-                 dim=2560, 
-                 depth=32, 
-                 dim_head=128, 
+
+    def __init__(self,
+                 num_tokens=50432,
+                 max_seq_len=8192,
+                 dim=2560,
+                 depth=32,
+                 dim_head=128,
                  heads=24,
-                 use_abs_pos_emb=False, 
-                 alibi_pos_bias=True, 
-                 alibi_num_heads=12, 
+                 use_abs_pos_emb=False,
+                 alibi_pos_bias=True,
+                 alibi_num_heads=12,
                  rotary_xpos=True,
-                 attn_flash=True, 
-                 attn_kv_heads = 2,
-                 qk_norm=True, 
-                 attn_qk_norm=True, 
+                 attn_flash=True,
+                 attn_kv_heads=2,
+                 qk_norm=True,
+                 attn_qk_norm=True,
                  attn_qk_norm_dim_scale=True, ):
         """
         Initialize the model with specified or default parameters.

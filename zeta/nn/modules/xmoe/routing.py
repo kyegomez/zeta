@@ -63,19 +63,24 @@ def top1gating(
 
     # Create a mask for 1st's expert per token
     indices1_s = torch.argmax(gates, dim=1)
-    mask1 = one_hot(indices1_s, num_classes=num_experts, unsqueeze_indices=True)
+    mask1 = one_hot(
+        indices1_s,
+        num_classes=num_experts,
+        unsqueeze_indices=True)
     if input_mask is not None and input_mask.any():
         nonpadding = ~input_mask
         mask1 = mask1 * nonpadding.unsqueeze(-1).to(mask1.dtype)
 
     # for logging (percent of tokens routed to each expert)
     expert1_hist = (
-        100
-        * torch.histc(
-            (indices1_s.squeeze() + 1), bins=num_experts, min=1, max=num_experts
-        )
-        / num_tokens
-    )
+        100 *
+        torch.histc(
+            (indices1_s.squeeze() +
+             1),
+            bins=num_experts,
+            min=1,
+            max=num_experts) /
+        num_tokens)
     metadata["unused_expert1_count"] = (expert1_hist == 0).sum()
     expert1_hist = (
         torch.sort(expert1_hist, dim=0, descending=True).values
@@ -122,9 +127,13 @@ def top1gating(
     locations1_s = torch.sum(locations1 * mask1, dim=1)
 
     # Calculate combine_weights and dispatch_mask
-    gates1 = gates1_s.unsqueeze(-1) * mask1.to(gates1_s.dtype)  # einsum("s,se->se")
+    # einsum("s,se->se")
+    gates1 = gates1_s.unsqueeze(-1) * mask1.to(gates1_s.dtype)
     # locations1_sc = num_tokens * capacity
-    locations1_sc = one_hot(locations1_s, num_classes=capacity, unsqueeze_indices=True)
+    locations1_sc = one_hot(
+        locations1_s,
+        num_classes=capacity,
+        unsqueeze_indices=True)
     combine1_sec = torch.bmm(
         # einsum("se,sc->sec")
         gates1.unsqueeze(-1),
@@ -233,12 +242,16 @@ def gumbel_rsample(shape: Tuple, device: torch.device) -> Tensor:
     if gumbel is None:
         one = torch.tensor(1.0, device=device)
         zero = torch.tensor(0.0, device=device)
-        gumbel = torch.distributions.gumbel.Gumbel(zero, one).rsample  # type: ignore
+        gumbel = torch.distributions.gumbel.Gumbel(
+            zero, one).rsample  # type: ignore
         gumbel_map[device] = gumbel
     return gumbel(shape)
 
 
-def one_hot(indices: torch.Tensor, num_classes: int, unsqueeze_indices=False) -> Tensor:
+def one_hot(
+        indices: torch.Tensor,
+        num_classes: int,
+        unsqueeze_indices=False) -> Tensor:
     if unsqueeze_indices:
         indices = indices.unsqueeze(-1)
     assert indices.shape[-1] == 1, "last dimension of indices must be have size 1"
@@ -287,7 +300,8 @@ def top2gating(
     if second_expert_policy == "sampling":
         # Create a mask for 2nd's expert per token using Gumbel-max trick
         # https://timvieira.github.io/blog/post/2014/07/31/gumbel-max-trick/
-        logits_w_noise = logits + gumbel_rsample(logits.shape, device=logits.device)
+        logits_w_noise = logits + \
+            gumbel_rsample(logits.shape, device=logits.device)
     else:
         logits_w_noise = logits
     # Replace top-expert with min value
@@ -350,11 +364,21 @@ def top2gating(
 
     # for logging purposes
     metadata["overflow_expert1"] = (
-        100 * torch.sum(mask1 * torch.ge(locations1, capacity)) / torch.sum(mask1)
-    )
+        100 *
+        torch.sum(
+            mask1 *
+            torch.ge(
+                locations1,
+                capacity)) /
+        torch.sum(mask1))
     metadata["overflow_expert2"] = (
-        100 * torch.sum(mask2 * torch.ge(locations2, capacity)) / torch.sum(mask2)
-    )
+        100 *
+        torch.sum(
+            mask2 *
+            torch.ge(
+                locations2,
+                capacity)) /
+        torch.sum(mask2))
 
     # Remove locations outside capacity from mask
     mask1_, mask2_ = mask1, mask2
@@ -363,12 +387,14 @@ def top2gating(
 
     # for logging (percent of tokens routed to each expert)
     expert1_hist = (
-        100
-        * torch.histc(
-            (indices1_s.squeeze() + 1), bins=num_experts, min=1, max=num_experts
-        )
-        / num_tokens
-    )
+        100 *
+        torch.histc(
+            (indices1_s.squeeze() +
+             1),
+            bins=num_experts,
+            min=1,
+            max=num_experts) /
+        num_tokens)
     metadata["unused_expert1_count"] = (expert1_hist == 0).sum()
     expert1_hist = (
         torch.sort(expert1_hist, dim=0, descending=True).values
@@ -376,12 +402,14 @@ def top2gating(
     )
 
     expert2_hist = (
-        100
-        * torch.histc(
-            (indices2_s.squeeze() + 1), bins=num_experts, min=1, max=num_experts
-        )
-        / num_tokens
-    )
+        100 *
+        torch.histc(
+            (indices2_s.squeeze() +
+             1),
+            bins=num_experts,
+            min=1,
+            max=num_experts) /
+        num_tokens)
     metadata["unused_expert2_count"] = (expert2_hist == 0).sum()
     expert2_hist = (
         torch.sort(expert2_hist, dim=0, descending=True).values
@@ -423,10 +451,18 @@ def top2gating(
     locations2_s = torch.sum(locations2 * mask2, dim=1)
 
     # Calculate combine_weights and dispatch_mask
-    gates1 = gates1_s.unsqueeze(-1) * mask1.to(gates1_s.dtype)  # einsum("s,se->se")
-    gates2 = gates2_s.unsqueeze(-1) * mask2.to(gates2_s.dtype)  # einsum("s,se->se")
-    locations1_sc = one_hot(locations1_s, num_classes=capacity, unsqueeze_indices=True)
-    locations2_sc = one_hot(locations2_s, num_classes=capacity, unsqueeze_indices=True)
+    # einsum("s,se->se")
+    gates1 = gates1_s.unsqueeze(-1) * mask1.to(gates1_s.dtype)
+    # einsum("s,se->se")
+    gates2 = gates2_s.unsqueeze(-1) * mask2.to(gates2_s.dtype)
+    locations1_sc = one_hot(
+        locations1_s,
+        num_classes=capacity,
+        unsqueeze_indices=True)
+    locations2_sc = one_hot(
+        locations2_s,
+        num_classes=capacity,
+        unsqueeze_indices=True)
     combine1_sec = torch.bmm(
         # einsum("se,sc->sec")
         gates1.unsqueeze(-1),

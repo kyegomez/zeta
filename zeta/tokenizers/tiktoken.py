@@ -48,14 +48,16 @@ class TikToken(BaseTokenizer):
     @property
     def max_tokens(self) -> int:
         tokens = next(
-            v for k, v in self.MODEL_PREFIXES_TO_MAX_TOKENS.items() if self.model.startswith(k)
-        )
+            v for k,
+            v in self.MODEL_PREFIXES_TO_MAX_TOKENS.items() if self.model.startswith(k))
         offset = 0 if self.model in self.EMBEDDING_MODELS else self.TOKEN_OFFSET
 
         return (tokens if tokens else self.DEFAULT_MAX_TOKENS) - offset
 
     def encode(self, text: str) -> list[int]:
-        return self.encoding.encode(text, allowed_special=set(self.stop_sequences))
+        return self.encoding.encode(
+            text, allowed_special=set(
+                self.stop_sequences))
 
     def decode(self, tokens: list[int]) -> str:
         return self.encoding.decode(tokens)
@@ -64,8 +66,8 @@ class TikToken(BaseTokenizer):
         return super().tokens_left(text)
 
     def token_count(
-        self, 
-        text: str | list, 
+        self,
+        text: str | list,
         model: Optional[str] = None
     ) -> int:
         """
@@ -93,20 +95,23 @@ class TikToken(BaseTokenizer):
                 tokens_per_message = 3
                 tokens_per_name = 1
             elif model == "gpt-3.5-turbo-0301":
-                # every message follows <|start|>{role/name}\n{content}<|end|>\n
+                # every message follows
+                # <|start|>{role/name}\n{content}<|end|>\n
                 tokens_per_message = 4
                 # if there's a name, the role is omitted
                 tokens_per_name = -1
             elif "gpt-3.5-turbo" in model or "gpt-35-turbo" in model:
-                logging.info("gpt-3.5-turbo may update over time. Returning num tokens assuming gpt-3.5-turbo-0613.")
+                logging.info(
+                    "gpt-3.5-turbo may update over time. Returning num tokens assuming gpt-3.5-turbo-0613.")
                 return self.token_count(text, model="gpt-3.5-turbo-0613")
             elif "gpt-4" in model:
-                logging.info("gpt-4 may update over time. Returning num tokens assuming gpt-4-0613.")
+                logging.info(
+                    "gpt-4 may update over time. Returning num tokens assuming gpt-4-0613.")
                 return self.token_count(text, model="gpt-4-0613")
             else:
                 raise NotImplementedError(
-                    f"""token_count() is not implemented for model {model}. 
-                    See https://github.com/openai/openai-python/blob/main/chatml.md for 
+                    f"""token_count() is not implemented for model {model}.
+                    See https://github.com/openai/openai-python/blob/main/chatml.md for
                     information on how messages are converted to tokens."""
                 )
 
