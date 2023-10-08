@@ -2,12 +2,15 @@ import torch
 import torch.nn.functional as F
 from einops import pack, rearrange, unpack
 from torch import nn
+
 from zeta.utils.main import (  # noqa: E402
     eval_decorator,
     exists,
     once,  # noqa: F401
+    top_a,
+    top_k,
+    top_p,
 )
-from zeta.utils.main import top_a, top_k, top_p
 
 
 class AutoregressiveWrapper(nn.Module):
@@ -102,7 +105,7 @@ class AutoregressiveWrapper(nn.Module):
                 return out
         else:
             for _ in range(seq_len):
-                x = out[:, -self.max_seq_len:]
+                x = out[:, -self.max_seq_len :]
 
                 logits = self.net(x, **kwargs)[:, -1]
 
