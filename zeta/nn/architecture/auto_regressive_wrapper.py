@@ -13,6 +13,32 @@ from zeta.utils.main import (  # noqa: E402
 )
 
 
+def temperature_sampling(self, logits, temperature):
+    return torch.multinomial(F.softmax(logits / temperature, dim=-1), 1)
+
+
+def top_p_sampling(self, logits, p):
+    sorted_logits, sorted_indices = torch.sort(logits, descending=True)
+    cumulative_probs = torch.cumsum(F.softmax(sorted_logits, dim=-1), dim=-1)
+
+    sorted_indices_to_remove = cumulative_probs > p
+    sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
+    sorted_indices_to_remove[..., 0] = 0
+
+    indices_to_remove = sorted_indices[sorted_indices_to_remove]
+    logits[indices_to_remove] = float("-inf")
+    return torch.multinomial(F.softmax(logits, dim=-1), 1)
+
+
+def classifier_free_guidance(self, logits_cond, logits_uncond, alpha):
+    return logits_uncond + alpha * (logits_cond - logits_uncond)
+
+
+def contrastive_guidance(self, logits, k):
+    top_k_logits, _ = torch.topk(logits, k)
+    return torch.multinomial(F.softmax(top_k_logits, dim=-1), 1)
+
+
 class AutoregressiveWrapper(nn.Module):
     def __init__(
         self, net, ignore_index=-100, pad_value=0, mask_prob=0.0, speculative=False
@@ -37,6 +63,7 @@ class AutoregressiveWrapper(nn.Module):
         start_tokens,
         seq_len,
         eos_token=None,
+        strategy = "temperature",
         temperature=1.0,
         filter_logits_fn=top_k,
         filter_thres=0.9,
