@@ -36,7 +36,6 @@ vector-quantize-pytorch = "1.1.5"
 tokenmonster = "*"
 scipy = "*"
 beartype = "*"
-xformers = "*"
 tiktoken = "*"
 xformers = "*"
 

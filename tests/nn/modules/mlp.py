@@ -1,6 +1,7 @@
 import pytest
 import torch
 from zeta.nn.modules.mlp import MLP
+from torch import nn
 
 def test_mlp_initialization():
     model = MLP(dim_in=256, dim_out=10)
@@ -10,11 +11,13 @@ def test_mlp_initialization():
     assert isinstance(model.net[1], nn.Sequential)
     assert isinstance(model.net[2], nn.Linear)
 
+
 def test_mlp_forward():
     model = MLP(dim_in=256, dim_out=10)
     x = torch.randn(32, 256)
     output = model(x)
     assert output.shape == (32, 10)
+
 
 @pytest.mark.parametrize("dim_in", [0])
 def test_mlp_forward_edge_cases(dim_in):
@@ -22,6 +25,7 @@ def test_mlp_forward_edge_cases(dim_in):
     x = torch.randn(32, dim_in)
     with pytest.raises(Exception):
         model(x)
+
 
 def test_mlp_forward_invalid_dimensions():
     model = MLP(dim_in=256, dim_out=10)

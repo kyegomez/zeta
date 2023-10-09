@@ -15,7 +15,6 @@ from PIL import Image
 from torchvision import transforms as T
 
 
-
 def exists(val):
     """
     Check if the value is not None.
