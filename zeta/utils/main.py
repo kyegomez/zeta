@@ -1,5 +1,3 @@
-from zeta.nn.embeddings.multiway_network import MultiwayNetwork
-from zeta.nn.attention.multihead_attention import MultiheadAttention
 import math
 from functools import partial, wraps
 from math import ceil
@@ -15,6 +13,7 @@ from PIL import Image
 
 ####
 from torchvision import transforms as T
+
 
 
 def exists(val):
@@ -707,30 +706,30 @@ def interpolate_pos_encoding_2d(target_spatial_size, pos_embed):
 #############
 
 
-def init_bert_params(module):
-    def normal_(data):
-        data.copy_(data.cpu().normal_(mean=0.0, std=0.02).to(data.device))
+# def init_bert_params(module):
+#     def normal_(data):
+#         data.copy_(data.cpu().normal_(mean=0.0, std=0.02).to(data.device))
 
-    if isinstance(module, nn.Linear):
-        normal_(module.weight.data)
-        if module.bias is not None:
-            module.bias.data.zero_()
-    if isinstance(module, nn.Embedding):
-        normal_(module.weight.data)
-        if module.padding_idx is not None:
-            module.weight.data[module.padding_idx].zero_()
-    if isinstance(module, MultiheadAttention):
-        if isinstance(module.q_proj, MultiwayNetwork):
-            normal_(module.q_proj.A.weight.data)
-            normal_(module.q_proj.B.weight.data)
-            normal_(module.k_proj.A.weight.data)
-            normal_(module.k_proj.B.weight.data)
-            normal_(module.v_proj.A.weight.data)
-            normal_(module.v_proj.B.weight.data)
-        else:
-            normal_(module.q_proj.weight.data)
-            normal_(module.k_proj.weight.data)
-            normal_(module.v_proj.weight.data)
+#     if isinstance(module, nn.Linear):
+#         normal_(module.weight.data)
+#         if module.bias is not None:
+#             module.bias.data.zero_()
+#     if isinstance(module, nn.Embedding):
+#         normal_(module.weight.data)
+#         if module.padding_idx is not None:
+#             module.weight.data[module.padding_idx].zero_()
+#     if isinstance(module, MultiheadAttention):
+#         if isinstance(module.q_proj, MultiwayNetwork):
+#             normal_(module.q_proj.A.weight.data)
+#             normal_(module.q_proj.B.weight.data)
+#             normal_(module.k_proj.A.weight.data)
+#             normal_(module.k_proj.B.weight.data)
+#             normal_(module.v_proj.A.weight.data)
+#             normal_(module.v_proj.B.weight.data)
+#         else:
+#             normal_(module.q_proj.weight.data)
+#             normal_(module.k_proj.weight.data)
+#             normal_(module.v_proj.weight.data)
 
 
 ######

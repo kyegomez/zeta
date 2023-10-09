@@ -38,6 +38,7 @@ scipy = "*"
 beartype = "*"
 xformers = "*"
 tiktoken = "*"
+xformers = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

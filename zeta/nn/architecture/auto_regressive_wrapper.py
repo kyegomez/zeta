@@ -63,7 +63,7 @@ class AutoregressiveWrapper(nn.Module):
         start_tokens,
         seq_len,
         eos_token=None,
-        strategy = "temperature",
+        strategy="temperature",
         temperature=1.0,
         filter_logits_fn=top_k,
         filter_thres=0.9,
