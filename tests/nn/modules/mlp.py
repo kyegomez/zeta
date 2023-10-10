@@ -3,6 +3,7 @@ import torch
 from zeta.nn.modules.mlp import MLP
 from torch import nn
 
+
 def test_mlp_initialization():
     model = MLP(dim_in=256, dim_out=10)
     assert isinstance(model, MLP)

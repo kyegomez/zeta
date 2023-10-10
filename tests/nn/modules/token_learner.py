@@ -3,6 +3,7 @@ import torch
 from zeta.nn.modules.token_learner import TokenLearner
 from torch import nn
 
+
 def test_tokenlearner_initialization():
     model = TokenLearner(dim=256, num_output_tokens=8)
     assert isinstance(model, TokenLearner)
