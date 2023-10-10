@@ -2,6 +2,7 @@ import torch
 
 
 def laplace_solver(mesh_size, start, end, max_iter=5000):
+    """init laplace solver"""
     # Initialize the mesh with zeros
     mesh = torch.zeros(mesh_size, mesh_size)
 
@@ -26,6 +27,7 @@ def laplace_solver(mesh_size, start, end, max_iter=5000):
 
 
 def follow_gradient(mesh, start):
+    """Follow Gradient"""
     path = [start]
     current = start
     while mesh[current] < 1:
