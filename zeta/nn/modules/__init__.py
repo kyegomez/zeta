@@ -18,4 +18,4 @@ from zeta.nn.modules.resnet import ResNet
 from zeta.nn.modules.rnn_nlp import RNNL
 from zeta.nn.modules.cnn_text import CNNNew
 from zeta.nn.modules.fast_text import FastTextNew
-
+from zeta.nn.modules.simple_attention import simple_attention
