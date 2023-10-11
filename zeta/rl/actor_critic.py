@@ -2,18 +2,12 @@ import torch
 from torch import nn
 import torch.nn as optim
 
+
 class ActorCritic(nn.Module):
-    def __init__(
-        self,
-        num_inputs,
-        num_outputs,
-        hidden_size
-    ):
+    def __init__(self, num_inputs, num_outputs, hidden_size):
         super(ActorCritic, self).__init__()
         self.critic = nn.Sequential(
-            nn.Linear(num_inputs, hidden_size),
-            nn.ReLU(),
-            nn.Linear(hidden_size, 1)
+            nn.Linear(num_inputs, hidden_size), nn.ReLU(), nn.Linear(hidden_size, 1)
         )
         self.actor = nn.Sequential(
             nn.Linear(num_inputs, hidden_size),
@@ -21,13 +15,14 @@ class ActorCritic(nn.Module):
             nn.Linear(hidden_size, num_outputs),
             nn.Softmax(dim=1),
         )
-    
+
     def forward(self, x):
         value = self.critic(x)
         probs = self.actor(x)
         dist = torch.distributions.Categorial(probs)
         return dist, value
-    
+
+
 def ppo(
     policy_net,
     value_net,
@@ -37,7 +32,7 @@ def ppo(
     actions,
     returns,
     advantages,
-    clip_param=0.2
+    clip_param=0.2,
 ):
     dist, _ = policy_net(states)
     old_probs = dist.log_prob(actions).detach()
@@ -59,8 +54,6 @@ def ppo(
         optimizer_policy.zero_grad()
         loss_policy.backward()
         optimizer_policy.step()
-
-
 
 
 # import torch
