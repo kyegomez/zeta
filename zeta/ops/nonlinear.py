@@ -1,4 +1,5 @@
 import torch
+from einops import rearrange
 
 
 def newtons_method(f, df, x0, tol=1e-5, max_iter=100):

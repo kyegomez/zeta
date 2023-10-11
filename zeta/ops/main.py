@@ -1,7 +1,7 @@
 import enum
 import logging
 from typing import Tuple, Union, List
-
+from einops import rearrange
 import torch
 from torch import Tensor
 
@@ -435,3 +435,63 @@ def multi_dim_cat(split_tensors: List[Tensor], num_splits: List[int]) -> Tensor:
             ]
     assert len(merged_tensor) == 1
     return merged_tensor[0]
+
+
+def img_transpose(x):
+    return rearrange(x, "b c h w -> b h w c")
+
+
+def img_transpose_2daxis(x):
+    return rearrange(x, "h w c -> w h c")
+
+
+def img_composition_axis(x):
+    return rearrange(x, "b h w c -> (b h) w c")
+
+
+def img_compose_bw(x):
+    return rearrange(x, "b h w c -> h (b w) c")
+
+
+# decomposition of axis => inverse process, which represents an xis as a combination of new axis
+# b1=2 is to decompose to 6 to b1=2 and b2=3
+def img_decompose(x):
+    return rearrange(x, "(b1 b2) h w c -> b1 b2 h w c", b1=2).shape
+
+
+def img_compose_decompose(x):
+    return rearrange(x, "(b1 b2) h w c -> (b1 h) (b2 w) c", b1=2)
+
+
+# b1 is merged with width and b2 with height
+def img_comp_decomp_merge(x):
+    return rearrange(x, "(b1 b2) h w c -> (b2 h) (b1 w) c", b1=2)
+
+
+# move part of width dimension to height
+# width to height as image width shrunk by 2 and height doubled
+def img_width_to_height(x):
+    return rearrange(x, "b h (w w2) c -> (h w2) (b w) c", w2=2)
+
+
+# order of axes
+def img_order_of_axes(x):
+    return rearrange(x, "b h w c -> h (b w) c")
+
+
+# for each batch and for each pair of channels we sum over h and w
+def gram_matrix_new(y):
+    b, ch, h, w = y.shape
+    return torch.einsum(
+        "bchw,bdhw->bcd",
+        [y, y],
+    ) / (h * w)
+
+
+# channel shuffle from shufflenet
+def channel_shuffle_new(x, groups):
+    return rearrange(
+        x,
+        "b (c1 c2) h w -> b (c2 c1) h w",
+        c1=groups,
+    )
