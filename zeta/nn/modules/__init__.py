@@ -14,3 +14,5 @@ from zeta.nn.modules.mbconv import MBConv
 from zeta.nn.modules.super_resolution import SuperResolutionNet
 from zeta.nn.modules.convnet import ConvNet
 from zeta.nn.modules.shufflenet import ShuffleNet
+from zeta.nn.modules.resnet import ResNet
+from zeta.nn.modules.rnn_nlp import RNNL
