@@ -38,8 +38,9 @@ class ResNet(nn.Module):
         net(x)
 
 
-    
+
     """
+
     def __init__(self, block, layers, num_classes=1000):
         super(ResNet, self).__init__()
 

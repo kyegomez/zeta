@@ -19,3 +19,5 @@ from zeta.nn.modules.rnn_nlp import RNNL
 from zeta.nn.modules.cnn_text import CNNNew
 from zeta.nn.modules.fast_text import FastTextNew
 from zeta.nn.modules.simple_attention import simple_attention
+from zeta.nn.modules.spacial_transformer import SpacialTransformer
+from zeta.nn.modules.yolo import yolo

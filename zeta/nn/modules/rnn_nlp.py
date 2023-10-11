@@ -1,6 +1,7 @@
-import torch 
+import torch
 from torch import nn
 from einops import rearrange
+
 
 class RNNL(nn.Module):
     """
@@ -27,6 +28,7 @@ class RNNL(nn.Module):
         net(x)
 
     """
+
     def __init__(
         self,
         vocab_size,
@@ -38,19 +40,19 @@ class RNNL(nn.Module):
         dropout,
     ):
         super().__init__()
-        
+
         self.embedding = nn.Embedding(vocab_size, embedding_dim)
         self.rnn = nn.LSTM(
             embedding_dim,
             hidden_dim,
             num_layers=n_layers,
             bidirectional=bidirectional,
-            dropout=dropout
+            dropout=dropout,
         )
         self.dropout = nn.Dropout(dropout)
         self.directions = 2 if bidirectional else 1
         self.fc = nn.Linear(hidden_dim * self.directions, output_dim)
-        
+
     def forward(self, x):
         """
         Forward pass of the network.
@@ -64,7 +66,6 @@ class RNNL(nn.Module):
             "(layer dir) b c -> layer b (dir c)",
             dir=self.directions,
         )
-    
-        #take the final layers hidden
+
+        # take the final layers hidden
         return self.fn(self.dropout(hidden[-1]))
-    

@@ -1,11 +1,8 @@
 from torch import nn
 from einops.layers.torch import Rearrange, Reduce
 
-def FastTextNew(
-    vocab_size,
-    embedding_dim,
-    output_dim
-):
+
+def FastTextNew(vocab_size, embedding_dim, output_dim):
     """
     FastText for language
 
@@ -21,12 +18,12 @@ def FastTextNew(
             output_dim=10,
         )
         net(x)
-    
+
     """
     return nn.Sequential(
-        Rearrange('t b -> t b '),
+        Rearrange("t b -> t b "),
         nn.Embedding(vocab_size, embedding_dim),
-        Reduce('t b c -> b c', 'mean'),
+        Reduce("t b c -> b c", "mean"),
         nn.Linear(embedding_dim, output_dim),
-        Rearrange('b c -> b c'),
+        Rearrange("b c -> b c"),
     )
