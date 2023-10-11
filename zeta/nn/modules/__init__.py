@@ -16,3 +16,6 @@ from zeta.nn.modules.convnet import ConvNet
 from zeta.nn.modules.shufflenet import ShuffleNet
 from zeta.nn.modules.resnet import ResNet
 from zeta.nn.modules.rnn_nlp import RNNL
+from zeta.nn.modules.cnn_text import CNNNew
+from zeta.nn.modules.fast_text import FastTextNew
+
