@@ -17,3 +17,4 @@ from zeta.nn.attention.mixture_attention import (
 )
 from zeta.nn.attention.attend import Attend
 from zeta.nn.attention.mgqa import MGQA
+from zeta.nn.attention.multi_modal_cross_attn import MultiModalCrossAttention
