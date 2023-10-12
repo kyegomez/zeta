@@ -22,3 +22,4 @@ from zeta.nn.modules.simple_attention import simple_attention
 from zeta.nn.modules.spacial_transformer import SpacialTransformer
 from zeta.nn.modules.yolo import yolo
 from zeta.nn.modules.pulsar import Pulsar
+from zeta.nn.modules.exo import Exo
