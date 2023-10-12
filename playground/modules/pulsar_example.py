@@ -5,7 +5,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
-from zeta.nn.modules.pulsar import Pulsar
+from zeta.nn.modules.pulsar import PulsarNew as Pulsar
 
 
 # --- Neural Network Definition ---
@@ -34,6 +34,7 @@ train_dataset = datasets.MNIST(
 train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=64, shuffle=True)
 
 
+
 # --- Training Function ---
 def train(model, train_loader, epochs=5):
     optimizer = optim.Adam(model.parameters(), lr=0.001)
@@ -60,3 +61,54 @@ for name, act in activations.items():
     end_time = time.time()
 
     print(f"{name} - Training Time: {end_time - start_time:.2f} seconds")
+
+
+# Extend the dataset loading to include a validation set
+val_dataset = datasets.MNIST(root='./data', train=False, transform=transform)
+val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=1000, shuffle=False)
+
+# Validation function
+def validate(model, val_loader):
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for images, labels in val_loader:
+            outputs = model(images)
+            _, predicted = outputs.max(1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+    return 100 * correct / total
+
+# Benchmarking
+results = {}
+
+for name, act in activations.items():
+    train_times = []
+    val_accuracies = []
+    
+    # Multiple runs for reliability
+    for run in range(3):
+        model = NeuralNetwork(act)
+        start_time = time.time()
+        train(model, train_loader, epochs=5)
+        end_time = time.time()
+        
+        train_times.append(end_time - start_time)
+        val_accuracies.append(validate(model, val_loader))
+
+    avg_train_time = sum(train_times) / len(train_times)
+    avg_val_accuracy = sum(val_accuracies) / len(val_accuracies)
+    model_size = sum(p.numel() for p in model.parameters())
+    
+    results[name] = {
+        "Avg Training Time": avg_train_time,
+        "Avg Validation Accuracy": avg_val_accuracy,
+        "Model Size (Params)": model_size
+    }
+
+# Print Results
+for name, metrics in results.items():
+    print(f"---- {name} ----")
+    for metric, value in metrics.items():
+        print(f"{metric}: {value:.2f}")
+    print("\n")
