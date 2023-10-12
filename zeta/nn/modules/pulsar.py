@@ -1,11 +1,5 @@
-import time
-
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
-import torchvision.datasets as datasets
-import torchvision.transforms as transforms
 
 
 class LogGammaActivation(torch.autograd.Function):
@@ -29,23 +23,23 @@ class LogGammaActivation(torch.autograd.Function):
     def forward(ctx, input):
         """
         Forward pass of the PulSar Activation function
-        
+
         """
-        #compute forward pass
+        # compute forward pass
         gamma_value = torch.lgamma(input + 1)
         ctx.save_for_backward(input, gamma_value)
         return gamma_value
-    
+
     @staticmethod
     def backward(ctx, grad_output):
         """
         Backward pass of the PulSar Activation function
         """
-        #compute gradient for backward pass
+        # compute gradient for backward pass
         input, gamma_value = ctx.saved_tensors
         polygamma_val = torch.polygamma(0, input + 2)
         return polygamma_val * grad_output
-    
+
 
 class Pulsar(nn.Module):
     """
@@ -64,12 +58,11 @@ class Pulsar(nn.Module):
     y = y.backward(torch.ones_like(x))
 
 
-    
+
     """
+
     def forward(self, x):
         """
         Forward pass of the PulSar Activation function
         """
         return LogGammaActivation.apply(x)
-    
-
