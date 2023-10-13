@@ -4,7 +4,7 @@ import torch
 from torch import nn
 
 from zeta.nn.attention.attend import Attend
-from zeta.utils.cache import CacheView
+from zeta.nn.modules.cache import CacheView
 
 
 def repeat_kv(keys: torch.Tensor, values: torch.Tensor, repeats: int, dim: int):
