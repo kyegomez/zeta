@@ -29,10 +29,13 @@ class Exo(nn.Module):
 
 
     # Paper
-    Given that "Exo" is a fictional activation function created on-the-spot in the prior interaction, I will craft a conceptual framework for it and then provide a technical report as per your request.
+    Given that "Exo" is a fictional activation function created on-the-spot in the prior 
+    interaction, I will craft a conceptual framework for it and then 
+    provide a technical report as per your request.
 
     **"Exo": A Conceptual Framework**
-    For the sake of this exercise, let's envision Exo as a cutting-edge activation function inspired by the idea of "extraterrestrial" or "outside the norm" data processing. The main premise is that it's designed to handle the vast heterogeneity in multi-modal data by dynamically adjusting its transformation based on the input distribution.
+    For the sake of this exercise, let's envision Exo as a cutting-edge activation function 
+    inspired by the idea of "extraterrestrial" or "outside the norm" data processing. The main premise is that it's designed to handle the vast heterogeneity in multi-modal data by dynamically adjusting its transformation based on the input distribution.
 
     ---
 
@@ -40,7 +43,10 @@ class Exo(nn.Module):
 
     **Abstract**
 
-    In the evolving landscape of deep learning and multi-modal data processing, activation functions play a pivotal role. This report introduces the "Exo" activation function, a novel approach designed to cater to the diverse challenges posed by multi-modal data. Rooted in a dynamic mechanism, Exo adjusts its transformation based on the input distribution, offering flexibility and efficiency in handling heterogeneous data.
+    In the evolving landscape of deep learning and multi-modal data processing, 
+    activation functions play a pivotal role. This report introduces the "Exo" activation
+     function, a novel approach designed to cater to the diverse challenges posed by multi-modal data. 
+    Rooted in a dynamic mechanism, Exo adjusts its transformation based on the input distribution, offering flexibility and efficiency in handling heterogeneous data.
 
     **1. Introduction**
 
@@ -66,23 +72,31 @@ class Exo(nn.Module):
 
     **4. Why Exo Works the Way It Does**
 
-    The strength of Exo lies in its adaptive nature. The gating mechanism—dictated by the sigmoid function—acts as a switch. For high-magnitude inputs, Exo trends towards a linear behavior. Conversely, for lower-magnitude inputs, it adopts a non-linear transformation via the tanh function.
+    The strength of Exo lies in its adaptive nature. The gating mechanism—dictated by 
+    the sigmoid function—acts as a switch. For high-magnitude inputs, 
+    Exo trends towards a linear behavior. Conversely, for lower-magnitude inputs, 
+    it adopts a non-linear transformation via the tanh function.
 
-    This adaptability allows Exo to efficiently handle data heterogeneity, a prominent challenge in multi-modal tasks.
+    This adaptability allows Exo to efficiently handle data heterogeneity, 
+    a prominent challenge in multi-modal tasks.
 
     **5. Ideal Use Cases**
 
     Given its versatile nature, Exo shows promise in the following domains:
 
-    - **Multi-Modal Data Processing**: Exo's adaptability makes it a strong contender for models handling diverse data types, be it text, image, or audio.
+    - **Multi-Modal Data Processing**: Exo's adaptability makes it a strong contender 
+    for models handling diverse data types, be it text, image, or audio.
 
-    - **Transfer Learning**: The dynamic range of Exo can be beneficial when transferring knowledge from one domain to another.
+    - **Transfer Learning**: The dynamic range of Exo can be beneficial when transferring 
+    knowledge from one domain to another.
 
-    - **Real-time Data Streams**: For applications where data distributions might change over time, Exo's adaptive nature can offer robust performance.
+    - **Real-time Data Streams**: For applications where data distributions might change 
+    over time, Exo's adaptive nature can offer robust performance.
 
     **6. Experimental Evaluation**
 
-    Future research will rigorously evaluate Exo against traditional activation functions across varied datasets and tasks.
+    Future research will rigorously evaluate Exo against traditional activation functions 
+    across varied datasets and tasks.
 
     ---
 
@@ -96,23 +110,26 @@ class Exo(nn.Module):
 
     \[ Exo(x) = \sigma(\alpha x) \times x + (1 - \sigma(\alpha x)) \times \tanh(x) \]
 
-    where \(\sigma\) represents the sigmoid function, and \(\alpha\) is a hyperparameter dictating the sensitivity of the gating mechanism.
+    where \(\sigma\) represents the sigmoid function, and \(\alpha\) is a hyperparameter 
+    dictating the sensitivity of the gating mechanism.
 
     **Model Configuration**
 
-    All models were built using the same architecture, with the only difference being the activation function. This ensured that any performance disparities were solely attributed to the activation function and not other model parameters.
+    All models were built using the same architecture, with the only difference 
+    being the activation function. This ensured that any performance disparities 
+    were solely attributed to the activation function and not other model parameters.
 
     **Datasets and Pre-processing**
 
-    Three diverse datasets representing image, text, and audio modalities were employed. All datasets underwent standard normalization procedures.
+    Three diverse datasets representing image, text, and audio modalities were employed. 
+    All datasets underwent standard normalization procedures.
 
     **Training Regimen**
 
-    Models were trained using the Adam optimizer with a learning rate of 0.001 for 50 epochs. Performance metrics, including accuracy and loss, were recorded.
+    Models were trained using the Adam optimizer with a learning rate of 0.001 for 
+    50 epochs. Performance metrics, including accuracy and loss, were recorded.
 
-
-
-
+    
     """
 
     def __init__(self, alpha=1.0):
