@@ -43,119 +43,119 @@ class LogGammaActivation(torch.autograd.Function):
 
 class Pulsar(nn.Module):
     """
-    Pulsar Activation function that utilizes factorial calculus
+        Pulsar Activation function that utilizes factorial calculus
 
-    Pulsar Activation function is defined as:
-        f(x) = log(gamma(x + 1))
-    where gamma is the gamma function
-
-
-    Usage:
-    x = torch.tensor([1.0, 2.0, 3.0, 4.0, 5.0], requires_grad=True)
-    pulsar = Pulsar()
-    y = pulsar(x)
-    print(y)
-    y = y.backward(torch.ones_like(x))
+        Pulsar Activation function is defined as:
+            f(x) = log(gamma(x + 1))
+        where gamma is the gamma function
 
 
-    I apologize for the oversight. Let's dive into a technical report on a hypothetical "Pulsar" activation function. Given that "Pulsar" as an activation function doesn't exist (as of my last training cut-off in January 2022), this will be a fictional report, but I'll approach it in the style of a technical paper.
+        Usage:
+        x = torch.tensor([1.0, 2.0, 3.0, 4.0, 5.0], requires_grad=True)
+        pulsar = Pulsar()
+        y = pulsar(x)
+        print(y)
+        y = y.backward(torch.ones_like(x))
 
----
 
-    **Technical Report on the Pulsar Activation Function**
+        I apologize for the oversight. Let's dive into a technical report on a hypothetical "Pulsar" activation function. Given that "Pulsar" as an activation function doesn't exist (as of my last training cut-off in January 2022), this will be a fictional report, but I'll approach it in the style of a technical paper.
 
     ---
 
-    ### **Abstract:**
+        **Technical Report on the Pulsar Activation Function**
 
-    In the realm of deep learning, activation functions play a pivotal role in introducing non-linearity to the model, enabling it to learn intricate patterns from data. This report introduces a new activation function named "Pulsar". The underlying mechanics, principles, and potential applications of Pulsar are discussed, offering insights into its efficiency in various machine learning tasks.
+        ---
 
-    ---
+        ### **Abstract:**
 
-    ### **1. Introduction:**
+        In the realm of deep learning, activation functions play a pivotal role in introducing non-linearity to the model, enabling it to learn intricate patterns from data. This report introduces a new activation function named "Pulsar". The underlying mechanics, principles, and potential applications of Pulsar are discussed, offering insights into its efficiency in various machine learning tasks.
 
-    Activation functions form the backbone of neural networks, determining the output of a neuron given an input or set of inputs. Pulsar, inspired by its celestial namesake, is designed to oscillate and adapt, providing dynamic activation thresholds.
+        ---
 
-    ---
+        ### **1. Introduction:**
 
-    ### **2. Background:**
+        Activation functions form the backbone of neural networks, determining the output of a neuron given an input or set of inputs. Pulsar, inspired by its celestial namesake, is designed to oscillate and adapt, providing dynamic activation thresholds.
 
-    Popular activation functions such as ReLU, Sigmoid, and Tanh have set the standard in deep learning models. While they have their advantages, there are challenges like the vanishing and exploding gradient problems. Pulsar aims to address some of these challenges by offering a dynamic threshold and adaptive behavior.
+        ---
 
-    ---
+        ### **2. Background:**
 
-    ### **3. How Pulsar Works:**
+        Popular activation functions such as ReLU, Sigmoid, and Tanh have set the standard in deep learning models. While they have their advantages, there are challenges like the vanishing and exploding gradient problems. Pulsar aims to address some of these challenges by offering a dynamic threshold and adaptive behavior.
 
-    #### **3.1 Mechanism of Activation:**
+        ---
 
-    Pulsar's main innovation lies in its oscillatory behavior. Instead of providing a static threshold or curve like ReLU or Sigmoid, Pulsar's activation threshold changes based on the input's context, oscillating like a pulsar star.
+        ### **3. How Pulsar Works:**
 
-    #### **3.2 Mathematical Representation:**
+        #### **3.1 Mechanism of Activation:**
 
-    Given an input `x`, the Pulsar activation, `P(x)`, can be represented as:
+        Pulsar's main innovation lies in its oscillatory behavior. Instead of providing a static threshold or curve like ReLU or Sigmoid, Pulsar's activation threshold changes based on the input's context, oscillating like a pulsar star.
 
-    \[ P(x) = x \times \sin(\alpha x + \beta) \]
+        #### **3.2 Mathematical Representation:**
 
-    Where:
-    - \( \alpha \) and \( \beta \) are parameters that control the oscillation frequency and phase. They can be learned during training or set as hyperparameters.
+        Given an input `x`, the Pulsar activation, `P(x)`, can be represented as:
 
-    ---
+        \[ P(x) = x \times \sin(\alpha x + \beta) \]
 
-    ### **4. Why Pulsar Works the Way It Does:**
+        Where:
+        - \( \alpha \) and \( \beta \) are parameters that control the oscillation frequency and phase. They can be learned during training or set as hyperparameters.
 
-    #### **4.1 Dynamic Thresholding:**
+        ---
 
-    The oscillatory nature allows Pulsar to dynamically threshold activations, making it adaptable. In contexts where other activations might suffer from saturation or dead neurons, Pulsar's oscillation ensures continuous activation adjustment.
+        ### **4. Why Pulsar Works the Way It Does:**
 
-    #### **4.2 Mitigating Common Problems:**
+        #### **4.1 Dynamic Thresholding:**
 
-    The design aims to mitigate the vanishing and exploding gradient problems by ensuring that the gradient is neither too small nor too large across a broad range of input values.
+        The oscillatory nature allows Pulsar to dynamically threshold activations, making it adaptable. In contexts where other activations might suffer from saturation or dead neurons, Pulsar's oscillation ensures continuous activation adjustment.
 
-    ---
+        #### **4.2 Mitigating Common Problems:**
 
-    ### **5. Applications and Tasks for Pulsar:**
+        The design aims to mitigate the vanishing and exploding gradient problems by ensuring that the gradient is neither too small nor too large across a broad range of input values.
 
-    #### **5.1 Complex Pattern Recognition:**
+        ---
 
-    Due to its dynamic nature, Pulsar can be particularly useful for datasets with intricate and overlapping patterns.
+        ### **5. Applications and Tasks for Pulsar:**
 
-    #### **5.2 Time-Series and Signal Processing:**
+        #### **5.1 Complex Pattern Recognition:**
 
-    The oscillatory behavior might resonate well with time-series data, especially those with underlying periodic patterns.
+        Due to its dynamic nature, Pulsar can be particularly useful for datasets with intricate and overlapping patterns.
 
-    #### **5.3 Regular Feedforward and Convolutional Networks:**
+        #### **5.2 Time-Series and Signal Processing:**
 
-    Pulsar can serve as a drop-in replacement for traditional activations, potentially offering better performance in some contexts.
+        The oscillatory behavior might resonate well with time-series data, especially those with underlying periodic patterns.
 
-    ---
+        #### **5.3 Regular Feedforward and Convolutional Networks:**
 
-    ### **6. Methods:**
+        Pulsar can serve as a drop-in replacement for traditional activations, potentially offering better performance in some contexts.
 
-    #### **6.1 Model Configuration:**
+        ---
 
-    Neural networks with three hidden layers were employed. Each layer contained 128 neurons. We utilized Pulsar as the activation function for one set and compared it with ReLU, Sigmoid, and Tanh activations.
+        ### **6. Methods:**
 
-    #### **6.2 Dataset:**
+        #### **6.1 Model Configuration:**
 
-    Experiments were conducted on the MNIST dataset. The dataset was split into 60,000 training images and 10,000 testing images.
+        Neural networks with three hidden layers were employed. Each layer contained 128 neurons. We utilized Pulsar as the activation function for one set and compared it with ReLU, Sigmoid, and Tanh activations.
 
-    #### **6.3 Training:**
+        #### **6.2 Dataset:**
 
-    Models were trained using the Adam optimizer with a learning rate of 0.001. A batch size of 64 was used, and models were trained for 20 epochs.
+        Experiments were conducted on the MNIST dataset. The dataset was split into 60,000 training images and 10,000 testing images.
 
-    #### **6.4 Evaluation Metrics:**
+        #### **6.3 Training:**
 
-    Models were evaluated based on accuracy, loss convergence speed, and gradient flow behavior.
+        Models were trained using the Adam optimizer with a learning rate of 0.001. A batch size of 64 was used, and models were trained for 20 epochs.
 
-    ---
+        #### **6.4 Evaluation Metrics:**
 
-    ### **7. Conclusion:**
+        Models were evaluated based on accuracy, loss convergence speed, and gradient flow behavior.
 
-    The Pulsar activation function, with its unique oscillatory design, offers a fresh perspective on neuron activations. Initial experiments show promise, especially in tasks with complex patterns. Further research and optimization can potentially cement its place alongside traditional activation functions.
+        ---
 
-    ---
+        ### **7. Conclusion:**
 
-    (Note: This is a fictional report. The Pulsar activation function, its properties, and the described results are all hypothetical and for illustrative purposes only.)
+        The Pulsar activation function, with its unique oscillatory design, offers a fresh perspective on neuron activations. Initial experiments show promise, especially in tasks with complex patterns. Further research and optimization can potentially cement its place alongside traditional activation functions.
+
+        ---
+
+        (Note: This is a fictional report. The Pulsar activation function, its properties, and the described results are all hypothetical and for illustrative purposes only.)
 
 
 
@@ -168,27 +168,22 @@ class Pulsar(nn.Module):
         return LogGammaActivation.apply(x)
 
 
-
 class PulsarNew(nn.Module):
-    def __init__(
-        self,
-        alpha=0.01,
-        beta=0.5
-    ):
+    def __init__(self, alpha=0.01, beta=0.5):
         super(PulsarNew, self).__init__()
         self.alpha = alpha
         self.beta = beta
 
     def forward(self, x: torch.Tensor):
-        #compute leaky rely
+        # compute leaky rely
         leaky = self.alpha * x
 
-        #compute saturated tanh component
+        # compute saturated tanh component
         saturated = self.beta + (1 - self.beta) * torch.tanh(x - self.beta)
 
-        #compute based on conditions
+        # compute based on conditions
         return torch.where(x < 0, leaky, torch.where(x < self.beta, x, saturated))
-    
+
 
 x = torch.tensor([1.0, 2.0, 3.0, 4.0, 5.0], requires_grad=True)
 pulsar = PulsarNew()
