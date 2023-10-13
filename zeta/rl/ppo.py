@@ -1,3 +1,4 @@
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -55,9 +56,6 @@ def ppo_step(
         loss_policy.backward()
         optimizer_policy.step()
 
-
-import torch
-import numpy as np
 
 # Define the environment parameters
 num_inputs = 4

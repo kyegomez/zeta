@@ -177,7 +177,7 @@ def groupby_prefix_and_trim(prefix, d):
         partial(string_begins_with, prefix), d
     )
     kwargs_without_prefix = dict(
-        map(lambda x: (x[0][len(prefix) :], x[1]), tuple(kwargs_with_prefix.items()))
+        map(lambda x: (x[0][len(prefix):], x[1]), tuple(kwargs_with_prefix.items()))
     )
     return kwargs_without_prefix, kwargs
 

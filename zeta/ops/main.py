@@ -430,7 +430,7 @@ def multi_dim_cat(split_tensors: List[Tensor], num_splits: List[int]) -> Tensor:
     for dim, split in reversed(list(enumerate(num_splits))):
         if split > 0:
             merged_tensor = [
-                torch.cat(merged_tensor[i : i + split], dim=dim)
+                torch.cat(merged_tensor[i: i + split], dim=dim)
                 for i in range(0, len(merged_tensor), split)
             ]
     assert len(merged_tensor) == 1
