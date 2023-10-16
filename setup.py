@@ -20,7 +20,7 @@ setup(
     install_requires=[
         "torch>=1.8",
         "fairscale==0.4.0",
-        "timm==0.6.13",
+        "timm==0.9.7",
         "optimus-prime-transformers",
         "triton",
         "pytest",
