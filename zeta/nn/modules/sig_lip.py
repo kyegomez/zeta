@@ -15,6 +15,7 @@ try:
 except ImportError:
     hvd = None
 
+
 # helpers
 def neighbour_exchange(from_rank, to_rank, tensor, group=None):
     tensor_recv = torch.zeros_like(tensor)
@@ -142,9 +143,9 @@ class SigLipLoss(nn.Module):
     outputs = loss(image_features, text_features, logit_scale, logit_bias)
     print(outputs)
 
-    
+
     ##########################################
-    
+
     Sigmoid Loss for Language Image Pre-Training (SigLIP) - https://arxiv.org/abs/2303.15343
 
     @article{zhai2023sigmoid,
@@ -266,4 +267,3 @@ class SigLipLoss(nn.Module):
                     text_features_to_right = text_features_from_left
 
         return {"contrastive_loss": loss} if output_dict else loss
-    
