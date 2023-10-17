@@ -164,6 +164,8 @@ nav:
       - StableAdamWUnfused: "zeta/optims/adamw.md"
     - zeta.training:
       - fsdp: "zeta/training/fsdp.md"
+    - zeta.quant:
+      - QUIK: "zeta/quant/quik.md"
 - Examples:
     - Overview: "examples/index.md"
     - FlashAttention: "examples/nn/attentions/flash.md"
