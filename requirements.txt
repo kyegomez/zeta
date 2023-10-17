@@ -22,7 +22,6 @@ lion-pytorch
 sentencepiece
 beartype
 xformers
-horovod
 vector-quantize-pytorch>=1.1.5
 scipy
 tiktoken

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zetascale"
-version = "0.7.1"
+version = "0.7.2"
 description = "Transformers at zeta scales"
 authors = ["Zeta Team <kye@apac.ai>"]
 license = "MIT"
@@ -37,7 +37,6 @@ tokenmonster = "*"
 scipy = "*"
 beartype = "*"
 tiktoken = "*"
-horovod = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
