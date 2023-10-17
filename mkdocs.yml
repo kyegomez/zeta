@@ -154,6 +154,7 @@ nav:
         - MultiModalTokenizer: "zeta/tokenizers/multi_modal_tokenizer.md"
         - LanguageTokenizerGPTX: "zeta/tokenizers/language_tokenizer.md"
         - SentencePieceTokenizer: "zeta/tokenizers/sentencepiece.md"
+        - TokenMonster: "zeta/tokenizers/token_monster.md"
     - zeta.utils:
       - main: "zeta/utils/main.md"
     - zeta.ops:
