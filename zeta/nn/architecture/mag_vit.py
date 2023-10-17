@@ -9,7 +9,7 @@ from torch.nn import Module, ModuleList
 
 from collections import namedtuple
 
-from vector_quantize_pytorch import LFQ
+from vector_quantize_pytorch.lookup_free_quantization import LFQ
 
 from einops import rearrange, repeat, reduce, pack, unpack
 from einops.layers.torch import Rearrange
