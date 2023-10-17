@@ -124,6 +124,7 @@ nav:
         - Exo: "zeta/nn/modules/exo.md"
         - AdaptiveConv3DMod: "zeta/nn/modules/adaptive_conv.md"
         - TimeUpSample2x: "zeta/nn/modules/time_up_sample.md"
+        - SigLipLoss: "zeta/nn/modules/siglip.md"
       - zeta.nn.attention:
         - FlashAttention: "zeta/nn/attention/flash_attention.md"
         - MultiQueryAttention: "zeta/nn/attention/multiquery.md"

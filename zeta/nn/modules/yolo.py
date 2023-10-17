@@ -3,6 +3,44 @@ from einops import rearrange
 
 
 def yolo(input, num_classes, num_anchors, anchors, stride_h, stride_w):
+    """
+    Yolo for object detection
+
+    Args:
+        input: input tensor
+        num_classes: number of classes
+        num_anchors: number of anchors
+        anchors: anchor boxes
+        stride_h: stride in height
+        stride_w: stride in width
+    
+    Returns:
+        predicted_bboxes: predicted bounding boxes
+
+    Usage:
+    >>> import torch
+    >>> from zeta.nn.modules.yolo import yolo
+    >>> input = torch.randn(1, 255, 13, 13)
+    >>> num_classes = 80
+    >>> num_anchors = 3
+    >>> anchors = [
+    ...     [10, 13],
+    ...     [16, 30],
+    ...     [33, 23],
+    ...     [30, 61],
+    ...     [62, 45],
+    ...     [59, 119],
+    ...     [116, 90],
+    ...     [156, 198],
+    ...     [373, 326],
+    ... ]
+    >>> stride_h = 32
+    >>> stride_w = 32
+    >>> predicted_bboxes = yolo(input, num_classes, num_anchors, anchors, stride_h, stride_w)
+    >>> print(predicted_bboxes.shape)
+    torch.Size([1, 507, 85])
+    
+    """
     raw_predictions = rearrange(
         input,
         "b (anchor prediction) h w -> prediction b anchor h w",
