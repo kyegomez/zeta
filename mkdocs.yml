@@ -77,21 +77,21 @@ markdown_extensions:
 
 nav:
 - Home:
-    - Overview: "index.md"
-    - Contributing: "contributing.md"
-    - FAQ: "faq.md"
-    - Purpose: "purpose.md"
-    - Roadmap: "roadmap.md"
-    - Design: "design.md"
-    - Flywheel: "flywheel.md"
-    - Bounties: "bounties.md"
-    - Metric: "metric.md"
-    - Distribution: "distribution"
-    - Research: "research.md"
-    - Demos: "demos.md"
-    - Architecture: "architecture.md"
-    - Checklist: "checklist.md"
-    - Hiring: "hiring.md"
+  - Overview: "index.md"
+  - Contributing: "contributing.md"
+  - FAQ: "faq.md"
+  - Purpose: "purpose.md"
+  - Roadmap: "roadmap.md"
+  - Design: "design.md"
+  - Flywheel: "flywheel.md"
+  - Bounties: "bounties.md"
+  - Metric: "metric.md"
+  - Distribution: "distribution"
+  - Research: "research.md"
+  - Demos: "demos.md"
+  - Architecture: "architecture.md"
+  - Checklist: "checklist.md"
+  - Hiring: "hiring.md"
 - Zeta:
     - Overview: "zeta/index.md"
     - zeta.nn:
@@ -168,6 +168,6 @@ nav:
     - zeta.quant:
       - QUIK: "zeta/quant/quik.md"
 - Examples:
-    - Overview: "examples/index.md"
-    - FlashAttention: "examples/nn/attentions/flash.md"
+  - Overview: "examples/index.md"
+  - FlashAttention: "examples/nn/attentions/flash.md"
     
