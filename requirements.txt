@@ -25,8 +25,8 @@ xformers
 vector-quantize-pytorch
 scipy
 tiktoken
-
 autopep8
+transformers
 
 
 mkdocs

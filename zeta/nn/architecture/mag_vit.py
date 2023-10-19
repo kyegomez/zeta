@@ -547,7 +547,7 @@ class VideoTokenizer(Module):
 
         padded_recon_video = self.decode(quantized)
 
-        recon_video = padded_recon_video[:, :, self.time_padding :]
+        recon_video = padded_recon_video[:, :, self.time_padding:]
 
         # reconstruction loss
 

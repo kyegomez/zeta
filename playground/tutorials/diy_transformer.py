@@ -1,5 +1,5 @@
 """
-Zeta was created to build transformer models that can scale limitlessly with an uncompromising 
+Zeta was created to build transformer models that can scale limitlessly with an uncompromising
 and radically simple user-first API.
 
 We place a strong emphasis on the following:

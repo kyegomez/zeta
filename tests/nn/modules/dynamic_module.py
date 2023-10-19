@@ -8,7 +8,7 @@ def test_dynamicmodule_initialization():
     model = DynamicModule()
     assert isinstance(model, DynamicModule)
     assert model.module_dict == nn.ModuleDict()
-    assert model.forward_method == None
+    assert model.forward_method is None
 
 
 def test_dynamicmodule_add_remove_module():

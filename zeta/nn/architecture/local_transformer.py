@@ -77,7 +77,7 @@ class LocalTransformer(nn.Module):
         out = prime
 
         for _ in range(seq_len):
-            logits = self.forward(out[:, -self.max_seq_len :], **kwargs)
+            logits = self.forward(out[:, -self.max_seq_len:], **kwargs)
             filtered_logits = top_k(logits[:, -1], thres=filter_thres)
             probs = F.softmax(filtered_logits / temperature, dim=-1)
             sampled = torch.multinomial(probs, 1)

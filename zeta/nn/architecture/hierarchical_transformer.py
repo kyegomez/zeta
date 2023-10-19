@@ -230,7 +230,7 @@ class Compress(nn.Module):
         prophet_logits = rearrange(prophet_logits, "b n (c d) -> (b c) d n", c=c)
 
         prophet_ids = F.pad(ids, (-1, c), value=self.ignore_index)
-        prophet_ids = tuple(prophet_ids[:, i : (seq_len + i)] for i in range(c))
+        prophet_ids = tuple(prophet_ids[:, i: (seq_len + i)] for i in range(c))
         prophet_ids = torch.stack(prophet_ids, dim=1)
         prophet_ids = rearrange(prophet_ids, "b c n -> (b c) n")
 
@@ -255,7 +255,7 @@ class Compress(nn.Module):
         recon_logits = rearrange(recon_logits, "b n (c d) -> (b c) d n", c=c)
 
         recon_ids = F.pad(ids, (c - 1, 0), value=self.ignore_index)
-        recon_ids = tuple(recon_ids[:, i : (seq_len + i)] for i in range(c))
+        recon_ids = tuple(recon_ids[:, i: (seq_len + i)] for i in range(c))
         recon_ids = torch.stack(recon_ids, dim=1)
         recon_ids = rearrange(recon_ids, "b c n -> (b c) n")
 
@@ -688,7 +688,7 @@ class HierarchicalTransformer(nn.Module):
         out = prompt
 
         for _ in range(seq_len):
-            logits = self.forward(out[:, -self.seq_len :], **kwargs)[:, -1]
+            logits = self.forward(out[:, -self.seq_len:], **kwargs)[:, -1]
             filtered_logits = top_k(logits, thres=filter_thres)
             sample = gumbel_sample(filtered_logits, temperature=temperature)
             sample = rearrange(sample, "b -> b 1")
