@@ -1,5 +1,6 @@
+import torch
 from torch import nn
-import torch.nn as nn
+
 
 class SubLN(nn.Module):
     """
@@ -14,6 +15,18 @@ class SubLN(nn.Module):
         The number of expected features in the input x
     γ: float, optional
         Gain value for weight initialization. Default is 1.0.
+
+
+    # Example usage
+
+    # Usage example:
+    import torch
+    from zeta.nn.modules import SubLN
+
+    model = SubLN(d_model=512)
+    x = torch.randn(10, 512)
+    out = model(x)
+    print(out)
     
     """
 
@@ -64,8 +77,3 @@ class SubLN(nn.Module):
                     nn.init.xavier_normal_(param, gain=1)
             elif 'bias' in name:
                 nn.init.zeros_(param)
-
-# Usage example:
-# model = SubLN(d_model=512)
-# x = torch.randn(10, 512)
-# out = model(x)
