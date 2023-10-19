@@ -13,7 +13,7 @@ def yolo(input, num_classes, num_anchors, anchors, stride_h, stride_w):
         anchors: anchor boxes
         stride_h: stride in height
         stride_w: stride in width
-    
+
     Returns:
         predicted_bboxes: predicted bounding boxes
 
@@ -39,7 +39,7 @@ def yolo(input, num_classes, num_anchors, anchors, stride_h, stride_w):
     >>> predicted_bboxes = yolo(input, num_classes, num_anchors, anchors, stride_h, stride_w)
     >>> print(predicted_bboxes.shape)
     torch.Size([1, 507, 85])
-    
+
     """
     raw_predictions = rearrange(
         input,

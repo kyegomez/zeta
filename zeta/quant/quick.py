@@ -52,13 +52,13 @@ class QUIK(nn.Module):
         """
         Args:
             input_tensor: input tensor to be quantized
-        
+
         Returns:
             output_tensor: quantized tensor
             zero_act: zero-point
             scale_act: scale factor
-        
-        
+
+
 
         """
         zero_act, scale_act = self.find_zero_scale(input_tensor)
@@ -78,12 +78,12 @@ class QUIK(nn.Module):
             zero_act: zero-point
             scale_act: scale factor
             scale_weight: scale factor for weight
-        
+
         Returns:
 
             output_tensor: dequantized tensor
 
-        
+
         """
         weights_reduced = self.weight.sum(dim=1)
         x = input_tensor.float() * scale_act * scale_weight
@@ -102,9 +102,9 @@ class QUIK(nn.Module):
         Returns:
             zero_act: zero-point
             scale_act: scale factor
-    
-        
-        
+
+
+
         """
         zero_act = input_tensor.min()
         scale_act = (input_tensor.max() - zero_act) / (2 * self.half_range)
@@ -119,7 +119,7 @@ class QUIK(nn.Module):
 
         Returns:
             output_tensor: output tensor after forward pass
-        
+
         """
         # Quantize activations
         x_quant, zero_act, scale_act = self.quantize(x)
@@ -133,5 +133,3 @@ class QUIK(nn.Module):
         # Dequantization
         scale_weight = (self.weight.max() - self.weight.min()) / (2 * self.half_range)
         return self.dequantize(result, zero_act, scale_act, scale_weight)
-
-

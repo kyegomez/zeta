@@ -1,4 +1,4 @@
-import torch 
+import torch
 import torch.nn as nn
 
 
@@ -21,8 +21,9 @@ class STEFunc(torch.autograd.Function):
     >>> y.backward(torch.ones_like(x))
     >>> x.grad
 
-    
+
     """
+
     @staticmethod
     def forward(ctx, input):
         """
@@ -32,26 +33,27 @@ class STEFunc(torch.autograd.Function):
             ctx (torch.autograd.Function): the context object
             input (torch.Tensor): the input tensor
 
-        
-        
+
+
         """
         return torch.sign(torch.clamp(input, min=-1.0, max=1.0))
-    
+
     @staticmethod
     def backward(ctx, grad_output):
         """
         Backward pass of the STE function where we bypass the non differentiable operations
-        
+
         """
-        #Bypass the non differterable operations
+        # Bypass the non differterable operations
         return grad_output
-    
+
+
 class STE(nn.Module):
     """
     STE Module
 
     This module is used to bypass the non differentiable operations
-    
+
     Args:
         input (torch.Tensor): the input tensor
 
@@ -64,9 +66,8 @@ class STE(nn.Module):
     >>> y = ste(x)
     >>> y.backward(torch.ones_like(x))
     >>> x.grad
-    
+
     """
+
     def forward(self, input):
         return STEFunc.apply(input)
-    
-
