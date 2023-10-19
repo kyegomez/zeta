@@ -19,7 +19,7 @@ from zeta.nn.modules.rnn_nlp import RNNL
 from zeta.nn.modules.shufflenet import ShuffleNet
 from zeta.nn.modules.simple_attention import simple_attention
 from zeta.nn.modules.spacial_transformer import SpacialTransformer
-from zeta.nn.modules.sublayer import subln
+from zeta.nn.modules.subln import SubLN
 from zeta.nn.modules.super_resolution import SuperResolutionNet
 from zeta.nn.modules.token_learner import TokenLearner
 from zeta.nn.modules.yolo import yolo
