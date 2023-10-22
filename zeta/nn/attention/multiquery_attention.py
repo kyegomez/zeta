@@ -289,7 +289,7 @@ def flash_attn_fn(
 
     if key_padding_mask is None:
         key_padding_mask = torch.ones_like(key[:, :, 0], dtype=torch.bool)
-    query_padding_mask = key_padding_mask[:, -query.size(1):]
+    query_padding_mask = key_padding_mask[:, -query.size(1) :]
 
     query_unpad, indices_q, cu_seqlens_q, max_seqlen_q = bert_padding.unpad_input(
         query, query_padding_mask

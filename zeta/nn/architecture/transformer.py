@@ -178,7 +178,7 @@ def groupby_prefix_and_trim(prefix, d):
         partial(string_begins_with, prefix), d
     )
     kwargs_without_prefix = dict(
-        map(lambda x: (x[0][len(prefix):], x[1]), tuple(kwargs_with_prefix.items()))
+        map(lambda x: (x[0][len(prefix) :], x[1]), tuple(kwargs_with_prefix.items()))
     )
     return kwargs_without_prefix, kwargs
 
@@ -1670,7 +1670,7 @@ class Transformer(nn.Module):
                 mask = pad_at_dim(mask, (num_mem, 0), dim=-1, value=True)
 
         if self.shift_mem_down and exists(mems):
-            mems_l, mems_r = mems[: self.shift_mem_down], mems[self.shift_mem_down:]
+            mems_l, mems_r = mems[: self.shift_mem_down], mems[self.shift_mem_down :]
             mems = [*mems_r, *mems_l]
 
         if return_hiddens:
@@ -1709,7 +1709,7 @@ class Transformer(nn.Module):
                 else hiddens
             )
             new_mems = list(
-                map(lambda t: t[..., -self.max_mem_len:, :].detach(), new_mems)
+                map(lambda t: t[..., -self.max_mem_len :, :].detach(), new_mems)
             )
             return out, new_mems
 

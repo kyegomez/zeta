@@ -163,6 +163,7 @@ nav:
       - softmaxes: "zeta/ops/softmaxes.md"
     - zeta.optim:
       - StableAdamWUnfused: "zeta/optims/adamw.md"
+      - GradientAscent: "zeta/optims/ga.md"
     - zeta.training:
       - fsdp: "zeta/training/fsdp.md"
     - zeta.quant:

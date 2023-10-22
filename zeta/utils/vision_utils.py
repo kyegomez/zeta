@@ -642,8 +642,8 @@ class ImageFeatureExtractionMixin:
 
         new_image = new_image[
             ...,
-            max(0, top): min(new_image.shape[-2], bottom),
-            max(0, left): min(new_image.shape[-1], right),
+            max(0, top) : min(new_image.shape[-2], bottom),
+            max(0, left) : min(new_image.shape[-1], right),
         ]
 
         return new_image

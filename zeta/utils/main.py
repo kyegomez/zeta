@@ -283,7 +283,7 @@ def groupby_prefix_and_trim(prefix, d):
         partial(string_begins_with, prefix), d
     )
     kwargs_without_prefix = dict(
-        map(lambda x: (x[0][len(prefix):], x[1]), tuple(kwargs_with_prefix.items()))
+        map(lambda x: (x[0][len(prefix) :], x[1]), tuple(kwargs_with_prefix.items()))
     )
     return kwargs_without_prefix, kwargs
 
@@ -746,7 +746,7 @@ def look_around(x, backward=1, forward=0, pad_value=-1, dim=2):
     padded_x = F.pad(x, (*dims, backward, forward), value=pad_value)
 
     tensors = [
-        padded_x[:, ind: (ind + t), ...] for ind in range(forward + backward + 1)
+        padded_x[:, ind : (ind + t), ...] for ind in range(forward + backward + 1)
     ]
     return torch.cat(tensors, dim=dim)
 

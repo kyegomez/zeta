@@ -132,7 +132,7 @@ class AutoregressiveWrapper(nn.Module):
                 return out
         else:
             for _ in range(seq_len):
-                x = out[:, -self.max_seq_len:]
+                x = out[:, -self.max_seq_len :]
 
                 logits = self.net(x, **kwargs)[:, -1]
 
