@@ -1,7 +1,6 @@
 [![Multi-Modality](images/agorabanner.png)](https://discord.gg/qUtxnK2NMf)
 
-# Zeta - Seamlessly Create Zetascale Transformers
-
+# Zeta
 
 [![Docs](https://readthedocs.org/projects/zeta/badge/)](https://zeta.readthedocs.io)
 
@@ -10,7 +9,7 @@
   <a href="https://pypi.org/project/zetascale"><img alt="MIT License" src="https://badge.fury.io/py/zetascale.svg" /></a>
 </p>
 
-Create Ultra-Powerful Multi-Modality Models Seamlessly and Efficiently in as minimal lines of code as possible.
+Build High-performance, agile, and scalable AI models with modular and re-useable building blocks!
 
 # 🤝 Schedule a 1-on-1 Session
 Book a [1-on-1 Session with Kye](https://calendly.com/apacai/agora), the Creator, to discuss any issues, provide feedback, or explore how we can improve Zeta for you.
@@ -18,17 +17,7 @@ Book a [1-on-1 Session with Kye](https://calendly.com/apacai/agora), the Creator
 
 ## Installation
 
-To install:
-```
-pip install zetascale
-```
-
-To get hands-on and develop it locally:
-```
-git clone https://github.com/kyegomez/zeta.git
-cd zeta
-pip install -e .
-```
+`pip install zetascale`
 
 ## Initiating Your Journey
 
@@ -53,20 +42,13 @@ print(output.shape)
 [Click here for the documentation, it's at zeta.apac.ai](https://zeta.apac.ai)
 
 # Vision
-Zeta hopes to be the leading framework and library to effortlessly enable you to create the most capable and reliable foundation models out there with infinite scalability.
-
-## Acknowledgments
-Zeta is a masterpiece inspired by LucidRains's repositories and elements of [FairSeq](https://github.com/facebookresearch/fairseq) and [UniLM](https://github.com/kyegomez/unilm).
+Zeta hopes to be the leading framework and library to effortlessly enable you to create the most capable and reliable foundation models out there with infinite scalability in as minmal amounts of code as possible
 
 
 ## Contributing
 We're dependent on you for contributions, it's only Kye maintaining this repository and it's very difficult and with that said any contribution is infinitely appreciated by not just me but by Zeta's users who dependen on this repository to build the world's
 best AI models
 
-* Head over to the project board to look at open features to implement or bugs to tackle
-
-
-## Todo
 * Head over to the project board to look at open features to implement or bugs to tackle
 
 ## Project Board
