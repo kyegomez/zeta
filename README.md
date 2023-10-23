@@ -1,6 +1,7 @@
 [![Multi-Modality](images/agorabanner.png)](https://discord.gg/qUtxnK2NMf)
 
 # Zeta
+![Zeta banner](images/zeta.png)
 
 [![Docs](https://readthedocs.org/projects/zeta/badge/)](https://zeta.readthedocs.io)
 
