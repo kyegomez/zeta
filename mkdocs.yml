@@ -166,6 +166,7 @@ nav:
       - GradientAscent: "zeta/optims/ga.md"
     - zeta.training:
       - fsdp: "zeta/training/fsdp.md"
+      - ParallelWrapper: "zeta/training/parallel_wrapper.md"
     - zeta.quant:
       - QUIK: "zeta/quant/quik.md"
       - BitLinear: "zeta/quant/bitlinear.md"
