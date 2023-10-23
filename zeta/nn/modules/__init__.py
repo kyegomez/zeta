@@ -30,3 +30,4 @@ from zeta.nn.modules.time_up_sample import TimeUpSample2x
 from zeta.nn.modules.video_autoencoder import CausalConv3d
 from zeta.nn.modules.simple_res_block import SimpleResBlock
 from zeta.nn.modules.sig_lip import SigLipLoss
+from zeta.nn.modules.simple_feedforward import SimpleFeedForward

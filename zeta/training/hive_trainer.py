@@ -6,6 +6,15 @@ we could make a framework that trains multiple LLMs all at once on separate thre
 time. This would be a good way to train a lot of models at once. We could also make it so that the models can
 communicate with each other and share information
 
+Features:
+    * Train several models all at once
+    * Models can communicate with each other and share information
+    * Models fight for compute time, so the best model wins
+    * Model with highest loss is killed and replaced with a new model
+    * Models can be trained on separate GPUs
+    * Multiple ModelS can be trained on a single GPU
+
+
 """
 
 import torch 
@@ -30,6 +39,14 @@ class HiveTrainer:
     we could make a framework that trains multiple LLMs all at once on separate threads and they fight for compute
     time. This would be a good way to train a lot of models at once. We could also make it so that the models can
     communicate with each other and share information
+
+    Features:
+        * Train several models all at once
+        * Models can communicate with each other and share information
+        * Models fight for compute time, so the best model wins
+        * Model with highest loss is killed and replaced with a new model
+        * Models can be trained on separate GPUs
+        * Multiple ModelS can be trained on a single GPU
 
     Args:
         models (list): List of models to train
