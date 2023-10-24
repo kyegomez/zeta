@@ -4,6 +4,22 @@ from einops import rearrange
 
 
 class DynamicPositionBias(nn.Module):
+    """
+    Dynamic Position Bias
+
+    Args:
+        dim (int): dimension of the embedding
+        heads (int): number of heads
+
+    Attributes:
+        mlp (nn.Sequential): multi-layer perceptron
+
+    Usage:
+    >>> X = torch.randn(1, 10, 512)
+    >>> bias = DynamicPositionBias(dim=512, heads=8)
+
+    """
+
     def __init__(self, dim, heads):
         super().__init__()
         self.mlp = nn.Sequential(
@@ -16,9 +32,11 @@ class DynamicPositionBias(nn.Module):
 
     @property
     def device(self):
+        """device property"""
         return next(self.parameters()).device
 
     def forward(self, i, j):
+        """Forward method of DynamicPositionBias"""
         device = self.device
         assert j >= i
 

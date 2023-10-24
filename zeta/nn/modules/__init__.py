@@ -31,6 +31,16 @@ from zeta.nn.modules.video_autoencoder import CausalConv3d
 from zeta.nn.modules.simple_res_block import SimpleResBlock
 from zeta.nn.modules.sig_lip import SigLipLoss
 from zeta.nn.modules.simple_feedforward import SimpleFeedForward
+from zeta.nn.modules.img_reshape import image_reshape
+from zeta.nn.modules.flatten_features import flatten_features
+from zeta.nn.modules.scaled_sinusoidal import ScaledSinuosidalEmbedding
+from zeta.nn.modules.scale import Scale
+from zeta.nn.modules.scalenorm import ScaleNorm
+
+# from zeta.nn.modules.rmsnorm import RMSNorm
+from zeta.nn.modules.simple_rmsnorm import SimpleRMSNorm
+from zeta.nn.modules.gru_gating import GRUGating
+from zeta.nn.modules.shift_tokens import ShiftTokens
 
 
 __all__ = [

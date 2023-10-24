@@ -1,4 +1,3 @@
-
 from zeta.nn.architecture.auto_regressive_wrapper import AutoregressiveWrapper
 from zeta.nn.architecture.encoder import Encoder
 from zeta.nn.architecture.encoder_decoder import EncoderDecoder
