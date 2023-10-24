@@ -22,6 +22,31 @@ def set_split_position(position):
 
 
 class MultiwayNetwork(nn.Module):
+    """
+    Multiway
+
+    Args:
+        module (nn.Module): The module to apply multi-way to.
+        dim (int): The dimension along which to split and concatenate the input tensor. Default is 1.
+
+    Attributes:
+        A (nn.Module): The first copy of the module.
+        B (nn.Module): The second copy of the module.
+        split_position (int): The position along the dimension to split the input tensor.
+
+    Example:
+        >>> module = nn.Linear(10, 10)
+        >>> module = MultiwayNetwork(module)
+        >>> x = torch.randn(10, 10)
+        >>> y = module(x)
+        >>> y.shape
+        torch.Size([10, 10])
+        >>> module.split_position = 5
+        >>> y = module(x)
+        >>> y.shape
+        torch.Size([10, 20])
+    
+    """
     def __init__(self, module, dim=1):
         super().__init__()
         self.dim = dim
