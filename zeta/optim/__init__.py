@@ -11,3 +11,18 @@ from zeta.optim.decoupled_optimizer import decoupled_optimizer
 from zeta.optim.decoupled_sophia import SophiaG
 from zeta.optim.stable_adam import StableAdamWUnfused
 from zeta.optim.gradient_ascent import GradientAscent
+
+
+__all__ = [
+    "BatchedOptimizer",
+    "Eden",
+    "Eve",
+    "LRScheduler",
+    "ScaledAdam",
+    "_test_scaled_adam",
+    "DecoupledLionW",
+    "decoupled_optimizer",
+    "SophiaG",
+    "StableAdamWUnfused",
+    "GradientAscent",
+]
