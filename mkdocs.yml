@@ -6,7 +6,6 @@ repo_name: kyegomez/zeta
 repo_url: https://github.com/kyegomez/zeta
 edit_uri: https://github.com/kyegomez/zeta/tree/main/docs
 copyright: APAC Corp 2023. All rights reserved.
-
 plugins:
   - glightbox
   - search
@@ -55,10 +54,8 @@ theme:
     font:
       text: Roboto
       code: Roboto Mono
-
 extra_css:
   - stylesheets/extra.css
-
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
@@ -73,8 +70,6 @@ markdown_extensions:
   - tables
   - def_list
   - footnotes
-
-
 nav:
 - Home:
   - Overview: "index.md"
