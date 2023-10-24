@@ -38,6 +38,51 @@ def get_mscale(scale=1):
 
 
 class YarnEmbedding(nn.Module):
+    """
+    Yarn Embeddings.
+
+    Args:
+        dim (int): The dimension of the embeddings.
+        max_position_embeddings (int): The maximum position embeddings.
+        base (int): The base for the positional embeddings.
+        original_max_position_embeddings (int): The original maximum position embeddings.
+        extrapolation_factor (int): The extrapolation factor.
+        attn_factor (int): The attention factor.
+        beta_fast (int): The fast beta.
+        beta_slow (int): The slow beta.
+        finetuned (bool): Whether to finetune or not.
+        device (torch.device): The device.
+
+
+    Attributes:
+        dim (int): The dimension of the embeddings.
+        max_position_embeddings (int): The maximum position embeddings.
+        base (int): The base for the positional embeddings.
+        original_max_position_embeddings (int): The original maximum position embeddings.
+        extrapolation_factor (int): The extrapolation factor.
+        attn_factor (int): The attention factor.
+        beta_fast (int): The fast beta.
+        beta_slow (int): The slow beta.
+        finetuned (bool): Whether to finetune or not.
+        device (torch.device): The device.
+        inv_freq (torch.Tensor): The inverse frequencies.
+        mscale (float): The mscale.
+        max_seq_len_cached (int): The maximum sequence length cached.
+        cos_cached (torch.Tensor): The cached cosine.
+        sin_cached (torch.Tensor): The cached sine.
+
+
+    Example:
+        >>> module = YarnEmbedding(10)
+        >>> x = torch.randn(10, 10)
+        >>> y = module(x)
+        >>> y.shape
+        torch.Size([10, 10, 10])
+
+
+
+    """
+
     def __init__(
         self,
         dim,
@@ -100,6 +145,7 @@ class YarnEmbedding(nn.Module):
         )
 
     def forward(self, x, seq_len=None):
+        """forward"""
         if seq_len > self.max_seq_len_cached:
             self.max_seq_len_cached = seq_len
 
@@ -130,6 +176,7 @@ class YarnEmbedding(nn.Module):
         )
 
     def yarn(self, scale, device):
+        """Yarn Embeddings."""
         pos_freqs = self.base ** (
             torch.arange(0, self.dim, 2).float().to(device) / self.dim
         )

@@ -17,7 +17,7 @@ Features:
 
 """
 
-import torch 
+import torch
 import torch.distributed as dist
 import threading
 from zeta.training.train import Trainer
@@ -64,19 +64,20 @@ class HiveTrainer:
         output_dir (str): Output directory
         weight_decay (float): Weight decay
         use_deepspeed (bool): Use deepspeed
-        
+
     Methods:
         train: Train the models
-    
+
     Usage:
         # Instantiate models
         models = [YourModelClass1(), YourModelClass2()]  # Replace with your model classes
 
 
 
-    
-    
+
+
     """
+
     def __init__(
         self,
         models,
@@ -126,10 +127,10 @@ class HiveTrainer:
             MASTER_PORT (str): Master port
             WORLD_SIZE (str): World size
             RANK (str): Rank
-        
+
         Usage:
             hive_trainer.train(MASTER_ADDR='localhost', MASTER_PORT='9994', RANK='0', WORLD_SIZE=str(torch.cuda.device_count()))
-        
+
         """
         threads = []
 
@@ -156,7 +157,7 @@ class HiveTrainer:
                     "MASTER_PORT": MASTER_PORT,
                     "RANK": RANK,
                     "WORLD_SIZE": WORLD_SIZE,
-                }
+                },
             )
             t.start()
             threads.append(t)

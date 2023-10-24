@@ -1,6 +1,7 @@
 from einops.layers.torch import Rearrange
 from torch import nn
 
+
 class PatchEmbeddings(nn.Module):
     """
     Patch embeddings for images.
@@ -20,8 +21,9 @@ class PatchEmbeddings(nn.Module):
         >>> y = module(x)
         >>> y.shape
         torch.Size([2, 20, 5])
-    
+
     """
+
     def __init__(self, dim_in, dim_out, seq_len):
         super().__init__()
         self.embedding = nn.Sequential(

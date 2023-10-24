@@ -5,6 +5,29 @@ from torch import nn
 
 
 class TruncatedRotaryEmbedding(nn.Module):
+    """
+    Truncated rotary embeddings.
+
+    Args:
+        dim (int): The dimension of the embeddings.
+        a (float): The lower bound for the truncation.
+        b (float): The upper bound for the truncation.
+        rho (float): The value to replace the truncated values with.
+
+    Attributes:
+        inv_freq (torch.Tensor): The inverse frequencies.
+        scale (torch.Tensor): The scale.
+
+
+    Example:
+        >>> module = TruncatedRotaryEmbedding(10, 0.5, 1.0, 0.0)
+        >>> x = torch.randn(10, 10)
+        >>> y = module(x)
+        >>> y.shape
+        torch.Size([10, 10, 10])
+
+    """
+
     def __init__(self, dim, a, b, rho):
         super().__init__()
         self.dim = dim
@@ -16,6 +39,7 @@ class TruncatedRotaryEmbedding(nn.Module):
         self.register_buffer("inv_freq", self.inv_freq)
 
     def forward(self, seq_len, device):
+        """Forward"""
         t = torch.arange(seq_len, device=device).type_as(self.inv_freq)
         freqs = torch.einsum("i, j -> i j", t, self.inv_freq)
         freqs = torch.cat((freqs, freqs), dim=-1)

@@ -6,7 +6,7 @@ def SimpleFeedForward(dim, hidden_dim, dropout=0.1):
     Feedforward neural network with LayerNorms and GELU activations
 
 
-    Flow: 
+    Flow:
     layer_norm -> linear -> gelu -> linear -> dropout
 
 
@@ -26,5 +26,5 @@ def SimpleFeedForward(dim, hidden_dim, dropout=0.1):
         nn.Linear(dim, hidden_dim),
         nn.GELU(),
         nn.Linear(hidden_dim, dim),
-        nn.Dropout(dropout)
+        nn.Dropout(dropout),
     )

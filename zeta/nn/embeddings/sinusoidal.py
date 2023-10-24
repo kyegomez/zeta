@@ -9,6 +9,27 @@ def exists(val):
 
 
 class SinusoidalEmbeddings(nn.Module):
+    """
+    Sinusoidal embeddings.
+
+    Args:
+        dim (int): The dimension of the embeddings.
+        scale_base (int): The scale base for the positional embeddings.
+        use_xpos (bool): Whether to use xpos or not.
+
+    Attributes:
+        inv_freq (torch.Tensor): The inverse frequencies.
+        scale (torch.Tensor): The scale.
+
+    Example:
+        >>> module = SinusoidalEmbeddings(10)
+        >>> x = torch.randn(10, 10)
+        >>> y = module(x)
+        >>> y.shape
+        torch.Size([10, 10, 10])
+
+    """
+
     def __init__(self, dim, scale_base=None, use_xpos=False):
         super().__init__()
         inv_freq = 1.0 / (10000 ** (torch.arange(0, dim, 2).float() / dim))
@@ -27,6 +48,7 @@ class SinusoidalEmbeddings(nn.Module):
         self.register_buffer("scale", scale, persistent=False)
 
     def forward(self, x):
+        """forward"""
         seq_len, device = x.shape[-2], x.device
 
         t = torch.arange(seq_len, device=x.device).type_as(self.inv_freq)
@@ -44,12 +66,23 @@ class SinusoidalEmbeddings(nn.Module):
 
 
 def rotate_half(x):
+    """Rotate the tensor by half."""
     x = rearrange(x, "b ... (r d) -> b ... r d", r=2)
     x1, x2 = x.unbind(dim=-2)
     return torch.cat((-x2, x1), dim=-1)
 
 
 def apply_rotary_pos_emb(q, k, freqs, scale=1):
+    """
+    Apply rotary positional embeddings to the query and key tensors.
+
+    Args:
+        q (torch.Tensor): The query tensor.
+        k (torch.Tensor): The key tensor.
+        freqs (torch.Tensor): The frequencies.
+        scale (torch.Tensor): The scale.
+
+    """
     q_len = q.shape[-2]
     q_freqs = freqs[..., -q_len:, :]
 

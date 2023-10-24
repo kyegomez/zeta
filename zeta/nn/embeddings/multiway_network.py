@@ -45,8 +45,9 @@ class MultiwayNetwork(nn.Module):
         >>> y = module(x)
         >>> y.shape
         torch.Size([10, 20])
-    
+
     """
+
     def __init__(self, module, dim=1):
         super().__init__()
         self.dim = dim

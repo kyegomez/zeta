@@ -3,7 +3,35 @@ from torch import nn
 
 
 class VisionEmbedding(nn.Module):
-    """Image to Patch Embedding"""
+    """
+    Image to Patch Embedding
+
+
+    Args:
+        img_size (int): The image size.
+        patch_size (int): The patch size.
+        in_chans (int): The number of input channels.
+        embed_dim (int): The embedding dimension.
+        contain_mask_token (bool): Whether to contain mask token or not.
+        prepend_cls_token (bool): Whether to prepend cls token or not.
+
+    Attributes:
+        patch_shape (tuple): The patch shape.
+        img_size (tuple): The image size.
+        patch_size (tuple): The patch size.
+        num_patches (int): The number of patches.
+        proj (nn.Module): The projection layer.
+        mask_token (nn.Parameter): The mask token.
+        cls_token (nn.Parameter): The cls token.
+
+    Example:
+        >>> module = VisionEmbedding(224, 16, 3, 768)
+        >>> x = torch.randn(2, 3, 224, 224)
+        >>> y = module(x)
+        >>> y.shape
+        torch.Size([2, 197, 768])
+
+    """
 
     def __init__(
         self,
@@ -38,12 +66,14 @@ class VisionEmbedding(nn.Module):
             self.cls_token = None
 
     def num_position_embeddings(self):
+        """num_position_embeddings"""
         if self.cls_token is None:
             return self.num_patches
         else:
             return self.num_patches + 1
 
     def forward(self, x, masked_position=None, **kwargs):
+        """forward"""
         B, C, H, W = x.shape
         assert (
             H == self.img_size[0] and W == self.img_size[1]
