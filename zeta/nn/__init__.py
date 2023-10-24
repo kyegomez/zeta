@@ -1,6 +1,5 @@
 # architecture
-# from zeta.nn.architecture import *
-from zeta.nn import architecture
+# from zeta.structs import *
 
 # Attention
 # from zeta.nn.attention import *

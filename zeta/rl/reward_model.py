@@ -44,6 +44,36 @@ def masked_mean(seq, mask=None, dim=1, keepdim=False):
 
 @beartype
 class RewardModel(nn.Module):
+    """
+    Reward Model:
+
+    Parameters
+    ----------
+    model : nn.Module
+        Model to use
+    dropout : float
+        Dropout
+    num_binned_output : int
+        Number of binned output
+    use_lora : bool
+        Whether to use lora
+    lora_r : int
+        Lora r
+    reward_lora_scope : str
+        Reward lora scope
+
+    Returns
+    -------
+    pred : torch.Tensor
+
+    Usage:
+    ------
+    >>> model = RewardModel(model, num_binned_output=10)
+    >>> pred = model(x)
+
+
+    """
+
     def __init__(
         self,
         model,
@@ -79,11 +109,13 @@ class RewardModel(nn.Module):
             )
 
     def load(self, path):
+        """Load model"""
         path = Path(path)
         assert path.exists()
         self.load_state_dict(torch.load(path))
 
     def finetune_parameters(self):
+        """Finetune parameters"""
         return [
             *self.to_pred.parameters(),
             *(

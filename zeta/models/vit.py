@@ -2,7 +2,7 @@ import torch
 
 from einops import rearrange
 from torch import nn
-from zeta.nn.architecture.transformer import Encoder
+from zeta.structs.transformer import Encoder
 
 
 def exists(val):

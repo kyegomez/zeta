@@ -1,4 +1,4 @@
-from zeta.nn.architecture.attn_layers import AttentionLayers
+from zeta.structs.attn_layers import AttentionLayers
 
 
 class CrossAttender(AttentionLayers):

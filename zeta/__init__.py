@@ -1,19 +1,6 @@
-from zeta import nn
-from zeta.nn.architecture.transformer import FeedForward
-from zeta.nn.modules.layernorm import LayerNorm
-from zeta import models
-from zeta import utils
-from zeta import training
-from zeta import tokenizers
-from zeta import rl
-from zeta import optim
-from zeta import ops
 import logging
 import os
 import warnings
-from zeta.zeta import zeta
-
-print(zeta)
 
 
 # disable warnings
@@ -41,20 +28,15 @@ f = CustomFilter()
 logger.addFilter(f)
 
 
-# nn
+from zeta.nn import *
+from zeta import models
+from zeta import utils
+from zeta import training
+from zeta import tokenizers
+from zeta import rl
+from zeta import optim
+from zeta import ops
 
-# models
+from zeta.logo import print_colored_logo
 
-
-# utils
-
-
-# training
-
-# tokenizers
-
-# rl
-
-# optim
-
-# ops
+print_colored_logo()

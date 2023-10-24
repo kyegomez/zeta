@@ -4,6 +4,29 @@ import torch.nn as optim
 
 
 class ActorCritic(nn.Module):
+    """
+    Actor Critic Network
+
+    Parameters
+    ----------
+    num_inputs : int
+        Number of inputs
+    num_outputs : int
+        Number of outputs
+
+    Returns
+    -------
+    dist : torch.distributions.Categorial
+
+    Usage:
+    ------
+    >>> dist, value = ActorCritic(num_inputs, num_outputs, hidden_size)(x)
+    >>> action = dist.sample()
+    >>> action_log_probs = dist.log_prob(action)
+    >>> entropy = dist.entropy().mean()
+
+    """
+
     def __init__(self, num_inputs, num_outputs, hidden_size):
         super(ActorCritic, self).__init__()
         self.critic = nn.Sequential(
@@ -17,6 +40,7 @@ class ActorCritic(nn.Module):
         )
 
     def forward(self, x):
+        """Forward pass"""
         value = self.critic(x)
         probs = self.actor(x)
         dist = torch.distributions.Categorial(probs)
@@ -34,6 +58,31 @@ def ppo(
     advantages,
     clip_param=0.2,
 ):
+    """
+    PPO step
+
+    Parameters
+    ----------
+    policy_net : ActorCritic
+        Policy network
+    value_net : ActorCritic
+        Value network
+    optimizer_policy : torch.optim
+        Policy optimizer
+    optimizer_value : torch.optim
+        Value optimizer
+    states : torch.tensor
+        States
+    actions : torch.tensor
+        Actions
+    returns : torch.tensor
+
+    Examples:
+    ---------
+    >>> ppo_step(network, network, optimizer_policy, optimizer_value, states, actions, returns, advantages)
+
+
+    """
     dist, _ = policy_net(states)
     old_probs = dist.log_prob(actions).detach()
     _, value = value_net(states)

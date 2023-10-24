@@ -1,9 +1,8 @@
-from inspect import isfunction
 import math
-from abc import ABC, abstractmethod
 from collections import namedtuple
 from dataclasses import dataclass
-from functools import partial, wraps
+from functools import partial, reduce, wraps
+from inspect import isfunction
 from random import random
 from typing import Callable, List, Optional
 
@@ -13,8 +12,8 @@ from einops import rearrange, reduce, repeat
 from torch import Tensor, einsum, nn
 
 from zeta.nn.attention.attend import Attend, Intermediates
-from functools import reduce
 
+# Utils
 EfficientAttentionConfig = namedtuple(
     "EfficientAttentionConfig", ["enable_flash", "enable_math", "enable_mem_efficient"]
 )
@@ -913,7 +912,6 @@ class Attention(nn.Module):
         if self.qk_norm:
             qk_l2norm = partial(l2norm, groups=self.qk_norm_groups)
             q, k = map(qk_l2norm, (q, k))
-            scale = self.qk_norm_scale
 
             q = q * self.qk_norm_q_scale
             k = k * self.qk_norm_k_scale
@@ -960,7 +958,7 @@ class Attention(nn.Module):
 
         # determine masking
 
-        mask_value = max_neg_value(q)
+        max_neg_value(q)
         masks = []
         final_attn_mask = None
 
@@ -1279,7 +1277,7 @@ class AttentionLayers(nn.Module):
         for ind, (layer_type, layer_shift_tokens) in enumerate(
             zip(self.layer_types, shift_tokens)
         ):
-            is_last_layer = ind == (len(self.layer_types) - 1)
+            ind == (len(self.layer_types) - 1)
 
             if layer_type == "a":
                 layer = Attention(dim, heads=heads, causal=causal, **attn_kwargs)
@@ -1351,7 +1349,7 @@ class AttentionLayers(nn.Module):
         for ind, (layer_type, (norm, block, residual_fn), layer_dropout) in enumerate(
             zip(self.layer_types, self.layers, self.layer_dropouts)
         ):
-            is_last = ind == (len(self.layers) - 1)
+            ind == (len(self.layers) - 1)
 
             if self.training and layer_dropout > 0.0 and random() < layer_dropout:
                 continue

@@ -1,4 +1,4 @@
-from zeta.nn.architecture.transformer import AttentionLayers
+from zeta.structs.transformer import AttentionLayers
 
 
 class Encoder(AttentionLayers):

@@ -30,6 +30,6 @@ def flatten_features(feature_map):
 
 
 # #random
-x = torch.rand(1, 3, 224, 224)
-model = flatten_features(x)
-print(model.shape)
+# x = torch.rand(1, 3, 224, 224)
+# model = flatten_features(x)
+# print(model.shape)

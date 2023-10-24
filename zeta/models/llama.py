@@ -1,5 +1,5 @@
-from zeta.nn.architecture.transformer import Transformer, Decoder
-from zeta.nn.architecture.auto_regressive_wrapper import AutoregressiveWrapper
+from zeta.structs.transformer import Transformer, Decoder
+from zeta.structs.auto_regressive_wrapper import AutoregressiveWrapper
 
 
 class LLama2:

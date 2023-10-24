@@ -59,25 +59,25 @@ class OmniModalFusion(nn.Module):
         return fused
 
 
-# Usage Test
-if __name__ == "__main__":
-    fusion_dim = 512
-    model = OmniModalFusion(fusion_dim)
+# # Usage Test
+# if __name__ == "__main__":
+#     fusion_dim = 512
+#     model = OmniModalFusion(fusion_dim)
 
-    batch_size = 16
+#     batch_size = 16
 
-    # Simulating 3 modalities with unknown shapes
-    modality1 = torch.rand(
-        batch_size, 10, 5, 512
-    )  # Example: Text [batch_size, seq_len, features]
-    modality2 = torch.rand(
-        batch_size, 64, 64, 3
-    )  # Example: Image [batch_size, height, width, channels]
-    modality3 = torch.rand(
-        batch_size, 4, 32, 32, 1024
-    )  # Example: 3D Scene [batch_size, depth, height, width, features]
+#     # Simulating 3 modalities with unknown shapes
+#     modality1 = torch.rand(
+#         batch_size, 10, 5, 512
+#     )  # Example: Text [batch_size, seq_len, features]
+#     modality2 = torch.rand(
+#         batch_size, 64, 64, 3
+#     )  # Example: Image [batch_size, height, width, channels]
+#     modality3 = torch.rand(
+#         batch_size, 4, 32, 32, 1024
+#     )  # Example: 3D Scene [batch_size, depth, height, width, features]
 
-    modality5 = torch.rand(batch_size, 4, 32, 32, 1024, 244)
+#     modality5 = torch.rand(batch_size, 4, 32, 32, 1024, 244)
 
-    fused = model(modality1, modality2, modality3)
-    print(f"Fused output shape: {fused.shape}")  # Expected: [batch_size, fusion_dim]
+#     fused = model(modality1, modality2, modality3)
+#     print(f"Fused output shape: {fused.shape}")  # Expected: [batch_size, fusion_dim]

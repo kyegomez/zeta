@@ -1,6 +1,6 @@
 import torch
 from zeta.nn.attention.cross_attention import CrossAttend
-from zeta.nn.architecture.transformer import Encoder
+from zeta.structs.transformer import Encoder
 
 
 encoder = Encoder(dim=512, depth=6)

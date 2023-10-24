@@ -1,8 +1,8 @@
 import torch
 from torch import nn
 
-from zeta.nn.architecture.auto_regressive_wrapper import AutoregressiveWrapper
-from zeta.nn.architecture.transformer import (
+from zeta.structs.auto_regressive_wrapper import AutoregressiveWrapper
+from zeta.structs.transformer import (
     Decoder,
     Encoder,
     Transformer,
