@@ -145,7 +145,6 @@ nav:
           - BitLinear: zeta/quant/bitlinear.md
   - Examples:
       - Overview: examples/index.md
-      - FlashAttention: examples/nn/attentions/flash.md
   - Product:
       - Overview: zeta/product/product_ideas.md
       - Zetahub: zeta/product/zetahub.md

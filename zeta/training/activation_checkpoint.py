@@ -109,6 +109,7 @@ except:
     )
     apply_activation_checkpointing = apply_activation_checkpointing_wrapper
 
+
 def activation_checkpointing(
     model: torch.nn.Module,
     offload_to_cpu: bool = False,
