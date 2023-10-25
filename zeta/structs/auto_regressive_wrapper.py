@@ -12,6 +12,7 @@ from zeta.utils.main import (  # noqa: E402
     top_p,
 )
 
+
 # Utils
 def temperature_sampling(self, logits, temperature):
     return torch.multinomial(F.softmax(logits / temperature, dim=-1), 1)

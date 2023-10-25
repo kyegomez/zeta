@@ -118,6 +118,7 @@ nav:
         - LocalMHA: "zeta/nn/attention/localmha.md"
         - MixtureOfAttention: "zeta/nn/attention/mixture_of_attention.md"
         - MixtureOfAutoregressiveAttention: "zeta/nn/attention/mixture_of_attention_ar.md"
+        - SparseAttention: "zeta/nn/attention/sparse_attn.md"
       - zeta.structs:
         - Decoder: "zeta/nn/architecture/decoder.md"
         - Transformer: "zeta/nn/architecture/transformer.md"
