@@ -27,7 +27,7 @@ scipy
 tiktoken
 autopep8
 transformers
-
+tqdm
 
 mkdocs
 mkdocs-material

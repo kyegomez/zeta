@@ -38,6 +38,7 @@ class TokenLearner(nn.Module):
         >>> y.shape
         torch.Size([1, 8, 16])
     """
+
     def __init__(
         self,
         *,
