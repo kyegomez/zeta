@@ -51,7 +51,7 @@ Here is an example of how to use the `SparseAttention` class:
 
 ```python
 import torch
-from your_module import SparseAttention
+from zeta.nn.attention import SparseAttention
 
 # Define parameters
 n_batch = 4
