@@ -36,12 +36,10 @@ from zeta.nn.modules.flatten_features import flatten_features
 from zeta.nn.modules.scaled_sinusoidal import ScaledSinuosidalEmbedding
 from zeta.nn.modules.scale import Scale
 from zeta.nn.modules.scalenorm import ScaleNorm
-
-# from zeta.nn.modules.rmsnorm import RMSNorm
 from zeta.nn.modules.simple_rmsnorm import SimpleRMSNorm
 from zeta.nn.modules.gru_gating import GRUGating
 from zeta.nn.modules.shift_tokens import ShiftTokens
-
+from zeta.nn.modules.swarmalator import simulate_swarmalators
 
 __all__ = [
     "CNNNew",
