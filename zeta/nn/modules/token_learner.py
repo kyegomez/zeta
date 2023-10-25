@@ -15,6 +15,29 @@ def unpack_one(x, ps, pattern):
 
 # main
 class TokenLearner(nn.Module):
+    """
+    TokenLearner
+
+    TokenLearner is a module that learns tokens from a sequence of tokens.
+
+    Args:
+        dim (int): The input and output feature dimension.
+        ff_mult (int): The factor to multiply the input feature dimension by to get the inner feature dimension of the feedforward network.
+        num_output_tokens (int): The number of output tokens.
+        num_layers (int): The number of layers in the feedforward network.
+
+    Returns:
+        Tensor: The output tensor.
+
+    Usage:
+        >>> import torch
+        >>> from zeta.nn.modules import TokenLearner
+        >>> x = torch.randn(1, 16, 32, 32)
+        >>> token_learner = TokenLearner(dim=16, ff_mult=2, num_output_tokens=8, num_layers=2)
+        >>> y = token_learner(x)
+        >>> y.shape
+        torch.Size([1, 8, 16])
+    """
     def __init__(
         self,
         *,
@@ -34,6 +57,7 @@ class TokenLearner(nn.Module):
         )
 
     def forward(self, x):
+        """Forward which takes in tensor"""
         x, ps = pack_one(x, "* c h w")
         x = repeat(x, "b c h w -> b (g c) h w", g=self.num_output_tokens)
         attn = self.net(x)
