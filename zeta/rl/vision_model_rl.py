@@ -1,4 +1,3 @@
-import torch
 from torch import nn
 import torch.nn.functional as F
 
@@ -56,14 +55,14 @@ class VisionRewardModel(nn.Module):
 
 # Example usage
 
-# 1. Example for ResidualBlock
-res_block = ResidualBlock(in_channels=3, out_channels=64)
-sample_tensor = torch.randn(8, 3, 32, 32)
-output_tensor = res_block(sample_tensor)
+# # 1. Example for ResidualBlock
+# res_block = ResidualBlock(in_channels=3, out_channels=64)
+# sample_tensor = torch.randn(8, 3, 32, 32)
+# output_tensor = res_block(sample_tensor)
 
-# 2. Example for VisionRewardModel
-vision_reward_model = VisionRewardModel()
-sample_image = torch.randn(8, 3, 32, 32)
-predicted_rewards = vision_reward_model(sample_image)
+# # 2. Example for VisionRewardModel
+# vision_reward_model = VisionRewardModel()
+# sample_image = torch.randn(8, 3, 32, 32)
+# predicted_rewards = vision_reward_model(sample_image)
 
-print(output_tensor.shape, predicted_rewards.shape)
+# print(output_tensor.shape, predicted_rewards.shape)

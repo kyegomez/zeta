@@ -1,7 +1,7 @@
 from rich import print as rich_print
 from rich.markdown import Markdown
 from rich.rule import Rule
-from termcolor import colored, cprint
+from termcolor import colored
 
 
 def display_markdown_message(message):
