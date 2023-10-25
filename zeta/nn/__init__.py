@@ -1,10 +1,11 @@
-# architecture
-# from zeta.structs import *
+
 
 # Attention
 # from zeta.nn.attention import *
 from zeta.nn import attention
 
+# architecture
+import zeta.structs as architecture
 
 # embeddings
 # from zeta.nn.embeddings import *
