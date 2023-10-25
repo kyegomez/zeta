@@ -148,4 +148,4 @@ nav:
       - FlashAttention: examples/nn/attentions/flash.md
   - Product:
       - Overview: zeta/product/product_ideas.md
-    = Zetahub: zeta/product/zetahub.md
+      - Zetahub: zeta/product/zetahub.md

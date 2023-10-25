@@ -57,43 +57,43 @@ def ppo_step(
         optimizer_policy.step()
 
 
-# Define the environment parameters
-num_inputs = 4
-num_outputs = 2
-hidden_size = 16
+# # Define the environment parameters
+# num_inputs = 4
+# num_outputs = 2
+# hidden_size = 16
 
-# Create the actor-critic network
-network = ActorCritic(num_inputs, num_outputs, hidden_size)
+# # Create the actor-critic network
+# network = ActorCritic(num_inputs, num_outputs, hidden_size)
 
-# Create the optimizers
-optimizer_policy = optim.Adam(network.actor.parameters())
-optimizer_value = optim.Adam(network.critic.parameters())
+# # Create the optimizers
+# optimizer_policy = optim.Adam(network.actor.parameters())
+# optimizer_value = optim.Adam(network.critic.parameters())
 
-# Generate some random states, actions, and returns for testing
-states = torch.randn(10, num_inputs)  # 10 states, each with `num_inputs` dimensions
-actions = torch.randint(
-    num_outputs, (10,)
-)  # 10 actions, each is an integer in [0, `num_outputs`)
-returns = torch.randn(10, 1)  # 10 returns, each is a scalar
-advantages = torch.randn(10, 1)  # 10 advantages, each is a scalar
+# # Generate some random states, actions, and returns for testing
+# states = torch.randn(10, num_inputs)  # 10 states, each with `num_inputs` dimensions
+# actions = torch.randint(
+#     num_outputs, (10,)
+# )  # 10 actions, each is an integer in [0, `num_outputs`)
+# returns = torch.randn(10, 1)  # 10 returns, each is a scalar
+# advantages = torch.randn(10, 1)  # 10 advantages, each is a scalar
 
-# Perform a PPO step
-out = ppo_step(
-    network,
-    network,
-    optimizer_policy,
-    optimizer_value,
-    states,
-    actions,
-    returns,
-    advantages,
-)
-print(out)
+# # Perform a PPO step
+# out = ppo_step(
+#     network,
+#     network,
+#     optimizer_policy,
+#     optimizer_value,
+#     states,
+#     actions,
+#     returns,
+#     advantages,
+# )
+# print(out)
 
-# The `ppo_step` function first computes the old action probabilities using the policy network.
-# These are detached from the current computation graph to prevent gradients from flowing into them during the policy update.
+# # The `ppo_step` function first computes the old action probabilities using the policy network.
+# # These are detached from the current computation graph to prevent gradients from flowing into them during the policy update.
 
-# Then, it computes the value loss using the value network and the returns, and performs a value network update.
+# # Then, it computes the value loss using the value network and the returns, and performs a value network update.
 
 # After that, it enters a loop where it performs multiple policy updates.
 # In each update, it computes the new action probabilities, and then the ratio of the new and old probabilities.
