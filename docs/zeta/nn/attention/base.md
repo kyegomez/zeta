@@ -74,7 +74,7 @@ class FlashAttentionTwo(BaseAttention):
 --------------------------------------------
 
 ```python
-from zeta import FlashAttentionTwo
+from zeta.nn.attention import FlashAttentionTwo
 
 # Create an instance of the FlashAttentionTwo class
 attention = FlashAttentionTwo(dim=512, heads=8, dim_head=64)

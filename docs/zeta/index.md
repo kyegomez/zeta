@@ -23,7 +23,7 @@ With Zeta, you can unleash the best and highest performance attention mechanisms
 
 ```python
 import torch
-from zeta import FlashAttention
+from zeta.nn.attention import FlashAttention
 
 q = torch.randn(2, 4, 6, 8)
 k = torch.randn(2, 4, 10, 8)
