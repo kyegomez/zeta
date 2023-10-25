@@ -1,5 +1,4 @@
 from zeta.structs.auto_regressive_wrapper import AutoregressiveWrapper
-from zeta.structs.encoder import Encoder
 from zeta.structs.encoder_decoder import EncoderDecoder
 from zeta.structs.hierarchical_transformer import HierarchicalTransformer
 from zeta.structs.local_transformer import LocalTransformer
@@ -20,6 +19,7 @@ from zeta.structs.simple_transformer import SimpleTransformer
 __all__ = [
     "AutoregressiveWrapper",
     "Encoder",
+    "Decoder",
     "EncoderDecoder",
     "HierarchicalTransformer",
     "LocalTransformer",
