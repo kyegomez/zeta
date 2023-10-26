@@ -1,115 +1,130 @@
-# BitLinear Documentation
+# BitLinear Module Documentation
+==============================
 
-## Table of Contents
-1. [Introduction](#introduction)
-2. [Overview](#overview)
-3. [Installation](#installation)
-4. [Usage](#usage)
-   1. [absmax_quantize Function](#absmax_quantize-function)
-   2. [BitLinear Class](#bitlinear-class)
-   3. [Examples](#examples)
-5. [Additional Information](#additional-information)
-6. [Conclusion](#conclusion)
+## Overview
+--------
 
----
+The `BitLinear` module is a custom implementation of a linear layer in a neural network, with the added functionality of bit quantization. This module is designed to work with PyTorch's `nn.Module` and can be integrated into any PyTorch model architecture.
 
-## 1. Introduction <a name="introduction"></a>
+The `BitLinear` module performs linear transformation on the input data, followed by quantization and dequantization. The quantization process is performed using the `absmax_quantize` function, which quantizes the input tensor based on the absolute maximum value.
 
-The `BitLinear` module is a key component for implementing quantization techniques in deep learning models, particularly in Transformers. It provides a quantization layer that helps in reducing memory and computational requirements during training and inference. This documentation comprehensively explains the `BitLinear` module, its purpose, parameters, and usage.
+## absmax_quantize Function
+------------------------
 
----
+The `absmax_quantize` function is a helper function used by the `BitLinear` module to perform quantization and dequantization of the input tensor.
 
-## 2. Overview <a name="overview"></a>
+### Parameters
 
-The `BitLinear` module is designed to perform quantization on the input tensor. It is especially useful in Transformer models where memory and computational efficiency are critical. This layer quantizes the input tensor by applying binarization to the weight parameters and using the `absmax_quantize` function for quantization.
+| Parameter | Type | Description |
+| --- | --- | --- |
+| x | torch.Tensor | The input tensor to be quantized. |
+| bits | int (optional) | The number of bits to use for quantization. Default is 8. |
 
-Key features and parameters of the `BitLinear` module include:
-- `dim`: The dimension of the input tensor.
-- `absmax_quantize` function: A function used for quantization.
+### Returns
 
-By applying quantization, the `BitLinear` module helps reduce memory usage and computational complexity, making it suitable for resource-constrained environments.
+| Return Value | Type | Description |
+| --- | --- | --- |
+| quant | torch.Tensor | The quantized tensor. |
+| dequant | torch.Tensor | The dequantized tensor. |
 
----
+BitLinear Class
+---------------
 
-## 3. Installation <a name="installation"></a>
+The `BitLinear` class is a custom implementation of a linear layer that performs bit quantization on the input data.
 
-Before using the `BitLinear` module, make sure you have the required dependencies installed, including PyTorch. You can install the module using pip:
+### Parameters
 
-```bash
-pip install bitlinear
-```
+| Parameter | Type | Description |
+| --- | --- | --- |
+| in_features | int | The number of input features. |
+| out_features | int | The number of output features. |
+| groups | int (optional) | The number of groups for group normalization. Default is 1. |
 
----
+### Methods
 
-## 4. Usage <a name="usage"></a>
+#### `__init__(self, in_features, out_features, groups=1)`
 
-In this section, we'll cover how to use the `BitLinear` module effectively. It consists of two main parts: the `absmax_quantize` function and the `BitLinear` class.
+The constructor for the `BitLinear` class. Initializes the weight parameter and resets it.
 
-### 4.1. `absmax_quantize` Function <a name="absmax_quantize-function"></a>
+#### `reset_parameters(self)`
 
-The `absmax_quantize` function is used to quantize a given input tensor. It follows the steps of calculating a scale, quantizing the input tensor, and dequantizing the quantized tensor.
+Resets the weight parameter using the Kaiming uniform initialization method.
 
-#### Parameters:
-- `x`: The input tensor to be quantized.
+#### `forward(self, input)`
 
-#### Returns:
-- `quant`: The quantized tensor.
-- `dequant`: The dequantized tensor.
+Performs the forward pass of the `BitLinear` module.
 
-#### Example:
-```python
-import torch
-from zeta.quant import absmax_quantize
+### Usage Examples
 
-# Example data
-x = torch.randn(10, 512)
+#### Example 1: Basic Usage
 
-# Quantize and dequantize
-quant, dequant = absmax_quantize(x)
-print(quant)
-```
-
-### 4.2. `BitLinear` Class <a name="bitlinear-class"></a>
-
-The `BitLinear` class is the core component that implements the quantization process using binary weights. It takes the input tensor, applies normalization, binarizes the weights, performs linear operations with binarized weights, and quantizes the output.
-
-#### Parameters:
-- `dim`: The dimension of the input tensor.
-
-#### Example:
 ```python
 import torch
 from zeta.quant import BitLinear
 
-# Example data
-x = torch.randn(10, 512)
+# Initialize the BitLinear module
+linear = BitLinear(10, 20)
 
-# Initialize the BitLinear layer
-layer = BitLinear(512)
+# Create a random tensor of size (128, 10)
+input = torch.randn(128, 10)
 
-# Forward pass through the BitLinear layer
-y, dequant = layer(x)
-print(y, dequant)
+# Perform the forward pass
+output = linear(input)
+
+# Print the size of the output
+print(output.size())  # torch.Size([128, 20])
 ```
 
-### 4.3. Examples <a name="examples"></a>
 
-Let's explore three usage examples of the `BitLinear` module, demonstrating different scenarios and applications.
+#### Example 2: Using Different Number of Groups
 
----
+```python
+import torch
+from zeta.quant import BitLinear
 
-## 5. Additional Information <a name="additional-information"></a>
+# Initialize the BitLinear module with 2 groups
+linear = BitLinear(10, 20, groups=2)
 
-- **Quantization**: The `BitLinear` module is designed to perform quantization on input tensors, especially useful in resource-constrained environments and for improving efficiency in Transformer models.
-- **Memory and Computational Efficiency**: It helps in reducing memory and computational requirements during training and inference.
-- **Custom Quantization Functions**: You can use custom quantization functions like `absmax_quantize` to fine-tune quantization according to your requirements.
+# Create a random tensor of size (128, 10)
+input = torch.randn(128, 10)
 
----
+# Perform the forward pass
+output = linear(input)
 
-## 6. Conclusion <a name="conclusion"></a>
+# Print the size of the output
+print(output.size())  # torch.Size([128, 20])
+```
 
-The `BitLinear` module is a valuable tool for implementing quantization in deep learning models. This documentation provides a comprehensive guide on its usage, parameters, and examples, enabling you to integrate it into your projects effectively.
+#### Example 3: Integrating with a PyTorch Model
 
-Quantization plays a crucial role in optimizing models for various applications, and the `BitLinear` module simplifies this process.
+```python
+import torch
+from torch import nn
+from zeta.quant import BitLinear
 
-*Please check the official `BitLinear` repository and documentation for any updates beyond the knowledge cutoff date.*
+class MyModel(nn.Module):
+    def __init__(self):
+        super(MyModel, self).__init__()
+        self.linear = BitLinear(10, 20)
+
+    def forward(self, x):
+        return self.linear(x)
+
+# Initialize the model
+model = MyModel()
+
+# Create a random tensor of size (128, 10)
+input = torch.randn(128, 10)
+
+# Perform the forward pass
+output = model(input)
+
+# Print the size of the output
+print(output.size())  # torch.Size([128, 20])
+```
+
+
+# Conclusion
+----------
+
+The `BitLinear` module provides a unique way to perform linear transformation with bit quantization. This can be particularly useful in scenarios where memory efficiency is crucial. As with any other PyTorch module, it can be easily integrated into any model architecture.
