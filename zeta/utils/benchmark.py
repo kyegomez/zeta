@@ -1,16 +1,14 @@
 import random
-from contextlib import nullcontext
+from contextlib import contextmanager, nullcontext
 from dataclasses import dataclass, field
-from typing import Callable, Optional
-from contextlib import contextmanager
-from pickle import dump
 from pathlib import Path
+from pickle import dump
+from typing import Callable, Optional
 
 import torch
 import torch.utils.benchmark as benchmark
-from torch.profiler import ProfilerActivity, profile, record_function
-
 from torch.cuda._memory_viz import profile_plot
+from torch.profiler import ProfilerActivity, profile, record_function
 
 
 @dataclass
