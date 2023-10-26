@@ -28,7 +28,8 @@ def benchmark_torch_function_in_microseconds(func: Callable, *args, **kwargs) ->
     for _ in range(5):
         func(*args, **kwargs)
     t0 = benchmark.Timer(
-        stmt="func(*args, **kwargs)", globals={"args": args, "kwargs": kwargs, "func": func}
+        stmt="func(*args, **kwargs)",
+        globals={"args": args, "kwargs": kwargs, "func": func},
     )
     return t0.blocked_autorange().median * 1e6
 
@@ -50,7 +51,9 @@ def profile_function(
             func(*args, **kwargs)
     if config.sync:
         torch.cuda.synchronize()
-    name_context = nullcontext() if config.name is None else record_function(config.name)
+    name_context = (
+        nullcontext() if config.name is None else record_function(config.name)
+    )
     profile_memory = config.memory_profile_path is not None
     with profile(
         activities=activities,
