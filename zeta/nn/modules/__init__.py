@@ -40,6 +40,7 @@ from zeta.nn.modules.simple_rmsnorm import SimpleRMSNorm
 from zeta.nn.modules.gru_gating import GRUGating
 from zeta.nn.modules.shift_tokens import ShiftTokens
 from zeta.nn.modules.swarmalator import simulate_swarmalators
+from zeta.nn.modules.transformations import image_transform
 
 __all__ = [
     "CNNNew",
