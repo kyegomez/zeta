@@ -36,7 +36,3 @@ from zeta import tokenizers
 from zeta import rl
 from zeta import optim
 from zeta import ops
-
-# from zeta.logo import print_colored_logo
-
-# print_colored_logo()

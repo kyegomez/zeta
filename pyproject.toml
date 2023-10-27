@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zetascale"
-version = "0.8.0"
+version = "0.8.3"
 description = "Transformers at zeta scales"
 authors = ["Zeta Team <kye@apac.ai>"]
 license = "MIT"
@@ -39,14 +39,13 @@ beartype = "*"
 tiktoken = "*"
 tqdm = "*"
 rich = "*"
-pickle = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.autopep8]
-max_line_length = 120
+max_line_length = 100
 ignore = "E501,W6"  # or ["E501", "W6"]
 in-place = true
 recursive = true
