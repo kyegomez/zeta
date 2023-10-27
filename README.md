@@ -11,7 +11,7 @@ Build High-performance, agile, and scalable AI models with modular and re-useabl
   <a href="https://pypi.org/project/zetascale"><img alt="MIT License" src="https://badge.fury.io/py/zetascale.svg" /></a>
 </p>
 
-# Vision
+# Benefits
 - Write less code
 - Prototype faster
 - Reduce Errors
