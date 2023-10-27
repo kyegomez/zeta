@@ -12,7 +12,12 @@ Build High-performance, agile, and scalable AI models with modular and re-useabl
 </p>
 
 # Vision
-Zeta hopes to be the leading framework and library to effortlessly enable you to create the most capable and reliable foundation models out there with infinite scalability in as minmal amounts of code as possible
+- Write less code
+- Prototype faster
+- Reduce Errors
+- Scalability
+- Build Models faster
+- Full Stack Error Handling
 
 
 # 🤝 Schedule a 1-on-1 Session
