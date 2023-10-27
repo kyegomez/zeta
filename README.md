@@ -14,6 +14,8 @@ Build High-performance, agile, and scalable AI models with modular and re-useabl
 # Benefits
 - Write less code
 - Prototype faster
+- Bleeding-Edge Performance
+- Reuseable Building Blocks
 - Reduce Errors
 - Scalability
 - Build Models faster
