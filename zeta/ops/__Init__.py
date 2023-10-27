@@ -1,5 +1,6 @@
 from zeta.ops.main import *
 from zeta.ops.softmax import *
+from zeta.ops.unitwise_norm import unitwise_norm
 
 from zeta.ops.softmax import (
     standard_softmax,
@@ -44,4 +45,5 @@ __all__ = [
     "logit_scaled_softmax",
     # 9. norm exponential softmax,
     "norm_exp_softmax",
+    "unitwise_norm",
 ]
