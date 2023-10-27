@@ -25,6 +25,7 @@ xformers
 pickle
 vector-quantize-pytorch
 scipy
+rich
 tiktoken
 autopep8
 transformers

@@ -25,7 +25,7 @@ def display_markdown_message(message):
 
 
 def print_colored_logo():
-    with open("zeta/logo.txt", "r") as file:
+    with open("zeta/zeta/logo.txt", "r") as file:
         logo = file.read()
     text = colored(logo, "blue")
     print(text)
