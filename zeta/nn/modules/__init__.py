@@ -41,6 +41,8 @@ from zeta.nn.modules.gru_gating import GRUGating
 from zeta.nn.modules.shift_tokens import ShiftTokens
 from zeta.nn.modules.swarmalator import simulate_swarmalators
 from zeta.nn.modules.transformations import image_transform
+from zeta.nn.modules.squeeze_excitation import SqueezeExcitation
+
 
 __all__ = [
     "CNNNew",
