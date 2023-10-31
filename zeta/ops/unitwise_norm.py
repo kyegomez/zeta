@@ -10,10 +10,10 @@ def unitwise_norm(x):
 
 
     Example:
-    >>> x = torch.randn(10, 10) 
+    >>> x = torch.randn(10, 10)
     >>> unitwise_norm(x)
-    
-    
+
+
     """
     if (len(torch.squeeze(x).shape)) <= 1:
         axis = 0
@@ -26,6 +26,5 @@ def unitwise_norm(x):
         keepdims = True
     else:
         raise ValueError(f"Got a parameter with len(shape) not in [1, 2, 3, 5] {x}")
-    
-    return torch.sqrt(torch.sum(torch.square(x), axis=axis, keepdim=keepdims))
 
+    return torch.sqrt(torch.sum(torch.square(x), axis=axis, keepdim=keepdims))

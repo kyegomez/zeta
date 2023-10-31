@@ -20,9 +20,9 @@ class HindsightExperienceReplay:
         the size of the mini-batch
     goal_sampling_strategy : function
         the goal sampling strategy to use
-    
+
     Example:
-    import torch 
+    import torch
     from hindsight import HindsightExperienceReplay
     from numpy import np
 
@@ -62,8 +62,9 @@ class HindsightExperienceReplay:
         states, actions, rewards, next_states, dones, goals = sampled_transitions
 
 
-    
+
     """
+
     def __init__(
         self, state_dim, action_dim, buffer_size, batch_size, goal_sampling_strategy
     ):
@@ -108,4 +109,3 @@ class HindsightExperienceReplay:
     def __len__(self):
         """Return the length of the buffer"""
         return len(self.buffer)
-

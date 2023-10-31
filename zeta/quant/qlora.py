@@ -596,10 +596,21 @@ class QloraLinear(nn.Module):
         scaling: the scaling factor for the QLoRA term
 
     Example:
-    >>> m = QloraLinear(20, 30)
-    >>> input = torch.randn(128, 20)
-    >>> output = m(input)
+        import torch
+        from zeta.quant.qlora import QloraLinear
+        # Convert the weight tensor to torch.bfloat16
+        weight_bfloat16 = torch.rand(4096, 4096).to(torch.bfloat16)
 
+        # Create the QloraLinear model with the correctly typed weight tensor
+        model = QloraLinear(4096, 4096, weight=weight_bfloat16, r=64)
+
+        # Convert the input tensor to torch.bfloat16
+        tensor = torch.rand(4096, 4096).to(torch.bfloat16)
+
+        # Perform a forward and backward pass
+        out = model(tensor).sum()
+        print(out)
+        out.backward()
 
 
     """
@@ -647,3 +658,4 @@ class QloraLinear(nn.Module):
             * self.scaling
         )
         return result2
+

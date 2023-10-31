@@ -54,7 +54,7 @@ class SqueezeExcitation(nn.Module):
     ----------
     se : nn.Sequential
         the sequential layers of the Squeeze-and-Excitation block
-    
+
     Methods
     -------
     forward(x)
@@ -65,10 +65,11 @@ class SqueezeExcitation(nn.Module):
     >>> model = SqueezeExcitation(3, 1)
     >>> output = model(x)
     >>> print(output.shape)
-    
-    
-    
+
+
+
     """
+
     def __init__(self, in_planes, reduced_dim):
         super(SqueezeExcitation, self).__init__()
         self.se = nn.Sequential(
@@ -133,8 +134,8 @@ class EfficientNet(nn.Module):
     Parameters
     ----------
     width_mult : float
-        the width multiplier    
-    
+        the width multiplier
+
     Attributes
     ----------
     features : nn.Sequential
@@ -143,18 +144,19 @@ class EfficientNet(nn.Module):
         the adaptive average pooling layer
     classifier : nn.Linear
         the linear layer
-    
+
     Methods
     -------
     forward(x)
 
-    Example: 
+    Example:
     >>> x = torch.randn(1, 3, 256, 256)
     >>> model = EfficientNet()
     >>> output = model(x)
     >>> print(output.shape)
-    
+
     """
+
     def __init__(self, width_mult=1.0):
         super(EfficientNet, self).__init__()
         # scale dimensions
