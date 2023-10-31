@@ -18,6 +18,7 @@ torchvision
 tokenmonster
 accelerate 
 datasets 
+torchdiffeq
 lion-pytorch 
 sentencepiece
 beartype

@@ -1,5 +1,6 @@
 from torch import nn
 
+
 class SqueezeExcitation(nn.Module):
     """
     Squeeze-and-Excitation block.
@@ -15,7 +16,7 @@ class SqueezeExcitation(nn.Module):
     ----------
     se : nn.Sequential
         the sequential layers of the Squeeze-and-Excitation block
-    
+
     Methods
     -------
     forward(x)
@@ -26,10 +27,11 @@ class SqueezeExcitation(nn.Module):
     >>> model = SqueezeExcitation(3, 1)
     >>> output = model(x)
     >>> print(output.shape)
-    
-    
-    
+
+
+
     """
+
     def __init__(self, in_planes, reduced_dim):
         super(SqueezeExcitation, self).__init__()
         self.se = nn.Sequential(
