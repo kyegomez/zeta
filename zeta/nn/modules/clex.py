@@ -77,9 +77,10 @@ class Clex(nn.Module):
         >>> clex = Clex(512, max_position_embeddings=2048, rope_scaling={"max_factor": 100, "param_factor": 100})
         >>> input = torch.randn(1, 1, 512)
         >>> output = clex(input)
-    
-    
+
+
     """
+
     def __init__(
         self,
         dim,
