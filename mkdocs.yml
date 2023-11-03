@@ -6,7 +6,7 @@ site_description: >-
   minimal lines of code as possible.
 repo_name: kyegomez/zeta
 repo_url: 'https://github.com/kyegomez/zeta'
-edit_uri: 'https://github.com/kyegomez/zeta/tree/main/docs'
+edit_uri: 'https://github.com/kyegomez/"zeta/tree/main/docs'
 copyright: APAC Corp 2023. All rights reserved.
 plugins:
   - glightbox
@@ -20,9 +20,9 @@ extra:
     - icon: fontawesome/brands/discord
       link: 'https://discord.gg/qUtxnK2NMf'
     - icon: fontawesome/brands/github
-      link: 'https://github.com/kyegomez/Zeta/'
+      link: 'https://github.com/kyegomez/"Zeta/'"
     - icon: fontawesome/brands/python
-      link: 'https://pypi.org/project/Zeta/'
+      link: 'https://pypi.org/project/"Zeta/'"
 theme:
   name: material
   custom_dir: docs/overrides
@@ -66,85 +66,86 @@ markdown_extensions:
   - footnotes
 nav:
   - Home:
-      - Overview: index.md
-      - Contributing: contributing.md
+      - Overview: "index.md"
+      - Contributing: "contributing.md"
   - Zeta:
-      - Overview: zeta/index.md
+      - Overview: ""zeta/index.md""
       - zeta.nn:
           - zeta.nn.biases:
-              - Xpos: zeta/nn/biases/xpos.md
-              - RelativePositionBias: zeta/nn/biases/relative_bias.md
-              - AlibiPositionalBias: zeta/nn/biases/alibi.md
-              - DynamicPositionBias: zeta/nn/biases/dynamic.md
+              - Xpos: ""zeta/nn/biases/xpos.md""
+              - RelativePositionBias: ""zeta/nn/biases/relative_bias.md""
+              - AlibiPositionalBias: ""zeta/nn/biases/alibi.md""
+              - DynamicPositionBias: ""zeta/nn/biases/dynamic.md""
           - zeta.nn.embeddings:
-              - MultiWay: zeta/nn/embeddings/multiway.md
-              - RotaryEmbeddings: zeta/nn/embeddings/rope.md
-              - TruncatedRotaryEmbedding: zeta/nn/embeddings/truncated_rope.md
-              - PositionalEmbedding: zeta/nn/embeddings/positional_embeddings.md
-              - XPOS: zeta/nn/embeddings/xpos.md
-              - YarnEmbedding: zeta/nn/embeddings/yarn.md
-              - VisionEmbedding: zeta/nn/embeddings/vis_emb.md
-              - SinusoidalEmbeddings: zeta/nn/embeddings/sinusoidal.md
-              - PatchEmbeddings: zeta/nn/embeddings/patch_embeddings.md
-              - PositionInterpolationEmbeddings: zeta/nn/pi.md
+              - MultiWay: ""zeta/nn/embeddings/multiway.md""
+              - RotaryEmbeddings: ""zeta/nn/embeddings/rope.md""
+              - TruncatedRotaryEmbedding: ""zeta/nn/embeddings/truncated_rope.md""
+              - PositionalEmbedding: ""zeta/nn/embeddings/positional_embeddings.md""
+              - XPOS: ""zeta/nn/embeddings/xpos.md""
+              - YarnEmbedding: ""zeta/nn/embeddings/yarn.md""
+              - VisionEmbedding: ""zeta/nn/embeddings/vis_emb.md""
+              - SinusoidalEmbeddings: ""zeta/nn/embeddings/sinusoidal.md""
+              - PatchEmbeddings: ""zeta/nn/embeddings/patch_embeddings.md""
+              - PositionInterpolationEmbeddings: ""zeta/nn/pi.md""
           - zeta.nn.modules:
-              - Lora: zeta/nn/modules/lora.md
-              - TokenLearner: zeta/nn/modules/token_learner.md
-              - DynamicModule: zeta/nn/modules/dm.md
-              - AdaptiveParameterList: zeta/nn/modules/adaptive.md
-              - RMSNorm: zeta/nn/modules/rms_norm.md
-              - MLP: zeta/nn/modules/mlp.md
-              - mbconv: zeta/nn/modules/mbconv.md
-              - LayerNorm: zeta/nn/modules/layernorm.md
-              - Ether: zeta/nn/modules/ether.md
-              - Exo: zeta/nn/modules/exo.md
-              - AdaptiveConv3DMod: zeta/nn/modules/adaptive_conv.md
-              - TimeUpSample2x: zeta/nn/modules/time_up_sample.md
-              - SigLipLoss: zeta/nn/modules/siglip.md
-              - SimpleFeedFoward: zeta/nn/modules/simple_feedback.md
+              - Lora: ""zeta/nn/modules/lora.md""
+              - TokenLearner: ""zeta/nn/modules/token_learner.md""
+              - DynamicModule: ""zeta/nn/modules/dm.md""
+              - AdaptiveParameterList: ""zeta/nn/modules/adaptive.md""
+              - RMSNorm: ""zeta/nn/modules/rms_norm.md""
+              - MLP: ""zeta/nn/modules/mlp.md""
+              - mbconv: ""zeta/nn/modules/mbconv.md""
+              - LayerNorm: ""zeta/nn/modules/layernorm.md""
+              - Ether: ""zeta/nn/modules/ether.md""
+              - Exo: ""zeta/nn/modules/exo.md""
+              - AdaptiveConv3DMod: ""zeta/nn/modules/adaptive_conv.md""
+              - TimeUpSample2x: ""zeta/nn/modules/time_up_sample.md""
+              - SigLipLoss: ""zeta/nn/modules/siglip.md""
+              - SimpleFeedFoward: ""zeta/nn/modules/simple_feedback.md""
+              - Unet: """zeta/nn/modules/unet.md"""
           - zeta.nn.attention:
-              - FlashAttention: zeta/nn/attention/flash_attention.md
-              - MultiQueryAttention: zeta/nn/attention/multiquery.md
-              - MultiheadAttention: zeta/nn/attention/multihead.md
-              - FlashAttentionTwo: zeta/nn/attention/flash2.md
-              - BaseAttention: zeta/nn/attention/base.md
-              - LocalAttention: zeta/nn/attention/local.md
-              - LocalMHA: zeta/nn/attention/localmha.md
-              - MixtureOfAttention: zeta/nn/attention/mixture_of_attention.md
-              - MixtureOfAutoregressiveAttention: zeta/nn/attention/mixture_of_attention_ar.md
-              - SparseAttention: zeta/nn/attention/sparse_attn.md
+              - FlashAttention: ""zeta/nn/attention/flash_attention.md""
+              - MultiQueryAttention: ""zeta/nn/attention/multiquery.md""
+              - MultiheadAttention: ""zeta/nn/attention/multihead.md""
+              - FlashAttentionTwo: ""zeta/nn/attention/flash2.md""
+              - BaseAttention: ""zeta/nn/attention/base.md""
+              - LocalAttention: ""zeta/nn/attention/local.md""
+              - LocalMHA: ""zeta/nn/attention/localmha.md""
+              - MixtureOfAttention: ""zeta/nn/attention/mixture_of_attention.md""
+              - MixtureOfAutoregressiveAttention: ""zeta/nn/attention/mixture_of_attention_ar.md""
+              - SparseAttention: ""zeta/nn/attention/sparse_attn.md""
           - zeta.structs:
-              - Decoder: zeta/nn/architecture/decoder.md
-              - Transformer: zeta/nn/architecture/transformer.md
-              - TransformerBlock: zeta/nn/architecture/transformerblock.md
-              - VideoTokenizer: zeta/nn/architecture/video_tokenizer.md
+              - Decoder: ""zeta/nn/architecture/decoder.md""
+              - Transformer: ""zeta/nn/architecture/transformer.md""
+              - TransformerBlock: ""zeta/nn/architecture/transformerblock.md""
+              - VideoTokenizer: ""zeta/nn/architecture/video_tokenizer.md""
           - zeta.training.loss:
-              - Nebula: zeta/training/nebula.md
+              - Nebula: "zeta/training/nebula.md"
           - zeta.training.optimizers:
-              - DecoupledLionW: zeta/training/optimizers/decoupled_lion.md
-              - SophiaG: zeta/training/optimizers/sophia.md
+              - DecoupledLionW: "zeta/training/optimizers/decoupled_lion.md"
+              - SophiaG: "zeta/training/optimizers/sophia.md"
       - zeta.tokenizers:
-          - MultiModalTokenizer: zeta/tokenizers/multi_modal_tokenizer.md
-          - LanguageTokenizerGPTX: zeta/tokenizers/language_tokenizer.md
-          - SentencePieceTokenizer: zeta/tokenizers/sentencepiece.md
-          - TokenMonster: zeta/tokenizers/token_monster.md
+          - MultiModalTokenizer: "zeta/tokenizers/multi_modal_tokenizer.md"
+          - LanguageTokenizerGPTX: "zeta/tokenizers/language_tokenizer.md"
+          - SentencePieceTokenizer: "zeta/tokenizers/sentencepiece.md"
+          - TokenMonster: "zeta/tokenizers/token_monster.md"
       - zeta.utils:
-          - main: zeta/utils/main.md
+          - main: "zeta/utils/main.md"
       - zeta.ops:
-          - main: zeta/ops/main.md
-          - softmaxes: zeta/ops/softmaxes.md
+          - main: "zeta/ops/main.md"
+          - softmaxes: "zeta/ops/softmaxes.md"
       - zeta.optim:
-          - StableAdamWUnfused: zeta/optims/adamw.md
-          - GradientAscent: zeta/optims/ga.md
+          - StableAdamWUnfused: "zeta/optims/adamw.md"
+          - GradientAscent: "zeta/optims/ga.md"
       - zeta.training:
-          - fsdp: zeta/training/fsdp.md
-          - ParallelWrapper: zeta/training/parallel_wrapper.md
-          - train: zeta/training/train.md
+          - fsdp: "zeta/training/fsdp.md"
+          - ParallelWrapper: "zeta/training/parallel_wrapper.md"
+          - train: "zeta/training/train.md"
       - zeta.quant:
-          - QUIK: zeta/quant/quik.md
-          - BitLinear: zeta/quant/bitlinear.md
+          - QUIK: "zeta/quant/quik.md"
+          - BitLinear: "zeta/quant/bitlinear.md"
   - Examples:
-      - Overview: examples/index.md
+      - Overview: "examples/index.md"
   - Product:
-      - Overview: zeta/product/product_ideas.md
-      - Zetahub: zeta/product/zetahub.md
+      - Overview: "zeta/product/product_ideas.md"
+      - Zetahub: "zeta/product/zetahub.md"
