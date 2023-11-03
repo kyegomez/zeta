@@ -48,7 +48,7 @@ This method enables gradient checkpointing for the U-Net model, which is a techn
 
 ```python
 import torch
-from <path_to_module>.unet import Unet  # Update `<path_to_module>` to your specific path
+from zeta.nn import Unet  # Update `<path_to_module>` to your specific path
 
 # Initialize the U-Net model
 model = Unet(n_channels=1, n_classes=2)
