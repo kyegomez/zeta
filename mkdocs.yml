@@ -18,11 +18,11 @@ extra:
     - icon: fontawesome/solid/house
       link: assets/img/zeta-logo.png
     - icon: fontawesome/brands/discord
-      link: 'https://discord.gg/qUtxnK2NMf'
+      link: https://discord.gg/qUtxnK2NMf
     - icon: fontawesome/brands/github
-      link: 'https://github.com/kyegomez/"Zeta/'"
+      link: https://github.com/kyegomez/Zeta/
     - icon: fontawesome/brands/python
-      link: 'https://pypi.org/project/"Zeta/'"
+      link: https://pypi.org/project/"Zeta/
 theme:
   name: material
   custom_dir: docs/overrides
