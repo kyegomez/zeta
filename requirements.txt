@@ -23,7 +23,6 @@ lion-pytorch
 sentencepiece
 beartype
 xformers
-pickle
 vector-quantize-pytorch
 scipy
 rich
