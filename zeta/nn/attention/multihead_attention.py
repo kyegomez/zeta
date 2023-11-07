@@ -10,47 +10,45 @@ except ModuleNotFoundError:
     from torch.nn import LayerNorm
 
 from zeta.nn.attention.base import BaseAttention
-from zeta.nn.embeddings.multiway_network import MultiwayWrapper
+from zeta.nn.embeddings.multiway_network import MultiwayNetwork
 from zeta.nn.embeddings.xpos_relative_position import XPOS
 
 
 class MultiheadAttention(BaseAttention):
     def __init__(
         self,
-        args,
         embed_dim: int = None,
         num_heads: int = None,
         dropout: int = 0.0,
         self_attention: bool = False,
-        encoder_decoder_attention: bool = False,
         subln: bool = False,
+        layernorm_eps = 1e-05,
+        xpos_scale_base: int = 512,
+        xpos_rel_pos = None
     ):
         super().__init__()
-        self.args = args
         self.embed_dim = embed_dim
         self.num_heads = num_heads
         self.head_dim = embed_dim // num_heads
         self.scaling = self.head_dim**-0.5
 
         self.self_attention = self_attention
-        self.encoder_decoder_attention = encoder_decoder_attention
-        assert self.self_attention ^ self.encoder_decoder_attention
 
-        self.k_proj = MultiwayWrapper(args, nn.Linear(embed_dim, embed_dim, bias=True))
-        self.v_proj = MultiwayWrapper(args, nn.Linear(embed_dim, embed_dim, bias=True))
-        self.q_proj = MultiwayWrapper(args, nn.Linear(embed_dim, embed_dim, bias=True))
-        self.out_proj = MultiwayWrapper(
-            args, nn.Linear(embed_dim, embed_dim, bias=True)
+        self.k_proj = MultiwayNetwork(nn.Linear(embed_dim, embed_dim, bias=True))
+        self.v_proj = MultiwayNetwork(nn.Linear(embed_dim, embed_dim, bias=True))
+        self.q_proj = MultiwayNetwork(nn.Linear(embed_dim, embed_dim, bias=True))
+        self.out_proj = MultiwayNetwork(
+            nn.Linear(embed_dim, embed_dim, bias=True)
         )
         self.inner_attn_ln = (
-            MultiwayWrapper(args, LayerNorm(self.embed_dim, eps=args.layernorm_eps))
+            MultiwayNetwork(LayerNorm(self.embed_dim, eps=layernorm_eps))
             if subln and self.self_attention
             else None
         )
         self.dropout_module = torch.nn.Dropout(dropout)
         self.xpos = (
-            XPOS(self.head_dim, args.xpos_scale_base)
-            if args.xpos_rel_pos and self.self_attention
+            XPOS(self.head_dim, xpos_scale_base)
+            if xpos_rel_pos and self.self_attention
             else None
         )
 
@@ -154,4 +152,4 @@ class MultiheadAttention(BaseAttention):
             bsz, self.num_heads, tgt_len, src_len
         ).transpose(1, 0)
 
-        return attn, attn_weights
+        return attn
