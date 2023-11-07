@@ -73,7 +73,7 @@ class VisualExpert:
         self,
         dim: int,
         hidden_dim: int,
-        dropout: int,
+        dropout: float,
         heads: int,
     ):
         self.dim = dim
@@ -97,12 +97,13 @@ class VisualExpert:
 
     def __call__(self, x: torch.Tensor):
         """Forward pass as shown in the diagram """
+
         # Apply Layernorm first
-        x = self.norm(x)
+        normalized = self.norm(x)
 
         # Split into text and image features
-        x_text = x
-        x_image = x
+        x_text = normalized
+        x_image = normalized
 
         # Apply QKV projections for text
         q_text, k_text, v_text = (
@@ -145,4 +146,5 @@ class VisualExpert:
         out = out_text + out_img + out
 
         return out
+
 

@@ -1,7 +1,7 @@
 from torch import nn
 
 
-def SimpleFeedForward(dim, hidden_dim, dropout=0.1):
+def SimpleFeedForward(dim: int, hidden_dim: int, dropout=0.1):
     """
     Feedforward neural network with LayerNorms and GELU activations
 
