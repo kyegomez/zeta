@@ -10,7 +10,7 @@ from zeta.nn.embeddings.embedding import (
 from zeta.nn.embeddings.multiway_network import (
     MultiwayEmbedding,
     MultiwayNetwork,
-    MultiwayWrapper,
+    # MultiwayWrapper,
 )
 from zeta.nn.embeddings.nominal_embeddings import NominalEmbedding
 from zeta.nn.embeddings.positional import PositionalEmbedding
@@ -36,7 +36,7 @@ __all__ = [
     "TextEmbedding",
     "MultiwayEmbedding",
     "MultiwayNetwork",
-    "MultiwayWrapper",
+    # "MultiwayWrapper",
     "NominalEmbedding",
     "PositionalEmbedding",
     "PositionInterpolationEmbeddings",

@@ -44,6 +44,7 @@ from zeta.nn.modules.transformations import image_transform
 from zeta.nn.modules.squeeze_excitation import SqueezeExcitation
 from zeta.nn.modules.clex import Clex
 from zeta.nn.modules.unet import Unet
+from zeta.nn.modules.visual_expert import VisualExpert
 
 __all__ = [
     "CNNNew",
@@ -80,4 +81,5 @@ __all__ = [
     "SigLipLoss",
     "SimpleFeedForward",
     "Unet",
+    "VisualExpert",
 ]
