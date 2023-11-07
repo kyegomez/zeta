@@ -79,5 +79,5 @@ __all__ = [
     "SimpleResBlock",
     "SigLipLoss",
     "SimpleFeedForward",
-    "Unet"
+    "Unet",
 ]
