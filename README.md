@@ -54,8 +54,8 @@ print(output.shape)
 
 
 ## Contributing
-We're dependent on you for contributions, it's only Kye maintaining this repository and it's very difficult and with that said any contribution is infinitely appreciated by not just me but by Zeta's users who dependen on this repository to build the world's
-best AI models. Head over to the project board to look at open features to implement or bugs to tackle!
+- We need you to help us build the most re-useable, reliable, and high performance ML framework ever.
 
-### Project Board
-[This weeks iteration is here](https://github.com/users/kyegomez/projects/7/views/2)
+- [Check out the project board here!](https://github.com/users/kyegomez/projects/7/views/2)
+
+- We need help writing tests and documentation!
