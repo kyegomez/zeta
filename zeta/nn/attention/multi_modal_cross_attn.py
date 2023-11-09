@@ -96,7 +96,8 @@ class MultiModalCrossAttention(nn.Module):
             # attn_weights = rearrange(out, 'b h n d -> b n (h d)'
 
         print(
-            f"attn_weights shape: {attn_weights.shape}, and vcross shape: {Vcross.shape}"
+            f"attn_weights shape: {attn_weights.shape}, and vcross shape:"
+            f" {Vcross.shape}"
         )
 
         # what does the @ symbol mean?

@@ -110,7 +110,8 @@ class GradientAscent:
 
                 if self.step_count % self.logging_interval == 0:
                     print(
-                        f"Step: {self.step_count}, Learning Rate: {self.lr}, Gradient Norm: {torch.norm(param.grad)}"
+                        f"Step: {self.step_count}, Learning Rate: {self.lr}, Gradient"
+                        f" Norm: {torch.norm(param.grad)}"
                     )
 
             except Exception as error:

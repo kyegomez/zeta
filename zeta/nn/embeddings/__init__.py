@@ -28,7 +28,6 @@ from zeta.nn.embeddings.yarn import *
 from zeta.nn.embeddings.yarn import YarnEmbedding
 from zeta.nn.embeddings.sine_positional import SinePositionalEmbedding
 
-
 __all__ = [
     "AbsolutePositionalEmbedding",
     "BaseEmbedding",

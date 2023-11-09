@@ -8,7 +8,6 @@ from torch.distributed.fsdp import (
     ShardingStrategy,
 )
 
-
 from torch.distributed.fsdp.wrap import transformer_auto_wrap_policy
 
 
@@ -84,9 +83,8 @@ def fsdp(
         sharding_strat_fsdp = ShardingStrategy.NO_SHARD
     else:
         raise ValueError(
-            "Invalid scheduler_type. Expected 'SHARD_GRAD', 'FULL_SHARD' or 'NO_SHARD', got: {}".format(
-                shard_strat
-            )
+            "Invalid scheduler_type. Expected 'SHARD_GRAD', 'FULL_SHARD' or 'NO_SHARD',"
+            " got: {}".format(shard_strat)
         )
 
     model = FullyShardedDataParallel(

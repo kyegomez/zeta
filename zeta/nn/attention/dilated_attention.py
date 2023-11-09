@@ -150,19 +150,22 @@ class DilatedAttention(BaseAttention):
 
             attn_output = attn_output.masked_fill(mask, float("-inf"))
             print(
-                f"attn output shape: {attn_output.shape} and attn_output: {attn_output.dtype}"
+                f"attn output shape: {attn_output.shape} and attn_output:"
+                f" {attn_output.dtype}"
             )
 
         # apply dropout
         attn_output = self.dropout(attn_output)
         print(
-            f"attn output after dropout: {attn_output.shape} and dtype: {attn_output.dtype}"
+            f"attn output after dropout: {attn_output.shape} and dtype:"
+            f" {attn_output.dtype}"
         )
 
         # Scatter and concatenate
         attn_output = attn_output.reshape(batch_size, -1, self.d_model)
         print(
-            f"attn_output scatter and concatenate: {attn_output.shape} and {attn_output.dtype}"
+            f"attn_output scatter and concatenate: {attn_output.shape} and"
+            f" {attn_output.dtype}"
         )
         return attn_output
 
@@ -189,8 +192,7 @@ class MultiheadDilatedAttention(nn.Module):
 
         if not embed_dim % self.num_heads == 0:
             raise ValueError(
-                f"embed_dim ({embed_dim}) must be divisible by "
-                f"num_heads ({num_heads})"
+                f"embed_dim ({embed_dim}) must be divisible by num_heads ({num_heads})"
             )
         num_dilations = len(dilation_rates)
         num_segments = len(segment_lengths)

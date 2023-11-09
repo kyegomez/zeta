@@ -33,7 +33,6 @@ if TYPE_CHECKING:
     if is_torch_available():
         import torch
 
-
 ImageInput = Union[
     "PIL.Image.Image",
     np.ndarray,
@@ -121,13 +120,13 @@ def make_list_of_images(images, expected_ndims: int = 3) -> List[ImageInput]:
             images = [images]
         else:
             raise ValueError(
-                f"Invalid image shape. Expected either {expected_ndims + 1} or {expected_ndims} dimensions, but got"
-                f" {images.ndim} dimensions."
+                f"Invalid image shape. Expected either {expected_ndims + 1} or"
+                f" {expected_ndims} dimensions, but got {images.ndim} dimensions."
             )
         return images
     raise ValueError(
-        "Invalid image type. Expected either PIL.Image.Image, numpy.ndarray, torch.Tensor, tf.Tensor or "
-        f"jax.ndarray, but got {type(images)}."
+        "Invalid image type. Expected either PIL.Image.Image, numpy.ndarray,"
+        f" torch.Tensor, tf.Tensor or jax.ndarray, but got {type(images)}."
     )
 
 
@@ -306,13 +305,16 @@ def load_image(
                 image = PIL.Image.open(BytesIO(b64))
             except Exception as e:
                 raise ValueError(
-                    f"Incorrect image source. Must be a valid URL starting with `http://` or `https://`, a valid path to an image file, or a base64 encoded string. Got {image}. Failed with {e}"
+                    "Incorrect image source. Must be a valid URL starting with"
+                    " `http://` or `https://`, a valid path to an image file, or a"
+                    f" base64 encoded string. Got {image}. Failed with {e}"
                 )
     elif isinstance(image, PIL.Image.Image):
         image = image
     else:
         raise ValueError(
-            "Incorrect format used for image. Should be an url linking to an image, a base64 string, a local path, or a PIL image."
+            "Incorrect format used for image. Should be an url linking to an image, a"
+            " base64 string, a local path, or a PIL image."
         )
     image = PIL.ImageOps.exif_transpose(image)
     image = image.convert("RGB")
@@ -330,8 +332,8 @@ class ImageFeatureExtractionMixin:
             image
         ):
             raise ValueError(
-                f"Got type {type(image)} which is not supported, only `PIL.Image.Image`, `np.array` and "
-                "`torch.Tensor` are."
+                f"Got type {type(image)} which is not supported, only"
+                " `PIL.Image.Image`, `np.array` and `torch.Tensor` are."
             )
 
     def to_pil_image(self, image, rescale=None):
@@ -542,8 +544,8 @@ class ImageFeatureExtractionMixin:
                 if max_size is not None:
                     if max_size <= requested_new_short:
                         raise ValueError(
-                            f"max_size = {max_size} must be strictly greater than the requested "
-                            f"size for the smaller edge size = {size}"
+                            f"max_size = {max_size} must be strictly greater than the"
+                            f" requested size for the smaller edge size = {size}"
                         )
                     if new_long > max_size:
                         new_short, new_long = (

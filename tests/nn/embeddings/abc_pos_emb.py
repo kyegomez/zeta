@@ -8,7 +8,7 @@ def test_absolutepositionalembedding_initialization():
     assert isinstance(model, AbsolutePositionalEmbedding)
     assert model.scale == 512**-0.5
     assert model.max_seq_len == 1000
-    assert model.l2norm_embed == False
+    assert model.l2norm_embed is False
     assert model.emb.weight.shape == (1000, 512)
 
 

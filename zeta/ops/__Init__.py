@@ -24,7 +24,6 @@ from zeta.ops.softmax import (
     norm_exp_softmax,
 )
 
-
 __all__ = [
     "standard_softmax",
     # selu softmax,

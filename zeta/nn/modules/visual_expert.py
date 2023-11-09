@@ -67,8 +67,9 @@ class VisualExpert:
         >>> y = visual_expert(x)
         >>> y.shape
         torch.Size([1, 10, 1024])
-    
+
     """
+
     def __init__(
         self,
         dim: int,
@@ -96,7 +97,7 @@ class VisualExpert:
         self.feedforward = SimpleFeedForward(dim, hidden_dim, dropout)
 
     def __call__(self, x: torch.Tensor):
-        """Forward pass as shown in the diagram """
+        """Forward pass as shown in the diagram"""
 
         # Apply Layernorm first
         normalized = self.norm(x)
@@ -136,7 +137,7 @@ class VisualExpert:
 
         # Seperate text and image features
         out_text = normalized
-        out_image = normalized #torch.split(normalized, self.dim)  # dim=-1)
+        out_image = normalized  # torch.split(normalized, self.dim)  # dim=-1)
 
         # Apply feedforward to both text and image features
         out_text = self.feedforward(out_text)
@@ -146,5 +147,3 @@ class VisualExpert:
         out = out_text + out_img + out
 
         return out
-
-

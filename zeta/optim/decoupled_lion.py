@@ -9,7 +9,6 @@ log = logging.getLogger(__name__)
 
 
 class DecoupledLionW(Optimizer):
-
     """
     DecoupledLionW is an optimizer designed to improve training performance and convergence for deep learning models.
     It is an extension of the Lion optimizer, incorporating decoupled weight decay and a momentum-based update rule.
@@ -124,7 +123,10 @@ class DecoupledLionW(Optimizer):
             )
         if weight_decay >= 1e-3:
             log.warning(
-                f"You are using a high value of `weight_decay={weight_decay}` for the `DecoupledLionW` optimizer. Are you sure you want to do this? Your model's weights will be multiplied by {1.0 - weight_decay} on every step!"
+                f"You are using a high value of `weight_decay={weight_decay}` for the"
+                " `DecoupledLionW` optimizer. Are you sure you want to do this? Your"
+                f" model's weights will be multiplied by {1.0 - weight_decay} on every"
+                " step!"
             )
 
         defaults = {"lr": lr, "betas": betas, "weight_decay": weight_decay}

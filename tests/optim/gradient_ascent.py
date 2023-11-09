@@ -1,5 +1,3 @@
-from unittest.mock import MagicMock
-
 import pytest
 import torch
 from gradient_ascent import GradientAscent
@@ -94,12 +92,10 @@ def test_warmup(optimizer):
     assert optimizer.step_count == 5
 
 
-@pytest.mark.parametrize(
-    "step_count, logging_interval, expected_output", [(10, 10, True), (5, 10, False)]
-)
-def test_logging_interval(
-    capfd, optimizer, step_count, logging_interval, expected_output
-):
+@pytest.mark.parametrize("step_count, logging_interval, expected_output",
+                         [(10, 10, True), (5, 10, False)])
+def test_logging_interval(capfd, optimizer, step_count, logging_interval,
+                          expected_output):
     optimizer.logging_interval = logging_interval
     optimizer.step_count = step_count
     optimizer.step()

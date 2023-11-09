@@ -75,9 +75,10 @@ class VisionEmbedding(nn.Module):
     def forward(self, x, masked_position=None, **kwargs):
         """forward"""
         B, C, H, W = x.shape
-        assert (
-            H == self.img_size[0] and W == self.img_size[1]
-        ), f"Input image size ({H}*{W}) doesn't match model ({self.img_size[0]}*{self.img_size[1]})."
+        assert H == self.img_size[0] and W == self.img_size[1], (
+            f"Input image size ({H}*{W}) doesn't match model"
+            f" ({self.img_size[0]}*{self.img_size[1]})."
+        )
         x = self.proj(x).flatten(2).transpose(1, 2)
 
         batch_size, seq_len, _ = x.size()

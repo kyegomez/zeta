@@ -20,9 +20,10 @@ def get_block_absmax(inpt_tensor: torch.Tensor, block_size: int) -> torch.Tensor
         torch.Tensor: Tensor of scalers for each block
     """
     assert inpt_tensor.dim() == 1, "Input tensor must be flattened"
-    assert (
-        inpt_tensor.numel() % block_size
-    ) == 0, f"Input tensor must be divisible by block size, got {inpt_tensor.numel()} and {block_size}"
+    assert (inpt_tensor.numel() % block_size) == 0, (
+        f"Input tensor must be divisible by block size, got {inpt_tensor.numel()} and"
+        f" {block_size}"
+    )
 
     n_blocks = inpt_tensor.numel() // block_size
     blocks = inpt_tensor.view(n_blocks, block_size)
@@ -140,9 +141,10 @@ class NF4Tensor:
                 size: (n_scaler_blocks)
         """
         assert inpt_tensor.dim() == 1, "Input tensor must be flattened"
-        assert (
-            inpt_tensor.numel() % scaler_block_size
-        ) == 0, f"Input tensor must be divisible by block size, got {inpt_tensor.numel()} and {scaler_block_size}"
+        assert (inpt_tensor.numel() % scaler_block_size) == 0, (
+            "Input tensor must be divisible by block size, got"
+            f" {inpt_tensor.numel()} and {scaler_block_size}"
+        )
 
         # First round of quantization
         # Produces: A tensor of size (n_blocks) of inpt_tensor.dtype
@@ -193,9 +195,10 @@ class NF4Tensor:
 
         """
         assert inpt_tensor.dim() == 1, "Input tensor must be flattened"
-        assert (
-            inpt_tensor.numel() % scaler_block_size
-        ) == 0, f"Input tensor must be divisible by block size, got {inpt_tensor.numel()} and {scaler_block_size}"
+        assert (inpt_tensor.numel() % scaler_block_size) == 0, (
+            "Input tensor must be divisible by block size, got"
+            f" {inpt_tensor.numel()} and {scaler_block_size}"
+        )
         n_scaler_blocks = inpt_tensor.numel() // scaler_block_size
         inpt_tensor = inpt_tensor.view(n_scaler_blocks, scaler_block_size)
         dequantized = (inpt_tensor / quantization_factor.unsqueeze(-1)).flatten().to(
@@ -304,7 +307,10 @@ class NF4Tensor:
         )
 
     def __repr__(self):
-        return f"Quantized Data: {self.quantized_data}\nScalers: {self.quantized_scalers}\n"
+        return (
+            f"Quantized Data: {self.quantized_data}\nScalers:"
+            f" {self.quantized_scalers}\n"
+        )
 
     def __str__(self):
         return f"NF4Tensor({self.original_shape}, {self.block_size})"

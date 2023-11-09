@@ -41,7 +41,6 @@ except ModuleNotFoundError:
 
 logger = logging.getLogger(__name__)
 
-
 # einsum dimensions: (g)roup, (s)equence, (e)xpert, (m)odel, (c)apacity
 # See https://arxiv.org/pdf/2006.16668.pdf for details.
 
@@ -49,7 +48,9 @@ logger = logging.getLogger(__name__)
 # Based on https://github.com/pytorch/pytorch/pull/40762
 class _AllToAll(torch.autograd.Function):
     @staticmethod
-    def forward(ctx: Any, group: dist.ProcessGroup, input: Tensor) -> Tensor:  # type: ignore
+    def forward(
+        ctx: Any, group: dist.ProcessGroup, input: Tensor
+    ) -> Tensor:  # type: ignore
         ctx.group = group
         input = input.contiguous()
         output = torch.empty_like(input)
@@ -140,7 +141,8 @@ class MOELayer(Base):
             and input_shape[0] != expected_bsz
         ):
             logger.warning(
-                f"padding batch with unexpected size {input_shape[0]} (expected: {expected_bsz})"
+                f"padding batch with unexpected size {input_shape[0]} (expected:"
+                f" {expected_bsz})"
             )
             assert input_shape[0] < expected_bsz, f"{input_shape[0]} < {expected_bsz}"
             padded_input = torch.zeros(

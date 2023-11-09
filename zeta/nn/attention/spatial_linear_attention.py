@@ -5,7 +5,6 @@
 
 # from einops_exts import check_shape, rearrange_many
 
-
 # class SpatialLinearAttention(nn.Module):
 #     def __init__(self,
 #                  dim: int = None,
@@ -42,7 +41,6 @@
 #         out = self.to_out(out)
 
 #         return rearrange(out, '(b f) c h w -> b c f h w', b=b)
-
 
 # class EinopsToAndFrom(nn.Module):
 #     def __init_(self, from_einops, to_einops, fn):

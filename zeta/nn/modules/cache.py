@@ -191,9 +191,10 @@ class RotatingBufferCache:
         """
         if self.kv_seqlens is None:
             self.init_kvseqlens(len(seqlens))
-        assert len(seqlens) == len(
-            self.kv_seqlens
-        ), f"Batch size is {len(self.kv_seqlens)}, got {len(seqlens)}, did you forget to reset cache?"
+        assert len(seqlens) == len(self.kv_seqlens), (
+            f"Batch size is {len(self.kv_seqlens)}, got {len(seqlens)}, did you forget"
+            " to reset cache?"
+        )
         seqpos = self.kv_seqlens.tolist()
 
         assert len(seqlens) > 0, seqlens

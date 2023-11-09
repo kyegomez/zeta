@@ -38,7 +38,9 @@ class MLP(nn.Module):
 
     """
 
-    def __init__(self, dim_in: int, dim_out: int, *, expansion_factor=2.0, depth=2, norm=False):
+    def __init__(
+        self, dim_in: int, dim_out: int, *, expansion_factor=2.0, depth=2, norm=False
+    ):
         super().__init__()
         hidden_dim = int(expansion_factor * dim_out)
 

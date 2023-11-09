@@ -702,7 +702,6 @@ def interpolate_pos_encoding_2d(target_spatial_size, pos_embed):
 
 #############
 
-
 # def init_bert_params(module):
 #     def normal_(data):
 #         data.copy_(data.cpu().normal_(mean=0.0, std=0.02).to(data.device))
