@@ -17,7 +17,6 @@ TOKEN_SELF_ATTN_VALUE = -5e4
 
 
 class LocalAttention(nn.Module):
-
     """
 
     The LocalAttention module provides a mechanism to perform local attention operations.
@@ -171,9 +170,10 @@ class LocalAttention(nn.Module):
 
         scale = default(self.scale, dim_head**-0.5)
 
-        assert (
-            n % window_size
-        ) == 0, f"sequence length {n} must be divisible by window size {window_size} for local attention"
+        assert (n % window_size) == 0, (
+            f"sequence length {n} must be divisible by window size {window_size} for"
+            " local attention"
+        )
 
         windows = n // window_size
 

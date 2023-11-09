@@ -302,9 +302,10 @@ class NaViT(nn.Module):
             for image_id, image in enumerate(images):
                 assert image.ndim == 3 and image.shape[0] == c
                 image_dims = image.shape[-2:]
-                assert all(
-                    [divisible_by(dim, p) for dim in image_dims]
-                ), f"height and width {image_dims} of images must be divisible by patch size {p}"
+                assert all([divisible_by(dim, p) for dim in image_dims]), (
+                    f"height and width {image_dims} of images must be divisible by"
+                    f" patch size {p}"
+                )
 
                 ph, pw = map(lambda dim: dim // p, image_dims)
 

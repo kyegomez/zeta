@@ -1,8 +1,7 @@
 import pytest
 import torch
 from zeta.nn.modules.simple_feedforward import (
-    SimpleFeedForward,
-)  # Adjust import as per your project structure
+    SimpleFeedForward,)  # Adjust import as per your project structure
 
 
 # Fixture for creating a SimpleFeedForward model
@@ -50,7 +49,7 @@ def test_zero_dropout(model, input_tensor):
 # Test to check if model handles invalid input dimensions
 def test_invalid_input_dimensions():
     with pytest.raises(ValueError):
-        model = SimpleFeedForward(dim=-1, hidden_dim=2048, dropout=0.1)
+        SimpleFeedForward(dim=-1, hidden_dim=2048, dropout=0.1)
 
 
 # ... (continue adding more test cases as per the guide)

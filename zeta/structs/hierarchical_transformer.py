@@ -527,7 +527,10 @@ class HierarchicalTransformer(nn.Module):
         self.hierarchy_merge_all = hierarchy_merge_all
         assert (
             hierarchy_merge_all or self.h_strides[self.predict_hierarchy_index] == 1
-        ), "the hierarchy level being used for final next token prediction must have compression stride of 1"
+        ), (
+            "the hierarchy level being used for final next token prediction must have"
+            " compression stride of 1"
+        )
 
         # training related loss weights
 
@@ -612,7 +615,9 @@ class HierarchicalTransformer(nn.Module):
 
                 if exists(h_window_size) and h_window_size > effective_seq_len:
                     print(
-                        f"window size for hierarchy {hierarchy}x is greater than effective sequence length - setting window size to None (which would use normal full attention)"
+                        f"window size for hierarchy {hierarchy}x is greater than"
+                        " effective sequence length - setting window size to None"
+                        " (which would use normal full attention)"
                     )
                     h_window_size = None
 

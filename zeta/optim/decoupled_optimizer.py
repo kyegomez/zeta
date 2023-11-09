@@ -158,9 +158,8 @@ def decoupled_optimizer(
         )
     else:
         raise ValueError(
-            "Invalid optimizer_type. Expected 'lion', 'adamw', 'deepspeed' or 'stable_adamw', got: {}".format(
-                optimizer_type
-            )
+            "Invalid optimizer_type. Expected 'lion', 'adamw', 'deepspeed' or"
+            " 'stable_adamw', got: {}".format(optimizer_type)
         )
 
     # Return the optimizer.

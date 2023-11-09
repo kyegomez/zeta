@@ -2,8 +2,7 @@
 import pytest
 import torch
 from zeta.nn.modules.unet import (
-    Unet,
-)  # Adjust this import according to your project structure
+    Unet,)  # Adjust this import according to your project structure
 
 
 # Preparation of fixtures
@@ -55,7 +54,7 @@ def test_unet_output_shape(n_channels, n_classes, input_tensor, unet_model):
 # Exception Testing
 def test_unet_invalid_input_type():
     with pytest.raises(TypeError):
-        model = Unet("invalid", "invalid")
+        Unet("invalid", "invalid")
 
 
 # Parameterized Testing
@@ -67,9 +66,8 @@ def test_unet_invalid_input_type():
         (5, 6, (1, 6, 388, 388)),
     ],
 )
-def test_unet_output_shape_with_parametrization(
-    n_channels, n_classes, expected_shape, input_tensor
-):
+def test_unet_output_shape_with_parametrization(n_channels, n_classes,
+                                                expected_shape, input_tensor):
     model = Unet(n_channels, n_classes)
     output = model(input_tensor)
     assert output.shape == expected_shape

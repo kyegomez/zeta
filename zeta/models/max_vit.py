@@ -27,9 +27,10 @@ class MaxVit(nn.Module):
         channels=3
     ):
         super().__init__()
-        assert isinstance(
-            depth, tuple
-        ), "depth needs to be tuple of integers indicating number of transformer blocks at that stage"
+        assert isinstance(depth, tuple), (
+            "depth needs to be tuple of integers indicating number of transformer"
+            " blocks at that stage"
+        )
 
         # conv stem
         dim_conv_stem = default(dim_conv_stem, dim)

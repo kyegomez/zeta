@@ -22,9 +22,9 @@ class MultiheadAttention(BaseAttention):
         dropout: int = 0.0,
         self_attention: bool = False,
         subln: bool = False,
-        layernorm_eps = 1e-05,
+        layernorm_eps=1e-05,
         xpos_scale_base: int = 512,
-        xpos_rel_pos = None
+        xpos_rel_pos=None,
     ):
         super().__init__()
         self.embed_dim = embed_dim
@@ -37,9 +37,7 @@ class MultiheadAttention(BaseAttention):
         self.k_proj = MultiwayNetwork(nn.Linear(embed_dim, embed_dim, bias=True))
         self.v_proj = MultiwayNetwork(nn.Linear(embed_dim, embed_dim, bias=True))
         self.q_proj = MultiwayNetwork(nn.Linear(embed_dim, embed_dim, bias=True))
-        self.out_proj = MultiwayNetwork(
-            nn.Linear(embed_dim, embed_dim, bias=True)
-        )
+        self.out_proj = MultiwayNetwork(nn.Linear(embed_dim, embed_dim, bias=True))
         self.inner_attn_ln = (
             MultiwayNetwork(LayerNorm(self.embed_dim, eps=layernorm_eps))
             if subln and self.self_attention

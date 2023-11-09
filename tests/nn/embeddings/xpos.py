@@ -1,6 +1,5 @@
 import pytest
 import torch
-from torch import nn
 from zeta.nn.embeddings.xpos_relative_position import XPOS
 
 

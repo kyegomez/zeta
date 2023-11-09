@@ -10,7 +10,6 @@ try:
 except ModuleNotFoundError:
     from torch.nn import LayerNorm
 
-
 from .xmoe.global_groups import get_moe_group
 
 

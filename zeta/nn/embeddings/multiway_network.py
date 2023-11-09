@@ -7,7 +7,6 @@ import torch
 import torch.nn as nn
 
 
-
 def set_split_position(position):
     def apply_fn(module):
         if hasattr(module, "split_position"):

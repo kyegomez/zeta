@@ -110,7 +110,8 @@ class FlashAttention(BaseAttention):
             self.cuda_config = EfficientAttentionConfig(True, False, False)
         else:
             print_once(
-                "Non-A100 GPU detected, using math or mem efficient attention if input tensor is on cuda"
+                "Non-A100 GPU detected, using math or mem efficient attention if input"
+                " tensor is on cuda"
             )
             self.cuda_config = EfficientAttentionConfig(False, True, True)
 

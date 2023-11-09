@@ -95,7 +95,8 @@ def matrix_inverse_root(
     elif root_inv_method == RootInvMethod.NEWTON:
         if exponent_multiplier != 1.0:
             raise ValueError(
-                f"Exponent multiplier {exponent_multiplier} must be equal to 1 to use coupled inverse Newton iteration!"
+                f"Exponent multiplier {exponent_multiplier} must be equal to 1 to use"
+                " coupled inverse Newton iteration!"
             )
 
         X, _, termination_flag, _, _ = _matrix_inverse_root_newton(
@@ -209,7 +210,8 @@ def _matrix_root_eigen(
     except Exception as exception:
         if retry_double_precision and A.dtype != torch.float64:
             logger.warning(
-                f"Failed to compute eigendecomposition in {A.dtype} precision with exception {exception}! Retrying in double precision..."
+                f"Failed to compute eigendecomposition in {A.dtype} precision with"
+                f" exception {exception}! Retrying in double precision..."
             )
             L, Q = torch.linalg.eigh(A.double())
         else:

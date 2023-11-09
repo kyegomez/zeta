@@ -2,7 +2,6 @@ import logging
 import os
 import warnings
 
-
 # disable warnings
 
 warnings.filterwarnings("ignore")
@@ -10,7 +9,6 @@ warnings.filterwarnings("ignore")
 # disable tensorflow warnings
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
-
 
 # disable bnb warnings and others
 
@@ -26,7 +24,6 @@ class CustomFilter(logging.Filter):
 logger = logging.getLogger()
 f = CustomFilter()
 logger.addFilter(f)
-
 
 from zeta.nn import *
 from zeta import models

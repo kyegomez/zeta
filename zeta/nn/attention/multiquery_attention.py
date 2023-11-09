@@ -122,7 +122,6 @@ FC_CLASS_REGISTRY = {
     "torch": nn.Linear,
 }
 
-
 NORM_CLASS_REGISTRY = {
     "layernornm": nn.LayerNorm,
     "low_precision_layernorm": LPLayerNorm,
@@ -137,7 +136,8 @@ def _reset_causal(num_query_tokens: int, num_key_tokens: int, original_causal: b
     if original_causal and num_query_tokens != num_key_tokens:
         if num_query_tokens != 1:
             raise NotImplementedError(
-                "MPT does not support query and key with different number of tokens, unless number of query tokens is 1."
+                "MPT does not support query and key with different number of tokens,"
+                " unless number of query tokens is 1."
             )
         else:
             return False
@@ -195,7 +195,8 @@ def scaled_multihead_dot_product_attention(
             bias.size(-2) != 1 and bias.size(-2) != s_q
         ):
             raise RuntimeError(
-                f"bias (shape: {bias.shape}) is expected to broadcast to shape: {attn_weight.shape}."
+                f"bias (shape: {bias.shape}) is expected to broadcast to shape:"
+                f" {attn_weight.shape}."
             )
         attn_weight = attn_weight + bias
 
@@ -457,11 +458,13 @@ def triton_flash_attn_fn(
             # installing triton-pre-mlir works for both torch1.13.1 and torch2.0+
             # default recommendation is to install this variant
             raise RuntimeError(
-                "Requirements for `attn_impl: triton` not installed. Either (1) have a CUDA-compatible GPU "
-                "and `pip install .[gpu]` if installing from source or "
-                "`pip install triton-pre-mlir@git+https://github.com/vchiley/triton.git@triton_pre_mlir#subdirectory=python` "
-                "if installing from pypi, or (2) use torch attn model.attn_config.attn_impl=torch (torch attn_impl will be slow). "
-                "Note: (1) requires you have CMake and PyTorch already installed."
+                "Requirements for `attn_impl: triton` not installed. Either (1) have a"
+                " CUDA-compatible GPU and `pip install .[gpu]` if installing from"
+                " source or `pip install"
+                " triton-pre-mlir@git+https://github.com/vchiley/triton.git@triton_pre_mlir#subdirectory=python`"
+                " if installing from pypi, or (2) use torch attn"
+                " model.attn_config.attn_impl=torch (torch attn_impl will be slow)."
+                " Note: (1) requires you have CMake and PyTorch already installed."
             )
 
     check_valid_inputs(query, key, value)
@@ -578,9 +581,12 @@ class MultiHeadAttention(nn.Module):
             if verbose:
                 warnings.warn(
                     "While `attn_impl: triton` can be faster than `attn_impl: flash` "
-                    + "it uses more memory. When training larger models this can trigger "
-                    + "alloc retries which hurts performance. If encountered, we recommend "
-                    + "using `attn_impl: flash` if your model does not use `alibi` or `prefix_lm`."
+                    + "it uses more memory. When training larger models this can"
+                    " trigger "
+                    + "alloc retries which hurts performance. If encountered, we"
+                    " recommend "
+                    + "using `attn_impl: flash` if your model does not use `alibi` or"
+                    " `prefix_lm`."
                 )
         elif self.attn_impl == "torch":
             self.attn_fn = scaled_multihead_dot_product_attention
@@ -704,9 +710,12 @@ class MultiQueryAttention(BaseAttention):
             if verbose:
                 warnings.warn(
                     "While `attn_impl: triton` can be faster than `attn_impl: flash` "
-                    + "it uses more memory. When training larger models this can trigger "
-                    + "alloc retries which hurts performance. If encountered, we recommend "
-                    + "using `attn_impl: flash` if your model does not use `alibi` or `prefix_lm`."
+                    + "it uses more memory. When training larger models this can"
+                    " trigger "
+                    + "alloc retries which hurts performance. If encountered, we"
+                    " recommend "
+                    + "using `attn_impl: flash` if your model does not use `alibi` or"
+                    " `prefix_lm`."
                 )
         elif self.attn_impl == "torch":
             self.attn_fn = scaled_multihead_dot_product_attention

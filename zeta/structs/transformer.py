@@ -18,7 +18,6 @@ EfficientAttentionConfig = namedtuple(
     "EfficientAttentionConfig", ["enable_flash", "enable_math", "enable_mem_efficient"]
 )
 
-
 DEFAULT_DIM_HEAD = 64
 
 
@@ -269,9 +268,10 @@ class AbsolutePositionalEmbedding(nn.Module):
 
     def forward(self, x, pos=None):
         seq_len, device = x.shape[1], x.device
-        assert (
-            seq_len <= self.max_seq_len
-        ), f"you are passing in a sequence length of {seq_len} but your absolute positional embedding has a max sequence length of {self.max_seq_len}"
+        assert seq_len <= self.max_seq_len, (
+            f"you are passing in a sequence length of {seq_len} but your absolute"
+            f" positional embedding has a max sequence length of {self.max_seq_len}"
+        )
 
         if not exists(pos):
             pos = torch.arange(seq_len, device=device)
@@ -765,9 +765,10 @@ class Attention(nn.Module):
         self.causal = causal
         self.max_attend_past = max_attend_past
 
-        assert not (
-            exists(kv_heads) and one_kv_head
-        ), "either attn_one_kv_head is set to True (in which case kv_heads is set to 1), or attn_kv_heads is set, but not both"
+        assert not (exists(kv_heads) and one_kv_head), (
+            "either attn_one_kv_head is set to True (in which case kv_heads is set to"
+            " 1), or attn_kv_heads is set, but not both"
+        )
 
         value_dim_head = default(value_dim_head, dim_head)
         kv_heads = default(kv_heads, heads)
@@ -818,9 +819,10 @@ class Attention(nn.Module):
         assert (not qk_norm) or divisible_by(
             dim_head, qk_norm_groups
         ), "dimension per attention head must be divisible by the qk norm groups"
-        assert not (
-            qk_norm and (dim_head // qk_norm_groups) <= 2
-        ), "the group dimension may be too small (2 was too small in my tests, but 4 still works, surprisingly)"
+        assert not (qk_norm and (dim_head // qk_norm_groups) <= 2), (
+            "the group dimension may be too small (2 was too small in my tests, but 4"
+            " still works, surprisingly)"
+        )
 
         # attend class - includes core attention algorithm + talking heads
 
@@ -967,9 +969,10 @@ class Attention(nn.Module):
             masks.append(~input_mask)
 
         if exists(attn_mask):
-            assert (
-                2 <= attn_mask.ndim <= 4
-            ), "attention mask must have greater than 2 dimensions but less than or equal to 4"
+            assert 2 <= attn_mask.ndim <= 4, (
+                "attention mask must have greater than 2 dimensions but less than or"
+                " equal to 4"
+            )
             if attn_mask.ndim == 2:
                 attn_mask = rearrange(attn_mask, "i j -> 1 1 i j")
             elif attn_mask.ndim == 3:
@@ -1111,12 +1114,14 @@ class AttentionLayers(nn.Module):
             else None
         )
 
-        assert not (
-            alibi_pos_bias and rel_pos_bias
-        ), "you can only choose Alibi positional bias or T5 relative positional bias, not both"
-        assert (
-            rel_pos_num_buckets <= rel_pos_max_distance
-        ), "number of relative position buckets must be less than the relative position max distance"
+        assert not (alibi_pos_bias and rel_pos_bias), (
+            "you can only choose Alibi positional bias or T5 relative positional bias,"
+            " not both"
+        )
+        assert rel_pos_num_buckets <= rel_pos_max_distance, (
+            "number of relative position buckets must be less than the relative"
+            " position max distance"
+        )
 
         # relative positional bias
 
@@ -1179,9 +1184,10 @@ class AttentionLayers(nn.Module):
         self.sandwich_norm = sandwich_norm
 
         self.resi_dual = resi_dual
-        assert (
-            0 < resi_dual_scale <= 1.0
-        ), "resiDual prenorm residual must be scaled by a factor greater than 0 and less than or equal to 1."
+        assert 0 < resi_dual_scale <= 1.0, (
+            "resiDual prenorm residual must be scaled by a factor greater than 0 and"
+            " less than or equal to 1."
+        )
         self.resi_dual_scale = resi_dual_scale
 
         self.residual_attn = residual_attn
@@ -1640,9 +1646,10 @@ class Transformer(nn.Module):
 
         if exists(prepend_embeds):
             prepend_seq, prepend_dim = prepend_embeds.shape[1:]
-            assert (
-                prepend_dim == x.shape[-1]
-            ), "prepended embeddings need to have same dimensions as text model dimensions"
+            assert prepend_dim == x.shape[-1], (
+                "prepended embeddings need to have same dimensions as text model"
+                " dimensions"
+            )
 
             x = torch.cat((prepend_embeds, x), dim=-2)
 

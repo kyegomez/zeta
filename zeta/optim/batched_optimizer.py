@@ -367,7 +367,8 @@ class ScaledAdam(BatchedOptimizer):
                 first_state["num_clipped"] += 1
             if ans < 0.1:
                 logging.warn(
-                    f"Scaling gradients by {ans}, model_norm_threshold={model_norm_threshold}"
+                    f"Scaling gradients by {ans},"
+                    f" model_norm_threshold={model_norm_threshold}"
                 )
                 if self.show_dominant_parameters:
                     assert p.shape[0] == len(param_names)
@@ -432,7 +433,7 @@ class ScaledAdam(BatchedOptimizer):
         logging.info(
             f"Parameter Dominanting tot_sumsq {dominant_param_name}"
             f" with proportion {dominant_proportion:.2f},"
-            f" where dominant_sumsq=(grad_sumsq*orig_rms_sq)"
+            " where dominant_sumsq=(grad_sumsq*orig_rms_sq)"
             f"={dominant_sumsq:.3e},"
             f" grad_sumsq = {(dominant_grad**2).sum():.3e},"
             f" orig_rms_sq={(dominant_rms**2).item():.3e}"
@@ -993,7 +994,8 @@ def _test_scaled_adam(hidden_dim: int):
                     # scale2b = '%.2e' % (m[2].bias_scale.exp().item())
                     lr = scheduler.get_last_lr()[0]
                     logging.info(
-                        f"Iter {iter}, epoch {epoch}, batch {n}, avg_loss {avg_loss:.4g}, lr={lr:.4e}"
+                        f"Iter {iter}, epoch {epoch}, batch {n}, avg_loss"
+                        f" {avg_loss:.4g}, lr={lr:.4e}"
                     )  # , norms={norm1,norm1b,norm2,norm2b}") # scales={scale1,scale1b,scale2,scale2b}
                 loss.log().backward()
                 optim.step()

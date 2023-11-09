@@ -169,7 +169,6 @@ class HiveTrainer:
 # # Instantiate models
 # models = [YourModelClass1(), YourModelClass2()]  # Replace with your model classes
 
-
 # # Instantiate HiveTrainer and begin training
 # hive_trainer = HiveTrainer(
 #     models=models,

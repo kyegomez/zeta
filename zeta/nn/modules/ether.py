@@ -251,7 +251,6 @@ class Ether(nn.Module):
 #         x = self.fc2(x)
 #         return x
 
-
 # def train_model(model, loss_fn, optimizer, dataloader, epochs=10):
 #     model.train()
 #     start_time = time.time()

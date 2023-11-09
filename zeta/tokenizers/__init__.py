@@ -5,7 +5,6 @@ from zeta.tokenizers.tokenmonster import TokenMonster
 
 # from zeta.tokenizers.tiktoken import TikToken
 
-
 __all__ = [
     "LanguageTokenizerGPTX",
     "MultiModalTokenizer",

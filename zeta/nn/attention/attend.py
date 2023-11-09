@@ -154,7 +154,8 @@ class Attend(nn.Module):
             self.cuda_config = EfficientAttentionConfig(True, False, False)
         else:
             print_once(
-                "Non-A100 GPU detected, using math or mem efficient attention if input tensor is on cuda"
+                "Non-A100 GPU detected, using math or mem efficient attention if input"
+                " tensor is on cuda"
             )
             self.cuda_config = EfficientAttentionConfig(False, True, True)
 
@@ -350,9 +351,10 @@ class CascadingHeads(nn.Module):
         self.attend = attend
 
     def forward(self, q, k, v, mask=None, attn_bias=None, prev_attn=None):
-        assert (
-            q.shape[-1] == v.shape[-1]
-        ), "cascading heads can only be done if query / key and value head dimensions are the same"
+        assert q.shape[-1] == v.shape[-1], (
+            "cascading heads can only be done if query / key and value head dimensions"
+            " are the same"
+        )
 
         # split inputs into per-head inputs
 

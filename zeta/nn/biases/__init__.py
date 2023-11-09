@@ -9,7 +9,6 @@ from zeta.nn.biases.base import BaseBias
 from zeta.nn.biases.dynamic_position_bias import DynamicPositionBias
 from zeta.nn.biases.relative_position_bias import RelativePositionBias
 
-
 __all__ = [
     "AlibiPositionalBias",
     "LearnedAlibiPositionalBias",

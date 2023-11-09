@@ -12,7 +12,6 @@ from zeta.optim.decoupled_sophia import SophiaG
 from zeta.optim.stable_adam import StableAdamWUnfused
 from zeta.optim.gradient_ascent import GradientAscent
 
-
 __all__ = [
     "BatchedOptimizer",
     "Eden",

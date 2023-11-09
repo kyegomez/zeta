@@ -17,7 +17,6 @@ from einops.layers.torch import Rearrange
 from beartype import beartype
 from beartype.typing import Union, Tuple, Optional
 
-
 # helper
 
 
@@ -562,7 +561,6 @@ class VideoTokenizer(Module):
 
 
 # main class
-
 
 # class MagViT2(Module):
 #     def __init__(self):

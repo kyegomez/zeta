@@ -6,7 +6,6 @@ import torch
 import torch.nn as nn
 import torchvision.transforms.functional as F
 
-
 from torchvision.transforms import (
     Normalize,
     Compose,
