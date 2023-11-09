@@ -59,3 +59,7 @@ print(output.shape)
 - [Check out the project board here!](https://github.com/users/kyegomez/projects/7/views/2)
 
 - We need help writing tests and documentation!
+
+
+# License 
+- MIT
