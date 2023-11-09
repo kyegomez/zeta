@@ -64,8 +64,8 @@ class VisualExpert:
     Example:
         >>> visual_expert = VisualExpert(1024, 2048, 0.1, 16)
         >>> x = torch.randn(1, 10, 1024)
-        >>> y = visual_expert(x)
-        >>> y.shape
+        >>> out = visual_expert(x)
+        >>> out.shape
         torch.Size([1, 10, 1024])
 
     """
