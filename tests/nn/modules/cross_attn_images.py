@@ -5,9 +5,11 @@ import pytest
 from torch.autograd import gradcheck
 from zeta.nn.attention.cross_attn_images import CrossAttention
 
+
 @pytest.fixture
 def cross_attention_module():
     return CrossAttention(1024, 8, 1024)
+
 
 def test_forward_pass(cross_attention_module):
     input_dim = 1024
@@ -20,6 +22,7 @@ def test_forward_pass(cross_attention_module):
 
     assert output.shape == (1, seq_len, input_dim)
 
+
 def test_forward_pass_with_conditional_layer_norm(cross_attention_module):
     input_dim = 1024
     seq_len = 32
@@ -31,6 +34,7 @@ def test_forward_pass_with_conditional_layer_norm(cross_attention_module):
     output = cross_attention_module(input_tensor, context_tensor)
 
     assert output.shape == (1, seq_len, input_dim)
+
 
 def test_forward_pass_with_mask(cross_attention_module):
     input_dim = 1024
@@ -45,6 +49,7 @@ def test_forward_pass_with_mask(cross_attention_module):
 
     assert output.shape == (1, seq_len, input_dim)
 
+
 def test_forward_pass_with_dropout(cross_attention_module):
     input_dim = 1024
     seq_len = 32
@@ -57,6 +62,7 @@ def test_forward_pass_with_dropout(cross_attention_module):
 
     assert output.shape == (1, seq_len, input_dim)
 
+
 def test_gradcheck(cross_attention_module):
     input_dim = 1024
     seq_len = 32
@@ -64,7 +70,10 @@ def test_gradcheck(cross_attention_module):
     input_tensor = torch.randn(1, seq_len, input_dim, requires_grad=True)
     context_tensor = torch.randn(1, seq_len, context_dim, requires_grad=True)
 
-    assert gradcheck(cross_attention_module, (input_tensor, context_tensor), check_forward=True)
+    assert gradcheck(
+        cross_attention_module, (input_tensor, context_tensor), check_forward=True
+    )
+
 
 def test_attention_strategy_average(cross_attention_module):
     input_dim = 1024
@@ -77,6 +86,7 @@ def test_attention_strategy_average(cross_attention_module):
     output = cross_attention_module(input_tensor, context_tensor)
 
     assert output.shape == (1, input_dim)
+
 
 if __name__ == "__main__":
     pytest.main()

@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
 class Diffuser(nn.Module):
     """
     Implements the diffusion process for image tensors, progressively adding Gaussian noise.
@@ -60,10 +61,10 @@ class Diffuser(nn.Module):
     #     noise = torch.randn_like(x)
     #     return alpha_t * x + sigma_t * noise
 
+
 # Example usage
 diffuser = Diffuser(num_timesteps=1000, alpha_start=0.1, alpha_end=0.9)
 x = torch.randn(1, 3, 256, 256)  # Example input tensor
 t = torch.randint(0, 1000, (1,))  # Random diffusion timestep
 noised_x = diffuser(x, t.item())
 print(noised_x)
-
