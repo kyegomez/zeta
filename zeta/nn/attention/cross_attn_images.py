@@ -38,9 +38,8 @@ class MultiModalCrossAttention(nn.Module):
         dropout=0.1,
         qk: bool = False,
         post_attn_norm: bool = False,
-        attention_strategy: str = None, #"average",
+        attention_strategy: str = None,  # "average",
         mask=None,
-
     ):
         super().__init__()
         self.heads = heads
@@ -78,7 +77,9 @@ class MultiModalCrossAttention(nn.Module):
             k = self.norm_k(k)
 
         # Reshape for multi-head attention
-        q, k, v = map(lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads), (q, k, v))
+        q, k, v = map(
+            lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads), (q, k, v)
+        )
 
         # Scaled dot-product attention
         dots = torch.einsum("bhid,bhjd->bhij", q, k) * self.scale
@@ -105,4 +106,3 @@ class MultiModalCrossAttention(nn.Module):
 
         # Output projection
         return self.to_out(out)
-    
