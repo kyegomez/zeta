@@ -8,7 +8,6 @@ from zeta import MultiheadAttention
 
 
 class TestMultiheadAttention(unittest.TestCase):
-
     def test_output_shape(self):
         # Setup
         input_tensor = torch.randn(2, 128, 512)
@@ -34,11 +33,7 @@ class TestMultiheadAttention(unittest.TestCase):
     def test_relative_position_bias(self):
         # Setup
         input_tensor = torch.randn(2, 128, 512)
-        dilated_attention = MultiheadAttention(512,
-                                               8,
-                                               2,
-                                               64,
-                                               use_rel_pos_bias=True)
+        dilated_attention = MultiheadAttention(512, 8, 2, 64, use_rel_pos_bias=True)
 
         # Action
         output = dilated_attention(input_tensor)
@@ -116,8 +111,7 @@ class TestMultiheadAttention(unittest.TestCase):
         dilated_attention = MultiheadAttention(512, 8, 2, 64)
         _, attn_weights = dilated_attention(input_tensor)
 
-        self.assertTrue(
-            torch.allclose(attn_weights.sum(dim=-1), torch.tensor(1.0)))
+        self.assertTrue(torch.allclose(attn_weights.sum(dim=-1), torch.tensor(1.0)))
 
         def setUp(self):
             self.d_model = 128
@@ -147,8 +141,7 @@ class TestMultiheadAttention(unittest.TestCase):
 
     def test_forward_pass(self):
         output = self.sparse_dilated_attention(self.x)
-        self.assertEqual(output.size(),
-                         (self.batch_size, self.seq_len, self.d_model))
+        self.assertEqual(output.size(), (self.batch_size, self.seq_len, self.d_model))
 
     def test_attention_outputs(self):
         output = self.sparse_dilated_attention(self.x)

@@ -34,8 +34,9 @@ def test_init(sparse_attention):
 
 
 def test_forward(sparse_attention, input_tensors, monkeypatch):
-    monkeypatch.setattr("your_module.blocksparse_attention_impl",
-                        mock_blocksparse_attention_impl)
+    monkeypatch.setattr(
+        "your_module.blocksparse_attention_impl", mock_blocksparse_attention_impl
+    )
     q, k, v = input_tensors
     output = sparse_attention(q, k, v)
     assert torch.allclose(output, q + k + v)
@@ -43,8 +44,9 @@ def test_forward(sparse_attention, input_tensors, monkeypatch):
 
 @pytest.mark.parametrize("attn_mode", ["all", "local", "strided"])
 def test_attn_modes(sparse_attention, input_tensors, attn_mode, monkeypatch):
-    monkeypatch.setattr("your_module.blocksparse_attention_impl",
-                        mock_blocksparse_attention_impl)
+    monkeypatch.setattr(
+        "your_module.blocksparse_attention_impl", mock_blocksparse_attention_impl
+    )
     sparse_attention.attn_mode = attn_mode
     q, k, v = input_tensors
     output = sparse_attention(q, k, v)
