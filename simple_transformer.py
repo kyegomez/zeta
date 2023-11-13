@@ -3,6 +3,7 @@ from torch import nn
 from zeta.nn.modules.feedforward import FeedForward
 from zeta.nn.attention.shaped_attention import ShapedAttention
 from zeta.nn.modules.residual import Residual
+from zeta.nn.attention import FlashAttention
 
 
 class SimpleTransformerBlock(nn.Module):
@@ -19,7 +20,6 @@ class SimpleTransformerBlock(nn.Module):
     >>> model = SimpleTransformerBlock(768, 12, 8, 0.1)
     >>> x = torch.randn(1, 768)
     >>> model(x).shape
-
 
     """
 
@@ -38,23 +38,19 @@ class SimpleTransformerBlock(nn.Module):
             self.layers.append(
                 nn.ModuleList(
                     [
-                        Residual(
-                            ShapedAttention(dim, heads, dropout=dropout),
-                        ),
-                        Residual(
-                            FeedForward(
-                                dim,
-                                dim,
-                                dropout=dropout,
-                                relu_squared=True,
-                                post_act_ln=True,
-                            ),
+                        ShapedAttention(dim, heads, dropout=dropout),
+                        FeedForward(
+                            dim,
+                            dim,
+                            dropout=dropout,
+                            # relu_squared=True,
+                            # post_act_ln=True,
                         ),
                     ]
                 )
             )
 
-    def forward(self, x):
+    def forward(self, x: torch.Tensor):
         """
         x -> x_proj -> attn -> matmul with x -> ff -> out + x
 
@@ -114,9 +110,6 @@ def SimpleTransformer(
         nn.Linear(dim, num_tokens, bias=False),
     )
 
-    # they used embedding weight tied projection out to logits, not common, but works
-    net[-1].weight = net[0].weight
-
     nn.init.normal_(net[0].weight, std=0.02)
     return net
 
@@ -124,4 +117,4 @@ def SimpleTransformer(
 tokens = torch.randint(0, 20000, (1, 2048))
 model = SimpleTransformer(dim=2048, num_tokens=20000, depth=12, heads=8)
 out = model(tokens)
-print(out.shape)
+print(out)

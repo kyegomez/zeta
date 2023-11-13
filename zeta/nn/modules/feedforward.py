@@ -36,15 +36,15 @@ class FeedForward(nn.Module):
 
     def __init__(
         self,
-        dim,
-        dim_out=None,
+        dim: int,
+        dim_out: int = None,
         mult=4,
         glu=False,
         glu_mult_bias=False,
         swish=False,
         relu_squared=False,
         post_act_ln=False,
-        dropout=0.0,
+        dropout: float = 0.0,
         no_bias=False,
         zero_init_output=False,
     ):
@@ -66,12 +66,19 @@ class FeedForward(nn.Module):
                 nn.Linear(dim, inner_dim, bias=not no_bias), activation
             )
 
-        self.ff = nn.Sequential(
-            project_in,
-            # nn.LayerNorm(inner_dim) if post_act_ln else None,
-            nn.Dropout(dropout),
-            nn.Linear(inner_dim, dim_out, bias=not no_bias),
-        )
+        if post_act_ln:
+            self.ff = nn.Sequential(
+                project_in,
+                nn.LayerNorm(inner_dim),
+                nn.Dropout(dropout),
+                nn.Linear(inner_dim, dim_out, bias=not no_bias),
+            )
+        else:
+            self.ff = nn.Sequential(
+                project_in,
+                nn.Dropout(dropout),
+                nn.Linear(inner_dim, dim_out, bias=not no_bias),
+            )
 
         # init last linear layer to 0
         if zero_init_output:

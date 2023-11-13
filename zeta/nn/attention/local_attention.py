@@ -20,35 +20,30 @@ class LocalAttention(nn.Module):
     """
 
     The LocalAttention module provides a mechanism to perform local attention operations.
-    Unlike global attention where every token can attend to every other token, in local attention each token can only attend to a subset of tokens within a defined window. This reduces the computational cost and captures the local structure in sequences like text or time-series data.
+    Unlike global attention where every token can attend to every other token,
+    in local attention each token can only attend to a subset of tokens within a defined window. This reduces the computational cost and captures the local structure in sequences like text or time-series data.
 
-    window_size: (int) The size of the attention window.
+    Args:
+        window_size: (int) The size of the attention window.
+        causal: (bool, optional) If set to True, ensures causal attention. Default: False.
+        look_backward: (int, optional) How many positions to look backward from the current position. Default: 1.
+        look_forward: (int, optional) How many positions to look forward from the current position. Default: None which implies 0 if causal is True.
+        dropout: (float, optional) Dropout rate for attention weights. Default: 0..
+        shared_qk: (bool, optional) If set to True, the query and key are the same. Useful for certain types of attention mechanisms. Default: False.
+        rel_pos_emb_config: (Optional) Deprecated. Configuration for the relative positional embeddings.
+        dim: (int, optional) Dimension of embeddings. Only needed if rel_pos_emb_config is not provided.
+        autopad: (bool, optional) If set to True, sequence will be automatically padded to be divisible by the window size. Default: False.
+        exact_windowsize: (bool, optional) Ensures exact window size for non-causal attention. Default: False.
+        scale: (Optional) Scaling factor for the queries.
+        use_rotary_pos_emb: (bool, optional) If set to True, rotary positional embeddings will be used. Default: True.
+        use_xpos: (bool, optional) If set to True, allows for extrapolation of window sizes. Requires use_rotary_pos_emb to be True. Default: False.
+        xpos_scale_base: (Optional) Base scaling factor for extrapolated window sizes.
 
-    causal: (bool, optional) If set to True, ensures causal attention. Default: False.
+    Usage:
+    >>> model = LocalAttention(64, 1, 1, 0.1)
+    >>> x = torch.randn(1, 768)
+    >>> model(x).shape
 
-    look_backward: (int, optional) How many positions to look backward from the current position. Default: 1.
-
-    look_forward: (int, optional) How many positions to look forward from the current position. Default: None which implies 0 if causal is True.
-
-    dropout: (float, optional) Dropout rate for attention weights. Default: 0..
-
-    shared_qk: (bool, optional) If set to True, the query and key are the same. Useful for certain types of attention mechanisms. Default: False.
-
-    rel_pos_emb_config: (Optional) Deprecated. Configuration for the relative positional embeddings.
-
-    dim: (int, optional) Dimension of embeddings. Only needed if rel_pos_emb_config is not provided.
-
-    autopad: (bool, optional) If set to True, sequence will be automatically padded to be divisible by the window size. Default: False.
-
-    exact_windowsize: (bool, optional) Ensures exact window size for non-causal attention. Default: False.
-
-    scale: (Optional) Scaling factor for the queries.
-
-    use_rotary_pos_emb: (bool, optional) If set to True, rotary positional embeddings will be used. Default: True.
-
-    use_xpos: (bool, optional) If set to True, allows for extrapolation of window sizes. Requires use_rotary_pos_emb to be True. Default: False.
-
-    xpos_scale_base: (Optional) Base scaling factor for extrapolated window sizes.
     """
 
     def __init__(
