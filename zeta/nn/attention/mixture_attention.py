@@ -1,10 +1,10 @@
 import math
 import torch
 import torch.nn.functional as F
-from torch import Tensor, nn, einsum
+from torch import Tensor, nn
 
 from typing import Tuple, Optional
-from einops import rearrange, repeat, reduce, pack, unpack
+from einops import rearrange, repeat, reduce
 from zeta.models.vit import exists
 from zeta.structs.transformer import RMSNorm, apply_rotary_pos_emb
 
@@ -13,7 +13,6 @@ from zeta.nn.attention.local_attention_mha import LocalMHA
 from zeta.utils.main import default, pad_to_multiple
 
 from colt5_attention import CoordinateDescentRouter
-from functools import reduce
 
 
 class Attention(nn.Module):
@@ -272,7 +271,7 @@ class MixtureOfAttention(nn.Module):
         query_indices, query_scores, queries, query_mask = self.query_router(
             x, mask=mask, num_routed=num_routed_queries, keep_one_route_dim=True
         )
-        query_score = rearrange(query_scores, "b g n -> b g n 1")
+        rearrange(query_scores, "b g n -> b g n 1")
 
         (
             kv_indices,

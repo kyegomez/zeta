@@ -35,6 +35,31 @@ def apply_rotary_emb(
 
 # mgqa
 class MGQA(nn.Module):
+    """
+    Multi-Headed Generalized Query Attention
+
+    Args:
+        dim (int): Input dimension
+        n_layers (int): Number of layers
+        head_dim (int): Head dimension
+        hidden_dim (int): Hidden dimension
+        n_heads (int): Number of heads
+        n_kv_heads (int): Number of key/value heads
+        sliding_window (int): Sliding window size
+        norm_eps (float): Epsilon for layer norm
+        vocab_size (int): Vocabulary size
+        attn_dropout (float): Dropout probability
+        max_batch_size (int): Maximum batch size
+        flash (bool): Use FlashAttention
+
+    Usage:
+    >>> model = MGQA(768, 12, 64, 2048, 8, 8, 512, 1e-6, 32000, 0.1, 0, False)
+    >>> x = torch.randn(1, 768)
+    >>> model(x).shape
+
+
+    """
+
     def __init__(
         self,
         dim: int,
@@ -87,6 +112,23 @@ class MGQA(nn.Module):
         freqs_cis: torch.Tensor,
         cache: CacheView,
     ) -> torch.Tensor:
+        """
+        Forward pass
+
+        Args:
+            x (torch.Tensor): Input tensor
+            freqs_cis (torch.Tensor): Precomputed frequencies
+            cache (CacheView): Cache view
+
+        Example:
+        >>> model = MGQA(768, 12, 64, 2048, 8, 8, 512, 1e-6, 32000, 0.1, 0, False)
+        >>> x = torch.randn(1, 768)
+        >>> freqs_cis = torch.randn(1, 768)
+        >>> cache = CacheView(1, 512, 8, 8, 64)
+        >>> model(x, freqs_cis, cache).shape
+
+
+        """
         seqlen_sum, _ = x.shape
 
         xq, xk, xv = self.wq(x), self.wk(x), self.wv(x)

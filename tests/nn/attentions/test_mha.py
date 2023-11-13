@@ -1,7 +1,6 @@
-from zeta.utils.attention.multihead_attention import MultiheadAttention
+from zeta.nn.attention.multihead_attention import MultiheadAttention
 import torch
 import unittest
-from zeta import MultiheadAttention
 
 
 class TestMultiheadAttention(unittest.TestCase):
