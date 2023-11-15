@@ -77,3 +77,50 @@ def test_visual_expert_shape_maintenance(visual_expert_instance):
     initial_shape = x.shape
     output = visual_expert_instance(x)
     assert output.shape == initial_shape
+
+
+# Initialize the VisualExpert instance for testing
+@pytest.fixture
+def visual_expert():
+    return VisualExpert(dim=1024, hidden_dim=2048, dropout=0.1, heads=16)
+
+
+# Test the forward pass of VisualExpert
+def test_visual_expert_forward(visual_expert):
+    input_tensor = torch.randn(1, 10, 1024)
+    output = visual_expert(input_tensor)
+    assert output.shape == (1, 10, 1024)
+
+
+# Test that the normalization layer is applied correctly
+def test_visual_expert_normalization(visual_expert):
+    input_tensor = torch.randn(1, 10, 1024)
+    output = visual_expert(input_tensor)
+    mean = output.mean().item()
+    std = output.std().item()
+    assert abs(mean) < 1e-5
+    assert abs(std - 1.0) < 1e-5
+
+
+# Test that QKV projections are applied correctly
+def test_visual_expert_qkv_projections(visual_expert):
+    input_tensor = torch.randn(1, 10, 1024)
+    q, k, v = (
+        visual_expert.q_proj(input_tensor),
+        visual_expert.k_proj(input_tensor),
+        visual_expert.v_proj(input_tensor),
+    )
+    assert q.shape == (1, 10, 1024)
+    assert k.shape == (1, 10, 1024)
+    assert v.shape == (1, 10, 1024)
+
+
+# Test attention output shape and validity
+def test_visual_expert_attention(visual_expert):
+    input_tensor = torch.randn(1, 10, 1024)
+    output = visual_expert(input_tensor)
+    assert output.shape == (1, 10, 1024)
+    # Add additional tests for attention output validity
+
+
+# Add more tests for feedforward layer, multi-head attention, etc.
