@@ -49,6 +49,38 @@ print(output.shape)
 
 ```
 
+### ```RelativePositionBias```
+- ```RelativePositionBias``` quantizes the distance between two positions into a certain number of buckets and then uses an embedding to get the relative position bias. This mechanism aids in the attention mechanism by providing biases based on relative positions between the query and key, rather than relying solely on their absolute positions.
+```python
+from zeta.nn import RelativePositionBias
+import torch
+
+# Initialize the RelativePositionBias module
+rel_pos_bias = RelativePositionBias()
+
+# Example 1: Compute bias for a single batch
+bias_matrix = rel_pos_bias(1, 10, 10)
+
+# Example 2: Utilize in conjunction with an attention mechanism
+# NOTE: This is a mock example, and may not represent an actual attention mechanism's complete implementation.
+class MockAttention(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.rel_pos_bias = RelativePositionBias()
+
+    def forward(self, queries, keys):
+        bias = self.rel_pos_bias(queries.size(0), queries.size(1), keys.size(1))
+        # Further computations with bias in the attention mechanism...
+        return None  # Placeholder
+
+# Example 3: Modify default configurations
+custom_rel_pos_bias = RelativePositionBias(bidirectional=False, num_buckets=64, max_distance=256, n_heads=8)
+
+```
+
+### `FeedForward`
+
+
 # Documentation
 [Click here for the documentation, it's at zeta.apac.ai](https://zeta.apac.ai)
 
