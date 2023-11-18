@@ -255,6 +255,57 @@ print(output)
 
 ```
 
+
+### `Unet`
+Unet is a famous convolutional neural network architecture originally used for biomedical image segmentation but soon became the backbone of the generative AI Mega-revolution. The architecture comprises two primary pathways: downsampling and upsampling, followed by an output convolution. Due to its U-shape, the architecture is named U-Net. Its symmetric architecture ensures that the context (from downsampling) and the localization (from upsampling) are captured effectively.
+
+```python
+import torch
+from zeta.nn import Unet  
+
+# Initialize the U-Net model
+model = Unet(n_channels=1, n_classes=2)
+
+# Random input tensor with dimensions [batch_size, channels, height, width]
+x = torch.randn(1, 1, 572, 572)
+
+# Forward pass through the model
+y = model(x)
+
+# Output
+print(f"Input shape: {x.shape}")
+print(f"Output shape: {y.shape}")
+
+
+```
+
+
+### `VisionEmbeddings`
+The VisionEmbedding class is designed for converting images into patch embeddings, making them suitable for processing by transformer-based models. This class plays a crucial role in various computer vision tasks and enables the integration of vision data into transformer architectures!
+
+```python
+from zeta.nn import VisionEmbedding
+import torch
+
+# Create an instance of VisionEmbedding
+vision_embedding = VisionEmbedding(
+  img_size=224,
+  patch_size=16,
+  in_chans=3,
+  embed_dim=768,
+  contain_mask_token=True,
+  prepend_cls_token=True,
+)
+
+# Load an example image (3 channels, 224x224)
+input_image = torch.rand(1, 3, 224, 224)
+
+# Perform image-to-patch embedding
+output = vision_embedding(input_image)
+
+# The output now contains patch embeddings, ready for input to a transformer model
+```
+
 # Documentation
 [Click here for the documentation, it's at zeta.apac.ai](https://zeta.apac.ai)
 
