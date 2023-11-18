@@ -104,6 +104,7 @@ nav:
               - SimpleFeedFoward: "zeta/nn/modules/simple_feedback.md"
               - Unet: "zeta/nn/modules/unet.md"
               - VisualExpert: "zeta/nn/modules/visual_expert.md"
+              - FeedForward: "zeta/nn/modules/feedforward.md"
           - zeta.nn.attention:
               - FlashAttention: "zeta/nn/attention/flash_attention.md"
               - MultiQueryAttention: "zeta/nn/attention/multiquery.md"
