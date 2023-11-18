@@ -99,6 +99,7 @@ print(output.shape)
 ```
 
 ### `BitLinear`
+- The BitLinear module performs linear transformation on the input data, followed by quantization and dequantization. The quantization process is performed using the absmax_quantize function, which quantizes the input tensor based on the absolute maximum value, [from the paper](https://arxiv.org/abs/2310.11453)
 ```python
 import torch
 from torch import nn
