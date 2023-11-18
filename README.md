@@ -127,8 +127,8 @@ print(output.size())  # torch.Size([128, 20])
 
 ```
 
-### `PALM-E`
-- This is an implementation of the multi-modal GPT4 verison using a decoder llm as the backbone with an VIT image encoder to process vision.
+### `PalmE`
+- This is an implementation of the multi-modal Palm-E model using a decoder llm as the backbone with an VIT image encoder to process vision, it's very similiar to GPT4, Kosmos, RTX2, and many other multi-modality model architectures
 
 ```python
 import torch
