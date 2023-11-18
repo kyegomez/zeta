@@ -79,6 +79,53 @@ custom_rel_pos_bias = RelativePositionBias(bidirectional=False, num_buckets=64, 
 ```
 
 ### `FeedForward`
+The FeedForward module performs a feedforward operation on the input tensor x. It consists of a multi-layer perceptron (MLP) with an optional activation function and LayerNorm. 
+
+```python
+from zeta.nn import FeedForward
+
+model = FeedForward(
+  256, 
+  512, 
+  glu=True, 
+  post_act_ln=True, 
+  dropout=0.2
+)
+
+x = torch.randn(1, 256)
+
+output = model(x)
+print(output.shape)
+```
+
+### `BitLinear`
+```python
+import torch
+from torch import nn
+from zeta.quant import BitLinear
+
+class MyModel(nn.Module):
+    def __init__(self):
+        super(MyModel, self).__init__()
+        self.linear = BitLinear(10, 20)
+
+    def forward(self, x):
+        return self.linear(x)
+
+# Initialize the model
+model = MyModel()
+
+# Create a random tensor of size (128, 10)
+input = torch.randn(128, 10)
+
+# Perform the forward pass
+output = model(input)
+
+# Print the size of the output
+print(output.size())  # torch.Size([128, 20])
+
+```
+
 
 
 # Documentation
