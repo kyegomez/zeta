@@ -12,9 +12,9 @@ Build High-performance, agile, and scalable AI models with modular and re-useabl
 </p>
 
 # Design Principles
-- Fluid Experimentation: Zeta aims to be effortless for researchers and industrial AI engineers to rapidly experiment with the latest modules and components like `MultiGroupedFlashAttention` or `Unet` and many others!
+- Fluid Experimentation: Zeta aims to be effortless for researchers and industrial AI engineers to rapidly experiment with the latest modules and components like `MultiGroupedQueryAttention` or `Unet` and many others!
 - Production-Grade Reliability: Facilitate reproducibility with bleeding-edge performance.
-- Modularity: Modularized Lego Building Blocks for ML.
+- Modularity: Modularized Lego Building Blocks for building and deploying the best ML Models!
 
 
 # 🤝 Schedule a 1-on-1 Session

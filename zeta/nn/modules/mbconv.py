@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 from einops import reduce, rearrange
-from functools import reduce
+from einops import reduce
 
 
 class DropSample(nn.Module):
