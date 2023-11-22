@@ -1,5 +1,5 @@
 
-
+torch
 fairscale
 timm
 einops
