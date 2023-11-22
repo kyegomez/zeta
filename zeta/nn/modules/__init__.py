@@ -31,21 +31,23 @@ from zeta.nn.modules.video_autoencoder import CausalConv3d
 from zeta.nn.modules.simple_res_block import SimpleResBlock
 from zeta.nn.modules.sig_lip import SigLipLoss
 from zeta.nn.modules.simple_feedforward import SimpleFeedForward
-from zeta.nn.modules.img_reshape import image_reshape
-from zeta.nn.modules.flatten_features import flatten_features
-from zeta.nn.modules.scaled_sinusoidal import ScaledSinuosidalEmbedding
-from zeta.nn.modules.scale import Scale
-from zeta.nn.modules.scalenorm import ScaleNorm
-from zeta.nn.modules.simple_rmsnorm import SimpleRMSNorm
-from zeta.nn.modules.gru_gating import GRUGating
-from zeta.nn.modules.shift_tokens import ShiftTokens
-from zeta.nn.modules.swarmalator import simulate_swarmalators
-from zeta.nn.modules.transformations import image_transform
-from zeta.nn.modules.squeeze_excitation import SqueezeExcitation
-from zeta.nn.modules.clex import Clex
+
+# from zeta.nn.modules.img_reshape import image_reshape
+# from zeta.nn.modules.flatten_features import flatten_features
+# from zeta.nn.modules.scaled_sinusoidal import ScaledSinuosidalEmbedding
+# from zeta.nn.modules.scale import Scale
+# from zeta.nn.modules.scalenorm import ScaleNorm
+# from zeta.nn.modules.simple_rmsnorm import SimpleRMSNorm
+# from zeta.nn.modules.gru_gating import GRUGating
+# from zeta.nn.modules.shift_tokens import ShiftTokens
+# from zeta.nn.modules.swarmalator import simulate_swarmalators
+# from zeta.nn.modules.transformations import image_transform
+# from zeta.nn.modules.squeeze_excitation import SqueezeExcitation
+# from zeta.nn.modules.clex import Clex
 from zeta.nn.modules.unet import Unet
 from zeta.nn.modules.visual_expert import VisualExpert
 from zeta.nn.modules.feedforward import FeedForward
+from zeta.nn.modules.skipconnection import SkipConnection
 
 __all__ = [
     "CNNNew",
@@ -84,4 +86,5 @@ __all__ = [
     "Unet",
     "VisualExpert",
     "FeedForward",
+    "SkipConnection",
 ]

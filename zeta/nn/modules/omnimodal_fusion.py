@@ -18,7 +18,10 @@ class OmniModalFusion(nn.Module):
         torch.Tensor: A tensor of shape [batch_size, fusion_dim] representing the fused embeddings.
     """
 
-    def __init__(self, fusion_dim: int):
+    def __init__(
+        self,
+        fusion_dim: int,
+    ):
         super(OmniModalFusion, self).__init__()
         self.fusion_dim = fusion_dim
         self.modality_encoders = (
@@ -73,11 +76,12 @@ class OmniModalFusion(nn.Module):
 #     modality2 = torch.rand(
 #         batch_size, 64, 64, 3
 #     )  # Example: Image [batch_size, height, width, channels]
-#     modality3 = torch.rand(
-#         batch_size, 4, 32, 32, 1024
-#     )  # Example: 3D Scene [batch_size, depth, height, width, features]
+#     # modality3 = torch.rand(
+#     #     batch_size, 4, 32, 32, 1024
+#     # )  # Example: 3D Scene [batch_size, depth, height, width, features]
 
 #     modality5 = torch.rand(batch_size, 4, 32, 32, 1024, 244)
 
-#     fused = model(modality1, modality2, modality3)
+#     fused = model(modality1, modality2)
 #     print(f"Fused output shape: {fused.shape}")  # Expected: [batch_size, fusion_dim]
+

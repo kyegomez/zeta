@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
 class BasicHebbianGRUModel(nn.Module):
     """
     A basic Hebbian learning model combined with a GRU for text-based tasks.
@@ -55,6 +56,7 @@ class BasicHebbianGRUModel(nn.Module):
         # Final fully connected layer
         x = self.fc(x)
         return x
+
 
 # # Example usage
 input_dim = 512  # Dimension of the input features
