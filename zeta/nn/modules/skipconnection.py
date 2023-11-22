@@ -1,5 +1,6 @@
 import torch.nn as nn
 
+
 class SkipConnection(nn.Module):
     """
     A helper class to implement skip connections.
@@ -14,6 +15,7 @@ class SkipConnection(nn.Module):
     print(output.shape)
 
     """
+
     def __init__(self):
         super(SkipConnection, self).__init__()
 
@@ -29,10 +31,11 @@ class SkipConnection(nn.Module):
             torch.Tensor: The element-wise sum of tensor1 and tensor2.
         """
         try:
-
             if tensor1.size() != tensor2.size():
-                raise ValueError("The size of both tensors must be the same for element-wise addition.")
-            
+                raise ValueError(
+                    "The size of both tensors must be the same for element-wise addition."
+                )
+
             return tensor1 + tensor2
         except Exception as error:
             print(f"Error: {error}")

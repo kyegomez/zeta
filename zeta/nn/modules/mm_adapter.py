@@ -1,4 +1,4 @@
-import torch 
+import torch
 from torch import nn
 
 
@@ -6,6 +6,7 @@ class SkipConnection(nn.Module):
     """
     A helper class for implementing skip connections.
     """
+
     def __init__(self):
         super(SkipConnection, self).__init__()
 
@@ -39,9 +40,10 @@ class MultiModalAdapterDenseNetwork(nn.Module):
         >>> output = mm_adapter(x)
         >>> print(output.shape)
         torch.Size([1, 1024, 512])
-    
-    
+
+
     """
+
     def __init__(
         self,
         dim: int = None,
@@ -59,7 +61,6 @@ class MultiModalAdapterDenseNetwork(nn.Module):
         self.layers = nn.ModuleList([])
         self.norm = nn.LayerNorm(self.dim)
         self.proj = nn.Linear(self.dim, self.dim)
-        self.silu = nn.SiLU()
 
         # Define layers
         self.layers = nn.ModuleList([])
@@ -74,31 +75,14 @@ class MultiModalAdapterDenseNetwork(nn.Module):
             )
         self.skip_connections = SkipConnection()
 
-    # def forward(self, x: torch.Tensor) -> torch.Tensor:
-    #     # Normalize input tensor
-    #     x = self.norm(x)
-
-    #     # Linear projection 2 times
-    #     lin1, lin2 = self.proj(x), self.proj(x)
-        
-    #     # Apply activation function silu to lin1
-    #     x = self.activation(lin1)
-
-    #     # Concate x and lin2
-    #     concated = torch.cat([x, lin2])
-
-    #     # Linear projection
-    #     out = self.proj(concated)
-
-
-    #     # Add skip connection for the depth
-    #     return out
-
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
         Forward pass of the network.
         """
         for layer in self.layers:
-            x = self.skip_connections(x, layer(x))
-            return x
-        
+            # Apply dense layer block ops
+            y = layer(x)
+
+            # Add the input of the block to it's output(skip connection)
+            x = self.skip_connections(x, y)
+        return x
