@@ -57,10 +57,11 @@ class BasicHebbianGRUModel(nn.Module):
         return x
 
 # # Example usage
-# input_dim = 512  # Dimension of the input features
-# hidden_dim = 256  # Dimension of the hidden state in the GRU
-# output_dim = 128  # Dimension of the output features
-# model = BasicHebbianGRUModel(input_dim, hidden_dim, output_dim)
+input_dim = 512  # Dimension of the input features
+hidden_dim = 256  # Dimension of the hidden state in the GRU
+output_dim = 128  # Dimension of the output features
+model = BasicHebbianGRUModel(input_dim, hidden_dim, output_dim)
 
-# # Assuming input_tensor is a 3D tensor of shape (B, Seqlen, input_dim)
-# # output = model(input_tensor)
+x = torch.randn(1, 512, 512)
+output = model(x)
+print(output.shape)
