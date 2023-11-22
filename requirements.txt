@@ -1,21 +1,16 @@
-torch==2.1.1
+torch
 
 fairscale
-
 timm
 einops
 apex
-
 memory-profiler
 triton
 lion-pytorch
-
 bitsandbytes
 typing
 einops-exts 
-
 torchvision
-
 tokenmonster
 accelerate 
 datasets 
@@ -31,7 +26,7 @@ tiktoken
 autopep8
 transformers
 tqdm
-
+torchaudio
 mkdocs
 mkdocs-material
 mkdocs-glightbox
