@@ -105,7 +105,8 @@ nav:
               - Unet: "zeta/nn/modules/unet.md"
               - VisualExpert: "zeta/nn/modules/visual_expert.md"
               - FeedForward: "zeta/nn/modules/feedforward.md"
-              - BasicHebbianGRUModel: "zeta/nn/modules/"
+              - BasicHebbianGRUModel: "zeta/nn/modules/hebbian.md"
+              - MultiModalAdapterDenseNetwork: "Zeta/nn/modules/mm_adapter.md"
           - zeta.nn.attention:
               - FlashAttention: "zeta/nn/attention/flash_attention.md"
               - MultiQueryAttention: "zeta/nn/attention/multiquery.md"
