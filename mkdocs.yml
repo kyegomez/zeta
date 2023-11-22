@@ -149,7 +149,9 @@ nav:
           - QUIK: "zeta/quant/quik.md"
           - BitLinear: "zeta/quant/bitlinear.md"
   - Examples:
-      - Overview: "examples/index.md"
+    - Overview: "examples/index.md"
   - Product:
-      - Overview: "zeta/product/product_ideas.md"
-      - Zetahub: "zeta/product/zetahub.md"
+    - Overview: "zeta/product/product_ideas.md"
+    - Zetahub: "zeta/product/zetahub.md"
+  - Blog:
+    - Revolutionizing AI/ML with Zeta, The Quest for Truly Modular and Reusable Frameworks: "blog/introduction_to_zeta.md"
