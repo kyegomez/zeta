@@ -49,6 +49,8 @@ from zeta.nn.modules.visual_expert import VisualExpert
 from zeta.nn.modules.feedforward import FeedForward
 from zeta.nn.modules.skipconnection import SkipConnection
 from zeta.nn.modules.log_ff import LogFF, compute_entropy_safe
+from zeta.nn.modules.polymorphic_neuron import PolymorphicNeuronLayer
+from zeta.nn.modules.flexible_mlp import CustomMLP
 
 __all__ = [
     "CNNNew",
@@ -89,4 +91,6 @@ __all__ = [
     "FeedForward",
     "SkipConnection",
     "LogFF",
+    "PolymorphicNeuronLayer",
+    "CustomMLP"
 ]

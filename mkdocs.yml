@@ -106,7 +106,9 @@ nav:
               - VisualExpert: "zeta/nn/modules/visual_expert.md"
               - FeedForward: "zeta/nn/modules/feedforward.md"
               - BasicHebbianGRUModel: "zeta/nn/modules/hebbian.md"
-              - MultiModalAdapterDenseNetwork: "Zeta/nn/modules/mm_adapter.md"
+              - MultiModalAdapterDenseNetwork: "zeta/nn/modules/mm_adapter.md"
+              - CustomMLP: "zeta/nn/modules/custom_mlp.md"
+              - PolymorphicNeuronLayer: "zeta/nn/modules/polymorphic_activation.md"
           - zeta.nn.attention:
               - FlashAttention: "zeta/nn/attention/flash_attention.md"
               - MultiQueryAttention: "zeta/nn/attention/multiquery.md"
@@ -154,4 +156,4 @@ nav:
     - Overview: "zeta/product/product_ideas.md"
     - Zetahub: "zeta/product/zetahub.md"
   - Blog:
-    - Revolutionizing AI/ML with Zeta, The Quest for Truly Modular and Reusable Frameworks: "blog/introduction_to_zeta.md"
+    - Introduction: "blog/introduction_to_zeta.md"
