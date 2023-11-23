@@ -84,4 +84,3 @@ class OmniModalFusion(nn.Module):
 
 #     fused = model(modality1, modality2)
 #     print(f"Fused output shape: {fused.shape}")  # Expected: [batch_size, fusion_dim]
-
