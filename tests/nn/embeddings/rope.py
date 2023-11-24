@@ -94,7 +94,9 @@ def test_apply_rotary_pos_emb_function():
     freqs = torch.tensor([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0], [7.0, 8.0]])
     scale = 2.0
     result = apply_rotary_pos_emb(t, freqs, scale)
-    expected = torch.tensor([[0.0, 4.0], [1.0, 11.0], [4.0, 30.0], [11.0, 64.0]])
+    expected = torch.tensor(
+        [[0.0, 4.0], [1.0, 11.0], [4.0, 30.0], [11.0, 64.0]]
+    )
     assert torch.allclose(result, expected)
 
 
@@ -103,5 +105,7 @@ def test_apply_rotary_pos_emb_without_scale():
     t = torch.tensor([0.0, 1.0, 2.0, 3.0])
     freqs = torch.tensor([[1.0, 2.0], [3.0, 4.0], [5.0, 6.0], [7.0, 8.0]])
     result = apply_rotary_pos_emb(t, freqs)
-    expected = torch.tensor([[0.0, 2.0], [1.0, 10.0], [4.0, 24.0], [11.0, 48.0]])
+    expected = torch.tensor(
+        [[0.0, 2.0], [1.0, 10.0], [4.0, 24.0], [11.0, 48.0]]
+    )
     assert torch.allclose(result, expected)

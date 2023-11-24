@@ -76,7 +76,7 @@ class CausalConv3d(nn.Module):
         chan_out,
         kernel_size: Union[int, Tuple[int, int, int]],
         pad_mode="reflect",
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         kernel_size = cast_tuple(kernel_size, 3)
@@ -107,7 +107,12 @@ class CausalConv3d(nn.Module):
         stride = (stride, 1, 1)
         dilation = (dilation, 1, 1)
         self.conv = nn.Conv3d(
-            chan_in, chan_out, kernel_size, stride=stride, dilation=dilation, **kwargs
+            chan_in,
+            chan_out,
+            kernel_size,
+            stride=stride,
+            dilation=dilation,
+            **kwargs,
         )
 
     def forward(self, x):

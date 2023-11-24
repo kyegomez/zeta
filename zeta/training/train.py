@@ -155,14 +155,17 @@ def Trainer(
 
     if resume_from_checkpoint:
         if resume_from_checkpoint is not None or resume_from_checkpoint != "":
-            accelerator.print(f"Resuming from checkpoint {resume_from_checkpoint}")
+            accelerator.print(
+                f"Resuming from checkpoint {resume_from_checkpoint}"
+            )
             accelerator.load_state(resume_from_checkpoint)
             path = os.path.basename(resume_from_checkpoint)
         training_difference = os.path.splitext(path)[0]
 
         # need to multiply `gradient_accumulation_steps` to reflect real steps
         resume_step = (
-            int(training_difference.replace("step_", "")) * gradient_accumulate_every
+            int(training_difference.replace("step_", ""))
+            * gradient_accumulate_every
         )
 
     if resume_from_checkpoint and resume_step is not None:
@@ -215,7 +218,8 @@ def Trainer(
         unwrapped_model = accelerator.unwrap_model(model)
         with accelerator.main_process_first():
             accelerator.save(
-                unwrapped_model.state_dict(), f"{output_dir}/final/final_model.pt"
+                unwrapped_model.state_dict(),
+                f"{output_dir}/final/final_model.pt",
             )
 
 

@@ -77,7 +77,8 @@ class XPOS(nn.Module):
         self.head_dim = head_dim
         self.scale_base = scale_base
         self.register_buffer(
-            "scale", (torch.arange(0, head_dim, 2) + 0.4 * head_dim) / (1.4 * head_dim)
+            "scale",
+            (torch.arange(0, head_dim, 2) + 0.4 * head_dim) / (1.4 * head_dim),
         )
 
     def forward(self, x, offset=0, downscale=False):

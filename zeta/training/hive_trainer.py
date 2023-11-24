@@ -144,7 +144,9 @@ class HiveTrainer:
                     "seq_len": self.seq_len,
                     "entity_name": self.entity_name,
                     "use_fsdp": self.use_fsdp,
-                    "use_activation_checkpointing": self.use_activation_checkpointing,
+                    "use_activation_checkpointing": (
+                        self.use_activation_checkpointing
+                    ),
                     "learning_rate": self.learning_rate,
                     "seed": self.seed,
                     "use_pretokenized": self.use_pretokenized,

@@ -129,7 +129,11 @@ def test_optimizer_with_custom_clip_threshold():
 def test_optimizer_with_custom_parameters_and_lr():
     model, loss_fn = create_model_and_loss()
     optimizer = GradientEquilibrum(
-        model.parameters(), lr=0.1, max_iterations=500, tol=1e-6, weight_decay=0.2
+        model.parameters(),
+        lr=0.1,
+        max_iterations=500,
+        tol=1e-6,
+        weight_decay=0.2,
     )
     assert optimizer.defaults["lr"] == 0.1
     assert optimizer.defaults["max_iterations"] == 500
@@ -140,7 +144,9 @@ def test_optimizer_with_custom_parameters_and_lr():
 # Test optimizer with a large learning rate and max_iterations
 def test_optimizer_with_large_lr_and_max_iterations():
     model, loss_fn = create_model_and_loss()
-    optimizer = GradientEquilibrum(model.parameters(), lr=1e3, max_iterations=10000)
+    optimizer = GradientEquilibrum(
+        model.parameters(), lr=1e3, max_iterations=10000
+    )
     assert optimizer.defaults["lr"] == 1e3
     assert optimizer.defaults["max_iterations"] == 10000
 

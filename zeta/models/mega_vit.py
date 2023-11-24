@@ -71,7 +71,9 @@ class Attention(nn.Module):
         x = self.norm(x)
 
         qkv = self.to_qkv(x).chunk(3, dim=-1)
-        q, k, v = map(lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads), qkv)
+        q, k, v = map(
+            lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads), qkv
+        )
 
         # #normalize key and values,  QK Normalization
         k = self.norm_k(k)
@@ -96,7 +98,9 @@ class Transformer(nn.Module):
             self.layers.append(
                 nn.ModuleList(
                     [
-                        Attention(dim, heads=heads, dim_head=dim_head, dropout=dropout),
+                        Attention(
+                            dim, heads=heads, dim_head=dim_head, dropout=dropout
+                        ),
                         FeedForward(dim, mlp_dim, dropout=dropout),
                     ]
                 )
@@ -200,7 +204,7 @@ class MegaVit(nn.Module):
         channels=3,
         dim_head=64,
         dropout=0.0,
-        emb_dropout=0.0
+        emb_dropout=0.0,
     ):
         super().__init__()
         image_height, image_width = pair(image_size)
@@ -210,7 +214,9 @@ class MegaVit(nn.Module):
             image_height % patch_height == 0 and image_width % patch_width == 0
         ), "Image dimensions must be divisible by the patch size."
 
-        num_patches = (image_height // patch_height) * (image_width // patch_width)
+        num_patches = (image_height // patch_height) * (
+            image_width // patch_width
+        )
         patch_dim = channels * patch_height * patch_width
         assert pool in {
             "cls",
@@ -232,7 +238,9 @@ class MegaVit(nn.Module):
         self.cls_token = nn.Parameter(torch.randn(1, 1, dim))
         self.dropout = nn.Dropout(emb_dropout)
 
-        self.transformer = Transformer(dim, depth, heads, dim_head, mlp_dim, dropout)
+        self.transformer = Transformer(
+            dim, depth, heads, dim_head, mlp_dim, dropout
+        )
 
         self.pool = pool
         self.to_latent = nn.Identity()

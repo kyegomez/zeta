@@ -226,7 +226,11 @@ class TokenMonster:
             int: The new size of the vocabulary.
         """
         return self.vocab.modify(
-            add_special_tokens, add_regular_tokens, delete_tokens, resize, change_unk
+            add_special_tokens,
+            add_regular_tokens,
+            delete_tokens,
+            resize,
+            change_unk,
         )
 
     def add_token(self, token):

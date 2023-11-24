@@ -182,9 +182,13 @@ class Ether(nn.Module):
         intra_modal_loss = F.mse_loss(y_pred, y_true)
 
         # Inter-modal loss
-        modal_means = [torch.mean(y_pred[:, modality]) for modality in self.modalities]
+        modal_means = [
+            torch.mean(y_pred[:, modality]) for modality in self.modalities
+        ]
         overall_mean = torch.mean(y_pred)
-        inter_modal_loss = sum([torch.abs(mean - overall_mean) for mean in modal_means])
+        inter_modal_loss = sum(
+            [torch.abs(mean - overall_mean) for mean in modal_means]
+        )
 
         return intra_modal_loss + self.alpha * inter_modal_loss
 

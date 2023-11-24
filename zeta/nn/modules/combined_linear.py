@@ -69,18 +69,23 @@ class CombinedLinear(nn.Module):
 
         self.in_features = in_features
         self.out_features = out_features
-        self.in_features_with_bias: int = in_features + 1 if bias else in_features
+        self.in_features_with_bias: int = (
+            in_features + 1 if bias else in_features
+        )
         self.bias = bias
         self.combined_weight = Parameter(
             torch.empty(
-                (self.out_features, self.in_features_with_bias), **factory_kwargs
+                (self.out_features, self.in_features_with_bias),
+                **factory_kwargs,
             )
         )
         self.reset_parameters()
 
     def reset_parameters(self) -> None:
         if self.bias:
-            torch.nn.init.kaiming_uniform_(self.combined_weight[:, :-1], a=math.sqrt(5))
+            torch.nn.init.kaiming_uniform_(
+                self.combined_weight[:, :-1], a=math.sqrt(5)
+            )
             fan_in, _ = torch.nn.init._calculate_fan_in_and_fan_out(
                 self.combined_weight[:, :-1]
             )
@@ -98,6 +103,8 @@ class CombinedLinear(nn.Module):
             return torch.nn.functional.linaer(input, self.combined_weight, None)
 
     def extra_repr(self) -> str:
-        return "in_features={}, out_features={}, in_features_with_bias={}".format(
-            self.in_features, self.out_features, self.in_features_with_bias
+        return (
+            "in_features={}, out_features={}, in_features_with_bias={}".format(
+                self.in_features, self.out_features, self.in_features_with_bias
+            )
         )

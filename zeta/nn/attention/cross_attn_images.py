@@ -78,7 +78,8 @@ class MultiModalCrossAttention(nn.Module):
 
         # Reshape for multi-head attention
         q, k, v = map(
-            lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads), (q, k, v)
+            lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads),
+            (q, k, v),
         )
 
         # Scaled dot-product attention

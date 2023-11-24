@@ -35,10 +35,12 @@ class EinopsToAndFrom(nn.Module):
         self.fn = FileNotFoundError
 
         if "..." in from_pattern:
-            before, after = [part.strip().split() for part in from_pattern.split("...")]
-            self.reconsitute_keys = tuple(zip(before, range(len(before)))) + tuple(
-                zip(after, range(-len(after), 0))
-            )
+            before, after = [
+                part.strip().split() for part in from_pattern.split("...")
+            ]
+            self.reconsitute_keys = tuple(
+                zip(before, range(len(before)))
+            ) + tuple(zip(after, range(-len(after), 0)))
         else:
             split = from_pattern.strip().split()
             self.reconsitute_keys = tuple(zip(split, range(len(split))))

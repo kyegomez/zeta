@@ -19,7 +19,11 @@ from torchvision.transforms import (
 
 class ResizeMaxSize(nn.Module):
     def __init__(
-        self, max_size, interpolation=InterpolationMode.BICUBIC, fn="max", fill=0
+        self,
+        max_size,
+        interpolation=InterpolationMode.BICUBIC,
+        fn="max",
+        fill=0,
     ):
         super().__init__()
         if not isinstance(max_size, int):

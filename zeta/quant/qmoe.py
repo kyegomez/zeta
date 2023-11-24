@@ -81,7 +81,9 @@ def batch_gptq(
         except RuntimeError as ex:
             print("Skip due to singularity.")
             idx = int(
-                str(ex).replace("linalg.cholesky: (Batch element ", "").split("):")[0]
+                str(ex)
+                .replace("linalg.cholesky: (Batch element ", "")
+                .split("):")[0]
             )
             # Do RTN for failed Hessians by turning them into identity
             H[idx] = torch.eye(columns, device=dev)
@@ -103,7 +105,9 @@ def batch_gptq(
 
             if groupsize != -1:
                 if (i1 + i) % groupsize == 0:
-                    quantizer.find_params(W[:, :, (i1 + i) : (i1 + i + groupsize)])
+                    quantizer.find_params(
+                        W[:, :, (i1 + i) : (i1 + i + groupsize)]
+                    )
 
             q = quantize(
                 w.unsqueeze(2), quantizer.scale, quantizer.zero, quantizer.maxq
@@ -111,7 +115,9 @@ def batch_gptq(
             Q1[:, :, i] = q
             Losses1[:, :, i] = (w - q) ** 2 / d**2
             err1 = (w - q) / d
-            W1[:, :, i:] -= torch.bmm(err1.unsqueeze(2), Hinv1[:, i, i:].unsqueeze(1))
+            W1[:, :, i:] -= torch.bmm(
+                err1.unsqueeze(2), Hinv1[:, i, i:].unsqueeze(1)
+            )
             Err1[:, :, i] = err1
 
         Q[:, :, i1:i2] = Q1

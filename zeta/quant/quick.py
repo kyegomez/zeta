@@ -39,7 +39,9 @@ class QUIK(nn.Module):
         self.out_features = out_features
         self.weight = nn.Parameter(torch.Tensor(out_features, in_features))
         self.bias = nn.Parameter(torch.Tensor(out_features)) if bias else None
-        self.quantize_range = 8  # Assuming 4-bit quantization, so range is [-8, 7]
+        self.quantize_range = (
+            8  # Assuming 4-bit quantization, so range is [-8, 7]
+        )
         self.half_range = self.quantize_range // 2
 
         nn.init.kaiming_uniform_(self.weight, a=math.sqrt(5))
@@ -87,7 +89,9 @@ class QUIK(nn.Module):
         """
         weights_reduced = self.weight.sum(dim=1)
         x = input_tensor.float() * scale_act * scale_weight
-        shift = (zero_act + self.half_range * scale_act) * weights_reduced.unsqueeze(-1)
+        shift = (
+            zero_act + self.half_range * scale_act
+        ) * weights_reduced.unsqueeze(-1)
         output_tensor = x + shift
         return output_tensor
 
@@ -131,5 +135,7 @@ class QUIK(nn.Module):
         )  # Assuming INT32 multiplication result
 
         # Dequantization
-        scale_weight = (self.weight.max() - self.weight.min()) / (2 * self.half_range)
+        scale_weight = (self.weight.max() - self.weight.min()) / (
+            2 * self.half_range
+        )
         return self.dequantize(result, zero_act, scale_act, scale_weight)

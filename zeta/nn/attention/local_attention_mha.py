@@ -23,7 +23,7 @@ class LocalMHA(nn.Module):
         use_xpos=False,
         xpos_scale_base=None,
         exact_windowsize=None,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         inner_dim = dim_head * heads
@@ -46,7 +46,7 @@ class LocalMHA(nn.Module):
             exact_windowsize=default(exact_windowsize, True),
             use_xpos=use_xpos,
             xpos_scale_base=xpos_scale_base,
-            **kwargs
+            **kwargs,
         )
 
         self.to_out = nn.Linear(inner_dim, dim, bias=False)
@@ -57,7 +57,8 @@ class LocalMHA(nn.Module):
 
         q, k, v = self.to_qkv(x).chunk(3, dim=-1)
         q, k, v = map(
-            lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads), (q, k, v)
+            lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads),
+            (q, k, v),
         )
 
         if self.qk_rmsnorm:

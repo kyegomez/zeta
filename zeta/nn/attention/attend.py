@@ -12,7 +12,8 @@ from torch import Tensor, einsum, nn
 # constants
 
 EfficientAttentionConfig = namedtuple(
-    "EfficientAttentionConfig", ["enable_flash", "enable_math", "enable_mem_efficient"]
+    "EfficientAttentionConfig",
+    ["enable_flash", "enable_math", "enable_mem_efficient"],
 )
 
 
@@ -23,7 +24,11 @@ class Intermediates:
     post_softmax_attn: Optional[Tensor] = None
 
     def to_tuple(self):
-        return (self.qk_similarities, self.pre_softmax_attn, self.post_softmax_attn)
+        return (
+            self.qk_similarities,
+            self.pre_softmax_attn,
+            self.post_softmax_attn,
+        )
 
 
 # helpers
@@ -100,7 +105,9 @@ class Attend(nn.Module):
         )
 
         self.attn_fn = (
-            partial(F.softmax, dtype=torch.float32) if not qk_norm else F.softmax
+            partial(F.softmax, dtype=torch.float32)
+            if not qk_norm
+            else F.softmax
         )
 
         self.dropout = dropout
@@ -114,8 +121,12 @@ class Attend(nn.Module):
 
         self.talking_heads = talking_heads
         if talking_heads:
-            self.pre_softmax_talking_heads = nn.Conv2d(heads, heads, 1, bias=False)
-            self.post_softmax_talking_heads = nn.Conv2d(heads, heads, 1, bias=False)
+            self.pre_softmax_talking_heads = nn.Conv2d(
+                heads, heads, 1, bias=False
+            )
+            self.post_softmax_talking_heads = nn.Conv2d(
+                heads, heads, 1, bias=False
+            )
 
         # sparse topk
 
@@ -135,7 +146,10 @@ class Attend(nn.Module):
         self.flash = flash
         assert not (
             flash and version.parse(torch.__version__) < version.parse("2.0.0")
-        ), "in order to use flash attention, you must be using pytorch 2.0 or above"
+        ), (
+            "in order to use flash attention, you must be using pytorch 2.0 or"
+            " above"
+        )
 
         # determine efficient attention configs for cuda and cpu
 
@@ -145,17 +159,20 @@ class Attend(nn.Module):
         if not torch.cuda.is_available() or not flash:
             return
 
-        device_properties = torch.cuda.get_device_properties(torch.device("cuda"))
+        device_properties = torch.cuda.get_device_properties(
+            torch.device("cuda")
+        )
 
         if device_properties.major == 8 and device_properties.minor == 0:
             print_once(
-                "A100 GPU detected, using flash attention if input tensor is on cuda"
+                "A100 GPU detected, using flash attention if input tensor is on"
+                " cuda"
             )
             self.cuda_config = EfficientAttentionConfig(True, False, False)
         else:
             print_once(
-                "Non-A100 GPU detected, using math or mem efficient attention if input"
-                " tensor is on cuda"
+                "Non-A100 GPU detected, using math or mem efficient attention"
+                " if input tensor is on cuda"
             )
             self.cuda_config = EfficientAttentionConfig(False, True, True)
 
@@ -195,7 +212,9 @@ class Attend(nn.Module):
             # manually handle causal mask, if another mask was given
 
             if causal:
-                causal_mask = self.create_causal_mask(q_len, k_len, device=device)
+                causal_mask = self.create_causal_mask(
+                    q_len, k_len, device=device
+                )
                 mask = mask & ~causal_mask
                 causal = False
 
@@ -216,7 +235,9 @@ class Attend(nn.Module):
             if exists(mask):
                 attn_bias = attn_bias.masked_fill(~mask, mask_value // 2)
             elif causal:
-                causal_mask = self.create_causal_mask(q_len, k_len, device=device)
+                causal_mask = self.create_causal_mask(
+                    q_len, k_len, device=device
+                )
                 attn_bias = attn_bias.masked_fill(causal_mask, mask_value // 2)
                 causal = False
 
@@ -252,7 +273,12 @@ class Attend(nn.Module):
         d - feature dimension
         """
 
-        n, heads, kv_heads, device = q.shape[-2], q.shape[1], k.shape[1], q.device
+        n, heads, kv_heads, device = (
+            q.shape[-2],
+            q.shape[1],
+            k.shape[1],
+            q.device,
+        )
 
         scale = default(self.scale, q.shape[-1] ** -0.5)
 
@@ -262,7 +288,9 @@ class Attend(nn.Module):
             k, v = map(lambda t: rearrange(t, "b 1 n d -> b n d"), (k, v))
         elif kv_heads < heads:
             k, v = map(
-                lambda t: repeat(t, "b kvh n d -> b (r kvh) n d", r=heads // kv_heads),
+                lambda t: repeat(
+                    t, "b kvh n d -> b (r kvh) n d", r=heads // kv_heads
+                ),
                 (k, v),
             )
 
@@ -305,7 +333,9 @@ class Attend(nn.Module):
         if exists(self.sparse_topk) and self.sparse_topk < j:
             top_values, _ = dots.topk(self.sparse_topk, dim=-1)
             sparse_topk_mask = dots < top_values[..., -1:]
-            mask = (mask & sparse_topk_mask) if exists(mask) else sparse_topk_mask
+            mask = (
+                (mask & sparse_topk_mask) if exists(mask) else sparse_topk_mask
+            )
 
         if exists(mask):
             dots = dots.masked_fill(~mask, mask_value)
@@ -352,8 +382,8 @@ class CascadingHeads(nn.Module):
 
     def forward(self, q, k, v, mask=None, attn_bias=None, prev_attn=None):
         assert q.shape[-1] == v.shape[-1], (
-            "cascading heads can only be done if query / key and value head dimensions"
-            " are the same"
+            "cascading heads can only be done if query / key and value head"
+            " dimensions are the same"
         )
 
         # split inputs into per-head inputs
@@ -372,7 +402,9 @@ class CascadingHeads(nn.Module):
             else ((None,) * heads)
         )
         prev_attn = (
-            to_single_heads(prev_attn) if exists(prev_attn) else ((None,) * heads)
+            to_single_heads(prev_attn)
+            if exists(prev_attn)
+            else ((None,) * heads)
         )
 
         # now loop through each head, without output of previous head summed with the next head
@@ -390,7 +422,12 @@ class CascadingHeads(nn.Module):
                 h_q = h_q + prev_head_out
 
             out, intermediates = self.attend(
-                h_q, h_k, h_v, mask=h_mask, attn_bias=h_attn_bias, prev_attn=h_prev_attn
+                h_q,
+                h_k,
+                h_v,
+                mask=h_mask,
+                attn_bias=h_attn_bias,
+                prev_attn=h_prev_attn,
             )
 
             prev_head_out = out
@@ -413,15 +450,21 @@ class CascadingHeads(nn.Module):
         )
 
         aggregated_intermediates = Intermediates(
-            qk_similarities=torch.cat(qk_similarities, dim=1)
-            if len(qk_similarities) > 0
-            else None,
-            pre_softmax_attn=torch.cat(pre_softmax_attn, dim=1)
-            if len(pre_softmax_attn) > 0
-            else None,
-            post_softmax_attn=torch.cat(post_softmax_attn, dim=1)
-            if len(post_softmax_attn) > 0
-            else None,
+            qk_similarities=(
+                torch.cat(qk_similarities, dim=1)
+                if len(qk_similarities) > 0
+                else None
+            ),
+            pre_softmax_attn=(
+                torch.cat(pre_softmax_attn, dim=1)
+                if len(pre_softmax_attn) > 0
+                else None
+            ),
+            post_softmax_attn=(
+                torch.cat(post_softmax_attn, dim=1)
+                if len(post_softmax_attn) > 0
+                else None
+            ),
         )
 
         return all_outs, aggregated_intermediates

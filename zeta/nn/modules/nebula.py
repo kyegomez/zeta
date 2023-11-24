@@ -14,11 +14,17 @@ def one_hot_encoding(y_true, num_classes):
 
 
 def is_multi_label_classification(y_true: torch.Tensor) -> bool:
-    return len(y_true.shape) > 1 and y_true.shape[1] > 1 and y_true.dtype == torch.float
+    return (
+        len(y_true.shape) > 1
+        and y_true.shape[1] > 1
+        and y_true.dtype == torch.float
+    )
 
 
 def contains_non_negative_integers(y_true):
-    return torch.all(y_true >= 0) and torch.all(y_true == y_true.to(torch.int64))
+    return torch.all(y_true >= 0) and torch.all(
+        y_true == y_true.to(torch.int64)
+    )
 
 
 def are_probability_distributions(y_pred, y_true):
@@ -160,7 +166,9 @@ class Nebula(LossFunction):
 
         # Cache class balance
         if dataset_id not in self.class_balance_cache:
-            value_counts = torch.bincount(y_true.flatten().to(dtype=torch.int64))
+            value_counts = torch.bincount(
+                y_true.flatten().to(dtype=torch.int64)
+            )
             self.class_balance_cache[dataset_id] = value_counts / torch.sum(
                 value_counts
             )
@@ -172,7 +180,9 @@ class Nebula(LossFunction):
         # The remaining code remains unchanged as it already incorporates the
         # suggested optimizations
         if is_classification is None:
-            if len(unique_values) <= 10 and torch.all(torch.eq(unique_values % 1, 0)):
+            if len(unique_values) <= 10 and torch.all(
+                torch.eq(unique_values % 1, 0)
+            ):
                 is_classification = True
 
         if is_classification is None:
@@ -194,7 +204,9 @@ class Nebula(LossFunction):
         if y_pred_flat.shape != y_true_flat.shape:
             y_pred_flat = y_pred_flat[: y_true_flat.numel()]
         correlation = torch.tensor(
-            np.corrcoef(y_pred_flat.cpu().numpy(), y_true_flat.cpu().numpy())[0, 1]
+            np.corrcoef(y_pred_flat.cpu().numpy(), y_true_flat.cpu().numpy())[
+                0, 1
+            ]
         )
 
         if is_classification is None:

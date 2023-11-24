@@ -90,7 +90,7 @@ class SophiaG(Optimizer):
         *,
         maximize: bool = False,
         capturable: bool = False,
-        dynamic: bool = False
+        dynamic: bool = False,
     ):
         """
         Initialize the optimizer.
@@ -98,13 +98,19 @@ class SophiaG(Optimizer):
         if not 0.0 <= lr:
             raise ValueError("Invalid learning rate: {}".format(lr))
         if not 0.0 <= betas[0] < 1.0:
-            raise ValueError("Invalid beta parameter at index 0: {}".format(betas[0]))
+            raise ValueError(
+                "Invalid beta parameter at index 0: {}".format(betas[0])
+            )
         if not 0.0 <= betas[1] < 1.0:
-            raise ValueError("Invalid beta parameter at index 1: {}".format(betas[1]))
+            raise ValueError(
+                "Invalid beta parameter at index 1: {}".format(betas[1])
+            )
         if not 0.0 <= rho:
             raise ValueError("Invalid rho parameter at index 1: {}".format(rho))
         if not 0.0 <= weight_decay:
-            raise ValueError("Invalid weight_decay value: {}".format(weight_decay))
+            raise ValueError(
+                "Invalid weight_decay value: {}".format(weight_decay)
+            )
         defaults = dict(
             lr=lr,
             betas=betas,
@@ -163,7 +169,9 @@ class SophiaG(Optimizer):
                         p, memory_format=torch.preserve_format
                     )
 
-                state["hessian"].mul_(beta2).addcmul_(p.grad, p.grad, value=1 - beta2)
+                state["hessian"].mul_(beta2).addcmul_(
+                    p.grad, p.grad, value=1 - beta2
+                )
 
     @torch.no_grad()
     def update_exp_avg(self):
@@ -232,7 +240,10 @@ class SophiaG(Optimizer):
                 hessian.append(state["hessian"])
 
                 if self.defaults["capturable"]:
-                    bs = torch.ones((1,), dtype=torch.float, device=p.device) * bs
+                    bs = (
+                        torch.ones((1,), dtype=torch.float, device=p.device)
+                        * bs
+                    )
 
             self._sophiag(
                 params_with_grad,
@@ -267,7 +278,7 @@ class SophiaG(Optimizer):
         rho: float,
         lr: float,
         weight_decay: float,
-        maximize: bool
+        maximize: bool,
     ):
         """
         SophiaG function.
@@ -309,7 +320,7 @@ class SophiaG(Optimizer):
         lr: float,
         weight_decay: float,
         maximize: bool,
-        capturable: bool
+        capturable: bool,
     ):
         """
         SophiaG function for single tensor.
@@ -342,11 +353,15 @@ class SophiaG(Optimizer):
                 step_size = lr
                 step_size_neg = step_size.neg()
 
-                ratio = (exp_avg.abs() / (rho * bs * hess + 1e-15)).clamp(None, 1)
+                ratio = (exp_avg.abs() / (rho * bs * hess + 1e-15)).clamp(
+                    None, 1
+                )
                 param.addcmul_(exp_avg.sign(), ratio, value=step_size_neg)
             else:
                 step_t.item()
                 step_size_neg = -lr
 
-                ratio = (exp_avg.abs() / (rho * bs * hess + 1e-15)).clamp(None, 1)
+                ratio = (exp_avg.abs() / (rho * bs * hess + 1e-15)).clamp(
+                    None, 1
+                )
                 param.addcmul_(exp_avg.sign(), ratio, value=step_size_neg)

@@ -48,7 +48,9 @@ def test_cross_attention_with_layer_norm():
 
 # Test forward pass with dropout
 def test_cross_attention_with_dropout():
-    dropout_attention = CrossAttention(dim=512, context_dim=256, heads=4, dropout=0.1)
+    dropout_attention = CrossAttention(
+        dim=512, context_dim=256, heads=4, dropout=0.1
+    )
     x = torch.randn(32, 10, 512)
     context = torch.randn(32, 20, 256)
     output = dropout_attention(x, context)

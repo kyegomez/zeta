@@ -33,7 +33,9 @@ class MultiModalCausalAttention(nn.Module):
             lambda t: rearrange(t, "b n (h d) -> b h n d", h=h), qkv_textual
         )
 
-        dots_visual = torch.einsum("bhid,bhjd->bhij", q_visual, k_visual) * self.scale
+        dots_visual = (
+            torch.einsum("bhid,bhjd->bhij", q_visual, k_visual) * self.scale
+        )
 
         dots_textual = (
             torch.einsum(

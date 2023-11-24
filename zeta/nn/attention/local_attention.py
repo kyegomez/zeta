@@ -2,7 +2,10 @@ import torch
 from einops import pack, rearrange, repeat, unpack
 from torch import einsum, nn
 
-from zeta.nn.embeddings.sinusoidal import SinusoidalEmbeddings, apply_rotary_pos_emb
+from zeta.nn.embeddings.sinusoidal import (
+    SinusoidalEmbeddings,
+    apply_rotary_pos_emb,
+)
 from zeta.utils.main import (
     default,
     exists,
@@ -65,7 +68,9 @@ class LocalAttention(nn.Module):
     ):
         super().__init__()
         look_forward = default(look_forward, 0 if causal else 1)
-        assert not (causal and look_forward > 0), "you cannot look forward if causal"
+        assert not (
+            causal and look_forward > 0
+        ), "you cannot look forward if causal"
 
         self.scale = scale
 
@@ -122,7 +127,14 @@ class LocalAttention(nn.Module):
     """
 
     def forward(
-        self, q, k, v, mask=None, input_mask=None, attn_bias=None, window_size=None
+        self,
+        q,
+        k,
+        v,
+        mask=None,
+        input_mask=None,
+        attn_bias=None,
+        window_size=None,
     ):
         mask = default(mask, input_mask)
 
@@ -151,14 +163,17 @@ class LocalAttention(nn.Module):
         )
 
         # https://github.com/arogozhnikov/einops/blob/master/docs/4-pack-and-unpack.ipynb
-        (q, packed_shape), (k, _), (v, _) = map(lambda t: pack([t], "* n d"), (q, k, v))
+        (q, packed_shape), (k, _), (v, _) = map(
+            lambda t: pack([t], "* n d"), (q, k, v)
+        )
 
         # auto padding
 
         if autopad:
             orig_seq_len = q.shape[1]
             (needed_pad, q), (_, k), (_, v) = map(
-                lambda t: pad_to_multiple(t, self.window_size, dim=-2), (q, k, v)
+                lambda t: pad_to_multiple(t, self.window_size, dim=-2),
+                (q, k, v),
             )
 
         b, n, dim_head, device, dtype = *q.shape, q.device, q.dtype
@@ -166,8 +181,8 @@ class LocalAttention(nn.Module):
         scale = default(self.scale, dim_head**-0.5)
 
         assert (n % window_size) == 0, (
-            f"sequence length {n} must be divisible by window size {window_size} for"
-            " local attention"
+            f"sequence length {n} must be divisible by window size"
+            f" {window_size} for local attention"
         )
 
         windows = n // window_size
@@ -230,7 +245,9 @@ class LocalAttention(nn.Module):
 
             if self.exact_windowsize:
                 max_causal_window_size = self.window_size * self.look_backward
-                causal_mask = causal_mask | (bq_t > (bq_k + max_causal_window_size))
+                causal_mask = causal_mask | (
+                    bq_t > (bq_k + max_causal_window_size)
+                )
 
             sim = sim.masked_fill(causal_mask, mask_value)
             del causal_mask
@@ -259,10 +276,16 @@ class LocalAttention(nn.Module):
             h = b // mask.shape[0]
 
             if autopad:
-                _, mask = pad_to_multiple(mask, window_size, dim=-1, value=False)
+                _, mask = pad_to_multiple(
+                    mask, window_size, dim=-1, value=False
+                )
 
-            mask = rearrange(mask, "... (w n) -> (...) w n", w=windows, n=window_size)
-            mask = look_around(mask, **{**look_around_kwargs, "pad_value": False})
+            mask = rearrange(
+                mask, "... (w n) -> (...) w n", w=windows, n=window_size
+            )
+            mask = look_around(
+                mask, **{**look_around_kwargs, "pad_value": False}
+            )
             mask = rearrange(mask, "... j -> ... 1 j")
             mask = repeat(mask, "b ... -> (b h) ...", h=h)
             sim = sim.masked_fill(~mask, mask_value)

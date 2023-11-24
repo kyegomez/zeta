@@ -95,7 +95,9 @@ class PerceiverResampler(nn.Module):
             self.layers.append(
                 nn.ModuleList(
                     [
-                        PerceiverAttention(dim=dim, dim_head=dim_head, heads=heads),
+                        PerceiverAttention(
+                            dim=dim, dim_head=dim_head, heads=heads
+                        ),
                         FeedForward(dim, ff_mult),
                     ]
                 )
@@ -109,7 +111,9 @@ class PerceiverResampler(nn.Module):
 
         times = x.shape[1]
         x = x + self.media_pos_emb[:times]
-        latents = repeat(self.latents, "n d -> b m n d", b=x.shape[0], m=x.shape[1])
+        latents = repeat(
+            self.latents, "n d -> b m n d", b=x.shape[0], m=x.shape[1]
+        )
 
         for attn, ff in self.layers:
             latents = attn(x, latents) + latents
@@ -119,7 +123,9 @@ class PerceiverResampler(nn.Module):
 
 
 class MaskedCrossAttention(nn.Module):
-    def __init__(self, *, dim, dim_head=64, heads=8, only_attend_immediate_media=True):
+    def __init__(
+        self, *, dim, dim_head=64, heads=8, only_attend_immediate_media=True
+    ):
         super().__init__()
         self.scale = dim_head**-0.5
         self.heads = heads
@@ -158,7 +164,9 @@ class MaskedCrossAttention(nn.Module):
                 rearrange(text_time, "b i -> b 1 i 1"),
                 repeat(media_time, "j -> 1 1 1 (j m)", m=m),
             )
-            sim = sim.masked_fill(~text_to_media_mask, -torch.finfo(sim.dtype).max)
+            sim = sim.masked_fill(
+                ~text_to_media_mask, -torch.finfo(sim.dtype).max
+            )
 
         sim = sim - sim.max(dim=-1, keepdim=True).detach()
         attn = sim.softmax(dim=-1)
@@ -177,7 +185,13 @@ class MaskedCrossAttention(nn.Module):
 
 class GatedCrossAttentionBlock(nn.Module):
     def __init__(
-        self, *, dim, dim_head=64, heads=8, ff_mult=4, only_attend_immediate_media=True
+        self,
+        *,
+        dim,
+        dim_head=64,
+        heads=8,
+        ff_mult=4,
+        only_attend_immediate_media=True,
     ):
         super().__init__()
         self.attn = MaskedCrossAttention(
@@ -193,7 +207,8 @@ class GatedCrossAttentionBlock(nn.Module):
 
     def forward(self, x, media, media_locations=None):
         x = (
-            self.attn(x, media, media_locations=media_locations) * self.attn_gate.tanh()
+            self.attn(x, media, media_locations=media_locations)
+            * self.attn_gate.tanh()
             + x
         )
         x = self.ff(x) * self.ff_gate.tanh() + x

@@ -20,7 +20,9 @@ def build_dataloaders(seq_len: int = None, num_cpu: int = None):
     dataset = load_dataset("openwebtext", split="train")
 
     tokenized_dataset = dataset.map(
-        lambda example: tokenizer([t + tokenizer.eos_token for t in example["text"]]),
+        lambda example: tokenizer(
+            [t + tokenizer.eos_token for t in example["text"]]
+        ),
         batched=True,
         num_proc=seq_len,
         remove_columns=["text"],
@@ -32,7 +34,9 @@ def build_dataloaders(seq_len: int = None, num_cpu: int = None):
     # dataset and generate chunks of block_size.
     def group_texts(examples):
         # Concatenate all texts.
-        concatenated_examples = {k: list(chain(*examples[k])) for k in examples.keys()}
+        concatenated_examples = {
+            k: list(chain(*examples[k])) for k in examples.keys()
+        }
         total_length = len(concatenated_examples[list(examples.keys())[0]])
         # We drop the small remainder, we could add padding if the model supported it instead of this drop, you can
         # customize this part to your needs.
@@ -40,7 +44,10 @@ def build_dataloaders(seq_len: int = None, num_cpu: int = None):
             total_length = (total_length // block_size) * block_size
         # Split by chunks of max_len.
         result = {
-            k: [t[i : i + block_size] for i in range(0, total_length, block_size)]
+            k: [
+                t[i : i + block_size]
+                for i in range(0, total_length, block_size)
+            ]
             for k, t in concatenated_examples.items()
         }
         return result

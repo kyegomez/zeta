@@ -66,7 +66,7 @@ class CrossAttention(nn.Module):
         dropout=0.0,
         norm_context=False,
         cosine_sim=False,
-        cosine_sim_scale=16
+        cosine_sim_scale=16,
     ):
         super().__init__()
         self.cosine_sim = cosine_sim
@@ -75,7 +75,9 @@ class CrossAttention(nn.Module):
         inner_dim = dim_head * heads
 
         self.norm = LayerNorm(dim)
-        self.norm_context = LayerNorm(context_dim) if norm_context else nn.Identity()
+        self.norm_context = (
+            LayerNorm(context_dim) if norm_context else nn.Identity()
+        )
         self.dropout = nn.Dropout(dropout)
 
         self.null_kv = nn.Parameter(torch.randn(inner_dim))

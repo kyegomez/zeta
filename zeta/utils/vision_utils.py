@@ -22,9 +22,9 @@ if is_vision_available():
     import PIL.Image
     import PIL.ImageOps
 
-    if version.parse(version.parse(PIL.__version__).base_version) >= version.parse(
-        "9.1.0"
-    ):
+    if version.parse(
+        version.parse(PIL.__version__).base_version
+    ) >= version.parse("9.1.0"):
         PILImageResampling = PIL.Image.Resampling
     else:
         PILImageResampling = PIL.Image
@@ -121,7 +121,8 @@ def make_list_of_images(images, expected_ndims: int = 3) -> List[ImageInput]:
         else:
             raise ValueError(
                 f"Invalid image shape. Expected either {expected_ndims + 1} or"
-                f" {expected_ndims} dimensions, but got {images.ndim} dimensions."
+                f" {expected_ndims} dimensions, but got"
+                f" {images.ndim} dimensions."
             )
         return images
     raise ValueError(
@@ -140,7 +141,8 @@ def to_numpy_array(img) -> np.ndarray:
 
 
 def infer_channel_dimension_format(
-    image: np.ndarray, num_channels: Optional[Union[int, Tuple[int, ...]]] = None
+    image: np.ndarray,
+    num_channels: Optional[Union[int, Tuple[int, ...]]] = None,
 ) -> ChannelDimension:
     """
     Infers the channel dimension format of `image`.
@@ -155,14 +157,18 @@ def infer_channel_dimension_format(
         The channel dimension of the image.
     """
     num_channels = num_channels if num_channels is not None else (1, 3)
-    num_channels = (num_channels,) if isinstance(num_channels, int) else num_channels
+    num_channels = (
+        (num_channels,) if isinstance(num_channels, int) else num_channels
+    )
 
     if image.ndim == 3:
         first_dim, last_dim = 0, 2
     elif image.ndim == 4:
         first_dim, last_dim = 1, 3
     else:
-        raise ValueError(f"Unsupported number of image dimensions: {image.ndim}")
+        raise ValueError(
+            f"Unsupported number of image dimensions: {image.ndim}"
+        )
 
     if image.shape[first_dim] in num_channels:
         return ChannelDimension.FIRST
@@ -172,7 +178,8 @@ def infer_channel_dimension_format(
 
 
 def get_channel_dimension_axis(
-    image: np.ndarray, input_data_format: Optional[Union[ChannelDimension, str]] = None
+    image: np.ndarray,
+    input_data_format: Optional[Union[ChannelDimension, str]] = None,
 ) -> int:
     """
     Returns the channel dimension axis of the image.
@@ -306,15 +313,15 @@ def load_image(
             except Exception as e:
                 raise ValueError(
                     "Incorrect image source. Must be a valid URL starting with"
-                    " `http://` or `https://`, a valid path to an image file, or a"
-                    f" base64 encoded string. Got {image}. Failed with {e}"
+                    " `http://` or `https://`, a valid path to an image file,"
+                    f" or a base64 encoded string. Got {image}. Failed with {e}"
                 )
     elif isinstance(image, PIL.Image.Image):
         image = image
     else:
         raise ValueError(
-            "Incorrect format used for image. Should be an url linking to an image, a"
-            " base64 string, a local path, or a PIL image."
+            "Incorrect format used for image. Should be an url linking to an"
+            " image, a base64 string, a local path, or a PIL image."
         )
     image = PIL.ImageOps.exif_transpose(image)
     image = image.convert("RGB")
@@ -328,9 +335,9 @@ class ImageFeatureExtractionMixin:
     """
 
     def _ensure_format_supported(self, image):
-        if not isinstance(image, (PIL.Image.Image, np.ndarray)) and not is_torch_tensor(
-            image
-        ):
+        if not isinstance(
+            image, (PIL.Image.Image, np.ndarray)
+        ) and not is_torch_tensor(image):
             raise ValueError(
                 f"Got type {type(image)} which is not supported, only"
                 " `PIL.Image.Image`, `np.array` and `torch.Tensor` are."
@@ -380,7 +387,9 @@ class ImageFeatureExtractionMixin:
 
         return image.convert("RGB")
 
-    def rescale(self, image: np.ndarray, scale: Union[float, int]) -> np.ndarray:
+    def rescale(
+        self, image: np.ndarray, scale: Union[float, int]
+    ) -> np.ndarray:
         """
         Rescale a numpy image by scale amount
         """
@@ -409,7 +418,11 @@ class ImageFeatureExtractionMixin:
         if is_torch_tensor(image):
             image = image.numpy()
 
-        rescale = isinstance(image.flat[0], np.integer) if rescale is None else rescale
+        rescale = (
+            isinstance(image.flat[0], np.integer)
+            if rescale is None
+            else rescale
+        )
 
         if rescale:
             image = self.rescale(image.astype(np.float32), 1 / 255.0)
@@ -485,7 +498,9 @@ class ImageFeatureExtractionMixin:
         else:
             return (image - mean) / std
 
-    def resize(self, image, size, resample=None, default_to_square=True, max_size=None):
+    def resize(
+        self, image, size, resample=None, default_to_square=True, max_size=None
+    ):
         """
         Resizes `image`. Enforces conversion of input to PIL.Image.
 
@@ -515,7 +530,9 @@ class ImageFeatureExtractionMixin:
         Returns:
             image: A resized `PIL.Image.Image`.
         """
-        resample = resample if resample is not None else PILImageResampling.BILINEAR
+        resample = (
+            resample if resample is not None else PILImageResampling.BILINEAR
+        )
 
         self._ensure_format_supported(image)
 
@@ -527,11 +544,17 @@ class ImageFeatureExtractionMixin:
 
         if isinstance(size, int) or len(size) == 1:
             if default_to_square:
-                size = (size, size) if isinstance(size, int) else (size[0], size[0])
+                size = (
+                    (size, size)
+                    if isinstance(size, int)
+                    else (size[0], size[0])
+                )
             else:
                 width, height = image.size
                 # specified size only for the smallest edge
-                short, long = (width, height) if width <= height else (height, width)
+                short, long = (
+                    (width, height) if width <= height else (height, width)
+                )
                 requested_new_short = size if isinstance(size, int) else size[0]
 
                 if short == requested_new_short:
@@ -544,8 +567,9 @@ class ImageFeatureExtractionMixin:
                 if max_size is not None:
                     if max_size <= requested_new_short:
                         raise ValueError(
-                            f"max_size = {max_size} must be strictly greater than the"
-                            f" requested size for the smaller edge size = {size}"
+                            f"max_size = {max_size} must be strictly greater"
+                            " than the requested size for the smaller edge"
+                            f" size = {size}"
                         )
                     if new_long > max_size:
                         new_short, new_long = (
@@ -554,7 +578,9 @@ class ImageFeatureExtractionMixin:
                         )
 
                 size = (
-                    (new_short, new_long) if width <= height else (new_long, new_short)
+                    (new_short, new_long)
+                    if width <= height
+                    else (new_long, new_short)
                 )
 
         return image.resize(size, resample=resample)

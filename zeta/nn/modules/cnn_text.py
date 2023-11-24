@@ -28,7 +28,13 @@ class CNNNew(nn.Module):
     """
 
     def __init__(
-        self, vocab_size, embedding_dim, n_filters, filter_sizes, output_dim, dropout
+        self,
+        vocab_size,
+        embedding_dim,
+        n_filters,
+        filter_sizes,
+        output_dim,
+        dropout,
     ):
         super().__init__()
         self.embedding = nn.Embedding(vocab_size, embedding_dim)
@@ -48,6 +54,8 @@ class CNNNew(nn.Module):
         """
         x = rearrange(x, "b t -> b t")
         emb = rearrange(self.embedding(x), "t b c -> b c t")
-        pooled = [reduce(conv(emb), "b c t -> b c", "max") for conv in self.convs]
+        pooled = [
+            reduce(conv(emb), "b c t -> b c", "max") for conv in self.convs
+        ]
         concatenated = rearrange(pooled, "filter b c -> b (filter c)")
         return self.fc(self.dropout(concatenated))

@@ -34,13 +34,19 @@ class TextSceneAttentionFusion(nn.Module):
     def forward(self, text: torch.Tensor, scene: torch.Tensor) -> torch.Tensor:
         # Flattening spatial dimensions of the scene for simplicity
         batch_size, depth, height, width, scene_features = scene.shape
-        scene_flat = scene.view(batch_size, depth * height * width, scene_features)
+        scene_flat = scene.view(
+            batch_size, depth * height * width, scene_features
+        )
 
         # Using einops to repeat the scene tensor for matching text sequence length
-        scene_expanded = repeat(scene_flat, "b sh sf -> b st sh sf", st=text.size(1))
+        scene_expanded = repeat(
+            scene_flat, "b sh sf -> b st sh sf", st=text.size(1)
+        )
 
         # Repeating the text tensor to match the flattened spatial dimensions of the scene
-        text_expanded = repeat(text, "b st tf -> b st sh tf", sh=depth * height * width)
+        text_expanded = repeat(
+            text, "b st tf -> b st sh tf", sh=depth * height * width
+        )
 
         # Concatenating expanded scene tensor and text tensor
         concat_features = torch.cat(
@@ -56,7 +62,9 @@ class TextSceneAttentionFusion(nn.Module):
         ).view(batch_size, seq_len, depth * height * width, 1)
 
         # Using einsum to obtain weighted scene embeddings
-        fused = torch.einsum("btsh,btshj->btsj", attention_weights, scene_expanded)
+        fused = torch.einsum(
+            "btsh,btshj->btsj", attention_weights, scene_expanded
+        )
 
         return fused
 

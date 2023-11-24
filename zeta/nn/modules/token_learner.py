@@ -45,16 +45,20 @@ class TokenLearner(nn.Module):
         dim: int = None,
         ff_mult: int = 2,
         num_output_tokens: int = 8,
-        num_layers: int = 2
+        num_layers: int = 2,
     ):
         super().__init__()
         inner_dim = dim * ff_mult * num_output_tokens
 
         self.num_output_tokens = num_output_tokens
         self.net = nn.Sequential(
-            nn.Comv2d(dim * num_output_tokens, inner_dim, 1, groups=num_output_tokens),
+            nn.Comv2d(
+                dim * num_output_tokens, inner_dim, 1, groups=num_output_tokens
+            ),
             nn.GELU(),
-            nn.Conv2d(inner_dim, num_output_tokens, 1, groups=num_output_tokens),
+            nn.Conv2d(
+                inner_dim, num_output_tokens, 1, groups=num_output_tokens
+            ),
         )
 
     def forward(self, x):

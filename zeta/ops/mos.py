@@ -52,5 +52,7 @@ class MixtureOfSoftmaxes(nn.Module):
         ]
 
         # Combine softmax outputs weighted by the mixture coefficients
-        output = torch.stack(softmax_outputs, dim=1) * mixture_weights.unsqueeze(2)
+        output = torch.stack(
+            softmax_outputs, dim=1
+        ) * mixture_weights.unsqueeze(2)
         return output.sum(dim=1)

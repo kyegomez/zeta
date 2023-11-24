@@ -36,7 +36,9 @@ def asynchronized_softmax(Q, K, V, unified_max_value):
     exp_attention_scores = mask_fill(exp_attention_scores, attention_mask, 0.0)
 
     # Step 5: Compute denominators for softmax
-    attention_scores_denominator = torch.sum(exp_attention_scores, dim=-1, keepdim=True)
+    attention_scores_denominator = torch.sum(
+        exp_attention_scores, dim=-1, keepdim=True
+    )
 
     # Step 6: Calculate softmax asynchronously
     attention_softmax = exp_attention_scores / attention_scores_denominator
@@ -69,7 +71,9 @@ class AsynchronizedAttention(nn.Module):
         Q, K, V = qkv.chunk(3, dim=-1)
 
         # Apply the asynchronized softmax to compute attention
-        attention_output = asynchronized_softmax(Q, K, V, self.unified_max_value)
+        attention_output = asynchronized_softmax(
+            Q, K, V, self.unified_max_value
+        )
 
         return attention_output
 
@@ -88,7 +92,9 @@ if __name__ == "__main__":
     V = torch.randn(batch_size, seq_length, d_model)
 
     # Initialize the AsynchronizedAttention module
-    attention_module = AsynchronizedAttention(d_model, n_heads, unified_max_value)
+    attention_module = AsynchronizedAttention(
+        d_model, n_heads, unified_max_value
+    )
 
     # Compute the attention output
     attention_output = attention_module(Q)

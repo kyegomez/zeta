@@ -63,7 +63,11 @@ class AlibiPositionalBias(BaseBias):
     def forward(self, i, j):
         h, device = self.num_heads, self.device
 
-        if exists(self.bias) and self.bias.shape[-1] >= j and self.bias.shape[-2] >= i:
+        if (
+            exists(self.bias)
+            and self.bias.shape[-1] >= j
+            and self.bias.shape[-2] >= i
+        ):
             return self.bias[..., :i, :j]
 
         bias = self.get_bias(i, j, device)
@@ -88,7 +92,11 @@ class LearnedAlibiPositionalBias(AlibiPositionalBias):
         def get_slopes(param):
             return pad_at_dim(param.exp(), (0, h - param.shape[0]), dim=-2)
 
-        if exists(self.bias) and self.bias.shape[-1] >= j and self.bias.shape[-2] >= i:
+        if (
+            exists(self.bias)
+            and self.bias.shape[-1] >= j
+            and self.bias.shape[-2] >= i
+        ):
             bias = self.bias[..., :i, :j]
         else:
             bias = self.get_bias(i, j, device)

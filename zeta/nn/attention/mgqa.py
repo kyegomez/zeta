@@ -13,8 +13,12 @@ def repeat_kv(keys: torch.Tensor, values: torch.Tensor, repeats: int, dim: int):
     return keys, values
 
 
-def precompute_freqs_cis(dim: int, end: int, theta: float = 10000.0) -> torch.Tensor:
-    freqs = 1.0 / (theta ** (torch.arange(0, dim, 2)[: (dim // 2)].float() / dim))
+def precompute_freqs_cis(
+    dim: int, end: int, theta: float = 10000.0
+) -> torch.Tensor:
+    freqs = 1.0 / (
+        theta ** (torch.arange(0, dim, 2)[: (dim // 2)].float() / dim)
+    )
     t = torch.arange(end, device=freqs.device)  # type: ignore
     freqs = torch.outer(t, freqs).float()  # type: ignore
     return torch.polar(torch.ones_like(freqs), freqs)  # complex64
@@ -94,9 +98,13 @@ class MGQA(nn.Module):
         self.scale = self.head_dim**-0.5
 
         self.wq = nn.Linear(self.dim, self.n_heads * self.head_dim, bias=False)
-        self.wk = nn.Linear(self.dim, self.n_kv_heads * self.head_dim, bias=False)
+        self.wk = nn.Linear(
+            self.dim, self.n_kv_heads * self.head_dim, bias=False
+        )
         self.wv = nn.Linear(
-            self.n_heads * self.head_dim, self.n_kv_heads * self.head_dim, bias=False
+            self.n_heads * self.head_dim,
+            self.n_kv_heads * self.head_dim,
+            bias=False,
         )
         self.wo = nn.Linear(self.n_heads * self.head_dim, self.dim, bias=False)
 
@@ -152,11 +160,15 @@ class MGQA(nn.Module):
             key, val = cache.keys, cache.values
 
             key = key.view(
-                seqlen_sum * cache.sliding_window, self.n_kv_heads, self.head_dim
+                seqlen_sum * cache.sliding_window,
+                self.n_kv_heads,
+                self.head_dim,
             )
 
             val = val.view(
-                seqlen_sum * cache.sliding_window, self.n_kv_heads, self.head_dim
+                seqlen_sum * cache.sliding_window,
+                self.n_kv_heads,
+                self.head_dim,
             )
 
         # repeat keys and values to match number of query heads

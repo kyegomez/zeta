@@ -125,7 +125,9 @@ def top1gating(
     # einsum("s,se->se")
     gates1 = gates1_s.unsqueeze(-1) * mask1.to(gates1_s.dtype)
     # locations1_sc = num_tokens * capacity
-    locations1_sc = one_hot(locations1_s, num_classes=capacity, unsqueeze_indices=True)
+    locations1_sc = one_hot(
+        locations1_s, num_classes=capacity, unsqueeze_indices=True
+    )
     combine1_sec = torch.bmm(
         # einsum("se,sc->sec")
         gates1.unsqueeze(-1),
@@ -239,12 +241,18 @@ def gumbel_rsample(shape: Tuple, device: torch.device) -> Tensor:
     return gumbel(shape)
 
 
-def one_hot(indices: torch.Tensor, num_classes: int, unsqueeze_indices=False) -> Tensor:
+def one_hot(
+    indices: torch.Tensor, num_classes: int, unsqueeze_indices=False
+) -> Tensor:
     if unsqueeze_indices:
         indices = indices.unsqueeze(-1)
-    assert indices.shape[-1] == 1, "last dimension of indices must be have size 1"
+    assert (
+        indices.shape[-1] == 1
+    ), "last dimension of indices must be have size 1"
     output = torch.zeros(
-        indices.shape[:-1] + (num_classes,), device=indices.device, dtype=indices.dtype
+        indices.shape[:-1] + (num_classes,),
+        device=indices.device,
+        dtype=indices.dtype,
     )
     output.scatter_(len(output.shape) - 1, indices, 1)
     return output
@@ -288,7 +296,9 @@ def top2gating(
     if second_expert_policy == "sampling":
         # Create a mask for 2nd's expert per token using Gumbel-max trick
         # https://timvieira.github.io/blog/post/2014/07/31/gumbel-max-trick/
-        logits_w_noise = logits + gumbel_rsample(logits.shape, device=logits.device)
+        logits_w_noise = logits + gumbel_rsample(
+            logits.shape, device=logits.device
+        )
     else:
         logits_w_noise = logits
     # Replace top-expert with min value
@@ -351,10 +361,14 @@ def top2gating(
 
     # for logging purposes
     metadata["overflow_expert1"] = (
-        100 * torch.sum(mask1 * torch.ge(locations1, capacity)) / torch.sum(mask1)
+        100
+        * torch.sum(mask1 * torch.ge(locations1, capacity))
+        / torch.sum(mask1)
     )
     metadata["overflow_expert2"] = (
-        100 * torch.sum(mask2 * torch.ge(locations2, capacity)) / torch.sum(mask2)
+        100
+        * torch.sum(mask2 * torch.ge(locations2, capacity))
+        / torch.sum(mask2)
     )
 
     # Remove locations outside capacity from mask
@@ -428,8 +442,12 @@ def top2gating(
     gates1 = gates1_s.unsqueeze(-1) * mask1.to(gates1_s.dtype)
     # einsum("s,se->se")
     gates2 = gates2_s.unsqueeze(-1) * mask2.to(gates2_s.dtype)
-    locations1_sc = one_hot(locations1_s, num_classes=capacity, unsqueeze_indices=True)
-    locations2_sc = one_hot(locations2_s, num_classes=capacity, unsqueeze_indices=True)
+    locations1_sc = one_hot(
+        locations1_s, num_classes=capacity, unsqueeze_indices=True
+    )
+    locations2_sc = one_hot(
+        locations2_s, num_classes=capacity, unsqueeze_indices=True
+    )
     combine1_sec = torch.bmm(
         # einsum("se,sc->sec")
         gates1.unsqueeze(-1),
@@ -487,7 +505,9 @@ class Top2Gate(torch.nn.Module):
             self.register_parameter("wg", torch.nn.Parameter(wg))
         self.use_fp32 = use_fp32
         self.second_expert_policy = second_expert_policy
-        self.normalize_gate_prob_before_dropping = normalize_gate_prob_before_dropping
+        self.normalize_gate_prob_before_dropping = (
+            normalize_gate_prob_before_dropping
+        )
         self.moe_eval_capacity_token_fraction = moe_eval_capacity_token_fraction
         self.batch_prioritized_routing = batch_prioritized_routing
         self.use_xmoe = use_xmoe

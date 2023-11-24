@@ -143,12 +143,18 @@ class ModalityAdaptiveModule(nn.Module):
         values_combined = torch.cat((text_v, vision_v), dim=1)
 
         # Project the query to the same dimension as the image and text features
-        queries = self.q_proj(torch.cat((text_normalized, img_normalized), dim=1))
-        queries = queries.view(batch_size, -1, self.heads, self.dim // self.heads)
+        queries = self.q_proj(
+            torch.cat((text_normalized, img_normalized), dim=1)
+        )
+        queries = queries.view(
+            batch_size, -1, self.heads, self.dim // self.heads
+        )
 
         # Compute the scaled dot-product attention
         # (batch_size, heads, seq_len_q, seq_len_k)
-        attention_scores = torch.einsum("bhid,bhjd->bhij", queries, keys_combined)
+        attention_scores = torch.einsum(
+            "bhid,bhjd->bhij", queries, keys_combined
+        )
         attention_scores = attention_scores * self.scale
         attention_weights = F.softmax(attention_scores, dim=-1)
 
@@ -159,7 +165,9 @@ class ModalityAdaptiveModule(nn.Module):
         )
 
         # Concatenate the heads
-        attention_output = attention_output.contiguous().view(batch_size, -1, self.dim)
+        attention_output = attention_output.contiguous().view(
+            batch_size, -1, self.dim
+        )
 
         # Apply dropout if necessary
         attention_output = F.dropout(

@@ -88,17 +88,25 @@ class DecoupledLionW(Optimizer):
     """
 
     metric_functions = {
-        "l2_norm/moment": lambda param, optim_state, step_tensor: torch.linalg.vector_norm(
-            optim_state["exp_avg"]
+        "l2_norm/moment": (
+            lambda param, optim_state, step_tensor: torch.linalg.vector_norm(
+                optim_state["exp_avg"]
+            )
         ),
-        "l2_norm/param": lambda param, optim_state, step_tensor: torch.linalg.vector_norm(
-            param.data
+        "l2_norm/param": (
+            lambda param, optim_state, step_tensor: torch.linalg.vector_norm(
+                param.data
+            )
         ),
-        "l2_norm/update": lambda param, optim_state, step_tensor: torch.linalg.vector_norm(
-            step_tensor
+        "l2_norm/update": (
+            lambda param, optim_state, step_tensor: torch.linalg.vector_norm(
+                step_tensor
+            )
         ),
-        "l2_norm/grad": lambda param, optim_state, step_tensor: torch.linalg.vector_norm(
-            param.grad
+        "l2_norm/grad": (
+            lambda param, optim_state, step_tensor: torch.linalg.vector_norm(
+                param.grad
+            )
         ),
         "cosine/update_grad": lambda param, optim_state, step_tensor: torch.nn.functional.cosine_similarity(
             param.grad.flatten(), step_tensor.flatten(), dim=0
@@ -119,14 +127,15 @@ class DecoupledLionW(Optimizer):
             raise Exception(f"Invalid LR: {lr}. LR must be > 0")
         if not all([0.0 <= beta <= 1.0 for beta in betas]):
             raise Exception(
-                f"Invalid beta values: {betas}. All betas must be between 0 and 1."
+                f"Invalid beta values: {betas}. All betas must be between 0"
+                " and 1."
             )
         if weight_decay >= 1e-3:
             log.warning(
-                f"You are using a high value of `weight_decay={weight_decay}` for the"
-                " `DecoupledLionW` optimizer. Are you sure you want to do this? Your"
-                f" model's weights will be multiplied by {1.0 - weight_decay} on every"
-                " step!"
+                f"You are using a high value of `weight_decay={weight_decay}`"
+                " for the `DecoupledLionW` optimizer. Are you sure you want to"
+                " do this? Your model's weights will be multiplied by"
+                f" {1.0 - weight_decay} on every step!"
             )
 
         defaults = {"lr": lr, "betas": betas, "weight_decay": weight_decay}
@@ -156,7 +165,8 @@ class DecoupledLionW(Optimizer):
 
         for group in self.param_groups:
             for p in filter(
-                lambda p: p.grad is not None and p.requires_grad, group["params"]
+                lambda p: p.grad is not None and p.requires_grad,
+                group["params"],
             ):
                 grad, lr, initial_lr, wd, beta1, beta2, state = (
                     p.grad,
@@ -178,7 +188,9 @@ class DecoupledLionW(Optimizer):
 
     def pre_reduce_metrics(self, optimizer_metrics):
         metrics = optimizer_metrics.keys()
-        metrics = sorted(metrics, key=lambda metric: 0 if "l2_norm" in metric else 1)
+        metrics = sorted(
+            metrics, key=lambda metric: 0 if "l2_norm" in metric else 1
+        )
         for metric in metrics:
             if metric.startswith("l2_norm"):
                 optimizer_metrics[metric] = optimizer_metrics[metric] ** 2
@@ -191,7 +203,9 @@ class DecoupledLionW(Optimizer):
                 B_rank_subset_norm = math.sqrt(
                     optimizer_metrics[f"l2_norm/{B}/{layer}"]
                 )
-                optimizer_metrics[metric] *= A_rank_subset_norm * B_rank_subset_norm
+                optimizer_metrics[metric] *= (
+                    A_rank_subset_norm * B_rank_subset_norm
+                )
 
         return optimizer_metrics
 
@@ -219,8 +233,8 @@ class DecoupledLionW(Optimizer):
             step_tensor.add_(param, alpha=-weight_decay * decay_factor)
 
             for metric in self.metric_functions:
-                optimizer_metrics[f"{metric}/{name}"] = self.metric_functions[metric](
-                    param, param_optim_state, step_tensor
-                )
+                optimizer_metrics[f"{metric}/{name}"] = self.metric_functions[
+                    metric
+                ](param, param_optim_state, step_tensor)
 
         return optimizer_metrics

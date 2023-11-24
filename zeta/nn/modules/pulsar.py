@@ -182,7 +182,9 @@ class PulsarNew(nn.Module):
         saturated = self.beta + (1 - self.beta) * torch.tanh(x - self.beta)
 
         # compute based on conditions
-        return torch.where(x < 0, leaky, torch.where(x < self.beta, x, saturated))
+        return torch.where(
+            x < 0, leaky, torch.where(x < self.beta, x, saturated)
+        )
 
 
 x = torch.tensor([1.0, 2.0, 3.0, 4.0, 5.0], requires_grad=True)

@@ -47,7 +47,9 @@ def test_zero_features():
 # Test for a case where the activation functions list is empty
 def test_empty_activation_functions():
     with pytest.raises(ValueError):
-        PolyMorhphicNeuron(in_features=10, out_features=5, activation_functions=[])
+        PolyMorhphicNeuron(
+            in_features=10, out_features=5, activation_functions=[]
+        )
 
 
 # Test for a case where in_features and out_features are negative

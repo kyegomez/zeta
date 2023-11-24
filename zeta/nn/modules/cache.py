@@ -94,8 +94,12 @@ class CacheView:
         ), f"Batch size is {len(self.kv_seqlens)}, got {len(xk)}"
 
         # Order elements in cache by position by unrotating
-        cache_k = [unrotate(t, s) for t, s in zip(self.cache_k, self.kv_seqlens)]
-        cache_v = [unrotate(t, s) for t, s in zip(self.cache_v, self.kv_seqlens)]
+        cache_k = [
+            unrotate(t, s) for t, s in zip(self.cache_k, self.kv_seqlens)
+        ]
+        cache_v = [
+            unrotate(t, s) for t, s in zip(self.cache_v, self.kv_seqlens)
+        ]
 
         interleaved_k = interleave_list(cache_k, xk)
         interleaved_v = interleave_list(cache_v, xv)
@@ -154,7 +158,10 @@ class RotatingBufferCache:
         self, layer_id: int, metadata: RotatingCacheInputMetadata
     ) -> CacheView:
         return CacheView(
-            self.cache_k[layer_id], self.cache_v[layer_id], metadata, self.kv_seqlens
+            self.cache_k[layer_id],
+            self.cache_v[layer_id],
+            metadata,
+            self.kv_seqlens,
         )
 
     def reset(self):
@@ -176,9 +183,13 @@ class RotatingBufferCache:
         return self
 
     def update_seqlens(self, seqlens: List[int]):
-        self.kv_seqlens += torch.tensor(seqlens, device=self.device, dtype=torch.long)
+        self.kv_seqlens += torch.tensor(
+            seqlens, device=self.device, dtype=torch.long
+        )
 
-    def get_input_metadata(self, seqlens: List[int]) -> RotatingCacheInputMetadata:
+    def get_input_metadata(
+        self, seqlens: List[int]
+    ) -> RotatingCacheInputMetadata:
         """
         inpput = seqlens [5,7,2] // seqpos [0, 1, 3] // sliding_window 3
         --> only cache last 3 tokens in each sequence
@@ -192,8 +203,8 @@ class RotatingBufferCache:
         if self.kv_seqlens is None:
             self.init_kvseqlens(len(seqlens))
         assert len(seqlens) == len(self.kv_seqlens), (
-            f"Batch size is {len(self.kv_seqlens)}, got {len(seqlens)}, did you forget"
-            " to reset cache?"
+            f"Batch size is {len(self.kv_seqlens)}, got {len(seqlens)}, did you"
+            " forget to reset cache?"
         )
         seqpos = self.kv_seqlens.tolist()
 
@@ -211,7 +222,10 @@ class RotatingBufferCache:
         )
 
         positions = torch.cat(
-            [torch.arange(pos, pos + seqlen) for pos, seqlen in zip(seqpos, seqlens)]
+            [
+                torch.arange(pos, pos + seqlen)
+                for pos, seqlen in zip(seqpos, seqlens)
+            ]
         ).to(device=self.device, dtype=torch.long)
 
         batch_idx = torch.tensor(
@@ -229,9 +243,9 @@ class RotatingBufferCache:
 
         if first_prefill:
             assert all([pos == 0 for pos in seqpos]), seqpos
-            mask = BlockDiagonalCausalMask.from_seqlens(seqlens).make_local_attention(
-                self.sliding_window
-            )
+            mask = BlockDiagonalCausalMask.from_seqlens(
+                seqlens
+            ).make_local_attention(self.sliding_window)
 
         elif subsequent_prefill:
             mask = BlockDiagonalMask.from_seqlens(

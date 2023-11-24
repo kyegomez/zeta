@@ -20,7 +20,7 @@ def make_layer(inplanes, planes, block, n_blocks, stride=1):
 
     return nn.Sequential(
         block(inplanes, planes, stride, downsample),
-        *[block(planes * block.expansion, planes) for _ in range(1, n_blocks)]
+        *[block(planes * block.expansion, planes) for _ in range(1, n_blocks)],
     )
 
 

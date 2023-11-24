@@ -60,7 +60,10 @@ class MultiModalTokenizer:
             image_tokens = torch.tensor(
                 [[self.im_idx, self.im_end_idx]] * texts.shape[0]
             )
-            return torch.cat([texts[:, 0:1], image_tokens, texts[:, 1:]], dim=1), texts
+            return (
+                torch.cat([texts[:, 0:1], image_tokens, texts[:, 1:]], dim=1),
+                texts,
+            )
         except Exception as e:
             logging.error(f"Failed to tokenize texts: {e}")
             raise
@@ -77,7 +80,9 @@ class MultiModalTokenizer:
 
         """
         try:
-            return self.processor(images=images, return_tensors="pt").pixel_values
+            return self.processor(
+                images=images, return_tensors="pt"
+            ).pixel_values
         except Exception as e:
             logging.error(f"Failed to tokenize images: {e}")
             raise
@@ -94,10 +99,14 @@ class MultiModalTokenizer:
 
         """
         try:
-            text_tokens, only_text_tokens = self.tokenize_texts(sample["target_text"])
+            text_tokens, only_text_tokens = self.tokenize_texts(
+                sample["target_text"]
+            )
             attention_mask = text_tokens != self.tokenizer.pad_token_id
             dummy_image_features = torch.ones((text_tokens.shape[0], 64))
-            attention_mask = torch.cat([dummy_image_features, attention_mask], dim=1)
+            attention_mask = torch.cat(
+                [dummy_image_features, attention_mask], dim=1
+            )
             return {
                 "text_tokens": text_tokens,
                 "images": self.tokenize_images(sample["image"]),

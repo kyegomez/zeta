@@ -34,12 +34,16 @@ def _with_anon_dims(fn):
         update_kwargs_dict = dict()
 
         for prefix in dim_prefixes:
-            assert prefix in kwargs, f"dimension list {prefix} not found in kwargs"
+            assert (
+                prefix in kwargs
+            ), f"dimension list {prefix} not found in kwargs"
             dim_list = kwargs[prefix]
             assert isinstance(
                 dim_list, (list, tuple)
             ), f"Dimension list {prefix} needs to be a tuple of list"
-            dim_names = list(map(lambda ind: f"{prefix}{ind}", range(len(dim_list))))
+            dim_names = list(
+                map(lambda ind: f"{prefix}{ind}", range(len(dim_list)))
+            )
             update_kwargs_dict[prefix] = dict(zip(dim_names, dim_list))
 
         def sub_with_anon_dims(t):

@@ -18,13 +18,17 @@ class CLIPVisionTower(nn.Module):
         if not delay_load:
             self.load_model()
         else:
-            self.cfg_only = CLIPVisionConfig.from_pretrained(self.vision_tower_name)
+            self.cfg_only = CLIPVisionConfig.from_pretrained(
+                self.vision_tower_name
+            )
 
     def load_model(self):
         self.image_processor = CLIPImageProcessor.from_pretrained(
             self.vision_tower_name
         )
-        self.vision_tower = CLIPVisionModel.from_pretrained(self.vision_tower_name)
+        self.vision_tower = CLIPVisionModel.from_pretrained(
+            self.vision_tower_name
+        )
         self.vision_tower.requires_grad_(False)
 
         self.is_loaded = True
@@ -36,7 +40,9 @@ class CLIPVisionTower(nn.Module):
         elif self.select_feature == "cls_patch":
             image_features = image_features
         else:
-            raise ValueError(f"Unexpected select feature: {self.select_feature}")
+            raise ValueError(
+                f"Unexpected select feature: {self.select_feature}"
+            )
         return image_features
 
     @torch.no_grad()
@@ -48,20 +54,26 @@ class CLIPVisionTower(nn.Module):
                     image.to(device=self.device, dtype=self.dtype).unsqueeze(0),
                     output_hidden_states=True,
                 )
-                image_feature = self.feature_select(image_forward_out).to(image.dtype)
+                image_feature = self.feature_select(image_forward_out).to(
+                    image.dtype
+                )
                 image_features.append(image_feature)
         else:
             image_forward_outs = self.vision_tower(
                 images.to(device=self.device, dtype=self.dtype),
                 output_hidden_states=True,
             )
-            image_features = self.feature_select(image_forward_outs).to(images.dtype)
+            image_features = self.feature_select(image_forward_outs).to(
+                images.dtype
+            )
 
         return image_features
 
     @property
     def dummy_feature(self):
-        return torch.zeros(1, self.hidden_size, device=self.device, dtype=self.dtype)
+        return torch.zeros(
+            1, self.hidden_size, device=self.device, dtype=self.dtype
+        )
 
     @property
     def dtype(self):

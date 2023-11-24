@@ -105,13 +105,19 @@ class MBConv(nn.Module):
         reduced_dim = max(1, int(in_planes / reduction_ratio))
 
         self.conv = nn.Sequential(
-            # pw
-            ConvBNReLU(in_planes, hidden_dim, 1)
-            if expand_ratio != 1
-            else nn.Identity(),
+            (
+                # pw
+                ConvBNReLU(in_planes, hidden_dim, 1)
+                if expand_ratio != 1
+                else nn.Identity()
+            ),
             # dw
             ConvBNReLU(
-                hidden_dim, hidden_dim, kernel_size, stride=stride, groups=hidden_dim
+                hidden_dim,
+                hidden_dim,
+                kernel_size,
+                stride=stride,
+                groups=hidden_dim,
             ),
             # se
             SqueezeExcitation(hidden_dim, reduced_dim),

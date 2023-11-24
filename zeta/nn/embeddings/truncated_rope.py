@@ -35,7 +35,9 @@ class TruncatedRotaryEmbedding(nn.Module):
         self.b = b
         self.rho = rho
         self.base = 10000
-        self.inv_freq = 1.0 / (self.base ** (torch.arange(0, dim, 2).float() / dim))
+        self.inv_freq = 1.0 / (
+            self.base ** (torch.arange(0, dim, 2).float() / dim)
+        )
         self.register_buffer("inv_freq", self.inv_freq)
 
     def forward(self, seq_len, device):
@@ -44,7 +46,9 @@ class TruncatedRotaryEmbedding(nn.Module):
         freqs = torch.einsum("i, j -> i j", t, self.inv_freq)
         freqs = torch.cat((freqs, freqs), dim=-1)
 
-        theta = self.base ** (-2 * torch.arange(0, self.dim, 2).float() / self.dim)
+        theta = self.base ** (
+            -2 * torch.arange(0, self.dim, 2).float() / self.dim
+        )
         theta_star = torch.where(
             theta >= self.b,
             theta,

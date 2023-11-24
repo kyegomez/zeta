@@ -33,7 +33,8 @@ class SkipConnection(nn.Module):
         try:
             if tensor1.size() != tensor2.size():
                 raise ValueError(
-                    "The size of both tensors must be the same for element-wise addition."
+                    "The size of both tensors must be the same for element-wise"
+                    " addition."
                 )
 
             return tensor1 + tensor2

@@ -68,7 +68,9 @@ def test_logff_forward(sample_logff_model, sample_input):
     )  # Adjust expected shape based on your model parameters
 
 
-def test_logff_forward_with_usage_tracking(sample_logff_model_with_usage, sample_input):
+def test_logff_forward_with_usage_tracking(
+    sample_logff_model_with_usage, sample_input
+):
     output = sample_logff_model_with_usage(sample_input)
     assert output.shape == (
         32,
@@ -76,7 +78,9 @@ def test_logff_forward_with_usage_tracking(sample_logff_model_with_usage, sample
     )  # Adjust expected shape based on your model parameters
 
 
-def test_logff_forward_with_dropout(sample_logff_model_with_dropout, sample_input):
+def test_logff_forward_with_dropout(
+    sample_logff_model_with_dropout, sample_input
+):
     output = sample_logff_model_with_dropout(sample_input)
     assert output.shape == (
         32,
@@ -104,7 +108,9 @@ def test_logff_forward_with_hardened_decisions(
     )  # Adjust expected shape based on your model parameters
 
 
-def test_logff_forward_with_entropy(sample_logff_model_with_entropy, sample_input):
+def test_logff_forward_with_entropy(
+    sample_logff_model_with_entropy, sample_input
+):
     output, entropies = sample_logff_model_with_entropy(
         sample_input, return_entropies=True
     )
@@ -112,7 +118,11 @@ def test_logff_forward_with_entropy(sample_logff_model_with_entropy, sample_inpu
         32,
         30,
     )  # Adjust expected shape based on your model parameters
-    assert entropies.shape == (31,)  # Entropy shape should match the number of nodes
+    assert entropies.shape == (
+        31,
+    )  # Entropy shape should match the number of nodes
     # Ensure entropies are within a reasonable range
     assert (entropies >= 0).all()
-    assert (entropies <= 0.6931).all()  # Maximum entropy for Bernoulli distribution
+    assert (
+        entropies <= 0.6931
+    ).all()  # Maximum entropy for Bernoulli distribution

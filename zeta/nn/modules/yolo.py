@@ -51,12 +51,20 @@ def yolo(input, num_classes, num_anchors, anchors, stride_h, stride_w):
     anchor_sizes = rearrange(anchors, "anchor dim -> dim () anchor () ()")
 
     _, _, _, in_h, in_w = raw_predictions.shape
-    grid_h = rearrange(torch.arange(in_h).float(), "h -> () () h ()").to(input.device)
-    grid_w = rearrange(torch.arange(in_w).float(), "w -> () () () w").to(input.device)
+    grid_h = rearrange(torch.arange(in_h).float(), "h -> () () h ()").to(
+        input.device
+    )
+    grid_w = rearrange(torch.arange(in_w).float(), "w -> () () () w").to(
+        input.device
+    )
 
     predicted_bboxes = torch.zeros_like(raw_predictions)
-    predicted_bboxes[0] = (raw_predictions[0].sigmoid() + grid_w) * stride_w  # center x
-    predicted_bboxes[1] = (raw_predictions[1].sigmoid() + grid_h) * stride_h  # center y
+    predicted_bboxes[0] = (
+        raw_predictions[0].sigmoid() + grid_w
+    ) * stride_w  # center x
+    predicted_bboxes[1] = (
+        raw_predictions[1].sigmoid() + grid_h
+    ) * stride_h  # center y
     predicted_bboxes[2:4] = (
         raw_predictions[2:4].exp()
     ) * anchor_sizes  # bbox width and height

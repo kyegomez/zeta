@@ -22,7 +22,9 @@ class ODELinear(nn.Module):
         nn.init.kaiming_uniform_(self.ode_up_proj, a=math.sqrt(5))
         nn.init.zeros_(self.ode_down_proj)
 
-    def get_time_embedding(self, t, base=10000, device="cuda", dtype=torch.float32):
+    def get_time_embedding(
+        self, t, base=10000, device="cuda", dtype=torch.float32
+    ):
         if t < 1:
             alpha = 1
         else:
@@ -30,7 +32,10 @@ class ODELinear(nn.Module):
         ntk_base = base * alpha ** (self.dim / (self.dim - 2))
         ntk_inv_freq = 1.0 / (
             ntk_base
-            ** (torch.arange(0, self.dim, 2, dtype=torch.float32).to(device) / self.dim)
+            ** (
+                torch.arange(0, self.dim, 2, dtype=torch.float32).to(device)
+                / self.dim
+            )
         )
         index = torch.arange(0, self.dim, 2, dtype=torch.float32).to(device)
         delta_ntk_freq = (
@@ -38,14 +43,19 @@ class ODELinear(nn.Module):
             * index
             / (self.dim - 2)
             * 1
-            / (base ** (index / self.dim) * (alpha ** (index / (self.dim - 2) + 1)))
+            / (
+                base ** (index / self.dim)
+                * (alpha ** (index / (self.dim - 2) + 1))
+            )
         )
         return delta_ntk_freq.to(device, dtype=dtype), ntk_inv_freq.to(
             device, dtype=dtype
         )
 
     def forward(self, t, x: torch.Tensor):
-        delta_time, time = self.get_time_embedding(t, device=x.device, dtype=x.dtype)
+        delta_time, time = self.get_time_embedding(
+            t, device=x.device, dtype=x.dtype
+        )
         x = x + torch.log(time)
         time_embed = delta_time / time
         delta_inv_freq = (
@@ -96,7 +106,8 @@ class Clex(nn.Module):
         self.max_position_embeddings = max_position_embeddings
         self.base = base
         inv_freq = 1.0 / (
-            self.base ** (torch.arange(0, self.dim, 2).float().to(device) / self.dim)
+            self.base
+            ** (torch.arange(0, self.dim, 2).float().to(device) / self.dim)
         )
         self.register_buffer("inv_freq", inv_freq)
 
@@ -123,7 +134,7 @@ class Clex(nn.Module):
             self.proj_func,
             torch.log(self.inv_freq.to(device, dtype=torch.float32)),
             time_grid,
-            **self.ode_args
+            **self.ode_args,
         )
         if time_grid.size(0) == 2:
             scale_inv_freq = torch.exp(solution[1])
@@ -168,11 +179,17 @@ class Clex(nn.Module):
             scale_inv_freq = self.inv_freq.to(device)
             freqs = torch.outer(ex_positions.float().squeeze(), scale_inv_freq)
             embed = torch.cat((freqs, freqs), dim=-1)
-            cos, sin = embed.cos()[None, None, :, :], embed.sin()[None, None, :, :]
+            cos, sin = (
+                embed.cos()[None, None, :, :],
+                embed.sin()[None, None, :, :],
+            )
         elif do_train:
             time_grid = torch.tensor([1.0, t_val]).float().to(device)
             embed = self.get_continuous_freq(time_grid, ex_positions, device)
-            cos, sin = embed.cos()[None, None, :, :], embed.sin()[None, None, :, :]
+            cos, sin = (
+                embed.cos()[None, None, :, :],
+                embed.sin()[None, None, :, :],
+            )
         else:
             if t_val > self.max_t_cached:
                 if self.freq_cached is None:
@@ -183,7 +200,9 @@ class Clex(nn.Module):
                         time_grid, ex_positions, device
                     )
                 scale_inv_freq = self.freq_cached[int(t_val - 1.0)]
-                freqs = torch.outer(ex_positions.float().squeeze(), scale_inv_freq)
+                freqs = torch.outer(
+                    ex_positions.float().squeeze(), scale_inv_freq
+                )
                 embed = torch.cat((freqs, freqs), dim=-1)
                 self.rope_cached = torch.cat(
                     (

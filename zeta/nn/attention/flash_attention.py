@@ -13,7 +13,8 @@ from zeta.nn.attention.base import BaseAttention
 # constants
 
 EfficientAttentionConfig = namedtuple(
-    "EfficientAttentionConfig", ["enable_flash", "enable_math", "enable_mem_efficient"]
+    "EfficientAttentionConfig",
+    ["enable_flash", "enable_math", "enable_mem_efficient"],
 )
 
 # helpers
@@ -68,11 +69,17 @@ class Intermediates:
         Returns:
             tuple: Tuple representation of the Intermediates object.
         """
-        return (self.qk_similarities, self.pre_softmax_attn, self.post_softmax_attn)
+        return (
+            self.qk_similarities,
+            self.pre_softmax_attn,
+            self.post_softmax_attn,
+        )
 
 
 class FlashAttention(BaseAttention):
-    def __init__(self, causal: bool = False, dropout: float = 0.0, flash: bool = True):
+    def __init__(
+        self, causal: bool = False, dropout: float = 0.0, flash: bool = True
+    ):
         """
         FlashAttention module that performs attention computation.
 
@@ -91,7 +98,10 @@ class FlashAttention(BaseAttention):
         self.flash = flash
         assert not (
             flash and version.parse(torch.__version__) < version.parse("2.0.0")
-        ), "in order to use flash attention, you must be using pytorch 2.0 or above"
+        ), (
+            "in order to use flash attention, you must be using pytorch 2.0 or"
+            " above"
+        )
 
         # determine efficient attention configs for cuda and cpu
 
@@ -101,17 +111,20 @@ class FlashAttention(BaseAttention):
         if not torch.cuda.is_available() or not flash:
             return
 
-        device_properties = torch.cuda.get_device_properties(torch.device("cuda"))
+        device_properties = torch.cuda.get_device_properties(
+            torch.device("cuda")
+        )
 
         if device_properties.major == 8 and device_properties.minor == 0:
             print_once(
-                "A100 GPU detected, using flash attention if input tensor is on cuda"
+                "A100 GPU detected, using flash attention if input tensor is on"
+                " cuda"
             )
             self.cuda_config = EfficientAttentionConfig(True, False, False)
         else:
             print_once(
-                "Non-A100 GPU detected, using math or mem efficient attention if input"
-                " tensor is on cuda"
+                "Non-A100 GPU detected, using math or mem efficient attention"
+                " if input tensor is on cuda"
             )
             self.cuda_config = EfficientAttentionConfig(False, True, True)
 
@@ -128,7 +141,9 @@ class FlashAttention(BaseAttention):
             torch.Tensor: Mask tensor of shape (i, j).
 
         """
-        return torch.ones((i, j), device=device, dtype=torch.bool).triu(j - i + 1)
+        return torch.ones((i, j), device=device, dtype=torch.bool).triu(
+            j - i + 1
+        )
 
     def flash_attn(self, q, k, v, mask=None, attn_bias=None):
         """
@@ -174,7 +189,9 @@ class FlashAttention(BaseAttention):
             # manually handle causal mask, if another mask was given
 
             if causal:
-                causal_mask = self.create_causal_mask(q_len, k_len, device=device)
+                causal_mask = self.create_causal_mask(
+                    q_len, k_len, device=device
+                )
                 mask = mask & ~causal_mask
                 causal = False
 
@@ -195,7 +212,9 @@ class FlashAttention(BaseAttention):
             if exists(mask):
                 attn_bias = attn_bias.masked_fill(~mask, mask_value // 2)
             elif causal:
-                causal_mask = self.create_causal_mask(q_len, k_len, device=device)
+                causal_mask = self.create_causal_mask(
+                    q_len, k_len, device=device
+                )
                 attn_bias = attn_bias.masked_fill(causal_mask, mask_value // 2)
                 causal = False
 

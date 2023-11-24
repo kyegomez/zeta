@@ -93,7 +93,8 @@ def test_warmup(optimizer):
 
 
 @pytest.mark.parametrize(
-    "step_count, logging_interval, expected_output", [(10, 10, True), (5, 10, False)]
+    "step_count, logging_interval, expected_output",
+    [(10, 10, True), (5, 10, False)],
 )
 def test_logging_interval(
     capfd, optimizer, step_count, logging_interval, expected_output

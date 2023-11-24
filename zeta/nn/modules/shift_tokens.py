@@ -63,7 +63,10 @@ class ShiftTokens(nn.Module):
         splitted = x.split(feats_per_shift, dim=-1)
         segments_to_shift, rest = splitted[:segments], splitted[segments:]
         segments_to_shift = list(
-            map(lambda args: shift(*args, mask=mask), zip(segments_to_shift, shifts))
+            map(
+                lambda args: shift(*args, mask=mask),
+                zip(segments_to_shift, shifts),
+            )
         )
         x = torch.cat((*segments_to_shift, *rest), dim=-1)
         return self.fn(x, **kwargs)

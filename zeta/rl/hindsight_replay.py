@@ -66,7 +66,12 @@ class HindsightExperienceReplay:
     """
 
     def __init__(
-        self, state_dim, action_dim, buffer_size, batch_size, goal_sampling_strategy
+        self,
+        state_dim,
+        action_dim,
+        buffer_size,
+        batch_size,
+        goal_sampling_strategy,
     ):
         self.state_dim = state_dim
         self.action_dim = action_dim

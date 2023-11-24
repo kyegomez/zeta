@@ -23,7 +23,9 @@ class ProfileConfig:
     memory_profile_path: Optional[str] = None
 
 
-def benchmark_torch_function_in_microseconds(func: Callable, *args, **kwargs) -> float:
+def benchmark_torch_function_in_microseconds(
+    func: Callable, *args, **kwargs
+) -> float:
     # warmup
     for _ in range(5):
         func(*args, **kwargs)

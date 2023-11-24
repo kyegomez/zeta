@@ -21,7 +21,9 @@ class SpatialLinearAttention(nn.Module):
         x = rearrange(x, "b c f h w -> (b f) c h w")
 
         qkv = self.to_qkv(x).chunk(3, dim=1)
-        q, k, v = rearrange_many(qkv, "b (h c) x y -> b h c (x y)", h=self.heads)
+        q, k, v = rearrange_many(
+            qkv, "b (h c) x y -> b h c (x y)", h=self.heads
+        )
 
         q = q.softmax(dim=-2)
         k = k.softmax(dim=-1)
@@ -30,7 +32,9 @@ class SpatialLinearAttention(nn.Module):
         context = torch.einsum("b h d n, b h e n -> b h d e", k, v)
 
         out = torch.einsum("b h d e, b h d n -> b h e n", context, q)
-        out = rearrange(out, "b h c (x y) -> b (h c) x y", h=self.heads, x=h, y=w)
+        out = rearrange(
+            out, "b h c (x y) -> b (h c) x y", h=self.heads, x=h, y=w
+        )
         out = self.to_out(out)
 
         return rearrange(out, "(b f) c h w -> b c f h w", b=b)

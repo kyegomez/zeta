@@ -25,7 +25,9 @@ class SimpleResBlock(nn.Module):
         self.pre_norm = nn.LayerNorm(channels)
 
         self.proj = nn.Sequential(
-            nn.Linear(channels, channels), nn.GELU(), nn.Linear(channels, channels)
+            nn.Linear(channels, channels),
+            nn.GELU(),
+            nn.Linear(channels, channels),
         )
 
     def forward(self, x):
