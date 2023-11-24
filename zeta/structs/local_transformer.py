@@ -28,7 +28,7 @@ class LocalTransformer(nn.Module):
         use_xpos=False,
         xpos_scale_base=None,
         use_dynamic_pos_bias=False,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.token_emb = nn.Embedding(num_tokens, dim)
@@ -40,7 +40,9 @@ class LocalTransformer(nn.Module):
         self.local_attn_window_size = local_attn_window_size
         self.dynamic_pos_bias = None
         if use_dynamic_pos_bias:
-            self.dynamic_pos_bias = DynamicPositionBias(dim=dim // 2, heads=heads)
+            self.dynamic_pos_bias = DynamicPositionBias(
+                dim=dim // 2, heads=heads
+            )
 
         for _ in range(depth):
             self.layers.append(
@@ -57,9 +59,11 @@ class LocalTransformer(nn.Module):
                             xpos_scale_base=xpos_scale_base,
                             use_rotary_pos_emb=not use_dynamic_pos_bias,
                             prenorm=True,
-                            **kwargs
+                            **kwargs,
                         ),
-                        feedforward_network(dim=dim, mult=ff_mult, dropout=ff_dropout),
+                        feedforward_network(
+                            dim=dim, mult=ff_mult, dropout=ff_dropout
+                        ),
                     ]
                 )
             )
@@ -71,7 +75,9 @@ class LocalTransformer(nn.Module):
 
     @torch.no_grad()
     @eval_decorator
-    def generate(self, prime, seq_len, temperature=1.0, filter_thres=0.9, **kwargs):
+    def generate(
+        self, prime, seq_len, temperature=1.0, filter_thres=0.9, **kwargs
+    ):
         n, device = prime.shape[1], prime.device
 
         out = prime

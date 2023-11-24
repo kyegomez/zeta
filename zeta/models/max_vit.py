@@ -24,12 +24,12 @@ class MaxVit(nn.Module):
         mbconv_expansion_rate: int = 4,
         mbconv_shrinkage_rate=0.25,
         dropout=0.01,
-        channels=3
+        channels=3,
     ):
         super().__init__()
         assert isinstance(depth, tuple), (
-            "depth needs to be tuple of integers indicating number of transformer"
-            " blocks at that stage"
+            "depth needs to be tuple of integers indicating number of"
+            " transformer blocks at that stage"
         )
 
         # conv stem
@@ -78,7 +78,11 @@ class MaxVit(nn.Module):
                         shrinkage_rate=mbconv_shrinkage_rate,
                     ),
                     Rearrange("b d (x w1) (y w2) -> b x y w1 w2 d", w1=w, w2=w),
-                    Residual(Attend(dim=layer_dim, dim_head=dim_head, dropout=dropout)),
+                    Residual(
+                        Attend(
+                            dim=layer_dim, dim_head=dim_head, dropout=dropout
+                        )
+                    ),
                     Residual(FeedForward(dim=layer_dim, dropout=dropout)),
                     Rearrange("b x y w1 w2 d -> b d (w1 x) (w2 y)"),
                 )

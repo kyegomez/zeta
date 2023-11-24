@@ -42,10 +42,16 @@ class PositionInterpolationEmbeddings(nn.Module):
     """
 
     def __init__(
-        self, dim: int = None, max_positions: int = 2048, base: int = 10000, device=None
+        self,
+        dim: int = None,
+        max_positions: int = 2048,
+        base: int = 10000,
+        device=None,
     ):
         super().__init__()
-        inv_freq = 1.0 / (base ** (torch.arange(0, dim, 2).float().to(device) / dim))
+        inv_freq = 1.0 / (
+            base ** (torch.arange(0, dim, 2).float().to(device) / dim)
+        )
         self.register_buffer("inv_freq", inv_freq)
 
         max_pos_embeds = 8192
@@ -74,7 +80,9 @@ class PositionInterpolationEmbeddings(nn.Module):
         if seq_len > self.max_seq_len_cached:
             self.max_seq_len_cached = seq_len
             t = torch.arange(
-                self.max_seq_len_cached, device=x.device, dtype=self.inv_freq.dtype
+                self.max_seq_len_cached,
+                device=x.device,
+                dtype=self.inv_freq.dtype,
             )
 
             t *= self.scale

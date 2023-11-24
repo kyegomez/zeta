@@ -70,9 +70,8 @@ def fsdp(
         )
     else:
         raise ValueError(
-            "Invalid scheduler_type. Expected 'bf16', 'fp16' or 'fp32', got: {}".format(
-                mp
-            )
+            "Invalid scheduler_type. Expected 'bf16', 'fp16' or 'fp32', got: {}"
+            .format(mp)
         )
 
     if shard_strat == "SHARD_GRAD":
@@ -83,8 +82,8 @@ def fsdp(
         sharding_strat_fsdp = ShardingStrategy.NO_SHARD
     else:
         raise ValueError(
-            "Invalid scheduler_type. Expected 'SHARD_GRAD', 'FULL_SHARD' or 'NO_SHARD',"
-            " got: {}".format(shard_strat)
+            "Invalid scheduler_type. Expected 'SHARD_GRAD', 'FULL_SHARD' or"
+            " 'NO_SHARD', got: {}".format(shard_strat)
         )
 
     model = FullyShardedDataParallel(

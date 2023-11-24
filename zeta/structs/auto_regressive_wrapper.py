@@ -23,7 +23,9 @@ def top_p_sampling(self, logits, p):
     cumulative_probs = torch.cumsum(F.softmax(sorted_logits, dim=-1), dim=-1)
 
     sorted_indices_to_remove = cumulative_probs > p
-    sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
+    sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[
+        ..., :-1
+    ].clone()
     sorted_indices_to_remove[..., 0] = 0
 
     indices_to_remove = sorted_indices[sorted_indices_to_remove]
@@ -42,7 +44,12 @@ def contrastive_guidance(self, logits, k):
 
 class AutoregressiveWrapper(nn.Module):
     def __init__(
-        self, net, ignore_index=-100, pad_value=0, mask_prob=0.0, speculative=False
+        self,
+        net,
+        ignore_index=-100,
+        pad_value=0,
+        mask_prob=0.0,
+        speculative=False,
     ):
         super().__init__()
         self.pad_value = pad_value
@@ -71,7 +78,7 @@ class AutoregressiveWrapper(nn.Module):
         min_p_pow=2.0,
         min_p_ratio=0.02,
         gamma=5,  # number of guesses for speculative decoding
-        **kwargs
+        **kwargs,
     ):
         start_tokens, ps = pack([start_tokens], "* n")
 
@@ -85,7 +92,9 @@ class AutoregressiveWrapper(nn.Module):
                 logits = self.net(x, **kwargs)[:, -1]
 
                 if filter_logits_fn in {top_k, top_p}:
-                    filtered_logits = filter_logits_fn(logits, thres=filter_thres)
+                    filtered_logits = filter_logits_fn(
+                        logits, thres=filter_thres
+                    )
                     probs = F.softmax(filtered_logits / temperature, dim=-1)
                 elif filter_logits_fn is top_a:
                     filtered_logits = filter_logits_fn(
@@ -100,12 +109,18 @@ class AutoregressiveWrapper(nn.Module):
                 for guess in guesses:
                     x_prime = torch.cat((x, guess.unsqueeze(0)), dim=1)
                     logits_prime = self.net(x_prime, **kwargs)[:, -1]
-                    p_values.append(F.softmax(logits_prime / temperature, dim=-1))
+                    p_values.append(
+                        F.softmax(logits_prime / temperature, dim=-1)
+                    )
 
                 n = gamma
                 for i in range(gamma):
                     ri = torch.rand(1).item()
-                    if ri > p_values[i][guesses[i].item()] / probs[guesses[i].item()]:
+                    if (
+                        ri
+                        > p_values[i][guesses[i].item()]
+                        / probs[guesses[i].item()]
+                    ):
                         n = i - 1
                         break
 
@@ -138,7 +153,9 @@ class AutoregressiveWrapper(nn.Module):
                 logits = self.net(x, **kwargs)[:, -1]
 
                 if filter_logits_fn in {top_k, top_p}:
-                    filtered_logits = filter_logits_fn(logits, thres=filter_thres)
+                    filtered_logits = filter_logits_fn(
+                        logits, thres=filter_thres
+                    )
                     probs = F.softmax(filtered_logits / temperature, dim=-1)
 
                 elif filter_logits_fn is top_a:
@@ -184,7 +201,9 @@ class AutoregressiveWrapper(nn.Module):
         logits = self.net(inp, **kwargs)
 
         loss = F.cross_entropy(
-            rearrange(logits, "b n c -> b c n"), target, ignore_index=ignore_index
+            rearrange(logits, "b n c -> b c n"),
+            target,
+            ignore_index=ignore_index,
         )
 
         if return_loss:

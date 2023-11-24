@@ -34,10 +34,18 @@ class MultiheadAttention(BaseAttention):
 
         self.self_attention = self_attention
 
-        self.k_proj = MultiwayNetwork(nn.Linear(embed_dim, embed_dim, bias=True))
-        self.v_proj = MultiwayNetwork(nn.Linear(embed_dim, embed_dim, bias=True))
-        self.q_proj = MultiwayNetwork(nn.Linear(embed_dim, embed_dim, bias=True))
-        self.out_proj = MultiwayNetwork(nn.Linear(embed_dim, embed_dim, bias=True))
+        self.k_proj = MultiwayNetwork(
+            nn.Linear(embed_dim, embed_dim, bias=True)
+        )
+        self.v_proj = MultiwayNetwork(
+            nn.Linear(embed_dim, embed_dim, bias=True)
+        )
+        self.q_proj = MultiwayNetwork(
+            nn.Linear(embed_dim, embed_dim, bias=True)
+        )
+        self.out_proj = MultiwayNetwork(
+            nn.Linear(embed_dim, embed_dim, bias=True)
+        )
         self.inner_attn_ln = (
             MultiwayNetwork(LayerNorm(self.embed_dim, eps=layernorm_eps))
             if subln and self.self_attention
@@ -70,7 +78,9 @@ class MultiheadAttention(BaseAttention):
     ):
         bsz, tgt_len, embed_dim = query.size()
         src_len = tgt_len
-        assert embed_dim == self.embed_dim, f"query dim {embed_dim} != {self.embed_dim}"
+        assert (
+            embed_dim == self.embed_dim
+        ), f"query dim {embed_dim} != {self.embed_dim}"
 
         key_bsz, src_len, _ = key.size()
         assert key_bsz == bsz, f"{query.size(), key.size()}"
@@ -123,24 +133,32 @@ class MultiheadAttention(BaseAttention):
             attn_weights += attn_mask
 
         if key_padding_mask is not None:
-            attn_weights = attn_weights.view(bsz, self.num_heads, tgt_len, src_len)
+            attn_weights = attn_weights.view(
+                bsz, self.num_heads, tgt_len, src_len
+            )
             attn_weights = attn_weights.masked_fill(
                 key_padding_mask.unsqueeze(1).unsqueeze(2).to(torch.bool),
                 float("-inf"),
             )
-            attn_weights = attn_weights.view(bsz * self.num_heads, tgt_len, src_len)
+            attn_weights = attn_weights.view(
+                bsz * self.num_heads, tgt_len, src_len
+            )
 
         if rel_pos is not None:
             rel_pos = rel_pos.view(attn_weights.size())
             attn_weights = attn_weights + rel_pos
 
-        attn_weights = F.softmax(attn_weights, dim=-1, dtype=torch.float32).type_as(
-            attn_weights
-        )
+        attn_weights = F.softmax(
+            attn_weights, dim=-1, dtype=torch.float32
+        ).type_as(attn_weights)
         attn_probs = self.dropout_module(attn_weights)
 
         attn = torch.bmm(attn_probs, v)
-        attn = attn.transpose(0, 1).reshape(tgt_len, bsz, embed_dim).transpose(0, 1)
+        attn = (
+            attn.transpose(0, 1)
+            .reshape(tgt_len, bsz, embed_dim)
+            .transpose(0, 1)
+        )
 
         if self.inner_attn_ln is not None:
             attn = self.inner_attn_ln(attn)

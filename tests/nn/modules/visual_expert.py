@@ -53,7 +53,9 @@ def test_visual_expert_attention_and_feedforward(visual_expert_instance):
     assert isinstance(
         visual_expert_instance.attention, torch.nn.modules.MultiheadAttention
     )
-    assert isinstance(visual_expert_instance.feedforward, torch.nn.modules.Linear)
+    assert isinstance(
+        visual_expert_instance.feedforward, torch.nn.modules.Linear
+    )
 
 
 # Test the call method with zero-sized input

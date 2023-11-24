@@ -95,8 +95,8 @@ def matrix_inverse_root(
     elif root_inv_method == RootInvMethod.NEWTON:
         if exponent_multiplier != 1.0:
             raise ValueError(
-                f"Exponent multiplier {exponent_multiplier} must be equal to 1 to use"
-                " coupled inverse Newton iteration!"
+                f"Exponent multiplier {exponent_multiplier} must be equal to 1"
+                " to use coupled inverse Newton iteration!"
             )
 
         X, _, termination_flag, _, _ = _matrix_inverse_root_newton(
@@ -108,11 +108,13 @@ def matrix_inverse_root(
         )
         if termination_flag == NewtonConvergenceFlag.REACHED_MAX_ITERS:
             logging.warning(
-                "Newton did not converge and reached maximum number of iterations!"
+                "Newton did not converge and reached maximum number of"
+                " iterations!"
             )
     else:
         raise NotImplementedError(
-            "Root inverse method is not implemented! Specified root inverse method is "
+            "Root inverse method is not implemented! Specified root inverse"
+            " method is "
             + str(root_inv_method)
             + "."
         )
@@ -210,8 +212,8 @@ def _matrix_root_eigen(
     except Exception as exception:
         if retry_double_precision and A.dtype != torch.float64:
             logger.warning(
-                f"Failed to compute eigendecomposition in {A.dtype} precision with"
-                f" exception {exception}! Retrying in double precision..."
+                f"Failed to compute eigendecomposition in {A.dtype} precision"
+                f" with exception {exception}! Retrying in double precision..."
             )
             L, Q = torch.linalg.eigh(A.double())
         else:
@@ -341,9 +343,14 @@ def compute_matrix_root_inverse_residuals(
 
     # compute error by comparing against double precision
     X = matrix_inverse_root(
-        A.double(), root, epsilon=epsilon, exponent_multiplier=exponent_multiplier
+        A.double(),
+        root,
+        epsilon=epsilon,
+        exponent_multiplier=exponent_multiplier,
     )
-    relative_error = torch.dist(X, X_hat, p=torch.inf) / torch.norm(X, p=torch.inf)
+    relative_error = torch.dist(X, X_hat, p=torch.inf) / torch.norm(
+        X, p=torch.inf
+    )
 
     # compute residual
     if exponent_multiplier == 1.0:

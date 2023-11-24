@@ -27,7 +27,9 @@ class ImagePatchCreatorProjector(nn.Module):
         super().__init__()
         self.max_patch_size = max_patch_size
         self.embedding_dim = embedding_dim
-        self.adaptive_pool = nn.AdaptiveAvgPool2d((max_patch_size, max_patch_size))
+        self.adaptive_pool = nn.AdaptiveAvgPool2d(
+            (max_patch_size, max_patch_size)
+        )
         self.projection = None
 
     def forward(self, x):
@@ -84,9 +86,15 @@ class ImagePatchCreatorProjector(nn.Module):
             torch.Tensor: Tensor with created patches.
         """
         B, C, H, W = x.shape
-        x = x.unfold(2, patch_size, patch_size).unfold(3, patch_size, patch_size)
+        x = x.unfold(2, patch_size, patch_size).unfold(
+            3, patch_size, patch_size
+        )
         x = x.contiguous().view(B, -1, patch_size, patch_size, C)
-        x = x.permute(0, 1, 4, 2, 3).contiguous().view(B, -1, patch_size, patch_size)
+        x = (
+            x.permute(0, 1, 4, 2, 3)
+            .contiguous()
+            .view(B, -1, patch_size, patch_size)
+        )
         return x
 
 

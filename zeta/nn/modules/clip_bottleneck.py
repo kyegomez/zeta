@@ -57,7 +57,9 @@ class ClipBottleneck(nn.Module):
                         ("-1", nn.AvgPool2d(stride)),
                         (
                             "0",
-                            nn.Conv2d(inplanes, planes * self.expansion, 1, bias=False),
+                            nn.Conv2d(
+                                inplanes, planes * self.expansion, 1, bias=False
+                            ),
                         ),
                         ("1", nn.BatchNorm2d(planes * self.expansion)),
                     ]

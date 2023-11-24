@@ -151,7 +151,9 @@ def hierarchical_cat(tokens, strides: Tuple[int, ...]):
     if all([s == 1 for s in strides]):
         return torch.cat(tokens, dim=-1)
 
-    tokens = [repeat(t, "b n d -> b (n s) d", s=s) for t, s in zip(tokens, strides)]
+    tokens = [
+        repeat(t, "b n d -> b (n s) d", s=s) for t, s in zip(tokens, strides)
+    ]
     min_seq_len = min([t.shape[-2] for t in tokens])
     tokens = [t[..., :min_seq_len, :] for t in tokens]
     return torch.cat(tokens, dim=-1)
@@ -196,7 +198,9 @@ class Compress(nn.Module):
         self.should_prophet = should_prophet
 
         if self.no_compress:
-            self.compress_fn = Linear(dim, dim_out) if dim != dim_out else nn.Identity()
+            self.compress_fn = (
+                Linear(dim, dim_out) if dim != dim_out else nn.Identity()
+            )
             return
 
         dim_inner = int(dim * expansion_factor)
@@ -227,7 +231,9 @@ class Compress(nn.Module):
         seq_len = ids.shape[-1]
 
         prophet_logits = self.to_prophet(h)
-        prophet_logits = rearrange(prophet_logits, "b n (c d) -> (b c) d n", c=c)
+        prophet_logits = rearrange(
+            prophet_logits, "b n (c d) -> (b c) d n", c=c
+        )
 
         prophet_ids = F.pad(ids, (-1, c), value=self.ignore_index)
         prophet_ids = tuple(prophet_ids[:, i : (seq_len + i)] for i in range(c))
@@ -312,7 +318,10 @@ class FeedForward(nn.Module):
         dim_inner = int(dim * mult)
 
         self.net = nn.Sequential(
-            RMSNorm(dim), Linear(dim, dim_inner), nn.GELU(), Linear(dim_inner, dim)
+            RMSNorm(dim),
+            Linear(dim, dim_inner),
+            nn.GELU(),
+            Linear(dim_inner, dim),
         )
 
     def forward(self, x):
@@ -340,7 +349,8 @@ class Attention(nn.Module):
 
         q, k, v = self.to_qkv(x).chunk(3, dim=-1)
         q, k, v = map(
-            lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads), (q, k, v)
+            lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads),
+            (q, k, v),
         )
 
         rotary_emb = self.rotary_emb(n)
@@ -510,7 +520,10 @@ class HierarchicalTransformer(nn.Module):
         ), "all hierarchical strides must be power of two"
         assert all(
             [s <= h for s, h in zip(hierarchical_stride, hierarchies)]
-        ), "all strides must be less than the compression factor of the hierarchy"
+        ), (
+            "all strides must be less than the compression factor of the"
+            " hierarchy"
+        )
 
         self.h_strides = hierarchical_stride
 
@@ -526,10 +539,11 @@ class HierarchicalTransformer(nn.Module):
 
         self.hierarchy_merge_all = hierarchy_merge_all
         assert (
-            hierarchy_merge_all or self.h_strides[self.predict_hierarchy_index] == 1
+            hierarchy_merge_all
+            or self.h_strides[self.predict_hierarchy_index] == 1
         ), (
-            "the hierarchy level being used for final next token prediction must have"
-            " compression stride of 1"
+            "the hierarchy level being used for final next token prediction"
+            " must have compression stride of 1"
         )
 
         # training related loss weights
@@ -555,7 +569,9 @@ class HierarchicalTransformer(nn.Module):
 
         self.compressors = mlist([])
 
-        for dim, hierarchy, stride in zip(dims, hierarchies, hierarchical_stride):
+        for dim, hierarchy, stride in zip(
+            dims, hierarchies, hierarchical_stride
+        ):
             self.compressors.append(
                 Compress(
                     dim=dim_token_emb,
@@ -615,9 +631,9 @@ class HierarchicalTransformer(nn.Module):
 
                 if exists(h_window_size) and h_window_size > effective_seq_len:
                     print(
-                        f"window size for hierarchy {hierarchy}x is greater than"
-                        " effective sequence length - setting window size to None"
-                        " (which would use normal full attention)"
+                        f"window size for hierarchy {hierarchy}x is greater"
+                        " than effective sequence length - setting window size"
+                        " to None (which would use normal full attention)"
                     )
                     h_window_size = None
 
@@ -647,9 +663,11 @@ class HierarchicalTransformer(nn.Module):
 
             merge = HierarchicalMerge(
                 dims=dims,
-                dim_out=hierarchy_predict_dim
-                if not self.hierarchy_merge_all
-                else sum(dims),
+                dim_out=(
+                    hierarchy_predict_dim
+                    if not self.hierarchy_merge_all
+                    else sum(dims)
+                ),
                 h_strides=hierarchical_stride,
             )
 
@@ -670,14 +688,18 @@ class HierarchicalTransformer(nn.Module):
                 codebook_size=rq_codebook_size,
             )
 
-            self.rand_proj_quantizers = mlist([rpq_klass(dim=dim) for dim in dims])
+            self.rand_proj_quantizers = mlist(
+                [rpq_klass(dim=dim) for dim in dims]
+            )
             self.rq_num_codebooks = rq_num_codebooks
 
         # to logit, for hierarchy set at predict_hierarchy_index, or all
         # hierarchies
 
         self.predict_use_all_hierarchy = predict_use_all_hierarchy
-        logit_dim_in = sum(dims) if predict_use_all_hierarchy else hierarchy_predict_dim
+        logit_dim_in = (
+            sum(dims) if predict_use_all_hierarchy else hierarchy_predict_dim
+        )
 
         self.to_logits = Linear(logit_dim_in, num_tokens)
 
@@ -687,7 +709,9 @@ class HierarchicalTransformer(nn.Module):
 
     @torch.no_grad()
     @eval_decorator
-    def generate(self, prompt, seq_len, temperature=1.0, filter_thres=0.9, **kwargs):
+    def generate(
+        self, prompt, seq_len, temperature=1.0, filter_thres=0.9, **kwargs
+    ):
         b, t, device = *prompt.shape, prompt.device
 
         out = prompt
@@ -796,9 +820,13 @@ class HierarchicalTransformer(nn.Module):
             assert self.prophet_loss_use_quantized
 
             quantize_input = (
-                embeds if self.prophet_quantized_use_embed else post_compressed_tokens
+                embeds
+                if self.prophet_quantized_use_embed
+                else post_compressed_tokens
             )
-            hierarchical_ids = apply_fns(self.rand_proj_quantizers, quantize_input)
+            hierarchical_ids = apply_fns(
+                self.rand_proj_quantizers, quantize_input
+            )
             return hierarchical_ids
 
         # if one wants all the normalized hierarchical embeds
@@ -851,7 +879,9 @@ class HierarchicalTransformer(nn.Module):
                     else post_compressed_tokens
                 )
 
-                hierarchical_ids = apply_fns(self.rand_proj_quantizers, quantize_input)
+                hierarchical_ids = apply_fns(
+                    self.rand_proj_quantizers, quantize_input
+                )
 
                 for hierarchy, stride, compress, embed, pred_ids in zip(
                     self.hierarchies,
@@ -867,7 +897,9 @@ class HierarchicalTransformer(nn.Module):
 
                     axial_dim = hierarchy // stride
 
-                    prophet_logits = curtail_seq_to_multiple(prophet_logits, axial_dim)
+                    prophet_logits = curtail_seq_to_multiple(
+                        prophet_logits, axial_dim
+                    )
                     pred_ids = curtail_seq_to_multiple(pred_ids, axial_dim)
 
                     prophet_logits, pred_ids = map(

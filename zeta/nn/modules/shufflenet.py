@@ -21,7 +21,12 @@ class ShuffleNet(nn.Module):
     """
 
     def __init__(
-        self, in_channels, out_channels, groups=3, grouped_conv=True, combine="add"
+        self,
+        in_channels,
+        out_channels,
+        groups=3,
+        grouped_conv=True,
+        combine="add",
     ):
         super().__init__()
         first_1x1_groups = groups if grouped_conv else 1

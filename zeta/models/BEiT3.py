@@ -37,7 +37,9 @@ class BEiT3(nn.Module):
                     self.vision_embed.num_position_embeddings() + 2,
                     args.encoder_embed_dim,
                 ),
-                PositionalEmbedding(args.max_source_positions, args.encoder_embed_dim),
+                PositionalEmbedding(
+                    args.max_source_positions, args.encoder_embed_dim
+                ),
             ],
             dim=1,
         )

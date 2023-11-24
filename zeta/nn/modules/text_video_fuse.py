@@ -47,7 +47,9 @@ class TextVideoAttentionFusion(nn.Module):
         text_expanded = repeat(
             text, "b st tf -> b st sv hw tf", sv=seq_len_video, hw=hw
         )
-        video_expanded = repeat(video, "b sv hw vf -> b st sv hw vf", st=seq_len_text)
+        video_expanded = repeat(
+            video, "b sv hw vf -> b st sv hw vf", st=seq_len_text
+        )
 
         # Concatenating expanded text tensor and video tensor
         concat_features = torch.cat(

@@ -27,7 +27,7 @@ class Attention(nn.Module):
         groups=1,
         dropout=0.0,
         flash=False,
-        prenorm=False
+        prenorm=False,
     ):
         super().__init__()
         self.heads = heads
@@ -51,7 +51,11 @@ class Attention(nn.Module):
             dim * groups, dim_inner * groups, 1, bias=False, groups=groups
         )
         self.to_kv = nn.Conv1d(
-            dim_context * groups, dim_inner * 2 * groups, 1, bias=False, groups=groups
+            dim_context * groups,
+            dim_inner * 2 * groups,
+            1,
+            bias=False,
+            groups=groups,
         )
         self.to_out = nn.Conv1d(
             dim_inner * groups, dim * groups, 1, bias=False, groups=groups
@@ -118,14 +122,17 @@ class Attention(nn.Module):
         context = self.context_norm(context)
 
         # fold groups into dimension for grouped conv
-        x, context = map(lambda t: rearrange(t, "b g d n -> b (g d) n"), (x, context))
+        x, context = map(
+            lambda t: rearrange(t, "b g d n -> b (g d) n"), (x, context)
+        )
 
         # q, k, v
         q, k, v = (self.to_q(x), *self.to_kv(context).chunk(2, dim=1))
 
         # split heads and merge groups into batches
         q, k, v = map(
-            lambda t: rearrange(t, "b (g h d) n -> b g h n d", h=h, g=g), (q, k, v)
+            lambda t: rearrange(t, "b (g h d) n -> b g h n d", h=h, g=g),
+            (q, k, v),
         )
 
         # rotary embedding
@@ -157,7 +164,9 @@ class Attention(nn.Module):
 
         # concat null key /values, to protect against a row having all masked
         # out elements and have a save a lot of headache
-        nk, nv = map(lambda t: repeat(t, "g h 1 d -> (b g) h 1 d", b=b), self.null_kv)
+        nk, nv = map(
+            lambda t: repeat(t, "g h 1 d -> (b g) h 1 d", b=b), self.null_kv
+        )
 
         k = torch.cat((nk, k), dim=-2)
         v = torch.cat((nv, v), dim=-2)
@@ -197,7 +206,7 @@ class MixtureOfAttention(nn.Module):
         flash_attn=True,
         prenorm=True,
         average_routed=False,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         dim_context = default(dim_context, dim)
@@ -225,7 +234,10 @@ class MixtureOfAttention(nn.Module):
             dim, num_routing_tokens=num_experts, use_triton=use_triton, **kwargs
         )
         self.key_value_router = CoordinateDescentRouter(
-            dim_context, num_routing_tokens=num_experts, use_triton=use_triton, **kwargs
+            dim_context,
+            num_routing_tokens=num_experts,
+            use_triton=use_triton,
+            **kwargs,
         )
 
         self.attn = Attention(
@@ -253,7 +265,9 @@ class MixtureOfAttention(nn.Module):
         num_routed_key_values=None,
         rotary_emb=None,
     ):
-        num_routed_queries = default(num_routed_queries, self.num_routed_queries)
+        num_routed_queries = default(
+            num_routed_queries, self.num_routed_queries
+        )
         num_routed_key_values = default(
             num_routed_key_values, self.num_routed_key_values
         )
@@ -292,9 +306,13 @@ class MixtureOfAttention(nn.Module):
                 not is_cross_attn
             ), "rotary embedding should not be used for cross attending"
             q_rotary_emb = (
-                rotary_emb[query_indices] if exists(query_indices) else rotary_emb
+                rotary_emb[query_indices]
+                if exists(query_indices)
+                else rotary_emb
             )
-            k_rotary_emb = rotary_emb[kv_indices] if exists(kv_indices) else rotary_emb
+            k_rotary_emb = (
+                rotary_emb[kv_indices] if exists(kv_indices) else rotary_emb
+            )
             rotary_emb = (q_rotary_emb, k_rotary_emb)
 
         # attend
@@ -331,7 +349,9 @@ class MixtureOfAttention(nn.Module):
         query_indices = rearrange(query_indices, "b g n -> b (g n)")
         attn_out = rearrange(attn_out, "b g n d -> b (g n) d")
 
-        expanded_query_indices = repeat(query_indices, "b n -> b n d", d=x.shape[-1])
+        expanded_query_indices = repeat(
+            query_indices, "b n -> b n d", d=x.shape[-1]
+        )
         attn_out_summed = out.scatter_add(1, expanded_query_indices, attn_out)
 
         ones = torch.ones(attn_out.shape[:-1], device=self.device)
@@ -385,7 +405,7 @@ class MixtureOfAutoregressiveAttention(nn.Module):
         flash_attn=True,
         prenorm=True,
         average_routed=False,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.num_routed_queries = num_routed_queries
@@ -430,7 +450,11 @@ class MixtureOfAutoregressiveAttention(nn.Module):
         return next(self.parameters()).device
 
     def forward(
-        self, x, rotary_emb=None, num_routed_queries=None, num_routed_key_values=None
+        self,
+        x,
+        rotary_emb=None,
+        num_routed_queries=None,
+        num_routed_key_values=None,
     ):
         b = x.shape[0]
         w = self.routed_window_size
@@ -464,7 +488,9 @@ class MixtureOfAutoregressiveAttention(nn.Module):
         mask = rearrange(mask[:, 1:, ...], "b n w -> (b n) w")
 
         # gets number of queries and key values to route
-        num_routed_queries = default(num_routed_queries, self.num_routed_queries)
+        num_routed_queries = default(
+            num_routed_queries, self.num_routed_queries
+        )
         num_routed_key_values = default(
             num_routed_key_values, self.num_routed_key_values
         )
@@ -502,9 +528,13 @@ class MixtureOfAutoregressiveAttention(nn.Module):
 
             if exists(query_indices):
                 rotary_query_indices = repeat(
-                    query_indices, "... -> ... d", d=windowed_rotary_emb.shape[-1]
+                    query_indices,
+                    "... -> ... d",
+                    d=windowed_rotary_emb.shape[-1],
                 )
-                q_rotary_emb = windowed_rotary_emb.gather(2, rotary_query_indices)
+                q_rotary_emb = windowed_rotary_emb.gather(
+                    2, rotary_query_indices
+                )
 
             else:
                 q_rotary_emb = windowed_rotary_emb
@@ -536,11 +566,15 @@ class MixtureOfAutoregressiveAttention(nn.Module):
                 out = torch.cat((local_out, out), dim=1)
 
             out = reduce(
-                out, "b e n d -> b n d", "mean" if self.averaged_routed else "sum"
+                out,
+                "b e n d -> b n d",
+                "mean" if self.averaged_routed else "sum",
             )
 
         out = torch.zeros(
-            (x.shape[0], self.num_experts, *x.shape[1:]), device=x.device, dtype=x.dtype
+            (x.shape[0], self.num_experts, *x.shape[1:]),
+            device=x.device,
+            dtype=x.dtype,
         )
 
         counts = torch.zeros(
@@ -571,7 +605,9 @@ class MixtureOfAutoregressiveAttention(nn.Module):
         )
 
         # un window the attention output as well as the routed counts
-        attn_out_summed = rearrange(attn_out_summed, "(b n) g w d -> b g (n w) d", b=b)
+        attn_out_summed = rearrange(
+            attn_out_summed, "(b n) g w d -> b g (n w) d", b=b
+        )
 
         attn_out_summed = F.pad(attn_out_summed, (0, 0, w, 0), value=0.0)
 

@@ -54,7 +54,9 @@ class TikToken(BaseTokenizer):
         return (tokens if tokens else self.DEFAULT_MAX_TOKENS) - offset
 
     def encode(self, text: str) -> list[int]:
-        return self.encoding.encode(text, allowed_special=set(self.stop_sequences))
+        return self.encoding.encode(
+            text, allowed_special=set(self.stop_sequences)
+        )
 
     def decode(self, tokens: list[int]) -> str:
         return self.encoding.decode(tokens)
@@ -95,8 +97,8 @@ class TikToken(BaseTokenizer):
                 tokens_per_name = -1
             elif "gpt-3.5-turbo" in model or "gpt-35-turbo" in model:
                 logging.info(
-                    "gpt-3.5-turbo may update over time. Returning num tokens assuming"
-                    " gpt-3.5-turbo-0613."
+                    "gpt-3.5-turbo may update over time. Returning num tokens"
+                    " assuming gpt-3.5-turbo-0613."
                 )
                 return self.token_count(text, model="gpt-3.5-turbo-0613")
             elif "gpt-4" in model:

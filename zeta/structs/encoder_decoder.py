@@ -16,7 +16,7 @@ class EncoderDecoder(nn.Module):
         decoder_embed_tokens=None,
         decoder_embed_positions=None,
         output_projection=None,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.args = args
@@ -28,7 +28,7 @@ class EncoderDecoder(nn.Module):
             encoder_embed_tokens,
             encoder_embed_positions,
             is_encoder_decoder=True,
-            **kwargs
+            **kwargs,
         )
 
         if args.share_all_embeddings and decoder_embed_tokens is None:
@@ -40,7 +40,7 @@ class EncoderDecoder(nn.Module):
             decoder_embed_positions,
             output_projection,
             is_encoder_decoder=True,
-            **kwargs
+            **kwargs,
         )
 
     def forward(
@@ -49,9 +49,11 @@ class EncoderDecoder(nn.Module):
         prev_output_tokens,
         return_all_hiddens=False,
         features_only=False,
-        **kwargs
+        **kwargs,
     ):
-        encoder_out = self.encoder(src_tokens, return_all_hiddens=return_all_hiddens)
+        encoder_out = self.encoder(
+            src_tokens, return_all_hiddens=return_all_hiddens
+        )
         decoder_out = self.decoder(
             prev_output_tokens,
             encoder_out=encoder_out,

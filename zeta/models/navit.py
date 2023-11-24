@@ -31,7 +31,10 @@ def divisible_by(numer, denom):
 
 
 def group_images_by_max_seq_len(
-    images: List[Tensor], patch_size: int, calc_token_dropout=None, max_seq_len=2048
+    images: List[Tensor],
+    patch_size: int,
+    calc_token_dropout=None,
+    max_seq_len=2048,
 ) -> List[List[Tensor]]:
     calc_token_dropout = default(calc_token_dropout, always(0.0))
 
@@ -49,7 +52,9 @@ def group_images_by_max_seq_len(
         ph, pw = map(lambda t: t // patch_size, image_dims)
 
         image_seq_len = ph * pw
-        image_seq_len = int(image_seq_len * (1 - calc_token_dropout(*image_dims)))
+        image_seq_len = int(
+            image_seq_len * (1 - calc_token_dropout(*image_dims))
+        )
 
         assert (
             image_seq_len <= max_seq_len
@@ -132,7 +137,9 @@ class Attention(nn.Module):
 
         qkv = (self.to_q(x), *self.to_kv(kv_input).chunk(2, dim=-1))
 
-        q, k, v = map(lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads), qkv)
+        q, k, v = map(
+            lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads), qkv
+        )
 
         q = self.q_norm(q)
         k = self.k_norm(k)
@@ -163,7 +170,9 @@ class Transformer(nn.Module):
             self.layers.append(
                 nn.ModuleList(
                     [
-                        Attention(dim, heads=heads, dim_head=dim_head, dropout=dropout),
+                        Attention(
+                            dim, heads=heads, dim_head=dim_head, dropout=dropout
+                        ),
                         FeedForward(dim, mlp_dim, dropout=dropout),
                     ]
                 )
@@ -238,7 +247,9 @@ class NaViT(nn.Module):
 
         self.dropout = nn.Dropout(emb_dropout)
 
-        self.transformer = Transformer(dim, depth, heads, dim_head, mlp_dim, dropout)
+        self.transformer = Transformer(
+            dim, depth, heads, dim_head, mlp_dim, dropout
+        )
 
         # final attention pooling queries
 
@@ -303,18 +314,21 @@ class NaViT(nn.Module):
                 assert image.ndim == 3 and image.shape[0] == c
                 image_dims = image.shape[-2:]
                 assert all([divisible_by(dim, p) for dim in image_dims]), (
-                    f"height and width {image_dims} of images must be divisible by"
-                    f" patch size {p}"
+                    f"height and width {image_dims} of images must be divisible"
+                    f" by patch size {p}"
                 )
 
                 ph, pw = map(lambda dim: dim // p, image_dims)
 
                 pos = torch.stack(
-                    torch.meshgrid((arange(ph), arange(pw)), indexing="ij"), dim=-1
+                    torch.meshgrid((arange(ph), arange(pw)), indexing="ij"),
+                    dim=-1,
                 )
 
                 pos = rearrange(pos, "h w c -> (h w) c")
-                seq = rearrange(image, "c (h p1) (w p2) -> (h w) (c p1 p2)", p1=p, p2=p)
+                seq = rearrange(
+                    image, "c (h p1) (w p2) -> (h w) (c p1 p2)", p1=p, p2=p
+                )
 
                 seq_len = seq.shape[-2]
 
@@ -404,13 +418,18 @@ class NaViT(nn.Module):
             batched_image_ids, "b j -> b 1 j"
         )
 
-        attn_pool_mask = attn_pool_mask & rearrange(key_pad_mask, "b j -> b 1 j")
+        attn_pool_mask = attn_pool_mask & rearrange(
+            key_pad_mask, "b j -> b 1 j"
+        )
 
         attn_pool_mask = rearrange(attn_pool_mask, "b i j -> b 1 i j")
 
         # attention pool
 
-        x = self.attn_pool(queries, context=x, attn_mask=attn_pool_mask) + queries
+        x = (
+            self.attn_pool(queries, context=x, attn_mask=attn_pool_mask)
+            + queries
+        )
 
         x = rearrange(x, "b n d -> (b n) d")
 

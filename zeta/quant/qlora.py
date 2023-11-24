@@ -10,7 +10,9 @@ import math
 bnb_available = False
 
 
-def get_block_absmax(inpt_tensor: torch.Tensor, block_size: int) -> torch.Tensor:
+def get_block_absmax(
+    inpt_tensor: torch.Tensor, block_size: int
+) -> torch.Tensor:
     """Iterate through a flattened tensor getting the absmax scalers for each block
 
     Args:
@@ -21,8 +23,8 @@ def get_block_absmax(inpt_tensor: torch.Tensor, block_size: int) -> torch.Tensor
     """
     assert inpt_tensor.dim() == 1, "Input tensor must be flattened"
     assert (inpt_tensor.numel() % block_size) == 0, (
-        f"Input tensor must be divisible by block size, got {inpt_tensor.numel()} and"
-        f" {block_size}"
+        "Input tensor must be divisible by block size, got"
+        f" {inpt_tensor.numel()} and {block_size}"
     )
 
     n_blocks = inpt_tensor.numel() // block_size
@@ -46,7 +48,9 @@ class NF4Tensor:
         assert (
             inpt_tensor.numel() % block_size == 0
         ), "Input tensor must be divisible by block size"
-        assert inpt_tensor.dtype == torch.bfloat16, "Input tensor must be bfloat16"
+        assert (
+            inpt_tensor.dtype == torch.bfloat16
+        ), "Input tensor must be bfloat16"
         device = inpt_tensor.device
         # Cache the tensor on the class def
         nf4 = torch.tensor(
@@ -201,22 +205,26 @@ class NF4Tensor:
         )
         n_scaler_blocks = inpt_tensor.numel() // scaler_block_size
         inpt_tensor = inpt_tensor.view(n_scaler_blocks, scaler_block_size)
-        dequantized = (inpt_tensor / quantization_factor.unsqueeze(-1)).flatten().to(
-            torch.bfloat16
-        ) + self.scaler_mean
+        dequantized = (
+            inpt_tensor / quantization_factor.unsqueeze(-1)
+        ).flatten().to(torch.bfloat16) + self.scaler_mean
         return dequantized
 
     @staticmethod
     def convert_to_norm_float_weight(
-        inpt_tensor: torch.Tensor, n_blocks: int, block_size: int, nf4: torch.tensor
+        inpt_tensor: torch.Tensor,
+        n_blocks: int,
+        block_size: int,
+        nf4: torch.tensor,
     ) -> torch.Tensor:
         """Convert a tensor to the normalized float weight format"""
         flattened_tensor = inpt_tensor.flatten()
         #  Since we are using uint8 we will encode 2 entries per byte
         numel = inpt_tensor.numel()
-        assert (
-            numel % 2 == 0
-        ), "Number of elements must be even just to not have to think about the end"
+        assert numel % 2 == 0, (
+            "Number of elements must be even just to not have to think about"
+            " the end"
+        )
         # Reshape the flattened tensor into blocks of size self.block_size
         blocks = flattened_tensor.view(n_blocks, block_size)
 
@@ -257,9 +265,13 @@ class NF4Tensor:
         # Since first and second elements make up a full block, so
         # we expand out to half the size of the full block
         scalers = self.dequantize_scalers(
-            self.quantized_scalers, self.quantization_factor, self.scaler_block_size
+            self.quantized_scalers,
+            self.quantization_factor,
+            self.scaler_block_size,
         )
-        repeated = scalers.unsqueeze(-1).expand(scalers.size(0), self.block_size // 2)
+        repeated = scalers.unsqueeze(-1).expand(
+            scalers.size(0), self.block_size // 2
+        )
 
         scaled_first = dequantized_first * repeated.flatten()
         scaled_second = dequantized_second * repeated.flatten()
@@ -293,7 +305,13 @@ class NF4Tensor:
     def unpack(
         self,
     ) -> Tuple[
-        int, int, torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, torch.Size
+        int,
+        int,
+        torch.Tensor,
+        torch.Tensor,
+        torch.Tensor,
+        torch.Tensor,
+        torch.Size,
     ]:
         return (
             self.block_size,
@@ -363,7 +381,9 @@ class NF4TensorDebug:
         return 0 | (len(nkf) - 1)
 
     @staticmethod
-    def quantize_nearest(value: torch.float16, nkf: torch.Tensor) -> torch.Tensor:
+    def quantize_nearest(
+        value: torch.float16, nkf: torch.Tensor
+    ) -> torch.Tensor:
         closest_index = 0
         closest_diff = abs(nkf[0] - value)
         for i in range(1, len(nkf)):
@@ -379,7 +399,9 @@ class NF4TensorDebug:
         # return nkf.index_select(0, value)
         return nkf[value]
 
-    def get_scalers(self, inpt_tensor: torch.Tensor, block_size: int) -> torch.Tensor:
+    def get_scalers(
+        self, inpt_tensor: torch.Tensor, block_size: int
+    ) -> torch.Tensor:
         """Iterate through a flattened tensor getting the scalers for each block"""
         flattened_tensor = inpt_tensor.flatten()
         block_scalers = []
@@ -406,14 +428,17 @@ class NF4TensorDebug:
         flattened_tensor = inpt_tensor.flatten()
         #  Since we are using uint8 we will encode 2 entries per byte
         numel = inpt_tensor.numel()
-        assert (
-            numel % 2 == 0
-        ), "Number of elements must be even just to not have to think about the end"
+        assert numel % 2 == 0, (
+            "Number of elements must be even just to not have to think about"
+            " the end"
+        )
         quantized_length = numel // 2
         quantized_tensor = torch.zeros(quantized_length, dtype=torch.uint8)
         for i in tqdm(range(len(self.scalers))):
             block_start = i * self.block_size
-            block_end = min(block_start + self.block_size, flattened_tensor.numel())
+            block_end = min(
+                block_start + self.block_size, flattened_tensor.numel()
+            )
             block = flattened_tensor[block_start:block_end]
             # Scale the block
             block /= self.scalers[i]
@@ -439,13 +464,19 @@ class NF4TensorDebug:
             block_end = block_start + self.block_size
             block = original_weight[block_start:block_end]
             for j in range(0, self.block_size, 2):
-                combined = self.norm_float_weight[(i * self.block_size // 2) + j // 2]
+                combined = self.norm_float_weight[
+                    (i * self.block_size // 2) + j // 2
+                ]
                 # Shift element down 4
                 element_1 = combined >> 4
                 # Select out the bottom 4 bits
                 element_2 = combined & 0b1111
-                block[j] = self.dequantize(element_1.item(), nkf) * self.scalers[i]
-                block[j + 1] = self.dequantize(element_2.item(), nkf) * self.scalers[i]
+                block[j] = (
+                    self.dequantize(element_1.item(), nkf) * self.scalers[i]
+                )
+                block[j + 1] = (
+                    self.dequantize(element_2.item(), nkf) * self.scalers[i]
+                )
         return original_weight.reshape(self.original_shape)
 
 
@@ -478,9 +509,9 @@ def build_bitsandbytes_linear(input_weight: torch.Tensor, device: torch.device):
     global bnb
     if "bnb" not in globals():
         import bitsandbytes as bnb
-    param = bnb.nn.Params4bit(input_weight, requires_grad=False, quant_type="nf4").cuda(
-        device
-    )
+    param = bnb.nn.Params4bit(
+        input_weight, requires_grad=False, quant_type="nf4"
+    ).cuda(device)
     bnb_linear = bnb.nn.LinearNF4(
         input_weight.size(0), input_weight.size(1), bias=False
     )

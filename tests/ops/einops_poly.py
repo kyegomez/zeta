@@ -88,7 +88,9 @@ def test_repeat_many_invalid_pattern():
     with pytest.raises(ValueError):
         output = list(
             repeat_many(
-                [input_data, input_data], pattern="invalid_pattern", repeats=[2, 2]
+                [input_data, input_data],
+                pattern="invalid_pattern",
+                repeats=[2, 2],
             )
         )
 
@@ -96,7 +98,9 @@ def test_repeat_many_invalid_pattern():
 def test_repeat_many_invalid_repeats():
     with pytest.raises(ValueError):
         output = list(
-            repeat_many([input_data, input_data], pattern="b h w c", repeats=[2])
+            repeat_many(
+                [input_data, input_data], pattern="b h w c", repeats=[2]
+            )
         )
 
 
@@ -113,7 +117,9 @@ def test_reduce_many_invalid_pattern():
     with pytest.raises(ValueError):
         output = list(
             reduce_many(
-                [input_data, input_data], pattern="invalid_pattern", reduction="mean"
+                [input_data, input_data],
+                pattern="invalid_pattern",
+                reduction="mean",
             )
         )
 
@@ -131,7 +137,9 @@ def test_reduce_many_invalid_reduction():
 
 def test_reduce_many_with_sum_reduction():
     output = list(
-        reduce_many([input_data, input_data], pattern="b h w c", reduction="sum")
+        reduce_many(
+            [input_data, input_data], pattern="b h w c", reduction="sum"
+        )
     )
     for tensor in output:
         assert tensor.shape == (1, 1, 1, 1)
@@ -140,7 +148,9 @@ def test_reduce_many_with_sum_reduction():
 # Additional tests for rearrange_with_anon_dims function
 def test_rearrange_with_anon_dims_invalid_dim_list():
     with pytest.raises(ValueError):
-        output = rearrange_with_anon_dims(input_data, pattern="...a b c", a=(1,))
+        output = rearrange_with_anon_dims(
+            input_data, pattern="...a b c", a=(1,)
+        )
 
 
 def test_rearrange_with_anon_dims_invalid_pattern():

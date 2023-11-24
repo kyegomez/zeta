@@ -53,7 +53,8 @@ def test_xc_attention_with_different_heads():
         model = XCAttention(dim=256, cond_dim=64, heads=heads)
         assert isinstance(model, XCAttention)
         assert (
-            model.to_qkv[0].out_features == 3 * heads * model.norm.normalized_shape[0]
+            model.to_qkv[0].out_features
+            == 3 * heads * model.norm.normalized_shape[0]
         )
 
 

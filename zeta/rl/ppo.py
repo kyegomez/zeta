@@ -8,7 +8,9 @@ class ActorCritic(nn.Module):
     def __init__(self, num_inputs, num_outputs, hidden_size):
         super(ActorCritic, self).__init__()
         self.critic = nn.Sequential(
-            nn.Linear(num_inputs, hidden_size), nn.ReLU(), nn.Linear(hidden_size, 1)
+            nn.Linear(num_inputs, hidden_size),
+            nn.ReLU(),
+            nn.Linear(hidden_size, 1),
         )
         self.actor = nn.Sequential(
             nn.Linear(num_inputs, hidden_size),
@@ -49,7 +51,9 @@ def ppo_step(
         dist, _ = policy_net(states)
         new_probs = dist.log_prob(actions)
         ratio = (new_probs - old_probs).exp()
-        clip_adv = torch.clamp(ratio, 1.0 - clip_param, 1.0 + clip_param) * advantages
+        clip_adv = (
+            torch.clamp(ratio, 1.0 - clip_param, 1.0 + clip_param) * advantages
+        )
         loss_policy = -torch.min(ratio * advantages, clip_adv).mean()
 
         optimizer_policy.zero_grad()

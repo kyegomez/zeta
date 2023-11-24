@@ -60,7 +60,9 @@ class FeedForward(nn.Module):
             activation = nn.GELU()
 
         if glu:
-            project_in = GLU(dim, inner_dim, activation, mult_bias=glu_mult_bias)
+            project_in = GLU(
+                dim, inner_dim, activation, mult_bias=glu_mult_bias
+            )
         else:
             project_in = nn.Sequential(
                 nn.Linear(dim, inner_dim, bias=not no_bias), activation

@@ -28,7 +28,9 @@ class LongNetTokenizer:
 class LongNet(Module):
     def __init__(self):
         super().__init__()
-        self.embed = bitsandbytes.nn.modules.Embedding(320002, 2048, padding_idx=1)
+        self.embed = bitsandbytes.nn.modules.Embedding(
+            320002, 2048, padding_idx=1
+        )
 
         self.embed_positions = PositionalEmbedding(2048, 2048, 1)
 

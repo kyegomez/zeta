@@ -90,7 +90,10 @@ def test_optimizer_with_weight_decay():
 def test_optimizer_with_different_learning_rates():
     model = torch.nn.Linear(10, 10)
     optimizer = StableAdamWUnfused(
-        [{"params": model.weight, "lr": 0.001}, {"params": model.bias, "lr": 0.01}]
+        [
+            {"params": model.weight, "lr": 0.001},
+            {"params": model.bias, "lr": 0.01},
+        ]
     )
     loss = simple_loss(model.parameters())
     loss.backward()

@@ -10,7 +10,9 @@ def exists(val):
 class Residual(nn.Module):
     def __init__(self, dim, scale_residual=False, scale_residual_constant=1.0):
         super().__init__()
-        self.residual_scale = nn.Parameter(torch.ones(dim)) if scale_residual else None
+        self.residual_scale = (
+            nn.Parameter(torch.ones(dim)) if scale_residual else None
+        )
         self.scale_residual_constant = scale_residual_constant
 
     def forward(self, x, residual):
@@ -48,7 +50,9 @@ class GRUGating(nn.Module):
     def __init__(self, dim, scale_residual=False, **kwargs):
         super().__init__()
         self.gru = nn.GRUCell(dim, dim)
-        self.residual_scale = nn.Parameter(torch.ones(dim)) if scale_residual else None
+        self.residual_scale = (
+            nn.Parameter(torch.ones(dim)) if scale_residual else None
+        )
 
     def forward(self, x, residual):
         """Forward method of GRUGating"""
@@ -56,7 +60,8 @@ class GRUGating(nn.Module):
             residual = residual * self.residual_scale
 
         gated_output = self.gru(
-            rearrange(x, "b n d -> (b n) d"), rearrange(residual, "b n d -> (b n) d")
+            rearrange(x, "b n d -> (b n) d"),
+            rearrange(residual, "b n d -> (b n) d"),
         )
 
         return gated_output.reshape_as(x)

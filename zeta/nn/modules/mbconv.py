@@ -53,7 +53,13 @@ class MBConvResidual(nn.Module):
 
 
 def MBConv(
-    dim_in, dim_out, *, downsample, expansion_rate=4, shrinkage_rate=0.25, dropout=0.0
+    dim_in,
+    dim_out,
+    *,
+    downsample,
+    expansion_rate=4,
+    shrinkage_rate=0.25,
+    dropout=0.0,
 ):
     hidden_dim = int(expansion_rate * dim_out)
     stride = 2 if downsample else 1
@@ -63,7 +69,12 @@ def MBConv(
         nn.BatchNorm2d(hidden_dim),
         nn.GELU(),
         nn.Conv2d(
-            hidden_dim, hidden_dim, 3, stride=stride, padding=1, groups=hidden_dim
+            hidden_dim,
+            hidden_dim,
+            3,
+            stride=stride,
+            padding=1,
+            groups=hidden_dim,
         ),
         nn.BatchNorm2d(hidden_dim),
         nn.GELU(),

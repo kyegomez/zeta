@@ -92,5 +92,5 @@ __all__ = [
     "SkipConnection",
     "LogFF",
     "PolymorphicNeuronLayer",
-    "CustomMLP"
+    "CustomMLP",
 ]

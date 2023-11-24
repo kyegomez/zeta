@@ -42,7 +42,9 @@ class ALRBlock(nn.Module):
         self.hidden_dim = hidden_dim
         self.dropout = dropout
 
-        self.ffn = FeedForward(dim * 3, hidden_dim, dropout)  # Adjusted for 3 * dim
+        self.ffn = FeedForward(
+            dim * 3, hidden_dim, dropout
+        )  # Adjusted for 3 * dim
         self.ff = FeedForward(dim, hidden_dim, dropout)
 
         self.to_q_proj = nn.Linear(dim, dim)

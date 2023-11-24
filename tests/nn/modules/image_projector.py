@@ -13,7 +13,9 @@ def sample_input_tensor():
 
 # Basic functionality test
 def test_patch_projector_forward(sample_input_tensor):
-    patch_projector = ImagePatchCreatorProjector(max_patch_size=16, embedding_dim=768)
+    patch_projector = ImagePatchCreatorProjector(
+        max_patch_size=16, embedding_dim=768
+    )
     output_tensor = patch_projector(sample_input_tensor)
     assert output_tensor.shape == (
         1,
@@ -24,7 +26,9 @@ def test_patch_projector_forward(sample_input_tensor):
 
 # Exception testing
 def test_patch_projector_exception_handling():
-    patch_projector = ImagePatchCreatorProjector(max_patch_size=16, embedding_dim=768)
+    patch_projector = ImagePatchCreatorProjector(
+        max_patch_size=16, embedding_dim=768
+    )
     # Test with invalid input tensor shape (negative dimension)
     invalid_input = torch.randn(1, -3, 64, 64)
     output_tensor = patch_projector(invalid_input)
@@ -33,17 +37,26 @@ def test_patch_projector_exception_handling():
 
 # Test dynamic patch size calculation
 def test_patch_projector_dynamic_patch_size(sample_input_tensor):
-    patch_projector = ImagePatchCreatorProjector(max_patch_size=16, embedding_dim=768)
+    patch_projector = ImagePatchCreatorProjector(
+        max_patch_size=16, embedding_dim=768
+    )
     dynamic_patch_size = patch_projector.calculate_dynamic_patch_size(64, 64)
     assert dynamic_patch_size == 16  # Expecting the maximum patch size
 
 
 # Test patch creation
 def test_patch_projector_create_patches(sample_input_tensor):
-    patch_projector = ImagePatchCreatorProjector(max_patch_size=16, embedding_dim=768)
+    patch_projector = ImagePatchCreatorProjector(
+        max_patch_size=16, embedding_dim=768
+    )
     patch_size = 16
     patches = patch_projector.create_patches(sample_input_tensor, patch_size)
-    assert patches.shape == (1, 1024, 16, 16)  # Expecting the correct shape of patches
+    assert patches.shape == (
+        1,
+        1024,
+        16,
+        16,
+    )  # Expecting the correct shape of patches
 
 
 # Test device placement
@@ -65,9 +78,13 @@ def test_patch_projector_device_placement(sample_input_tensor):
 
 # Benchmarking test
 def test_patch_projector_performance(sample_input_tensor):
-    patch_projector = ImagePatchCreatorProjector(max_patch_size=16, embedding_dim=768)
+    patch_projector = ImagePatchCreatorProjector(
+        max_patch_size=16, embedding_dim=768
+    )
     input_tensor = (
-        sample_input_tensor.cuda() if torch.cuda.is_available() else sample_input_tensor
+        sample_input_tensor.cuda()
+        if torch.cuda.is_available()
+        else sample_input_tensor
     )
 
     # Measure the time taken for 100 forward passes
@@ -85,9 +102,13 @@ def test_patch_projector_performance(sample_input_tensor):
 
 # Test case for device placement consistency
 def test_patch_projector_device_placement_consistency(sample_input_tensor):
-    patch_projector = ImagePatchCreatorProjector(max_patch_size=16, embedding_dim=768)
+    patch_projector = ImagePatchCreatorProjector(
+        max_patch_size=16, embedding_dim=768
+    )
     sample_input_tensor = (
-        sample_input_tensor.cuda() if torch.cuda.is_available() else sample_input_tensor
+        sample_input_tensor.cuda()
+        if torch.cuda.is_available()
+        else sample_input_tensor
     )
 
     # Ensure consistent device placement
@@ -98,20 +119,30 @@ def test_patch_projector_device_placement_consistency(sample_input_tensor):
 
 # Test case for projection dimension consistency
 def test_patch_projector_projection_dim_consistency(sample_input_tensor):
-    patch_projector = ImagePatchCreatorProjector(max_patch_size=16, embedding_dim=768)
+    patch_projector = ImagePatchCreatorProjector(
+        max_patch_size=16, embedding_dim=768
+    )
     input_tensor = (
-        sample_input_tensor.cuda() if torch.cuda.is_available() else sample_input_tensor
+        sample_input_tensor.cuda()
+        if torch.cuda.is_available()
+        else sample_input_tensor
     )
 
     output_tensor = patch_projector(input_tensor)
-    assert output_tensor.shape[-1] == 768  # Ensure the output dimension is as expected
+    assert (
+        output_tensor.shape[-1] == 768
+    )  # Ensure the output dimension is as expected
 
 
 # Test case for patch size consistency
 def test_patch_projector_patch_size_consistency(sample_input_tensor):
-    patch_projector = ImagePatchCreatorProjector(max_patch_size=16, embedding_dim=768)
+    patch_projector = ImagePatchCreatorProjector(
+        max_patch_size=16, embedding_dim=768
+    )
     input_tensor = (
-        sample_input_tensor.cuda() if torch.cuda.is_available() else sample_input_tensor
+        sample_input_tensor.cuda()
+        if torch.cuda.is_available()
+        else sample_input_tensor
     )
 
     dynamic_patch_size = patch_projector.calculate_dynamic_patch_size(64, 64)
@@ -122,11 +153,15 @@ def test_patch_projector_patch_size_consistency(sample_input_tensor):
 
 # Test case for invalid patch size
 def test_patch_projector_invalid_patch_size():
-    patch_projector = ImagePatchCreatorProjector(max_patch_size=16, embedding_dim=768)
+    patch_projector = ImagePatchCreatorProjector(
+        max_patch_size=16, embedding_dim=768
+    )
     input_tensor = torch.randn(1, 3, 32, 32)  # Smaller image
 
     output_tensor = patch_projector(input_tensor)
-    assert output_tensor.shape[-1] == 768  # Ensure the output dimension is as expected
+    assert (
+        output_tensor.shape[-1] == 768
+    )  # Ensure the output dimension is as expected
 
 
 # Test case for custom projection function
@@ -139,14 +174,20 @@ def test_patch_projector_custom_projection(sample_input_tensor):
         def forward(self, x):
             return self.proj(x)
 
-    patch_projector = ImagePatchCreatorProjector(max_patch_size=16, embedding_dim=768)
+    patch_projector = ImagePatchCreatorProjector(
+        max_patch_size=16, embedding_dim=768
+    )
     patch_projector.projection = CustomProjection(256, 768)
     input_tensor = (
-        sample_input_tensor.cuda() if torch.cuda.is_available() else sample_input_tensor
+        sample_input_tensor.cuda()
+        if torch.cuda.is_available()
+        else sample_input_tensor
     )
 
     output_tensor = patch_projector(input_tensor)
-    assert output_tensor.shape[-1] == 768  # Ensure the output dimension is as expected
+    assert (
+        output_tensor.shape[-1] == 768
+    )  # Ensure the output dimension is as expected
 
 
 # Benchmarking test for different input sizes
@@ -156,9 +197,13 @@ def test_patch_projector_custom_projection(sample_input_tensor):
 def test_patch_projector_performance_various_input_sizes(
     sample_input_tensor, input_shape
 ):
-    patch_projector = ImagePatchCreatorProjector(max_patch_size=16, embedding_dim=768)
+    patch_projector = ImagePatchCreatorProjector(
+        max_patch_size=16, embedding_dim=768
+    )
     input_tensor = (
-        sample_input_tensor.cuda() if torch.cuda.is_available() else sample_input_tensor
+        sample_input_tensor.cuda()
+        if torch.cuda.is_available()
+        else sample_input_tensor
     )
 
     input_tensor = input_tensor.view(*input_shape)
@@ -171,18 +216,25 @@ def test_patch_projector_performance_various_input_sizes(
 
     elapsed_time = end_time - start_time
     print(
-        f"Elapsed time for 100 forward passes (Input Shape {input_shape}): {elapsed_time} seconds"
+        f"Elapsed time for 100 forward passes (Input Shape {input_shape}):"
+        f" {elapsed_time} seconds"
     )
 
     # Assert that the forward passes are within a reasonable time frame
-    assert elapsed_time < 2.0  # Adjust the threshold as needed for larger inputs
+    assert (
+        elapsed_time < 2.0
+    )  # Adjust the threshold as needed for larger inputs
 
 
 # Test case for output shape consistency
 def test_patch_projector_output_shape_consistency(sample_input_tensor):
-    patch_projector = ImagePatchCreatorProjector(max_patch_size=16, embedding_dim=768)
+    patch_projector = ImagePatchCreatorProjector(
+        max_patch_size=16, embedding_dim=768
+    )
     input_tensor = (
-        sample_input_tensor.cuda() if torch.cuda.is_available() else sample_input_tensor
+        sample_input_tensor.cuda()
+        if torch.cuda.is_available()
+        else sample_input_tensor
     )
 
     dynamic_patch_size = patch_projector.calculate_dynamic_patch_size(64, 64)
@@ -205,12 +257,16 @@ def test_patch_projector_invalid_max_patch_size():
 # Test case for edge case: invalid embedding_dim
 def test_patch_projector_invalid_embedding_dim():
     with pytest.raises(ValueError):
-        patch_projector = ImagePatchCreatorProjector(max_patch_size=16, embedding_dim=0)
+        patch_projector = ImagePatchCreatorProjector(
+            max_patch_size=16, embedding_dim=0
+        )
 
 
 # Test case for edge case: invalid input tensor shape
 def test_patch_projector_invalid_input_shape():
-    patch_projector = ImagePatchCreatorProjector(max_patch_size=16, embedding_dim=768)
+    patch_projector = ImagePatchCreatorProjector(
+        max_patch_size=16, embedding_dim=768
+    )
     input_tensor = torch.randn(1, 3, 32, 32)  # Smaller image
 
     with pytest.raises(ValueError):
@@ -219,7 +275,9 @@ def test_patch_projector_invalid_input_shape():
 
 # Test case for dynamic patch size calculation
 def test_patch_projector_dynamic_patch_size_calculation():
-    patch_projector = ImagePatchCreatorProjector(max_patch_size=16, embedding_dim=768)
+    patch_projector = ImagePatchCreatorProjector(
+        max_patch_size=16, embedding_dim=768
+    )
 
     dynamic_patch_size = patch_projector.calculate_dynamic_patch_size(64, 128)
     assert dynamic_patch_size == 16
@@ -227,9 +285,13 @@ def test_patch_projector_dynamic_patch_size_calculation():
 
 # Test case for changing max_patch_size and embedding_dim
 def test_patch_projector_config_change(sample_input_tensor):
-    patch_projector = ImagePatchCreatorProjector(max_patch_size=16, embedding_dim=768)
+    patch_projector = ImagePatchCreatorProjector(
+        max_patch_size=16, embedding_dim=768
+    )
     input_tensor = (
-        sample_input_tensor.cuda() if torch.cuda.is_available() else sample_input_tensor
+        sample_input_tensor.cuda()
+        if torch.cuda.is_available()
+        else sample_input_tensor
     )
 
     output_tensor = patch_projector(input_tensor)
@@ -246,7 +308,9 @@ def test_patch_projector_config_change(sample_input_tensor):
 
 # Test case for random input tensor
 def test_patch_projector_random_input():
-    patch_projector = ImagePatchCreatorProjector(max_patch_size=16, embedding_dim=768)
+    patch_projector = ImagePatchCreatorProjector(
+        max_patch_size=16, embedding_dim=768
+    )
     input_tensor = torch.randn(1, 3, 64, 64)  # Random input
 
     output_tensor = patch_projector(input_tensor)

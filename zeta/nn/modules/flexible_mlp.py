@@ -24,10 +24,13 @@ class CustomMLP(nn.Module):
         # Validate input parameters
         if not isinstance(layer_sizes, list) or len(layer_sizes) < 2:
             raise ValueError(
-                "layer_sizes must be a list with at least two integers representing input and output sizes."
+                "layer_sizes must be a list with at least two integers"
+                " representing input and output sizes."
             )
         if not all(isinstance(size, int) and size > 0 for size in layer_sizes):
-            raise ValueError("All elements in layer_sizes must be positive integers.")
+            raise ValueError(
+                "All elements in layer_sizes must be positive integers."
+            )
 
         if dropout < 0.0 or dropout > 1.0:
             raise ValueError("dropout must be a float between 0.0 and 1.0")
@@ -41,7 +44,8 @@ class CustomMLP(nn.Module):
             self.activation_fn = torch.tanh
         else:
             raise ValueError(
-                "Unsupported activation function. Supported: 'relu', 'sigmoid', 'tanh'."
+                "Unsupported activation function. Supported: 'relu', 'sigmoid',"
+                " 'tanh'."
             )
 
         # Create layers

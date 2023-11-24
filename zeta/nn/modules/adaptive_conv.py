@@ -112,14 +112,21 @@ class AdaptiveConv3DMod(Module):
         self.spatial_kernel = spatial_kernel
         self.time_kernel = time_kernel
 
-        self.padding = (*((spatial_kernel // 2,) * 4), *((time_kernel // 2,) * 2))
+        self.padding = (
+            *((spatial_kernel // 2,) * 4),
+            *((time_kernel // 2,) * 2),
+        )
         self.weights = nn.Parameter(
-            torch.randn((dim_out, dim, time_kernel, spatial_kernel, spatial_kernel))
+            torch.randn(
+                (dim_out, dim, time_kernel, spatial_kernel, spatial_kernel)
+            )
         )
 
         self.demod = demod
 
-        nn.init.kaiming_normal_(self.weights, a=0, mode="fan_in", nonlinearity="selu")
+        nn.init.kaiming_normal_(
+            self.weights, a=0, mode="fan_in", nonlinearity="selu"
+        )
 
     def forward(self, fmap, mod: Optional[Tensor] = None):
         """

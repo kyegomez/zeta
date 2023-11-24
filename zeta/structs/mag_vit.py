@@ -99,14 +99,21 @@ class AdaptiveConv3DMod(Module):
         self.spatial_kernel = spatial_kernel
         self.time_kernel = time_kernel
 
-        self.padding = (*((spatial_kernel // 2,) * 4), *((time_kernel // 2,) * 2))
+        self.padding = (
+            *((spatial_kernel // 2,) * 4),
+            *((time_kernel // 2,) * 2),
+        )
         self.weights = nn.Parameter(
-            torch.randn((dim_out, dim, time_kernel, spatial_kernel, spatial_kernel))
+            torch.randn(
+                (dim_out, dim, time_kernel, spatial_kernel, spatial_kernel)
+            )
         )
 
         self.demod = demod
 
-        nn.init.kaiming_normal_(self.weights, a=0, mode="fan_in", nonlinearity="selu")
+        nn.init.kaiming_normal_(
+            self.weights, a=0, mode="fan_in", nonlinearity="selu"
+        )
 
     def forward(self, fmap, mod: Optional[Tensor] = None):
         """
@@ -300,7 +307,12 @@ class CausalConv3d(Module):
         stride = (stride, 1, 1)
         dilation = (dilation, 1, 1)
         self.conv = nn.Conv3d(
-            chan_in, chan_out, kernel_size, stride=stride, dilation=dilation, **kwargs
+            chan_in,
+            chan_out,
+            kernel_size,
+            stride=stride,
+            dilation=dilation,
+            **kwargs,
         )
 
     def forward(self, x):
@@ -312,7 +324,9 @@ class CausalConv3d(Module):
 
 @beartype
 def ResidualUnit(
-    dim, kernel_size: Union[int, Tuple[int, int, int]], pad_mode: str = "reflect"
+    dim,
+    kernel_size: Union[int, Tuple[int, int, int]],
+    pad_mode: str = "reflect",
 ):
     return Residual(
         Sequential(
@@ -499,7 +513,11 @@ class VideoTokenizer(Module):
 
     @beartype
     def forward(
-        self, video, video_or_images: Tensor, return_loss=False, return_codes=False
+        self,
+        video,
+        video_or_images: Tensor,
+        return_loss=False,
+        return_codes=False,
     ):
         """
         Forward pass for video tokenizer
@@ -529,7 +547,9 @@ class VideoTokenizer(Module):
 
         # pad the time, accounting for total time downsample factor, so that images can be trained independently
 
-        padded_video = F.pad(video, (0, 0, 0, 0, self.time_padding, 0), value=0.0)
+        padded_video = F.pad(
+            video, (0, 0, 0, 0, self.time_padding, 0), value=0.0
+        )
 
         # encoder
 

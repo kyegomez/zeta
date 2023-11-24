@@ -96,7 +96,9 @@ class DilatedAttention(BaseAttention):
         self.use_xpos = use_xpos
         self.use_rel_pos_bias = use_rel_pos_bias
 
-        self.attention = FlashAttention(causal=self.casual, dropout=dropout).to(device)
+        self.attention = FlashAttention(causal=self.casual, dropout=dropout).to(
+            device
+        )
 
         if use_xpos:
             self.xpos = XPOS(head_dim=d_model // num_heads)
@@ -109,7 +111,9 @@ class DilatedAttention(BaseAttention):
         self.head_offsets = nn.Parameter(torch.randn(num_heads, d_model))
 
     def get_mask(self, i, j):
-        return torch.ones((i, j), device=device, dtype=torch.bool).triu(j - i + 2)
+        return torch.ones((i, j), device=device, dtype=torch.bool).triu(
+            j - i + 2
+        )
 
     def forward(self, x):
         print(f"X original shape: {x.shape} and x dtype: {x.dtype}")
@@ -132,7 +136,9 @@ class DilatedAttention(BaseAttention):
 
         # Perform attention
         attn_output = self.attention(x, x, x)
-        print(f"Attn output: {attn_output.shape} and dtype: {attn_output.dtype}")
+        print(
+            f"Attn output: {attn_output.shape} and dtype: {attn_output.dtype}"
+        )
 
         # if use rel pos => apply relative positioning bias
         if self.use_rel_pos_bias:
@@ -140,7 +146,8 @@ class DilatedAttention(BaseAttention):
                 batch_size, attn_output.size(1), attn_output.size(1)
             )
             print(
-                f"attn_output: {attn_output.shape} and attn output: {attn_output.dtype}"
+                f"attn_output: {attn_output.shape} and attn output:"
+                f" {attn_output.dtype}"
             )
 
         # if casual create a mask and apply to the output
@@ -192,7 +199,8 @@ class MultiheadDilatedAttention(nn.Module):
 
         if not embed_dim % self.num_heads == 0:
             raise ValueError(
-                f"embed_dim ({embed_dim}) must be divisible by num_heads ({num_heads})"
+                f"embed_dim ({embed_dim}) must be divisible by num_heads"
+                f" ({num_heads})"
             )
         num_dilations = len(dilation_rates)
         num_segments = len(segment_lengths)
@@ -204,7 +212,8 @@ class MultiheadDilatedAttention(nn.Module):
         head_dim = embed_dim // num_heads
         if not head_dim % 8 == 0:
             raise ValueError(
-                f"head_dim (embed_dim / num_heads = {head_dim}) must be divisible by 8"
+                f"head_dim (embed_dim / num_heads = {head_dim}) must be"
+                " divisible by 8"
             )
         if not head_dim <= 128:
             raise ValueError(

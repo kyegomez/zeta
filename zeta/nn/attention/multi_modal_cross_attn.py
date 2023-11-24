@@ -50,7 +50,9 @@ class MultiModalCrossAttention(nn.Module):
         self.output_linear = nn.Linear(2 * dim, dim)
 
         # Additional layer to match the image feature dimension
-        self.image_to_feature_dim = nn.Linear(channels * img_size[0] * img_size[1], dim)
+        self.image_to_feature_dim = nn.Linear(
+            channels * img_size[0] * img_size[1], dim
+        )
 
     def forward(self, text_hidden, image_hidden):
         """
@@ -72,7 +74,8 @@ class MultiModalCrossAttention(nn.Module):
             key = self.norm(key)
 
         attn_weights = F.softmax(
-            torch.matmul(query, key.transpose(-2, -1)) / (self.head_dim**0.5), dim=-1
+            torch.matmul(query, key.transpose(-2, -1)) / (self.head_dim**0.5),
+            dim=-1,
         )
         attn_weights = self.dropout(attn_weights)
         text_to_image = torch.matmul(attn_weights, value)

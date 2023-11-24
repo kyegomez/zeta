@@ -30,7 +30,12 @@ class TransformerBlock(nn.Module):
 
         attn_inner_dim = dim_head * heads
         ff_inner_dim = dim * ff_mult
-        self.fused_dims = (attn_inner_dim, dim_head, dim_head, (ff_inner_dim * 2))
+        self.fused_dims = (
+            attn_inner_dim,
+            dim_head,
+            dim_head,
+            (ff_inner_dim * 2),
+        )
 
         self.qk_rmsnorm = qk_rmsnorm
 
@@ -50,7 +55,9 @@ class TransformerBlock(nn.Module):
             dim_head, scale_base=xpos_scale_base, use_xpos=use_xpos and causal
         )
 
-        self.fused_attn_ff_proj = nn.Linear(dim, sum(self.fused_dims), bias=False)
+        self.fused_attn_ff_proj = nn.Linear(
+            dim, sum(self.fused_dims), bias=False
+        )
 
         self.flash_attn = flash_attn
         self.attn_out = nn.Linear(attn_inner_dim, dim, bias=False)
@@ -60,7 +67,9 @@ class TransformerBlock(nn.Module):
         # parallel feedforward tail
 
         self.ff_out = nn.Sequential(
-            SwiGLU(), nn.Dropout(ff_dropout), nn.Linear(ff_inner_dim, dim, bias=False)
+            SwiGLU(),
+            nn.Dropout(ff_dropout),
+            nn.Linear(ff_inner_dim, dim, bias=False),
         )
 
         # for caching causal mask and rotary embeddings

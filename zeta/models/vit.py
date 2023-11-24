@@ -23,7 +23,7 @@ class ViT(nn.Module):
         channels=3,
         num_classes=None,
         post_emb_norm=False,
-        emb_dropout=0.0
+        emb_dropout=0.0,
     ):
         super().__init__()
         assert isinstance(
@@ -40,14 +40,20 @@ class ViT(nn.Module):
         self.patch_size = patch_size
         self.pos_embedding = nn.Parameter(torch.randn(1, num_patches, dim))
         self.patch_to_embedding = nn.Sequential(
-            nn.LayerNorm(patch_dim), nn.Linear(patch_dim, dim), nn.LayerNorm(dim)
+            nn.LayerNorm(patch_dim),
+            nn.Linear(patch_dim, dim),
+            nn.LayerNorm(dim),
         )
 
-        self.post_emb_norm = nn.LayerNorm(dim) if post_emb_norm else nn.Identity()
+        self.post_emb_norm = (
+            nn.LayerNorm(dim) if post_emb_norm else nn.Identity()
+        )
         self.dropout = nn.Dropout(emb_dropout)
         self.attn_layers = attn_layers
         self.mlp_head = (
-            nn.Linear(dim, num_classes) if exists(num_classes) else nn.Identity()
+            nn.Linear(dim, num_classes)
+            if exists(num_classes)
+            else nn.Identity()
         )
 
     def forward(self, img, return_embeddings=False):

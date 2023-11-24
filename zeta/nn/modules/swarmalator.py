@@ -7,11 +7,15 @@ def pairwise_distances(x):
     return torch.sqrt((diff**2).sum(2))
 
 
-def function_for_x(xi, sigma_i, N, J, alpha, beta, gamma, epsilon_a, epsilon_r, R, D):
+def function_for_x(
+    xi, sigma_i, N, J, alpha, beta, gamma, epsilon_a, epsilon_r, R, D
+):
     dists = pairwise_distances(xi)
     mask = (dists < R).float() - torch.eye(N)
 
-    interaction_term = mask.unsqueeze(2) * (sigma_i.unsqueeze(0) - sigma_i.unsqueeze(1))
+    interaction_term = mask.unsqueeze(2) * (
+        sigma_i.unsqueeze(0) - sigma_i.unsqueeze(1)
+    )
     interaction_sum = interaction_term.sum(1)
 
     # Define dynamics for x based on our assumptions
@@ -29,7 +33,11 @@ def function_for_sigma(
     interaction_sum = interaction_term.sum(1)
 
     # Define dynamics for sigma based on our assumptions
-    d_sigma = gamma * interaction_sum + epsilon_a * sigma_i - epsilon_r * (sigma_i**3)
+    d_sigma = (
+        gamma * interaction_sum
+        + epsilon_a * sigma_i
+        - epsilon_r * (sigma_i**3)
+    )
     return d_sigma
 
 
@@ -84,10 +92,30 @@ def simulate_swarmalators(
     for t in range(T):
         for i in range(N):
             dx = function_for_x(
-                xi, sigma_i, N, J, alpha, beta, gamma, epsilon_a, epsilon_r, R, D
+                xi,
+                sigma_i,
+                N,
+                J,
+                alpha,
+                beta,
+                gamma,
+                epsilon_a,
+                epsilon_r,
+                R,
+                D,
             )
             d_sigma = function_for_sigma(
-                xi, sigma_i, N, J, alpha, beta, gamma, epsilon_a, epsilon_r, R, D
+                xi,
+                sigma_i,
+                N,
+                J,
+                alpha,
+                beta,
+                gamma,
+                epsilon_a,
+                epsilon_r,
+                R,
+                D,
             )
 
             # RK4 for xi
@@ -119,7 +147,17 @@ def simulate_swarmalators(
                 D,
             )
             k4_x = dt * function_for_x(
-                xi + k3_x, sigma_i, N, J, alpha, beta, gamma, epsilon_a, epsilon_r, R, D
+                xi + k3_x,
+                sigma_i,
+                N,
+                J,
+                alpha,
+                beta,
+                gamma,
+                epsilon_a,
+                epsilon_r,
+                R,
+                D,
             )
             xi = xi + (1 / 6) * (k1_x + 2 * k2_x + 2 * k3_x + k4_x)
 

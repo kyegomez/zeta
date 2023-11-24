@@ -5,7 +5,9 @@ from torch import nn
 import math
 
 
-def compute_entropy_safe(p: torch.Tensor, minus_p: torch.Tensor) -> torch.Tensor:
+def compute_entropy_safe(
+    p: torch.Tensor, minus_p: torch.Tensor
+) -> torch.Tensor:
     """
     Computes the entropy of a Bernoulli distribution with probability `p`.
 
@@ -135,16 +137,24 @@ class LogFF(nn.Module):
         self.region_leak = region_leak
         self.usage_mode = usage_mode
 
-        if depth < 0 or input_width <= 0 or leaf_width <= 0 or output_width <= 0:
+        if (
+            depth < 0
+            or input_width <= 0
+            or leaf_width <= 0
+            or output_width <= 0
+        ):
             raise ValueError(
-                "input/leaf/output widths and depth must be all positive integers"
+                "input/leaf/output widths and depth must be all positive"
+                " integers"
             )
         if dropout < 0 or dropout > 1:
             raise ValueError("dropout must be in the range [0, 1]")
         if region_leak < 0 or region_leak > 1:
             raise ValueError("region_leak must be in the range [0, 1]")
         if usage_mode not in ["hard", "soft", "none"]:
-            raise ValueError("usage_mode must be one of ['hard', 'soft', 'none']")
+            raise ValueError(
+                "usage_mode must be one of ['hard', 'soft', 'none']"
+            )
 
         self.depth = nn.Parameter(
             torch.tensor(depth, dtype=torch.long), requires_grad=False
@@ -154,9 +164,9 @@ class LogFF(nn.Module):
 
         l1_init_factor = 1.0 / math.sqrt(self.input_width)
         self.node_weights = nn.Parameter(
-            torch.empty((self.n_nodes, input_width), dtype=torch.float).uniform_(
-                -l1_init_factor, +l1_init_factor
-            ),
+            torch.empty(
+                (self.n_nodes, input_width), dtype=torch.float
+            ).uniform_(-l1_init_factor, +l1_init_factor),
             requires_grad=True,
         )
         self.node_biases = nn.Parameter(
@@ -174,9 +184,9 @@ class LogFF(nn.Module):
             requires_grad=True,
         )
         self.b1s = nn.Parameter(
-            torch.empty((self.n_leaves, leaf_width), dtype=torch.float).uniform_(
-                -l1_init_factor, +l1_init_factor
-            ),
+            torch.empty(
+                (self.n_leaves, leaf_width), dtype=torch.float
+            ).uniform_(-l1_init_factor, +l1_init_factor),
             requires_grad=True,
         )
         self.w2s = nn.Parameter(
@@ -186,19 +196,21 @@ class LogFF(nn.Module):
             requires_grad=True,
         )
         self.b2s = nn.Parameter(
-            torch.empty((self.n_leaves, output_width), dtype=torch.float).uniform_(
-                -l2_init_factor, +l2_init_factor
-            ),
+            torch.empty(
+                (self.n_leaves, output_width), dtype=torch.float
+            ).uniform_(-l2_init_factor, +l2_init_factor),
             requires_grad=True,
         )
         self.leaf_dropout = nn.Dropout(dropout)
 
         if usage_mode != "none":
             self.node_usage = nn.Parameter(
-                torch.zeros((self.n_nodes,), dtype=torch.float), requires_grad=False
+                torch.zeros((self.n_nodes,), dtype=torch.float),
+                requires_grad=False,
             )
             self.leaf_usage = nn.Parameter(
-                torch.zeros((self.n_leaves,), dtype=torch.float), requires_grad=False
+                torch.zeros((self.n_leaves,), dtype=torch.float),
+                requires_grad=False,
             )
 
     def get_node_param_group(self) -> dict:
@@ -293,7 +305,9 @@ class LogFF(nn.Module):
         batch_size = x.shape[0]
 
         if x.shape[-1] != self.input_width:
-            raise ValueError(f"input tensor must have shape (..., {self.input_width})")
+            raise ValueError(
+                f"input tensor must have shape (..., {self.input_width})"
+            )
 
         hard_decisions = use_hard_decisions or self.train_hardened
         current_mixture = torch.ones(
@@ -322,7 +336,9 @@ class LogFF(nn.Module):
             current_weights = self.node_weights[
                 platform:next_platform
             ]  # (n_nodes, input_width)
-            current_biases = self.node_biases[platform:next_platform]  # (n_nodes, 1)
+            current_biases = self.node_biases[
+                platform:next_platform
+            ]  # (n_nodes, 1)
 
             boundary_plane_coeff_scores = torch.matmul(
                 x, current_weights.transpose(0, 1)
@@ -351,17 +367,24 @@ class LogFF(nn.Module):
                 platform_entropies = compute_entropy_safe(
                     boundary_effect, not_boundary_effect
                 )  # (batch_size, n_nodes)
-                entropies[
-                    :, platform:next_platform
-                ] = platform_entropies  # (batch_size, n_nodes)
+                entropies[:, platform:next_platform] = (
+                    platform_entropies  # (batch_size, n_nodes)
+                )
 
             if hard_decisions:
-                boundary_effect = torch.round(boundary_effect)  # (batch_size, n_nodes)
-                not_boundary_effect = 1 - boundary_effect  # (batch_size, n_nodes)
+                boundary_effect = torch.round(
+                    boundary_effect
+                )  # (batch_size, n_nodes)
+                not_boundary_effect = (
+                    1 - boundary_effect
+                )  # (batch_size, n_nodes)
 
             mixture_modifier = (
                 torch.cat(  # this cat-fu is to interleavingly combine the two tensors
-                    (not_boundary_effect.unsqueeze(-1), boundary_effect.unsqueeze(-1)),
+                    (
+                        not_boundary_effect.unsqueeze(-1),
+                        boundary_effect.unsqueeze(-1),
+                    ),
                     dim=-1,
                 )
                 .flatten(start_dim=-2, end_dim=-1)
@@ -377,7 +400,10 @@ class LogFF(nn.Module):
                 start_dim=1, end_dim=2
             )  # (batch_size, self.n_leaves)
 
-            if self.usage_mode != "none" and current_depth != self.depth.item() - 1:
+            if (
+                self.usage_mode != "none"
+                and current_depth != self.depth.item() - 1
+            ):
                 if self.usage_mode == "soft":
                     current_node_usage = mixture_modifier.squeeze(-1).sum(
                         dim=0
@@ -431,7 +457,8 @@ class LogFF(nn.Module):
         )
         for i in range(self.n_leaves):
             new_logits[:, i] = (
-                torch.matmul(element_activations[:, i], self.w2s[i]) + self.b2s[i]
+                torch.matmul(element_activations[:, i], self.w2s[i])
+                + self.b2s[i]
             )
         # new_logits has shape (batch_size, self.n_leaves, self.output_width)
 
@@ -498,9 +525,11 @@ class LogFF(nn.Module):
             return self.training_forward(
                 x,
                 return_entropies=return_entropies,
-                use_hard_decisions=use_hard_decisions
-                if use_hard_decisions is not None
-                else False,
+                use_hard_decisions=(
+                    use_hard_decisions
+                    if use_hard_decisions is not None
+                    else False
+                ),
             )
         else:
             if return_entropies:
@@ -533,7 +562,9 @@ class LogFF(nn.Module):
         batch_size = x.shape[0]
         # x has shape (batch_size, input_width)
 
-        current_nodes = torch.zeros((batch_size,), dtype=torch.long, device=x.device)
+        current_nodes = torch.zeros(
+            (batch_size,), dtype=torch.long, device=x.device
+        )
         for i in range(self.depth.item()):
             plane_coeffs = self.node_weights.index_select(
                 dim=0, index=current_nodes
@@ -547,7 +578,9 @@ class LogFF(nn.Module):
             plane_score = (
                 plane_coeff_score.squeeze(-1) + plane_offsets
             )  # (batch_size, 1)
-            plane_choices = (plane_score.squeeze(-1) >= 0).long()  # (batch_size,)
+            plane_choices = (
+                plane_score.squeeze(-1) >= 0
+            ).long()  # (batch_size,)
 
             platform = torch.tensor(
                 2**i - 1, dtype=torch.long, device=x.device
@@ -571,7 +604,9 @@ class LogFF(nn.Module):
             )  # (1, self.leaf_width)
             logits += self.b1s[leaf_index].unsqueeze(-2)  # (1, self.leaf_width)
             activations = self.activation(logits)  # (1, self.leaf_width)
-            new_logits[i] = torch.matmul(activations, self.w2s[leaf_index]).squeeze(
+            new_logits[i] = torch.matmul(
+                activations, self.w2s[leaf_index]
+            ).squeeze(
                 -2
             )  # (1, self.output_width)
 

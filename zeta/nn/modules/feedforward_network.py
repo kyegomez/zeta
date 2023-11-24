@@ -56,7 +56,9 @@ def make_experts(args, embed_dim, expert_ffn_dim):
         ), f"{args.moe_expert_count}, {world_size}"
         local_moe_expert_count = args.moe_expert_count // world_size
         for i in range(local_moe_expert_count):
-            with set_torch_seed(start_seed + ddp_rank * local_moe_expert_count + i):
+            with set_torch_seed(
+                start_seed + ddp_rank * local_moe_expert_count + i
+            ):
                 expert_list.append(
                     FeedForwardNetwork(
                         embed_dim,
@@ -119,7 +121,9 @@ class FeedForwardNetwork(nn.Module):
         self.dropout_module = torch.nn.Dropout(dropout)
         self.fc1 = nn.Linear(self.embed_dim, ffn_dim)
         self.fc2 = nn.Linear(ffn_dim, self.embed_dim)
-        self.ffn_layernorm = LayerNorm(ffn_dim, eps=layernorm_eps) if subln else None
+        self.ffn_layernorm = (
+            LayerNorm(ffn_dim, eps=layernorm_eps) if subln else None
+        )
 
     def reset_parameters(self):
         self.fc1.reset_parameters()

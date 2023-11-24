@@ -15,8 +15,9 @@ class AbsolutePositionalEmbedding(nn.Module):
     def forward(self, x, pos=None):
         seq_len, device = x.shape[-1], x.device
         assert seq_len <= self.max_seq_len, (
-            f"You are passing in a sequence length of {seq_len} but you absolute"
-            f" positional embedding has a max of length of {self.max_seq_len}"
+            f"You are passing in a sequence length of {seq_len} but you"
+            " absolute positional embedding has a max of length of"
+            f" {self.max_seq_len}"
         )
 
         if not exists(pos):

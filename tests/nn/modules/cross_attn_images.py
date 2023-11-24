@@ -71,7 +71,9 @@ def test_gradcheck(cross_attention_module):
     context_tensor = torch.randn(1, seq_len, context_dim, requires_grad=True)
 
     assert gradcheck(
-        cross_attention_module, (input_tensor, context_tensor), check_forward=True
+        cross_attention_module,
+        (input_tensor, context_tensor),
+        check_forward=True,
     )
 
 

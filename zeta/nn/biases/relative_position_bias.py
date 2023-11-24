@@ -22,7 +22,9 @@ class RelativePositionBias(BaseBias):
         self.num_buckets = num_buckets
         self.max_distance = max_distance
         self.num_heads = num_heads
-        self.relative_attention_bias = nn.Embedding(self.num_buckets, self.num_heads)
+        self.relative_attention_bias = nn.Embedding(
+            self.num_buckets, self.num_heads
+        )
 
     @staticmethod
     def _relative_position_bucket(
@@ -61,9 +63,13 @@ class RelativePositionBias(BaseBias):
             device=self.relative_attention_bias.weight.device,
         )[:, None]
         memory_position = torch.arange(
-            klen, dtype=torch.long, device=self.relative_attention_bias.weight.device
+            klen,
+            dtype=torch.long,
+            device=self.relative_attention_bias.weight.device,
         )[None, :]
-        relative_position = memory_position - context_position  # shape (qlen, klen)
+        relative_position = (
+            memory_position - context_position
+        )  # shape (qlen, klen)
 
         rp_bucket = self._relative_position_bucket(
             relative_position,  # shape (qlen, klen)

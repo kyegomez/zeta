@@ -38,7 +38,9 @@ class RotaryEmbedding(nn.Module):
         self.register_buffer("inv_freq", inv_freq)
 
     def forward(self, max_seq_len, *, device):
-        seq = torch.arange(max_seq_len, device=device, dtype=self.inv_freq.dtype)
+        seq = torch.arange(
+            max_seq_len, device=device, dtype=self.inv_freq.dtype
+        )
         freqs = einsum("i , j -> i j", seq, self.inv_freq)
         return torch.cat((freqs, freqs), dim=-1)
 
@@ -116,7 +118,8 @@ class GatedXDenseBlock(nn.Module):
 
         # split heads
         q, k, v = map(
-            lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads), (q, k, v)
+            lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads),
+            (q, k, v),
         )
 
         # cross attention
@@ -150,16 +153,25 @@ class ParallelTransformerBlock(nn.Module):
 
         attn_inner_dim = dim_head * heads
         ff_inner_dim = dim * ff_mult
-        self.fused_dims = (attn_inner_dim, dim_head, dim_head, (ff_inner_dim * 2))
+        self.fused_dims = (
+            attn_inner_dim,
+            dim_head,
+            dim_head,
+            (ff_inner_dim * 2),
+        )
 
         self.heads = heads
         self.scale = dim_head**-0.5
         self.rotary_emb = RotaryEmbedding(dim_head)
 
-        self.fused_attn_ff_proj = nn.Linear(dim, sum(self.fused_dims), bias=False)
+        self.fused_attn_ff_proj = nn.Linear(
+            dim, sum(self.fused_dims), bias=False
+        )
         self.attn_out = nn.Linear(attn_inner_dim, dim, bias=False)
 
-        self.ff_out = nn.Sequential(SwiGLU(), nn.Linear(ff_inner_dim, dim, bias=False))
+        self.ff_out = nn.Sequential(
+            SwiGLU(), nn.Linear(ff_inner_dim, dim, bias=False)
+        )
 
         # for caching causal mask and rotary embeddings
 
@@ -255,7 +267,7 @@ def Flamingo(*, dim, num_tokens, depth, dim_head=64, heads=8, ff_mult=4):
             for _ in range(depth)
         ],
         LayerNorm(dim),
-        nn.Linear(dim, num_tokens, bias=False)
+        nn.Linear(dim, num_tokens, bias=False),
     )
 
     # they used embedding weight tied projection out to logits, not common, but works

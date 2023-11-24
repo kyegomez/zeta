@@ -48,7 +48,9 @@ class LPLayerNorm(nn.Module):
             else self.weight
         )
         downcast_bias = (
-            _cast_if_autocast_enabled(self.bias) if self.bias is not None else self.bias
+            _cast_if_autocast_enabled(self.bias)
+            if self.bias is not None
+            else self.bias
         )
         with torch.autocast(enabled=False, device_type=module_device.type):
             return torch.nn.functional.layer_norm(
@@ -114,7 +116,9 @@ class LPRMSNorm(RMSNorm):
             else self.weight
         )
         with torch.autocast(enabled=False, device_type=x.device_type):
-            return rms_norm(downcast_x, downcast_weight, self.eps).to(dtype=x.dtype)
+            return rms_norm(downcast_x, downcast_weight, self.eps).to(
+                dtype=x.dtype
+            )
 
 
 # Registers
@@ -130,14 +134,16 @@ NORM_CLASS_REGISTRY = {
 }
 
 
-def _reset_causal(num_query_tokens: int, num_key_tokens: int, original_causal: bool):
+def _reset_causal(
+    num_query_tokens: int, num_key_tokens: int, original_causal: bool
+):
     # disable causal when it is not needed
     # necessary for flash & triton for generation with kv_cache
     if original_causal and num_query_tokens != num_key_tokens:
         if num_query_tokens != 1:
             raise NotImplementedError(
-                "MPT does not support query and key with different number of tokens,"
-                " unless number of query tokens is 1."
+                "MPT does not support query and key with different number of"
+                " tokens, unless number of query tokens is 1."
             )
         else:
             return False
@@ -222,7 +228,9 @@ def scaled_multihead_dot_product_attention(
         causal_mask = causal_mask.to(torch.bool)
         causal_mask = ~causal_mask
         causal_mask = causal_mask[-s_q:, -s_k:]
-        attn_weight = attn_weight.masked_fill(causal_mask.view(1, 1, s_q, s_k), min_val)
+        attn_weight = attn_weight.masked_fill(
+            causal_mask.view(1, 1, s_q, s_k), min_val
+        )
 
     attn_weight = torch.softmax(attn_weight, dim=-1)
 
@@ -292,8 +300,8 @@ def flash_attn_fn(
         key_padding_mask = torch.ones_like(key[:, :, 0], dtype=torch.bool)
     query_padding_mask = key_padding_mask[:, -query.size(1) :]
 
-    query_unpad, indices_q, cu_seqlens_q, max_seqlen_q = bert_padding.unpad_input(
-        query, query_padding_mask
+    query_unpad, indices_q, cu_seqlens_q, max_seqlen_q = (
+        bert_padding.unpad_input(query, query_padding_mask)
     )
     query_unpad = rearrange(query_unpad, "nnz (h d) -> nnz h d", h=heads)
 
@@ -310,7 +318,9 @@ def flash_attn_fn(
     )
 
     if multiquery:
-        key_unpad = key_unpad.expand(key_unpad.size(0), heads, key_unpad.size(-1))
+        key_unpad = key_unpad.expand(
+            key_unpad.size(0), heads, key_unpad.size(-1)
+        )
         value_unpad = value_unpad.expand(
             value_unpad.size(0), heads, value_unpad.size(-1)
         )
@@ -334,7 +344,10 @@ def flash_attn_fn(
     )
 
     output = bert_padding.pad_input(
-        rearrange(output_unpad, "nnz h d -> nnz (h d)"), indices_q, batch_size, seqlen
+        rearrange(output_unpad, "nnz h d -> nnz (h d)"),
+        indices_q,
+        batch_size,
+        seqlen,
     )
     return output, None, past_key_value
 
@@ -410,9 +423,9 @@ def build_alibi_bias(
     device=None,
     dtype=None,
 ):
-    alibi_bias = torch.arange(1 - seq_len, 1, dtype=torch.int32, device=device).view(
-        1, 1, 1, seq_len
-    )
+    alibi_bias = torch.arange(
+        1 - seq_len, 1, dtype=torch.int32, device=device
+    ).view(1, 1, 1, seq_len)
     if full:
         # generate 1 x Heads x SeqLen x SeqLen alibi bias mask
         # otherwise the mask is 1 x Heads x 1 x SeqLen (which is broadcast to
@@ -458,13 +471,14 @@ def triton_flash_attn_fn(
             # installing triton-pre-mlir works for both torch1.13.1 and torch2.0+
             # default recommendation is to install this variant
             raise RuntimeError(
-                "Requirements for `attn_impl: triton` not installed. Either (1) have a"
-                " CUDA-compatible GPU and `pip install .[gpu]` if installing from"
-                " source or `pip install"
+                "Requirements for `attn_impl: triton` not installed. Either (1)"
+                " have a CUDA-compatible GPU and `pip install .[gpu]` if"
+                " installing from source or `pip install"
                 " triton-pre-mlir@git+https://github.com/vchiley/triton.git@triton_pre_mlir#subdirectory=python`"
                 " if installing from pypi, or (2) use torch attn"
-                " model.attn_config.attn_impl=torch (torch attn_impl will be slow)."
-                " Note: (1) requires you have CMake and PyTorch already installed."
+                " model.attn_config.attn_impl=torch (torch attn_impl will be"
+                " slow). Note: (1) requires you have CMake and PyTorch already"
+                " installed."
             )
 
     check_valid_inputs(query, key, value)
@@ -483,10 +497,14 @@ def triton_flash_attn_fn(
         bias = bias[:, :, _s_q:, _s_k:]
 
     if dropout:
-        raise NotImplementedError("Dropout not implemented for attn_impl: triton.")
+        raise NotImplementedError(
+            "Dropout not implemented for attn_impl: triton."
+        )
 
     if needs_weights:
-        raise NotImplementedError("attn_impl: triton cannot return attn weights.")
+        raise NotImplementedError(
+            "attn_impl: triton cannot return attn weights."
+        )
 
     if key_padding_mask is not None:
         warnings.warn(
@@ -502,12 +520,15 @@ def triton_flash_attn_fn(
             bias = query.new_zeros(b_size, 1, 1, s_k)
 
         bias = bias.masked_fill(
-            ~key_padding_mask.view((b_size, 1, 1, s_k)), torch.finfo(query.dtype).min
+            ~key_padding_mask.view((b_size, 1, 1, s_k)),
+            torch.finfo(query.dtype).min,
         )
 
     query = rearrange(query, "b s (h d) -> b s h d", h=heads)
     key = rearrange(key, "b s (h d) -> b s h d", h=1 if multiquery else heads)
-    value = rearrange(value, "b s (h d) -> b s h d", h=1 if multiquery else heads)
+    value = rearrange(
+        value, "b s (h d) -> b s h d", h=1 if multiquery else heads
+    )
 
     if multiquery:
         # necessary to repeat instead of expand tensor because
@@ -516,7 +537,9 @@ def triton_flash_attn_fn(
         value = value.repeat(1, 1, heads, 1)
 
     reset_causal = _reset_causal(query.size(1), key.size(1), causal)
-    attn_output = flash_attn_func(query, key, value, bias, reset_causal, softmax_scale)
+    attn_output = flash_attn_func(
+        query, key, value, bias, reset_causal, softmax_scale
+    )
 
     output = attn_output.view(*attn_output.shape[:2], -1)
 
@@ -580,20 +603,25 @@ class MultiHeadAttention(nn.Module):
             self.attn_fn = triton_flash_attn_fn
             if verbose:
                 warnings.warn(
-                    "While `attn_impl: triton` can be faster than `attn_impl: flash` "
-                    + "it uses more memory. When training larger models this can"
+                    "While `attn_impl: triton` can be faster than `attn_impl:"
+                    " flash` "
+                    + "it uses more memory. When training larger models"
+                    " this can"
                     " trigger "
-                    + "alloc retries which hurts performance. If encountered, we"
+                    + "alloc retries which hurts performance. If"
+                    " encountered, we"
                     " recommend "
-                    + "using `attn_impl: flash` if your model does not use `alibi` or"
-                    " `prefix_lm`."
+                    + "using `attn_impl: flash` if your model does not use"
+                    " `alibi` or `prefix_lm`."
                 )
         elif self.attn_impl == "torch":
             self.attn_fn = scaled_multihead_dot_product_attention
             if torch.cuda.is_available() and verbose:
                 warnings.warn(
-                    "Using `attn_impl: torch`. If your model does not use `alibi` or "
-                    + "`prefix_lm` we recommend using `attn_impl: flash` otherwise "
+                    "Using `attn_impl: torch`. If your model does not use"
+                    " `alibi` or "
+                    + "`prefix_lm` we recommend using `attn_impl: flash`"
+                    " otherwise "
                     + "we recommend using `attn_impl: triton`."
                 )
         else:
@@ -709,20 +737,25 @@ class MultiQueryAttention(BaseAttention):
             self.attn_fn = triton_flash_attn_fn
             if verbose:
                 warnings.warn(
-                    "While `attn_impl: triton` can be faster than `attn_impl: flash` "
-                    + "it uses more memory. When training larger models this can"
+                    "While `attn_impl: triton` can be faster than `attn_impl:"
+                    " flash` "
+                    + "it uses more memory. When training larger models"
+                    " this can"
                     " trigger "
-                    + "alloc retries which hurts performance. If encountered, we"
+                    + "alloc retries which hurts performance. If"
+                    " encountered, we"
                     " recommend "
-                    + "using `attn_impl: flash` if your model does not use `alibi` or"
-                    " `prefix_lm`."
+                    + "using `attn_impl: flash` if your model does not use"
+                    " `alibi` or `prefix_lm`."
                 )
         elif self.attn_impl == "torch":
             self.attn_fn = scaled_multihead_dot_product_attention
             if torch.cuda.is_available() and verbose:
                 warnings.warn(
-                    "Using `attn_impl: torch`. If your model does not use `alibi` or "
-                    + "`prefix_lm` we recommend using `attn_impl: flash` otherwise "
+                    "Using `attn_impl: torch`. If your model does not use"
+                    " `alibi` or "
+                    + "`prefix_lm` we recommend using `attn_impl: flash`"
+                    " otherwise "
                     + "we recommend using `attn_impl: triton`."
                 )
         else:

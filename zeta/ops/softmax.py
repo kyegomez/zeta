@@ -17,7 +17,10 @@ def selu_softmax(x):
     x: input tensor
     """
     # selu params
-    alpha, scale = 1.6732632423543772848170429916717, 1.0507009873554804934193349852946
+    alpha, scale = (
+        1.6732632423543772848170429916717,
+        1.0507009873554804934193349852946,
+    )
     return F.softmax(scale * F.selu(x, alpha), dim=0)
 
 
@@ -48,7 +51,9 @@ def sparsemax(x, k):
     x = x - torch.max(x, dim=dim, keepdim=True).values
     sorted_x, _ = torch.sort(x, dim=dim, descending=True)
     cumulative_values = torch.cumsum(sorted_x, dim=dim) - 1
-    range_values = torch.arange(start=1, end=number_of_logits + 1, device=x.device)
+    range_values = torch.arange(
+        start=1, end=number_of_logits + 1, device=x.device
+    )
     bound = (sorted_x - cumulative_values / range_values) > 0
     rho = torch.count_nonzero(bound, dim=dim)
 
@@ -58,7 +63,9 @@ def sparsemax(x, k):
 
     tau = cumulative_values.gather(dim, rho.unsqueeze(dim) - 1)
     tau /= rho.to(dtype=torch.float32)
-    return torch.max(torch.zeros_like(x), x - tau.unsqueeze(dim)).view(original_size)
+    return torch.max(torch.zeros_like(x), x - tau.unsqueeze(dim)).view(
+        original_size
+    )
 
 
 # 3. Local Softmax
@@ -147,7 +154,9 @@ def gumbelmax(x, temp=1.0, hard=False):
     y = F.softmax(y / temp, dim=-1)
 
     if hard:
-        y_hard = torch.zeros_like(x).scatter_(-1, y.argmax(dim=-1, keepdim=True), 1.0)
+        y_hard = torch.zeros_like(x).scatter_(
+            -1, y.argmax(dim=-1, keepdim=True), 1.0
+        )
         y = y_hard - y.detach() + y
     return y
 

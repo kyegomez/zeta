@@ -283,7 +283,10 @@ def groupby_prefix_and_trim(prefix, d):
         partial(string_begins_with, prefix), d
     )
     kwargs_without_prefix = dict(
-        map(lambda x: (x[0][len(prefix) :], x[1]), tuple(kwargs_with_prefix.items()))
+        map(
+            lambda x: (x[0][len(prefix) :], x[1]),
+            tuple(kwargs_with_prefix.items()),
+        )
     )
     return kwargs_without_prefix, kwargs
 
@@ -367,7 +370,9 @@ class ContrastiveTopK(nn.Module):
 
         # scores
         scores = torch.where(
-            mask.bool(), torch.log(p_exp / (p_ama + 1e-8)), torch.tensor(-float("inf"))
+            mask.bool(),
+            torch.log(p_exp / (p_ama + 1e-8)),
+            torch.tensor(-float("inf")),
         )
 
         return scores
@@ -411,7 +416,9 @@ class ResnetBlock(nn.Module):
 
         self.block1 = Block(dim, dim_out, groups=groups)
         self.block2 = Block(dim_out, dim_out, groups=groups)
-        self.res_conv = nn.Conv3d(dim, dim_out, 1) if dim != dim_out else nn.Identity()
+        self.res_conv = (
+            nn.Conv3d(dim, dim_out, 1) if dim != dim_out else nn.Identity()
+        )
 
     def forward(self, x, time_emb=None):
         scale_shift = None
@@ -577,7 +584,9 @@ class PreNorm(nn.Module):
 def cosine_beta_schedule(timesteps, s=0.008):
     steps = timesteps + 1
     x = torch.linspace(0, timesteps, steps, dtype=torch.float64)
-    alphas_cumprod = torch.cos(((x / timesteps) + s) / (1 + s) * torch.pi * 0.5) ** 2
+    alphas_cumprod = (
+        torch.cos(((x / timesteps) + s) / (1 + s) * torch.pi * 0.5) ** 2
+    )
     alphas_cumprod = alphas_cumprod / alphas_cumprod[0]
     betas = 1 - (alphas_cumprod[1:] / alphas_cumprod[:-1])
     return torch.clip(betas, 0, 0.9999)
@@ -615,7 +624,8 @@ class LearnableLogitScaling(nn.Module):
 
     def extra_repr(self):
         st = (
-            f"logit_scale_init={self.logit_scale_init}, learnable={self.learnable},"
+            f"logit_scale_init={self.logit_scale_init},"
+            f" learnable={self.learnable},"
             f"max_logit_scale={self.max_logit_scale}"
         )
         return st
@@ -686,7 +696,9 @@ def interpolate_pos_encoding_2d(target_spatial_size, pos_embed):
     if N == target_spatial_size:
         return pos_embed
     dim = pos_embed.shape[-1]
-    pos_embed, updated = cast_if_src_dtype(pos_embed, torch.bfloat16, torch.float32)
+    pos_embed, updated = cast_if_src_dtype(
+        pos_embed, torch.bfloat16, torch.float32
+    )
     pos_embed = nn.functional.interpolate(
         pos_embed.reshape(1, int(math.sqrt(N)), int(math.sqrt(N)), dim).permute(
             0, 3, 1, 2
@@ -695,7 +707,9 @@ def interpolate_pos_encoding_2d(target_spatial_size, pos_embed):
         mode="bicubic",
     )
     if updated:
-        pos_embed, _ = cast_if_src_dtype(pos_embed, torch.float32, torch.bfloat16)
+        pos_embed, _ = cast_if_src_dtype(
+            pos_embed, torch.float32, torch.bfloat16
+        )
     pos_embed = pos_embed.permute(0, 2, 3, 1).view(1, -1, dim)
     return pos_embed
 
@@ -745,7 +759,8 @@ def look_around(x, backward=1, forward=0, pad_value=-1, dim=2):
     padded_x = F.pad(x, (*dims, backward, forward), value=pad_value)
 
     tensors = [
-        padded_x[:, ind : (ind + t), ...] for ind in range(forward + backward + 1)
+        padded_x[:, ind : (ind + t), ...]
+        for ind in range(forward + backward + 1)
     ]
     return torch.cat(tensors, dim=dim)
 

@@ -30,7 +30,10 @@ class GradientEquilibrum(Optimizer):
         weight_decay=0.0,
     ):
         defaults = dict(
-            lr=lr, max_iterations=max_iterations, tol=tol, weight_decay=weight_decay
+            lr=lr,
+            max_iterations=max_iterations,
+            tol=tol,
+            weight_decay=weight_decay,
         )
         super(GradientEquilibrum, self).__init__(params, defaults)
 

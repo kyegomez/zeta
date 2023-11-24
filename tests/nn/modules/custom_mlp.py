@@ -122,7 +122,9 @@ def test_invalid_dropout_negative():
 # Test for unsupported activation function
 def test_invalid_activation_function():
     with pytest.raises(ValueError):
-        CustomMLP(layer_sizes=[10, 5, 2], activation="invalid_activation", dropout=0.0)
+        CustomMLP(
+            layer_sizes=[10, 5, 2], activation="invalid_activation", dropout=0.0
+        )
 
 
 # Additional tests related to edge cases and boundary conditions can be added as needed

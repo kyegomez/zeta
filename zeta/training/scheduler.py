@@ -50,7 +50,6 @@ def get_lr_scheduler_with_warmup(
         )
     else:
         raise ValueError(
-            "Invalid scheduler_type. Expected 'linear' or 'cosine', got: {}".format(
-                scheduler_type
-            )
+            "Invalid scheduler_type. Expected 'linear' or 'cosine', got: {}"
+            .format(scheduler_type)
         )

@@ -50,7 +50,7 @@ class Neo(nn.Module):
         rotary_xpos_scale_base=512,
         flash_attn=False,
         finetune_scopes=tuple(),
-        cross_entropy_ignore_index=0
+        cross_entropy_ignore_index=0,
     ):
         super().__init__()
         self.dim = dim
@@ -111,7 +111,7 @@ class Neo(nn.Module):
         eos_token=None,
         return_seq_without_prompt=True,
         use_tqdm=False,
-        **kwargs
+        **kwargs,
     ):
         if not exists(prompt):
             prompt = torch.zeros(0, self.num_tokens, (1, 1))

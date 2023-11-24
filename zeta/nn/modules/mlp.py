@@ -39,7 +39,13 @@ class MLP(nn.Module):
     """
 
     def __init__(
-        self, dim_in: int, dim_out: int, *, expansion_factor=2.0, depth=2, norm=False
+        self,
+        dim_in: int,
+        dim_out: int,
+        *,
+        expansion_factor=2.0,
+        depth=2,
+        norm=False,
     ):
         super().__init__()
         hidden_dim = int(expansion_factor * dim_out)
@@ -47,11 +53,15 @@ class MLP(nn.Module):
         def norm_fn():
             return nn.LayerNorm(hidden_dim) if norm else nn.Identity()
 
-        layers = [nn.Sequential(nn.Linear(dim_in, hidden_dim), nn.SiLU(), norm_fn())]
+        layers = [
+            nn.Sequential(nn.Linear(dim_in, hidden_dim), nn.SiLU(), norm_fn())
+        ]
 
         for _ in range(depth - 1):
             layers.append(
-                nn.Sequential(nn.Linear(hidden_dim, hidden_dim), nn.SiLU(), norm_fn())
+                nn.Sequential(
+                    nn.Linear(hidden_dim, hidden_dim), nn.SiLU(), norm_fn()
+                )
             )
         layers.append(nn.Linear(hidden_dim, dim_out))
         self.net = nn.Sequential(*layers)

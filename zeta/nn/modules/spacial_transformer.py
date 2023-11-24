@@ -25,7 +25,9 @@ class SpacialTransformer(nn.Module):
         # initialize the weights/bias with identity transformation
         linear.weight.data.zero_()
 
-        linear.bias.data.copy_(torch.tensor([1, 0, 0, 0, 1, 0], dtype=torch.float))
+        linear.bias.data.copy_(
+            torch.tensor([1, 0, 0, 0, 1, 0], dtype=torch.float)
+        )
 
         self.compute_theta = nn.Sequential(
             nn.Conv2d(1, 8, kernel_size=7),

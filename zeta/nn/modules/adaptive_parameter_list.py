@@ -39,7 +39,7 @@ class AdaptiveParameterList(nn.ParameterList):
                 new_param = adaptation_function(param)
                 if not new_param.shape == param.shape:
                     raise ValueError(
-                        "adaptation_function must return a tensor of the same shape as"
-                        " the input parameter"
+                        "adaptation_function must return a tensor of the same"
+                        " shape as the input parameter"
                     )
                 self[i] = nn.Parameter(new_param)

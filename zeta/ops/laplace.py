@@ -17,7 +17,10 @@ def laplace_solver(mesh_size, start, end, max_iter=5000):
             for j in range(1, mesh_size - 1):
                 # Apply the Laplace operator
                 mesh_new[i, j] = 0.25 * (
-                    mesh[i + 1, j] + mesh[i - 1, j] + mesh[i, j + 1] + mesh[i, j - 1]
+                    mesh[i + 1, j]
+                    + mesh[i - 1, j]
+                    + mesh[i, j + 1]
+                    + mesh[i, j - 1]
                 )
 
         # Update the mesh

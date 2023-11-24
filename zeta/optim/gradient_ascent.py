@@ -79,7 +79,9 @@ class GradientAscent:
             try:
                 if param.grad is not None:
                     if self.clip_value:
-                        torch.nn.utils.clip_grad_value_(param.grad, self.clip_value)
+                        torch.nn.utils.clip_grad_value_(
+                            param.grad, self.clip_value
+                        )
 
                     # Nesterov Accelerated Gradient
                     if self.nesterov:
@@ -94,11 +96,15 @@ class GradientAscent:
                     self.m[param] = (
                         self.beta * self.m[param] + (1 - self.beta) * grad**2
                     )
-                    adapted_lr = self.lr / (torch.sqrt(self.m[param]) + self.eps)
+                    adapted_lr = self.lr / (
+                        torch.sqrt(self.m[param]) + self.eps
+                    )
 
                     # Warmup Learning Rate
                     if self.step_count <= self.warmup_steps:
-                        warmup_factor = self.step_count / float(self.warmup_steps)
+                        warmup_factor = self.step_count / float(
+                            self.warmup_steps
+                        )
                         adapted_lr *= warmup_factor
 
                     # Gradient Ascent
@@ -110,8 +116,8 @@ class GradientAscent:
 
                 if self.step_count % self.logging_interval == 0:
                     print(
-                        f"Step: {self.step_count}, Learning Rate: {self.lr}, Gradient"
-                        f" Norm: {torch.norm(param.grad)}"
+                        f"Step: {self.step_count}, Learning Rate: {self.lr},"
+                        f" Gradient Norm: {torch.norm(param.grad)}"
                     )
 
             except Exception as error:

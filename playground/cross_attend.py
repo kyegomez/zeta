@@ -13,4 +13,6 @@ neighbors = torch.randn(1, 5, 512)
 neighbor_mask = torch.ones(1, 5).bool()
 
 encoded_neighbors = encoder(neighbors, mask=neighbor_mask)
-model(nodes, context=encoded_neighbors, mask=node_mask, context_mask=neighbor_mask)
+model(
+    nodes, context=encoded_neighbors, mask=node_mask, context_mask=neighbor_mask
+)

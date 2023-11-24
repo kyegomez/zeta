@@ -73,7 +73,11 @@ class SpatialDownsample(nn.Module):
         super().__init__()
         dim_out = default(dim_out, dim)
         self.conv = nn.Conv3d(
-            dim, dim_out, kernel_size=kernel_size, stride=2, padding=kernel_size // 2
+            dim,
+            dim_out,
+            kernel_size=kernel_size,
+            stride=2,
+            padding=kernel_size // 2,
         )
 
     def forward(self, x):

@@ -14,7 +14,9 @@ lora_dropout = 0.5
 
 @pytest.fixture
 def qlora_layer():
-    return QloraLinear(in_features, out_features, weight, r, lora_alpha, lora_dropout)
+    return QloraLinear(
+        in_features, out_features, weight, r, lora_alpha, lora_dropout
+    )
 
 
 def test_initialization(qlora_layer):

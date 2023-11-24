@@ -41,5 +41,7 @@ class RNN(nn.Module):
             self.drop(output),
             "t b nhid -> (t b) nhid",
         )
-        decoded = rearrange(self.decoder(output), "(t b) token -> t b token", t=t, b=b)
+        decoded = rearrange(
+            self.decoder(output), "(t b) token -> t b token", t=t, b=b
+        )
         return decoded, hidden
