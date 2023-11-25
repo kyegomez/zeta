@@ -52,7 +52,7 @@ from zeta.nn.modules.log_ff import LogFF, compute_entropy_safe
 from zeta.nn.modules.polymorphic_neuron import PolymorphicNeuronLayer
 from zeta.nn.modules.flexible_mlp import CustomMLP
 from zeta.nn.modules.fractorial_net import FractalBlock, FractalNetwork
-
+from zeta.nn.modules.polymorphic_activation import PolymorphicActivation
 __all__ = [
     "CNNNew",
     "CombinedLinear",
@@ -94,4 +94,5 @@ __all__ = [
     "LogFF",
     "PolymorphicNeuronLayer",
     "CustomMLP",
+    "PolymorphicActivation",
 ]
