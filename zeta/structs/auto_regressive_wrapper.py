@@ -15,10 +15,24 @@ from zeta.utils.main import (  # noqa: E402
 
 # Utils
 def temperature_sampling(self, logits, temperature):
+    """
+    Temperature sampling.
+    """
     return torch.multinomial(F.softmax(logits / temperature, dim=-1), 1)
 
 
 def top_p_sampling(self, logits, p):
+    """
+    top-p sampling.
+
+    Args:
+        logits (torch.Tensor): The logits.
+        p (float): The probability mass to keep.
+
+    Returns:
+        torch.Tensor: The sampled token.
+
+    """
     sorted_logits, sorted_indices = torch.sort(logits, descending=True)
     cumulative_probs = torch.cumsum(F.softmax(sorted_logits, dim=-1), dim=-1)
 
@@ -34,15 +48,70 @@ def top_p_sampling(self, logits, p):
 
 
 def classifier_free_guidance(self, logits_cond, logits_uncond, alpha):
+    """
+    Classifier-free guidance.
+
+    Args:
+        logits_cond (torch.Tensor): The conditional logits.
+        logits_uncond (torch.Tensor): The unconditional logits.
+        alpha (float): The alpha parameter.
+
+    Examples::
+
+                >>> net = nn.Linear(10, 10)
+                >>> net = AutoregressiveWrapper(net)
+                >>> x = torch.randn(1, 10)
+                >>> logits = net(x)
+                >>> print(logits.shape)
+                torch.Size([1, 10, 10]) # (batch_size, seq_len, vocab_size)
+
+    """
     return logits_uncond + alpha * (logits_cond - logits_uncond)
 
 
 def contrastive_guidance(self, logits, k):
+    """
+    Contrastive guidance.
+
+    Args:
+        logits (torch.Tensor): The logits.
+        k (int): The number of guesses to use.
+
+    Returns:
+        torch.Tensor: The sampled token.
+
+
+    """
     top_k_logits, _ = torch.topk(logits, k)
     return torch.multinomial(F.softmax(top_k_logits, dim=-1), 1)
 
 
 class AutoregressiveWrapper(nn.Module):
+    """
+
+    Auto-regressive wrapper for any nn.Module that takes in a sequence of
+    tokens and outputs a sequence of logits.
+
+    Args:
+        net (nn.Module): A nn.Module that takes in a sequence of tokens and
+            outputs a sequence of logits.
+        ignore_index (int): The index to ignore in the target sequence.
+        pad_value (int): The value to pad the target sequence with.
+        mask_prob (float): The probability of masking out a token in the
+            input sequence.
+        speculative (bool): Whether to use speculative decoding or not.
+
+    Examples::
+
+            >>> net = nn.Linear(10, 10)
+            >>> net = AutoregressiveWrapper(net)
+            >>> x = torch.randn(1, 10)
+            >>> logits = net(x)
+            >>> print(logits.shape)
+            torch.Size([1, 10, 10]) # (batch_size, seq_len, vocab_size)
+
+    """
+
     def __init__(
         self,
         net,
@@ -80,6 +149,34 @@ class AutoregressiveWrapper(nn.Module):
         gamma=5,  # number of guesses for speculative decoding
         **kwargs,
     ):
+        """
+        Generate a sequence of tokens from the model.
+
+        Args:
+            start_tokens (torch.Tensor): The starting tokens.
+            seq_len (int): The length of the sequence to generate.
+            eos_token (int): The token to stop generation at.
+            strategy (str): The generation strategy to use.
+            temperature (float): The temperature to use for sampling.
+            filter_logits_fn (function): The function to use to filter logits.
+            filter_thres (float): The threshold to use for filtering logits.
+            min_p_pow (float): The power to use for top-a filtering.
+            min_p_ratio (float): The ratio to use for top-a filtering.
+            gamma (int): The number of guesses to use for speculative decoding.
+            **kwargs: Keyword arguments for the wrapped module.
+
+        Returns:
+            torch.Tensor: The generated sequence of tokens.
+
+        Examples::
+
+                    >>> net = nn.Linear(10, 10)
+                    >>> net = AutoregressiveWrapper(net)
+                    >>> x = torch.randn(1, 10)
+                    >>> generated = net.generate(x, 10)
+                    >>> print(generated.shape)
+                    torch.Size([1, 10])
+        """
         start_tokens, ps = pack([start_tokens], "* n")
 
         b, t = start_tokens.shape
@@ -185,6 +282,28 @@ class AutoregressiveWrapper(nn.Module):
             return out
 
     def forward(self, x, return_loss=True, **kwargs):
+        """
+        Forward pass of the autoregressive wrapper.
+
+        Args:
+            x (torch.Tensor): Input tensor.
+            return_loss (bool): Whether to return the loss or not.
+            **kwargs: Keyword arguments for the wrapped module.
+
+        Returns:
+            torch.Tensor: Output tensor.
+            torch.Tensor: Loss tensor if return_loss is True.
+
+        Examples::
+
+                >>> net = nn.Linear(10, 10)
+                >>> net = AutoregressiveWrapper(net)
+                >>> x = torch.randn(1, 10)
+                >>> logits = net(x)
+                >>> print(logits.shape)
+                torch.Size([1, 10, 10]) # (batch_size, seq_len, vocab_size)
+
+        """
         seq, ignore_index = x.shape[1], self.ignore_index
 
         inp, target = x[:, :-1], x[:, 1:]
@@ -210,3 +329,27 @@ class AutoregressiveWrapper(nn.Module):
             return logits, loss
 
         return logits
+
+    @torch.no_grad()
+    @eval_decorator
+    def generate_n_solutions(self, start_tokens, n, seqlen, **kwargs):
+        """Generate n solutions from the model."""
+        solutions = []
+        for _ in range(n):
+            generated = self.generate(start_tokens, seqlen, **kwargs)
+            solutions.append(generated)
+        return solutions
+
+    def evaluate_and_select_best_solution(
+        self,
+        solutions,
+        reward_model,
+    ):
+        """Evaluate solutions and select the best one."""
+        scores = [reward_model(solution) for solution in solutions]
+        best_solution_idx = scores.index(max(scores))
+        return solutions[best_solution_idx]
+
+    def grade_solution(self, solution):
+        """Grade a solution."""
+        pass
