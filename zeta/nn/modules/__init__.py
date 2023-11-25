@@ -51,6 +51,7 @@ from zeta.nn.modules.skipconnection import SkipConnection
 from zeta.nn.modules.log_ff import LogFF, compute_entropy_safe
 from zeta.nn.modules.polymorphic_neuron import PolymorphicNeuronLayer
 from zeta.nn.modules.flexible_mlp import CustomMLP
+from zeta.nn.modules.fractoril_net import 
 
 __all__ = [
     "CNNNew",
