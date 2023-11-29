@@ -69,21 +69,22 @@ class CrossAttention(nn.Module):
         return out
 
 
-class IterativeCrossSelfAttention(nn.Module): 
-    """Iterative 
+class IterativeCrossSelfAttention(nn.Module):
+    """Iterative
 
     Args:
         dim (_type_): _description_
         depth (_type_): _description_
         heads (_type_): _description_
         dim_head (_type_): _description_
-        dropout (float, optional): _description_. Defaults to 0.1. 
-        
+        dropout (float, optional): _description_. Defaults to 0.1.
+
     Methods:
         forward(x, context=None): _description_
-        
+
     Examples:
-    """ 
+    """
+
     def __init__(
         self,
         dim,
