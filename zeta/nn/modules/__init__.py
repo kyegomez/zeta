@@ -53,6 +53,7 @@ from zeta.nn.modules.polymorphic_neuron import PolymorphicNeuronLayer
 from zeta.nn.modules.flexible_mlp import CustomMLP
 from zeta.nn.modules.fractorial_net import FractalBlock, FractalNetwork
 from zeta.nn.modules.polymorphic_activation import PolymorphicActivation
+
 __all__ = [
     "CNNNew",
     "CombinedLinear",
