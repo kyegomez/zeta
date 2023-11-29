@@ -39,7 +39,9 @@ class SimpleDecisionTree(nn.Module):
                 grad_fn=<AddmmBackward>)]
     """
 
-    def __init__(self, input_size, output_size, depth, heads):
+    def __init__(
+        self, input_size: int, output_size: int, depth: int, heads: int
+    ):
         super(SimpleDecisionTree, self).__init__()
         self.input_size = input_size
         self.output_size = output_size
