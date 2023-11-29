@@ -53,6 +53,8 @@ from zeta.nn.modules.polymorphic_neuron import PolymorphicNeuronLayer
 from zeta.nn.modules.flexible_mlp import CustomMLP
 from zeta.nn.modules.fractorial_net import FractalBlock, FractalNetwork
 from zeta.nn.modules.polymorphic_activation import PolymorphicActivation
+from zeta.nn.modules.prenorm import PreNorm
+from zeta.nn.modules.itca import IterativeCrossSelfAttention
 
 __all__ = [
     "CNNNew",
@@ -96,4 +98,6 @@ __all__ = [
     "PolymorphicNeuronLayer",
     "CustomMLP",
     "PolymorphicActivation",
+    "PreNorm",
+    "IterativeCrossSelfAttention",
 ]
