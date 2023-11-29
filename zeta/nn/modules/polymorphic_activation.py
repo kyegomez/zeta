@@ -1,5 +1,6 @@
-import torch 
+import torch
 import torch.nn as nn
+
 
 class PolymorphicActivation(nn.Module):
     """
@@ -18,7 +19,7 @@ class PolymorphicActivation(nn.Module):
     --------
     forward(x):
         Computes the polymorphic activation function on the input tensor x.
-        
+
     Examples:
     # Create an instance of the activation function
     poly_act = PolymorphicActivation(initial_alpha=0.8)
