@@ -56,6 +56,7 @@ from zeta.nn.modules.polymorphic_activation import PolymorphicActivation
 from zeta.nn.modules.prenorm import PreNorm
 from zeta.nn.modules.itca import IterativeCrossSelfAttention
 from zeta.nn.modules.lang_conv_module import ConvolutionLanguageBlock
+from zeta.nn.modules.h3 import s4d_kernel
 __all__ = [
     "CNNNew",
     "CombinedLinear",
@@ -100,5 +101,5 @@ __all__ = [
     "PolymorphicActivation",
     "PreNorm",
     "IterativeCrossSelfAttention",
-    "ConvolutionLanguageBlock"
+    "ConvolutionLanguageBlock",
 ]
