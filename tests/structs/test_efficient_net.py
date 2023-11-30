@@ -1,7 +1,7 @@
 import pytest
 import torch
 import torch.nn as nn
-from zeta.structs import EfficientNet
+from zeta.structs.efficient_net import EfficientNet
 
 
 @pytest.fixture

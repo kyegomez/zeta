@@ -3,7 +3,7 @@ import torch
 from torch import nn
 from torch.optim import SGD
 
-from ge.main import GradientEquilibrum
+from zeta.optim.gradient_equillibrum import GradientEquilibrum
 
 
 # Helper function to create a simple model and loss for testing
