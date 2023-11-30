@@ -26,10 +26,14 @@ f = CustomFilter()
 logger.addFilter(f)
 
 from zeta.nn import *
-from zeta import models
-from zeta import utils
-from zeta import training
-from zeta import tokenizers
-from zeta import rl
-from zeta import optim
-from zeta import ops
+from zeta.models import *
+from zeta.utils import *
+from zeta.training import *
+from zeta.tokenizers import *
+from zeta.rl import *
+from zeta.optim import *
+from zeta.ops import *
+from zeta.quant import *
+
+
+
