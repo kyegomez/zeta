@@ -42,7 +42,7 @@ from zeta.nn.modules.polymorphic_activation import PolymorphicActivation
 from zeta.nn.modules.prenorm import PreNorm
 from zeta.nn.modules.itca import IterativeCrossSelfAttention
 from zeta.nn.modules.lang_conv_module import ConvolutionLanguageBlock
-from zeta.nn.modules.h3 import s4d_kernel
+from zeta.nn.modules.s4 import s4d_kernel
 from zeta.nn.modules.h3 import H3Layer
 
 
