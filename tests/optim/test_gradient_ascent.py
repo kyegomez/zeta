@@ -1,6 +1,6 @@
 import pytest
 import torch
-from gradient_ascent import GradientAscent
+from zeta.optim.gradient_ascent import GradientAscent
 
 
 def mock_module():
