@@ -46,7 +46,6 @@ from zeta.nn.modules.s4 import s4d_kernel
 from zeta.nn.modules.h3 import H3Layer
 
 
-
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
 # from zeta.nn.modules.scaled_sinusoidal import ScaledSinuosidalEmbedding
