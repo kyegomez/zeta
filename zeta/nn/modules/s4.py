@@ -1,7 +1,10 @@
 import torch
 from typing import Tuple
 
-def s4d_kernel(A: torch.Tensor, B: torch.Tensor, C: torch.Tensor, dt: float, L: int) -> torch.Tensor:
+
+def s4d_kernel(
+    A: torch.Tensor, B: torch.Tensor, C: torch.Tensor, dt: float, L: int
+) -> torch.Tensor:
     """
     Compute the S4D convolution kernel for state space models on 3D tensors with shape (batch_size, seqlen, dim).
 
@@ -21,9 +24,17 @@ def s4d_kernel(A: torch.Tensor, B: torch.Tensor, C: torch.Tensor, dt: float, L: 
     """
 
     # Ensure A, B, and C have the same size in the last dimension and compatible batch dimensions
-    if A.size(-1) != B.size(-1) or A.size(-1) != C.size(-1) or A.shape[:-1] != B.shape[:-1] or A.shape[:-1] != C.shape[:-1]:
-        raise ValueError("The last dimension of tensors A, B, and C must match and have compatible batch dimensions.")
-    
+    if (
+        A.size(-1) != B.size(-1)
+        or A.size(-1) != C.size(-1)
+        or A.shape[:-1] != B.shape[:-1]
+        or A.shape[:-1] != C.shape[:-1]
+    ):
+        raise ValueError(
+            "The last dimension of tensors A, B, and C must match and have"
+            " compatible batch dimensions."
+        )
+
     # Check that dt is a float and L is an integer
     if not isinstance(dt, float):
         raise TypeError("The time step dt must be a float.")
@@ -38,11 +49,20 @@ def s4d_kernel(A: torch.Tensor, B: torch.Tensor, C: torch.Tensor, dt: float, L: 
     B_expanded = B.unsqueeze(1)  # Shape: (batch_size, 1, dim)
 
     # Perform the convolution kernel operation with proper broadcasting
-    vandermonde = torch.exp(arange_L * dt * A_expanded)  # Shape: (seqlen, batch_size, dim)
-    result = torch.sum(vandermonde * B_expanded * (torch.exp(dt * A_expanded) - 1) / A_expanded, dim=0)
+    vandermonde = torch.exp(
+        arange_L * dt * A_expanded
+    )  # Shape: (seqlen, batch_size, dim)
+    result = torch.sum(
+        vandermonde
+        * B_expanded
+        * (torch.exp(dt * A_expanded) - 1)
+        / A_expanded,
+        dim=0,
+    )
     result = C.unsqueeze(1) * result  # Shape: (batch_size, seqlen, dim)
 
     return result
+
 
 # # Example usage with random tensors:
 # torch.manual_seed(0)  # For reproducibility
