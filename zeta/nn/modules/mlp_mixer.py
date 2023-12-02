@@ -11,10 +11,12 @@ class MLPBlock(nn.Module):
         dim (int): [description]
     """
 
-    def __init__(self, dim: int):
+    def __init__(self, dim: int, hidden_dim: int):
         super(MLPBlock, self).__init__()
-        self.dense1 = nn.Linear(dim, dim)
-        self.dense2 = nn.Linear(dim, dim)
+        self.dim = dim
+        self.hidden_dim = hidden_dim
+        self.dense1 = nn.Linear(dim, hidden_dim)
+        self.dense2 = nn.Linear(hidden_dim, dim)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass of MLPBlock
@@ -27,7 +29,7 @@ class MLPBlock(nn.Module):
         """
         y = self.dense1(x)
         y = F.gelu(y)
-        return self.dense(y)
+        return self.dense2(y)
 
 
 class MixerBlock(nn.Module):
@@ -42,10 +44,10 @@ class MixerBlock(nn.Module):
     def __init__(self, mlp_dim: int, channels_dim: int):
         super(MixerBlock, self).__init__()
         self.norm1 = nn.LayerNorm(channels_dim)
-        self.tokens_mlp = MLPBlock(mlp_dim)
+        self.tokens_mlp = MLPBlock(mlp_dim, mlp_dim)
 
         self.norm2 = nn.LayerNorm(channels_dim)
-        self.channel_mlp = MLPBlock(mlp_dim)
+        self.channel_mlp = MLPBlock(mlp_dim, mlp_dim)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass of MixerBlock
@@ -132,7 +134,7 @@ mlp_mixer = MLPMixer(
     num_blocks=8,
     patch_size=16,
     hidden_dim=512,
-    tokens_mlp_dim=256,
+    tokens_mlp_dim=512,
     channels_mlp_dim=512,
 )
 
