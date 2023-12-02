@@ -45,6 +45,7 @@ from zeta.nn.modules.lang_conv_module import ConvolutionLanguageBlock
 from zeta.nn.modules.s4 import s4d_kernel
 from zeta.nn.modules.h3 import H3Layer
 from zeta.nn.modules.mlp_mixer import MLPMixer
+from zeta.nn.modules.leaky_relu import LeakyRELU
 
 
 # from zeta.nn.modules.img_reshape import image_reshape
@@ -107,4 +108,5 @@ __all__ = [
     "ConvolutionLanguageBlock",
     "H3Layer",
     "MLPMixer",
+    "LeakyRELU",
 ]
