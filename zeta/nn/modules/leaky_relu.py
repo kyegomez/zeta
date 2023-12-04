@@ -11,10 +11,11 @@ class LeakyRELU(nn.Module):
     Returns:
         _type_: _description_
     """
+
     __constants__ = ["inplace", "negative_slope"]
     inplace: bool
     negative_sloop: float
-    
+
     def __init__(
         self,
         negative_slope: float = 1e-2,
@@ -23,7 +24,7 @@ class LeakyRELU(nn.Module):
         super().__init__()
         self.negative_slope = negative_slope
         self.inplace = inplace
-    
+
     def forward(
         self,
         input: torch.Tensor,
@@ -36,12 +37,8 @@ class LeakyRELU(nn.Module):
         Returns:
             torch.Tensor: _description_
         """
-        return torch.where(
-            input >= 0.0,
-            input,
-            input * self.negative_slope
-        )
-    
+        return torch.where(input >= 0.0, input, input * self.negative_slope)
+
     def extra_repr(self) -> str:
         """Extra information about this module.
 
