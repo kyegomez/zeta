@@ -34,7 +34,6 @@ __all__ = [
     "MixtureOfAutoregressiveAttention",
     "MultiModalCausalAttention",
     "SimpleMMCA",
-    "MultiModalCrossAttention",
     "MultiheadAttention",
     "MultiQueryAttention",
     "MultiModalCrossAttention",
