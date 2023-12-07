@@ -1,14 +1,24 @@
+import subprocess
 from dataclasses import dataclass
 from typing import List, Tuple
 
 import torch
-from xformers.ops.fmha.attn_bias import (
-    AttentionBias,
-    BlockDiagonalCausalMask,
-    BlockDiagonalCausalWithOffsetPaddedKeysMask,
-    BlockDiagonalMask,
-)
 
+try:
+    
+    from xformers.ops.fmha.attn_bias import (
+        AttentionBias,
+        BlockDiagonalCausalMask,
+        BlockDiagonalCausalWithOffsetPaddedKeysMask,
+        BlockDiagonalMask,
+    )
+except ImportError as error:
+    print(error)
+    print("Please install xformers from")
+    # Download xformers from pip
+    subprocess.run("pip install xformers".split())
+
+    
 
 @dataclass
 class RotatingCacheInputMetadata:
