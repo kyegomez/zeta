@@ -17,7 +17,7 @@ Build SOTA AI Models 80% faster with modular, high-performance, and scalable bui
 
 
 
-# Installation
+# Install
 
 `pip install zetascale`
 
