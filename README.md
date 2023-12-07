@@ -1,8 +1,7 @@
 [![Multi-Modality](images/agorabanner.png)](https://discord.gg/qUtxnK2NMf)
 
 ![Zeta banner](images/zeta.png)
-Build High-performance, agile, and scalable AI models with modular and re-useable building blocks!
-
+Build SOTA AI Models 80% faster with modular, high-performance, and scalable building blocks!
 
 [![Docs](https://readthedocs.org/projects/zeta/badge/)](https://zeta.readthedocs.io)
 
@@ -17,15 +16,14 @@ Build High-performance, agile, and scalable AI models with modular and re-useabl
 - Modularity: Modularized Lego Building Blocks for building and deploying the best ML Models!
 
 
-# 🤝 Schedule a 1-on-1 Session
-Book a [1-on-1 Session with Kye](https://calendly.com/apacai/agora), the Creator, to discuss any issues, provide feedback, or explore how we can improve Zeta for you.
 
-
-## Installation
+# Installation
 
 `pip install zetascale`
 
-## Initiating Your Journey
+# Usage
+
+## Starting Your Journey
 
 Creating a model empowered with the aforementioned breakthrough research features is a breeze. Here's how to quickly materialize the renowned Flash Attention
 
@@ -304,6 +302,8 @@ output = vision_embedding(input_image)
 # Documentation
 [Click here for the documentation, it's at zeta.apac.ai](https://zeta.apac.ai)
 
+# 🤝 Schedule a 1-on-1 Session
+Book a [1-on-1 Session with Kye](https://calendly.com/apacai/agora), the Creator, to discuss any issues, provide feedback, or explore how we can improve Zeta for you.
 
 ## Contributing
 - We need you to help us build the most re-useable, reliable, and high performance ML framework ever.
