@@ -1,5 +1,5 @@
 from torch import nn, einsum
-from einops import rearrange, pack_one, unpack_one
+from einops import rearrange, pack, unpack
 import torch.nn.functional as F
 from einops.layers.torch import Rearrange
 
@@ -92,7 +92,7 @@ class XCAttention(nn.Module):
 
         """
         x = rearrange(x, "b c h w -> b h w c")
-        x, ps = pack_one(x, "b * c ")
+        x, ps = pack(x, "b * c ")
         x = self.norm(x)
 
         # conditioning
@@ -111,5 +111,5 @@ class XCAttention(nn.Module):
         attn = sim.softmax(dim=-1)
         out = einsum("b h i j, b h j n -> b h i n", attn, v)
         out = self.to_out(out)
-        out = unpack_one(out, ps, "b * c")
+        out = unpack(out, ps, "b * c")
         return rearrange(out, "b h w c -> b c h w")
