@@ -3,12 +3,12 @@ import torch.nn as nn
 import numpy as np
 import pytest
 from torch.autograd import gradcheck
-from zeta.nn.attention.cross_attn_images import CrossAttention
+from zeta.nn.attention.cross_attn_images import MultiModalCrossAttention
 
 
 @pytest.fixture
 def cross_attention_module():
-    return CrossAttention(1024, 8, 1024)
+    return MultiModalCrossAttention(1024, 8, 1024)
 
 
 def test_forward_pass(cross_attention_module):
