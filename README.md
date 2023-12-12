@@ -314,4 +314,4 @@ Book a [1-on-1 Session with Kye](https://calendly.com/apacai/agora), the Creator
 
 
 # License 
-- MIT
+- Apache
