@@ -60,7 +60,7 @@ def Trainer(
         output_dir (_type_, optional): _description_. Defaults to None.
         weight_decay (_type_, optional): _description_. Defaults to None.
         use_deepspeed (_type_, optional): _description_. Defaults to None.
-        
+
     Examples:
     >>> Trainer(
     >>>     gradient_accumulate_every=gradient_accumulate_every,
@@ -79,7 +79,7 @@ def Trainer(
     >>>     weight_decay=weight_decay,
     >>>     use_deepspeed=use_deepspeed,
     >>> )
-    
+
     """
     # accelerator
 
