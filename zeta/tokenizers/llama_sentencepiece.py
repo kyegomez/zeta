@@ -40,7 +40,9 @@ class LLamaTokenizer:
         elif tokenizer_name:
             model_path = self.download_tokenizer(tokenizer_name)
         else:
-            raise ValueError("Either model_path or tokenizer_name must be provided.")
+            raise ValueError(
+                "Either model_path or tokenizer_name must be provided."
+            )
 
         self.sp_model = SentencePieceProcessor(model_file=model_path)
         logger.info(f"Reloaded SentencePiece model from {model_path}")
