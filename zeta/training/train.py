@@ -17,6 +17,7 @@ from zeta.training.scheduler import get_lr_scheduler_with_warmup
 
 
 def print_num_params(model, accelerator: Accelerator):
+    """Print number of parameters in model"""
     # n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     n_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     accelerator.print(f"Number of parameters in model: {n_params}")
@@ -26,6 +27,7 @@ def Trainer(
     gradient_accumulate_every: int = None,
     batch_size: int = None,
     seq_len: int = None,
+    model_name: str = None,
     entity_name: str = None,
     model=None,
     use_fsdp: bool = False,
@@ -36,9 +38,49 @@ def Trainer(
     resume_from_checkpoint=None,
     checkpointing_steps=None,
     output_dir=None,
+    optimizer_type: str = "Adam8bit",
     weight_decay=None,
     use_deepspeed=None,
 ):
+    """Trainer
+
+    Args:
+        gradient_accumulate_every (int, optional): _description_. Defaults to None.
+        batch_size (int, optional): _description_. Defaults to None.
+        seq_len (int, optional): _description_. Defaults to None.
+        entity_name (str, optional): _description_. Defaults to None.
+        model (_type_, optional): _description_. Defaults to None.
+        use_fsdp (bool, optional): _description_. Defaults to False.
+        use_activation_checkpointing (bool, optional): _description_. Defaults to False.
+        learning_rate (_type_, optional): _description_. Defaults to None.
+        seed (_type_, optional): _description_. Defaults to None.
+        use_pretokenized (bool, optional): _description_. Defaults to False.
+        resume_from_checkpoint (_type_, optional): _description_. Defaults to None.
+        checkpointing_steps (_type_, optional): _description_. Defaults to None.
+        output_dir (_type_, optional): _description_. Defaults to None.
+        weight_decay (_type_, optional): _description_. Defaults to None.
+        use_deepspeed (_type_, optional): _description_. Defaults to None.
+        
+    Examples:
+    >>> Trainer(
+    >>>     gradient_accumulate_every=gradient_accumulate_every,
+    >>>     batch_size=batch_size,
+    >>>     seq_len=seq_len,
+    >>>     entity_name=entity_name,
+    >>>     model=model,
+    >>>     use_fsdp=use_fsdp,
+    >>>     use_activation_checkpointing=use_activation_checkpointing,
+    >>>     learning_rate=learning_rate,
+    >>>     seed=seed,
+    >>>     use_pretokenized=use_pretokenized,
+    >>>     resume_from_checkpoint=resume_from_checkpoint,
+    >>>     checkpointing_steps=checkpointing_steps,
+    >>>     output_dir=output_dir,
+    >>>     weight_decay=weight_decay,
+    >>>     use_deepspeed=use_deepspeed,
+    >>> )
+    
+    """
     # accelerator
 
     timeout = InitProcessGroupKwargs(timeout=timedelta(seconds=1_000_000))
@@ -52,7 +94,7 @@ def Trainer(
     # AcceleratorState().deepspeed_plugin.deepspeed_config['train_micro_batch_
 
     accelerator.init_trackers(
-        project_name="LongNet",
+        project_name=model_name,
         config={
             "batch_size": batch_size,
             "gradient_accumulate_every": gradient_accumulate_every,
@@ -101,7 +143,7 @@ def Trainer(
         weight_decay=weight_decay,
         beta_1=0.90,
         beta_2=0.95,
-        optimizer_type="Adam8bit",
+        optimizer_type=optimizer_type,
         use_fsdp=True,
         accelerator=accelerator,
     )
@@ -207,12 +249,12 @@ def Trainer(
 
     # end training
 
-    # accelerator.print(f"Training Finished")
+    accelerator.print("Training Finished")
     accelerator.end_training()
 
     # save final model
 
-    # accelerator.print(f"Saving model to {output_dir}")
+    accelerator.print(f"Saving model to {output_dir}")
     if output_dir is not None:
         accelerator.wait_for_everyone()
         unwrapped_model = accelerator.unwrap_model(model)
