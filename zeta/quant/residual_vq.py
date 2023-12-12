@@ -9,7 +9,7 @@ class ResidualVectorQuantizer(nn.Module):
         dim (int): _description_
         dim_out (int): _description_
         n_embed (int): _description
-        
+
     Example:
         >>> x = torch.randn(2, 4)
         >>> model = ResidualVectorQuantizer(4, 4, 4)
@@ -17,6 +17,7 @@ class ResidualVectorQuantizer(nn.Module):
         >>> print(out.shape)
         torch.Size([2, 4])
     """
+
     def __init__(self, dim, dim_out, n_embed):
         super().__init__()
         self.dim = dim

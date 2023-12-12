@@ -110,5 +110,5 @@ __all__ = [
     "H3Layer",
     "MLPMixer",
     "LeakyRELU",
-    "AdaptiveLayerNorm"
+    "AdaptiveLayerNorm",
 ]

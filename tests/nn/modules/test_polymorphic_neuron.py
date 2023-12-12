@@ -4,6 +4,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from zeta.nn.modules.polymorphic_neuron import PolymorphicNeuronLayer
 
+
 # Fixture for creating a sample PolymorphicNeuronLayer instance
 @pytest.fixture
 def sample_neuron():

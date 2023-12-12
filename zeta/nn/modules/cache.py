@@ -5,7 +5,6 @@ from typing import List, Tuple
 import torch
 
 try:
-    
     from xformers.ops.fmha.attn_bias import (
         AttentionBias,
         BlockDiagonalCausalMask,
@@ -18,7 +17,6 @@ except ImportError as error:
     # Download xformers from pip
     subprocess.run("pip install xformers".split())
 
-    
 
 @dataclass
 class RotatingCacheInputMetadata:
