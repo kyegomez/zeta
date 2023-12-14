@@ -24,23 +24,24 @@ def print_num_params(model, accelerator: Accelerator):
 
 
 def Trainer(
-    gradient_accumulate_every: int = None,
+    gradient_accumulate_every: int = 2,
     batch_size: int = None,
     seq_len: int = None,
-    model_name: str = None,
-    entity_name: str = None,
+    entity_name: str = "zeta",
     model=None,
     use_fsdp: bool = False,
     use_activation_checkpointing: bool = False,
-    learning_rate=None,
-    seed=None,
+    learning_rate: float = None,
+    seed: int = None,
     use_pretokenized: bool = False,
-    resume_from_checkpoint=None,
+    resume_from_checkpoint: bool = None,
     checkpointing_steps=None,
-    output_dir=None,
+    output_dir: str = "checlpoints/", 
     optimizer_type: str = "Adam8bit",
-    weight_decay=None,
+    weight_decay: float = 0.1,
     use_deepspeed=None,
+    *args,
+    **kwargs
 ):
     """Trainer
 
@@ -94,7 +95,7 @@ def Trainer(
     # AcceleratorState().deepspeed_plugin.deepspeed_config['train_micro_batch_
 
     accelerator.init_trackers(
-        project_name=model_name,
+        project_name=entity_name,
         config={
             "batch_size": batch_size,
             "gradient_accumulate_every": gradient_accumulate_every,
@@ -265,17 +266,22 @@ def Trainer(
             )
 
 
-def train(MASTER_ADDR=None, MASTER_PORT=None, RANK=None, WORLD_SIZE=None):
+def train(
+    MASTER_ADDR=None,
+    MASTER_PORT=None,
+    RANK=None,
+    WORLD_SIZE=None,
+    *args,
+    **kwargs,
+):
     os.environ["MASTER_ADDR"] or MASTER_ADDR  # = 'localhost'
     os.environ["MASTER_PORT"] or MASTER_PORT  # = '9994'
 
     # # [CRITICAL] Pay attention to this when scaling to multiple GPUs and clusters
-
-    # # Pay attention to this, use "accelerate config"
 
     os.environ["RANK"] or RANK  # = str(0) # Number of nodes (servers)
     os.environ["WORLD_SIZE"] or WORLD_SIZE  # = str(torch.cuda.device_count())
 
     torch.distributed.init_process_group()
 
-    Trainer()
+    Trainer(*args, **kwargs)

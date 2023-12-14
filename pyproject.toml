@@ -17,29 +17,29 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
-torch = "*"
-fairscale = "*"
-timm = "*"
-torchdiffeq = "*"
-pytest = "*"
-einops = "*"
-bitsandbytes = "*"
-typing = "*"
-transformers = "*"
-einops-exts = "*"
-torchvision = "*"
-accelerate = "*"
-datasets = "*"
-lion-pytorch = "*"
-sentencepiece = "*"
+torch = "2.1.1"
+fairscale = "0.4.0"
+timm = "0.6.13"
+torchdiffeq = "0.2.3"
+pytest = "7.4.2"
+einops = "0.7.0"
+bitsandbytes = "0.38.1"
+typing = "3.7.4.3"
+transformers = "4.35.0"
+einops-exts = "0.0.4"
+torchvision = "0.16.1"
+accelerate = "0.22.0"
+datasets = "2.10.1"
+lion-pytorch = "0.0.7"
+sentencepiece = "0.1.98"
 colt5-attention = "0.10.19"
 vector-quantize-pytorch = "1.12.0"
-tokenmonster = "*"
-scipy = "*"
-beartype = "*"
-tiktoken = "*"
-tqdm = "*"
-rich = "*"
+tokenmonster = "1.1.12"
+scipy = "1.9.3"
+beartype = "0.15.0"
+tiktoken = "0.4.0"
+tqdm = "4.66.1"
+rich = "13.5.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -69,5 +69,10 @@ line-length = 80
 line-length = 80
 target-version = ['py38']
 preview = true
+
+
+
+
+
 
 
