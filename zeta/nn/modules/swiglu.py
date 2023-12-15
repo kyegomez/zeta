@@ -8,6 +8,7 @@ class SwiGLU(nn.Module):
     Args:
         nn (_type_): _description_
     """
+
     def forward(self, x):
         """Forward
 
@@ -26,7 +27,7 @@ class SwiGLUStacked(nn.Module):
 
     Args:
         nn (_type_): _description_
-        
+
     Examples:
     >>> from zeta.nn.modules.swiglu import SwiGLUStacked
     >>> import torch
@@ -35,6 +36,7 @@ class SwiGLUStacked(nn.Module):
     >>> swiglu(x).shape
     torch.Size([5, 10])
     """
+
     def __init__(
         self,
         dim: int,
@@ -42,24 +44,12 @@ class SwiGLUStacked(nn.Module):
         dropout: float = None,
         bias: bool = False,
         *args,
-        **kwargs
+        **kwargs,
     ):
-        self.w1 = nn.Linear(
-            dim,
-            hidden_dim,
-            bias=bias
-        )
-        self.w2 = nn.Linear(
-            hidden_dim,
-            dim,
-            bias=bias
-        )
-        self.w3 = nn.Linear(
-            dim,
-            hidden_dim,
-            bias=bias
-        )
-    
+        self.w1 = nn.Linear(dim, hidden_dim, bias=bias)
+        self.w2 = nn.Linear(hidden_dim, dim, bias=bias)
+        self.w3 = nn.Linear(dim, hidden_dim, bias=bias)
+
     def forward(self, x):
         """Forward
 

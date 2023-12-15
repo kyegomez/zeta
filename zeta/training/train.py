@@ -36,12 +36,12 @@ def Trainer(
     use_pretokenized: bool = False,
     resume_from_checkpoint: bool = None,
     checkpointing_steps=None,
-    output_dir: str = "checlpoints/", 
+    output_dir: str = "checlpoints/",
     optimizer_type: str = "Adam8bit",
     weight_decay: float = 0.1,
     use_deepspeed=None,
     *args,
-    **kwargs
+    **kwargs,
 ):
     """Trainer
 
