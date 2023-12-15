@@ -42,6 +42,20 @@ print(output.shape)
 
 ```
 
+
+
+### `SwiGLU`
+- Powers Transformer models
+```python
+from zeta.nn import SwiGLUStacked
+import torch
+
+x = torch.randn(5, 10)
+swiglu = SwiGLUStacked(10, 20)
+swiglu(x).shape
+
+```
+
 ### ```RelativePositionBias```
 - ```RelativePositionBias``` quantizes the distance between two positions into a certain number of buckets and then uses an embedding to get the relative position bias. This mechanism aids in the attention mechanism by providing biases based on relative positions between the query and key, rather than relying solely on their absolute positions.
 ```python
@@ -165,11 +179,11 @@ class PalmE(torch.nn.Module):
 
     Usage:
 
-            >>> img = torch.randn(1, 3, 256, 256)
-            >>> text = torch.randint(0, 20000, (1, 1024))
-            >>> model = PalmE()
-            >>> output = model(img, text)
-            >>> print(output)
+img = torch.randn(1, 3, 256, 256)
+text = torch.randint(0, 20000, (1, 1024))
+model = PalmE()
+output = model(img, text)
+print(output)
 
     """
 
