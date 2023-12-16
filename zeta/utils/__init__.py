@@ -7,11 +7,12 @@ from zeta.utils.benchmark import (
     print_cuda_memory_usage,
     save_memory_snapshot,
 )
-
+from zeta.utils.disable_logging import disable_warnings_and_logs
 
 __all__ = [
     "track_cuda_memory_usage",
     "benchmark",
     "print_cuda_memory_usage",
     "save_memory_snapshot",
+    "disable_warnings_and_logs",
 ]

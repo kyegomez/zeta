@@ -1,7 +1,4 @@
-from zeta.ops.main import *
-from zeta.ops.softmax import *
 from zeta.ops.unitwise_norm import unitwise_norm
-from zeta.ops.mos import MixtureOfSoftmaxes
 
 from zeta.ops.softmax import (
     standard_softmax,
