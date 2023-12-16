@@ -137,6 +137,7 @@ nav:
           - TokenMonster: "zeta/tokenizers/token_monster.md"
       - zeta.utils:
           - main: "zeta/utils/main.md"
+          - track_cuda_memory_usage: "zeta/utils/track_cuda_memory.md"
       - zeta.ops:
           - main: "zeta/ops/main.md"
           - softmaxes: "zeta/ops/softmaxes.md"
