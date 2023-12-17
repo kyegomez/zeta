@@ -46,6 +46,7 @@ class SwiGLUStacked(nn.Module):
         *args,
         **kwargs,
     ):
+        super().__init__()
         self.w1 = nn.Linear(dim, hidden_dim, bias=bias)
         self.w2 = nn.Linear(hidden_dim, dim, bias=bias)
         self.w3 = nn.Linear(dim, hidden_dim, bias=bias)
