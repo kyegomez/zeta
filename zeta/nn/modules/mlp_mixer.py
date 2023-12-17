@@ -128,21 +128,21 @@ class MLPMixer(nn.Module):
         return self.head(x)
 
 
-# Example of creating a model instance
-mlp_mixer = MLPMixer(
-    num_classes=10,
-    num_blocks=8,
-    patch_size=16,
-    hidden_dim=512,
-    tokens_mlp_dim=512,
-    channels_mlp_dim=512,
-)
+# # Example of creating a model instance
+# mlp_mixer = MLPMixer(
+#     num_classes=10,
+#     num_blocks=8,
+#     patch_size=16,
+#     hidden_dim=512,
+#     tokens_mlp_dim=512,
+#     channels_mlp_dim=512,
+# )
 
-# Example input tensor
-example_input = torch.randn(
-    1, 512, 32, 32
-)  # Batch size of 1, 512 channels, 32x32 image
-output = mlp_mixer(example_input)
-print(
-    output.shape
-)  # Should output the shape corresponding to the number of classes
+# # Example input tensor
+# example_input = torch.randn(
+#     1, 512, 32, 32
+# )  # Batch size of 1, 512 channels, 32x32 image
+# output = mlp_mixer(example_input)
+# print(
+#     output.shape
+# )  # Should output the shape corresponding to the number of classes
