@@ -25,7 +25,7 @@ from zeta.nn.embeddings.xpos_relative_position import (
 from zeta.nn.embeddings.yarn import YarnEmbedding
 from zeta.nn.embeddings.sine_positional import SinePositionalEmbedding
 from zeta.nn.embeddings.qft_embeddings import QFTSPEmbeddings
-from zeta.nn.embeddings.qfsp_embeddings import QuantumSuperpositionEmbeddings
+from zeta.nn.embeddings.qfsp_embeddings import QFTSPEmbedding
 
 __all__ = [
     "AbsolutePositionalEmbedding",
@@ -47,5 +47,5 @@ __all__ = [
     "YarnEmbedding",
     "SinePositionalEmbedding",
     "QFTSPEmbeddings",
-    "QuantumSuperpositionEmbeddings",
+    "QFTSPEmbedding",
 ]
