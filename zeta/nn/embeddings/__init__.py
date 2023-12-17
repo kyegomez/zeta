@@ -47,5 +47,5 @@ __all__ = [
     "YarnEmbedding",
     "SinePositionalEmbedding",
     "QFTSPEmbeddings",
-    "QuantumSuperpositionEmbeddings"
+    "QuantumSuperpositionEmbeddings",
 ]
