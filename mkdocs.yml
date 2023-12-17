@@ -154,8 +154,11 @@ nav:
           - niva: "zeta/quant/niva.md"
   - Examples:
     - Overview: "examples/index.md"
-  - Product:
-    - Overview: "zeta/product/product_ideas.md"
-    - Zetahub: "zeta/product/zetahub.md"
+  - Corporate:
+    - Overview: "corporate/main.md"
+    - Product:
+      - Overview: "zeta/product/product_ideas.md"
+      - Zetahub: "zeta/product/zetahub.md"
+    - Growth: "corporate/growth.md"
   - Blog:
     - Introduction: "blog/introduction_to_zeta.md"
