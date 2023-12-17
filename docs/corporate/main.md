@@ -1,9 +1,5 @@
-# **Zeta Framework Corporate Mission Statement: Pioneering a Future Where AI is for Everyone**
+# **Zeta Mission Statement: Pioneering a Future Where AI is for Everyone**
 
----
-
-**Title:**  
-"High Performance AI for everyone by Zeta"
 
 ---
 
