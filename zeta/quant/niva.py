@@ -24,18 +24,6 @@ def niva(
         quantize_layers (Union[List[Type[nn.Module]], None], optional): Quantize layers. Defaults to None.
         dtype (torch.dtype, optional): _description_. Defaults to torch.qint8.
 
-    Raises:
-        TypeError: _description_
-        ValueError: _description_
-        ValueError: _description_
-        ValueError: _description_
-        TypeError: _description_
-        TypeError: _description_
-        TypeError: _description_
-        TypeError: _description_
-        ValueError: _description_
-        ValueError: _description_
-
     Examples:
     >>> import torch
     >>> from zeta.quant import niva
