@@ -151,7 +151,7 @@ nav:
       - zeta.quant:
           - QUIK: "zeta/quant/quik.md"
           - BitLinear: "zeta/quant/bitlinear.md"
-          - niva: "zeta/quant/niva.mdg"
+          - niva: "zeta/quant/niva.md"
   - Examples:
     - Overview: "examples/index.md"
   - Product:
