@@ -138,6 +138,8 @@ nav:
       - zeta.utils:
           - main: "zeta/utils/main.md"
           - track_cuda_memory_usage: "zeta/utils/track_cuda_memory.md"
+          - module_device: "zeta/utils/module_device.md"
+          - save_load: "zeta/utils/save_load_wrapper.md"
       - zeta.ops:
           - main: "zeta/ops/main.md"
           - softmaxes: "zeta/ops/softmaxes.md"
@@ -159,6 +161,6 @@ nav:
     - Product:
       - Overview: "zeta/product/product_ideas.md"
       - Zetahub: "zeta/product/zetahub.md"
-    - Growth: "corporate/growth.md"
+      - Growth: "corporate/growth.md"
   - Blog:
     - Introduction: "blog/introduction_to_zeta.md"
