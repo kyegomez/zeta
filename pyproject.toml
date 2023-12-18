@@ -37,9 +37,9 @@ vector-quantize-pytorch = "1.12.0"
 tokenmonster = "1.1.12"
 scipy = "1.9.3"
 beartype = "0.15.0"
-tiktoken = "0.4.0"
+tiktoken = "0.5.2"
 tqdm = "4.66.1"
-rich = "13.5.2"
+rich = "13.7.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
