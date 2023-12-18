@@ -313,6 +313,29 @@ output = vision_embedding(input_image)
 # The output now contains patch embeddings, ready for input to a transformer model
 ```
 
+
+### `niva`
+- Niva focuses on weights of certain layers (specified by quantize_layers). Ideal for models where runtime activation is variable. 👁️ Example Layers: nn.Embedding, nn.LSTM. 
+
+```python
+import torch
+from zeta import niva
+
+# Load a pre-trained model
+model = YourModelClass()
+
+# Quantize the model dynamically, specifying layers to quantize
+niva(
+    model=model,
+    model_path="path_to_pretrained_model_weights.pt",
+    output_path="quantized_model.pt",
+    quant_type="dynamic",
+    quantize_layers=[nn.Linear, nn.Conv2d],
+    dtype=torch.qint8
+)
+
+```
+
 # Documentation
 [Click here for the documentation, it's at zeta.apac.ai](https://zeta.apac.ai)
 
