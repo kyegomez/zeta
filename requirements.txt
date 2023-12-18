@@ -24,7 +24,7 @@ tiktoken==0.4.0
 autopep8
 transformers==4.35.0
 tqdm==4.66.1
-torchaudio==2.1.1
+torchaudio==2.1.2
 mkdocs
 mkdocs-material
 mkdocs-glightbox
