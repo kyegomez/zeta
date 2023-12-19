@@ -152,7 +152,6 @@ class Clex(nn.Module):
         scale_factor = seq_len // self.max_position_embeddings
         if do_train:
             t_val = self.sample_random_times(self.max_t + 1, device)[0]
-            import math
 
             sampled_position_ids = self.get_random_position_ids(
                 n=seq_len - 2, max=seq_len * t_val - 2

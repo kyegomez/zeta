@@ -3,7 +3,6 @@ from pathlib import Path
 import torch
 from beartype import beartype
 from beartype.typing import Optional, Callable
-from packaging import version
 from torch.nn import Module
 
 

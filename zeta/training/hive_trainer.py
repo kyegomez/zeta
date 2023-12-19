@@ -17,8 +17,6 @@ Features:
 
 """
 
-import torch
-import torch.distributed as dist
 import threading
 from zeta.training.train import Trainer
 

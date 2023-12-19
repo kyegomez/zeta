@@ -1,6 +1,5 @@
 import pytest
 import torch
-import torch.nn as nn
 
 from zeta.nn.modules.hebbian import (
     BasicHebbianGRUModel,

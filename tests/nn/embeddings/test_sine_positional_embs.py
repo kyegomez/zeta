@@ -1,6 +1,5 @@
 import pytest
 import torch
-from torch import nn
 from zeta.nn.embeddings.sine_positional import SinePositionalEmbedding
 
 
@@ -76,11 +75,11 @@ def test_extend_pe():
 def test_negative_dimension():
     dim_model = -512
     with pytest.raises(ValueError):
-        module = SinePositionalEmbedding(dim_model)
+        SinePositionalEmbedding(dim_model)
 
 
 # Test case for initializing with alpha=True and dropout > 0
 def test_alpha_and_dropout():
     dim_model = 512
     with pytest.raises(ValueError):
-        module = SinePositionalEmbedding(dim_model, alpha=True, dropout=0.2)
+        SinePositionalEmbedding(dim_model, alpha=True, dropout=0.2)

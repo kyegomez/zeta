@@ -78,7 +78,7 @@ def test_with_mocked_convolution_layer():
     block = ConvolutionLanguageBlock(128, 256, 3, 1)
     block.conv_layers[0] = mock_convolution
     x = torch.randn(1, 128, 1024)
-    output = block(x)
+    block(x)
     assert mock_convolution.called
 
 

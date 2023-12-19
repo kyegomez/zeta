@@ -1,5 +1,4 @@
 import torch
-from typing import Tuple
 
 
 def s4d_kernel(

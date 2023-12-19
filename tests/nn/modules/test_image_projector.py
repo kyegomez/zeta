@@ -90,7 +90,7 @@ def test_patch_projector_performance(sample_input_tensor):
     # Measure the time taken for 100 forward passes
     start_time = time.time()
     for _ in range(100):
-        output_tensor = patch_projector(input_tensor)
+        patch_projector(input_tensor)
     end_time = time.time()
 
     elapsed_time = end_time - start_time
@@ -211,7 +211,7 @@ def test_patch_projector_performance_various_input_sizes(
     # Measure the time taken for 100 forward passes
     start_time = time.time()
     for _ in range(100):
-        output_tensor = patch_projector(input_tensor)
+        patch_projector(input_tensor)
     end_time = time.time()
 
     elapsed_time = end_time - start_time
@@ -249,7 +249,7 @@ def test_patch_projector_output_shape_consistency(sample_input_tensor):
 # Test case for edge case: invalid max_patch_size
 def test_patch_projector_invalid_max_patch_size():
     with pytest.raises(ValueError):
-        patch_projector = ImagePatchCreatorProjector(
+        ImagePatchCreatorProjector(
             max_patch_size=0, embedding_dim=768
         )
 
@@ -257,7 +257,7 @@ def test_patch_projector_invalid_max_patch_size():
 # Test case for edge case: invalid embedding_dim
 def test_patch_projector_invalid_embedding_dim():
     with pytest.raises(ValueError):
-        patch_projector = ImagePatchCreatorProjector(
+        ImagePatchCreatorProjector(
             max_patch_size=16, embedding_dim=0
         )
 
@@ -270,7 +270,7 @@ def test_patch_projector_invalid_input_shape():
     input_tensor = torch.randn(1, 3, 32, 32)  # Smaller image
 
     with pytest.raises(ValueError):
-        output_tensor = patch_projector(input_tensor)
+        patch_projector(input_tensor)
 
 
 # Test case for dynamic patch size calculation

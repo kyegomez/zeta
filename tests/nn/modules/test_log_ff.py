@@ -1,6 +1,6 @@
 import torch
 import pytest
-from zeta.nn.modules.log_ff import LogFF, compute_entropy_safe
+from zeta.nn.modules.log_ff import LogFF
 
 
 # Test fixture for a sample input tensor

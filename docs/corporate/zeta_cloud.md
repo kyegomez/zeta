@@ -58,3 +58,5 @@ The estimated timeline for shipping Zeta Cloud is as follows:
 | Marketplace for Pre-Trained Models | A platform for users to buy, sell, or license pre-trained models. | AI developers, companies looking for ready-to-use models. | Transaction fees, subscription for premium listings. |
 | Data Storage and Management | Integrated solutions for data storage, processing, and management. | All users of the platform. | Based on the amount of data stored/processed. |
 | API Access for Third-Party Integrations | Providing API access for integration with other tools and services. | Developers, businesses needing integrations. | Monthly/Annual subscription or pay-per-use. |
+
+

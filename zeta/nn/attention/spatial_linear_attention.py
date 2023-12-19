@@ -3,7 +3,7 @@ import torch.nn as nn
 
 from einops import rearrange
 
-from einops_exts import check_shape, rearrange_many
+from einops_exts import rearrange_many
 
 
 class SpatialLinearAttention(nn.Module):
