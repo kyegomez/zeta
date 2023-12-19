@@ -1,6 +1,5 @@
 import torch
 from torch import nn
-from einops import rearrange
 import torch.nn.functional as F
 
 

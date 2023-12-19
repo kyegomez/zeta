@@ -9,3 +9,17 @@ from zeta.models.mega_vit import MegaVit
 from zeta.models.palme import PalmE
 from zeta.models.vit import ViT
 from zeta.models.navit import NaViT
+
+
+__all__ = [
+    "BaseModel",
+    "ViT",
+    "MaxVit",
+    "MegaVit",
+    "PalmE",
+    "GPT4",
+    "GPT4MultiModal",
+    "LLama2",
+    "Andromeda",
+    "NaViT",
+]

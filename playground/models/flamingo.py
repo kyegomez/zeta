@@ -2,7 +2,6 @@ import torch
 import torch.nn.functional as F
 from einops import rearrange
 from torch import einsum, nn
-from zeta.nn.modules.simple_feedforward import SimpleFeedForward
 from zeta.nn.attention.cross_attn_images import MultiModalCrossAttention
 import zeta.nn as znn
 

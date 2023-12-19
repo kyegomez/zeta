@@ -1,6 +1,5 @@
 import contextlib
 import logging
-import random
 from collections import defaultdict
 from typing import List, Optional, Tuple, Union
 
@@ -207,7 +206,6 @@ class ScaledAdam(BatchedOptimizer):
             with torch.enable_grad():
                 loss = closure()
 
-        batch = True
 
         for group, group_params_names in zip(
             self.param_groups, self.parameters_names
@@ -471,7 +469,7 @@ class ScaledAdam(BatchedOptimizer):
                        as a batch)
                   state: state-dict for p, to look up the optimizer state
         """
-        lr = group["lr"]
+        group["lr"]
         size_update_period = group["size_update_period"]
         beta1 = group["betas"][0]
 
@@ -535,7 +533,7 @@ class ScaledAdam(BatchedOptimizer):
         param_max_rms = group["param_max_rms"]
         eps = group["eps"]
         step = state["step"]
-        batch_size = p.shape[0]
+        p.shape[0]
 
         size_update_period = scale_grads.shape[0]
         # correct beta2 for the size update period: we will have
@@ -596,7 +594,7 @@ class ScaledAdam(BatchedOptimizer):
         beta1, beta2 = group["betas"]
         eps = group["eps"]
         param_min_rms = group["param_min_rms"]
-        step = state["step"]
+        state["step"]
 
         exp_avg_sq = state["exp_avg_sq"]
         exp_avg_sq.mul_(beta2).addcmul_(grad, grad, value=(1 - beta2))

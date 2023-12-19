@@ -7,7 +7,7 @@ import torch
 import torch.nn.functional as F
 from einops import rearrange, repeat
 from einops.layers.torch import Rearrange
-from torch import einsum, nn
+from torch import nn
 from vector_quantize_pytorch import RandomProjectionQuantizer
 
 from zeta.structs.attn_layers import rotate_half

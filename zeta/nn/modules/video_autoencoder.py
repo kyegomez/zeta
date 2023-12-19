@@ -1,8 +1,7 @@
-import torch
 from torch import nn
 from typing import Union, Tuple
 import torch.nn.functional as F
-from einops import rearrange, reduce, repeat, pack, unpack
+from einops import pack, unpack
 
 # helper
 

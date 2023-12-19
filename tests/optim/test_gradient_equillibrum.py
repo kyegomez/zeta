@@ -121,7 +121,7 @@ def test_optimizer_with_custom_lr_and_weight_decay():
 # Test optimizer with a custom clip threshold
 def test_optimizer_with_custom_clip_threshold():
     model, loss_fn = create_model_and_loss()
-    optimizer = GradientEquilibrum(model.parameters(), clip_thresh=0.5)
+    GradientEquilibrum(model.parameters(), clip_thresh=0.5)
     assert True  # No exceptions were raised
 
 
