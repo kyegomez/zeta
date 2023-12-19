@@ -162,5 +162,6 @@ nav:
       - Overview: "zeta/product/product_ideas.md"
       - Zetahub: "zeta/product/zetahub.md"
       - Growth: "corporate/growth.md"
+      - ZetaCloud: "corporate/zeta_cloud.md"
   - Blog:
     - Introduction: "blog/introduction_to_zeta.md"
