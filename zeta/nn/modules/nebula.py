@@ -203,7 +203,7 @@ class Nebula(LossFunction):
         y_true_flat = y_true.flatten()
         if y_pred_flat.shape != y_true_flat.shape:
             y_pred_flat = y_pred_flat[: y_true_flat.numel()]
-        correlation = torch.tensor(
+        torch.tensor(
             np.corrcoef(y_pred_flat.cpu().numpy(), y_true_flat.cpu().numpy())[
                 0, 1
             ]

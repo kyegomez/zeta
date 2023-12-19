@@ -65,10 +65,6 @@ def test_sparse_attention_forward():
     n_batch = 4
     n_ctx = 1024
     n_embd = 256
-    heads = 4
-    attn_mode = "all"
-    local_attn_ctx = 32
-    blocksize = 32
 
     q = torch.randn(n_batch, n_ctx, n_embd)
     k = torch.randn(n_batch, n_ctx, n_embd)

@@ -98,25 +98,25 @@ def test_forward_custom():
 # Test case for initializing with incorrect image size
 def test_incorrect_img_size_init():
     with pytest.raises(AssertionError):
-        module = VisionEmbedding(img_size=256)
+        VisionEmbedding(img_size=256)
 
 
 # Test case for initializing with incorrect patch size
 def test_incorrect_patch_size_init():
     with pytest.raises(AssertionError):
-        module = VisionEmbedding(patch_size=64)
+        VisionEmbedding(patch_size=64)
 
 
 # Test case for initializing with negative in_chans
 def test_negative_in_chans_init():
     with pytest.raises(ValueError):
-        module = VisionEmbedding(in_chans=-3)
+        VisionEmbedding(in_chans=-3)
 
 
 # Test case for initializing with negative embed_dim
 def test_negative_embed_dim_init():
     with pytest.raises(ValueError):
-        module = VisionEmbedding(embed_dim=-768)
+        VisionEmbedding(embed_dim=-768)
 
 
 # Test case for initializing with invalid masked_position

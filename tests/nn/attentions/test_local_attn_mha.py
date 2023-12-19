@@ -1,6 +1,5 @@
 import pytest
 import torch
-import torch.nn as nn
 from torch.autograd import gradcheck
 from zeta.nn.attention.local_attention_mha import LocalMHA
 

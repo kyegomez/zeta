@@ -1,6 +1,4 @@
-import pytest
 import torch
-from torch import nn
 from zeta.nn.attention.cross_attention import CrossAttention
 
 # Create an instance of CrossAttention for testing

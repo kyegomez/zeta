@@ -11,13 +11,12 @@ from zeta.nn.modules.fast_text import FastTextNew
 from zeta.nn.modules.feedforward import FeedForward
 from zeta.nn.modules.feedforward_network import FeedForwardNetwork
 from zeta.nn.modules.flexible_mlp import CustomMLP
-from zeta.nn.modules.fractorial_net import FractalBlock, FractalNetwork
 from zeta.nn.modules.h3 import H3Layer
 from zeta.nn.modules.itca import IterativeCrossSelfAttention
 from zeta.nn.modules.lang_conv_module import ConvolutionLanguageBlock
 from zeta.nn.modules.layernorm import LayerNorm, l2norm
 from zeta.nn.modules.leaky_relu import LeakyRELU
-from zeta.nn.modules.log_ff import LogFF, compute_entropy_safe
+from zeta.nn.modules.log_ff import LogFF
 from zeta.nn.modules.lora import Lora
 from zeta.nn.modules.mbconv import MBConv
 from zeta.nn.modules.mlp import MLP
@@ -31,7 +30,6 @@ from zeta.nn.modules.residual import Residual
 from zeta.nn.modules.resnet import ResNet
 from zeta.nn.modules.rms_norm import RMSNorm
 from zeta.nn.modules.rnn_nlp import RNNL
-from zeta.nn.modules.s4 import s4d_kernel
 from zeta.nn.modules.shufflenet import ShuffleNet
 from zeta.nn.modules.sig_lip import SigLipLoss
 from zeta.nn.modules.simple_attention import simple_attention

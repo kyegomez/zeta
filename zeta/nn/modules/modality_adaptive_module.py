@@ -35,7 +35,7 @@ class ModalityAdaptiveModule(nn.Module):
         self.heads = heads
         self.dropout = dropout
         self.scale = dim**-0.5
-        assert dim % heads == 0, f"dim must alwasy be divisible by heads"
+        assert dim % heads == 0, "dim must alwasy be divisible by heads"
 
         # Initialize the normalization layers for each modality
         self.norm_text = nn.LayerNorm(dim)

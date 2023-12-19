@@ -1,10 +1,9 @@
 # from lucidrain
 
-from math import log2
 
 import torch
 import torch.nn.functional as F
-from torch import nn, einsum, Tensor
+from torch import nn, Tensor
 from torch.nn import Module, ModuleList
 
 from collections import namedtuple

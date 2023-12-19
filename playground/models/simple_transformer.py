@@ -3,7 +3,6 @@ from torch import nn
 from zeta.nn.modules.feedforward import FeedForward
 from zeta.nn.attention.shaped_attention import ShapedAttention
 from zeta.nn.modules.residual import Residual
-from zeta.nn.attention import FlashAttention
 
 
 class SimpleTransformerBlock(nn.Module):
