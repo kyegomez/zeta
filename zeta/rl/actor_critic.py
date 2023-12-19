@@ -1,6 +1,5 @@
 import torch
 from torch import nn
-import torch.nn as optim
 
 
 class ActorCritic(nn.Module):

@@ -42,7 +42,7 @@ def test_xc_attention_forward_with_invalid_inputs(xc_attention_model):
     with pytest.raises(Exception):
         x = torch.randn(1, 256, 16, 16)
         cond = torch.randn(1, 128)  # Mismatched conditioning dimension
-        output = xc_attention_model(x, cond)
+        xc_attention_model(x, cond)
 
 
 # Test case to check if XCAttention handles different head configurations correctly
@@ -81,10 +81,10 @@ def test_xc_attention_with_different_cond_dims():
 # Test case to check if XCAttention handles negative input dimensions correctly
 def test_xc_attention_negative_input_dim():
     with pytest.raises(ValueError):
-        model = XCAttention(dim=-256, cond_dim=64, heads=8)
+        XCAttention(dim=-256, cond_dim=64, heads=8)
 
 
 # Test case to check if XCAttention handles negative conditioning dimensions correctly
 def test_xc_attention_negative_cond_dim():
     with pytest.raises(ValueError):
-        model = XCAttention(dim=256, cond_dim=-64, heads=8)
+        XCAttention(dim=256, cond_dim=-64, heads=8)

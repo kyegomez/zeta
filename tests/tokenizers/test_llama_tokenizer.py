@@ -72,5 +72,5 @@ def test_llama_tokenizer_encode_decode(text):
     ],
 )
 def test_llama_tokenizer_download_tokenizer(tokenizer_name):
-    tokenizer = LLamaTokenizer(tokenizer_name=tokenizer_name)
+    LLamaTokenizer(tokenizer_name=tokenizer_name)
     assert os.path.isfile("data/tokenizer.model")

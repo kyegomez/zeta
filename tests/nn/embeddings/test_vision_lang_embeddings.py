@@ -49,7 +49,7 @@ def test_incorrect_text_embedding_init():
     text_embed = nn.Linear(10, 10)
     vision_embed = nn.Embedding(10, 10)
     with pytest.raises(AssertionError):
-        module = VisionLanguageEmbedding(text_embed, vision_embed)
+        VisionLanguageEmbedding(text_embed, vision_embed)
 
 
 # Test case for initializing with incorrect vision embedding
@@ -57,7 +57,7 @@ def test_incorrect_vision_embedding_init():
     text_embed = nn.Embedding(10, 10)
     vision_embed = nn.Linear(10, 10)
     with pytest.raises(AssertionError):
-        module = VisionLanguageEmbedding(text_embed, vision_embed)
+        VisionLanguageEmbedding(text_embed, vision_embed)
 
 
 # Test case for forward pass with text input being None

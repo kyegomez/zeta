@@ -1,7 +1,6 @@
 import pytest
 import torch
 from zeta.nn.attention.mgqa import MGQA, CacheView
-from zeta.utils.main import exists
 
 
 # Create an instance of MGQA for testing

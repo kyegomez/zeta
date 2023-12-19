@@ -1,6 +1,5 @@
 import pytest
 import torch
-import torch.nn as nn
 from zeta.nn.biases.relative_position_bias import RelativePositionBias
 
 
@@ -238,13 +237,13 @@ def test_different_bidirectional_bias_values():
 # Test case for initializing with negative max distance
 def test_negative_max_distance_init():
     with pytest.raises(ValueError):
-        bias = RelativePositionBias(max_distance=-128)
+        RelativePositionBias(max_distance=-128)
 
 
 # Test case for initializing with negative num buckets
 def test_negative_num_buckets_init():
     with pytest.raises(ValueError):
-        bias = RelativePositionBias(num_buckets=-32)
+        RelativePositionBias(num_buckets=-32)
 
 
 # Test case for initializing with a large max distance
@@ -280,4 +279,4 @@ def test_large_num_buckets():
 # Test case for bidirectional bias with negative max distance
 def test_bidirectional_bias_negative_max_distance():
     with pytest.raises(ValueError):
-        bias = RelativePositionBias(bidirectional=True, max_distance=-128)
+        RelativePositionBias(bidirectional=True, max_distance=-128)

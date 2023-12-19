@@ -152,9 +152,9 @@ def tensors_equal(tensor1, tensor2):
 
 # Test for the existence of a helper function exists
 def test_exists_function():
-    assert exists(None) == False
-    assert exists(0) == True
-    assert exists("Hello") == True
+    assert exists(None) is False
+    assert exists(0) is True
+    assert exists("Hello") is True
 
 
 # Test for the pad_at_dim helper function
@@ -170,8 +170,8 @@ def test_tensors_equal_function():
     tensor2 = torch.tensor([1.0, 2.0, 3.0])
     tensor3 = torch.tensor([1.0, 2.0, 3.1])
 
-    assert tensors_equal(tensor1, tensor2) == True
-    assert tensors_equal(tensor1, tensor3) == False
+    assert tensors_equal(tensor1, tensor2) is True
+    assert tensors_equal(tensor1, tensor3) is False
 
 
 # Additional tests for tensor manipulation functions
@@ -193,8 +193,8 @@ def test_einops_rearrange_function():
 
 # Test for the nn.Module class inheritance
 def test_nn_module_inheritance():
-    assert issubclass(AlibiPositionalBias, nn.Module) == True
-    assert issubclass(LearnedAlibiPositionalBias, nn.Module) == True
+    assert issubclass(AlibiPositionalBias, nn.Module) is True
+    assert issubclass(LearnedAlibiPositionalBias, nn.Module) is True
 
 
 # Helper function to create random data

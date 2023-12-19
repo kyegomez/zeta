@@ -69,18 +69,18 @@ def test_qftspembeddings_forward_negative_dim():
     vocab_size = 10000
     dim = -512
     with pytest.raises(ValueError):
-        model = QFTSPEmbeddings(vocab_size, dim)
+        QFTSPEmbeddings(vocab_size, dim)
 
 
 def test_qftspembeddings_forward_negative_vocab_size():
     vocab_size = -10000
     dim = 512
     with pytest.raises(ValueError):
-        model = QFTSPEmbeddings(vocab_size, dim)
+        QFTSPEmbeddings(vocab_size, dim)
 
 
 def test_qftspembeddings_forward_zero_vocab_size():
     vocab_size = 0
     dim = 512
     with pytest.raises(ValueError):
-        model = QFTSPEmbeddings(vocab_size, dim)
+        QFTSPEmbeddings(vocab_size, dim)

@@ -165,21 +165,21 @@ def test_optimizer_with_zero_gradients():
 def test_optimizer_with_negative_learning_rate():
     model = torch.nn.Linear(10, 10)
     with pytest.raises(ValueError):
-        optimizer = StableAdamWUnfused(model.parameters(), lr=-0.001)
+        StableAdamWUnfused(model.parameters(), lr=-0.001)
 
 
 # Test optimizer with a negative weight decay (should raise a ValueError)
 def test_optimizer_with_negative_weight_decay():
     model = torch.nn.Linear(10, 10)
     with pytest.raises(ValueError):
-        optimizer = StableAdamWUnfused(model.parameters(), weight_decay=-0.1)
+        StableAdamWUnfused(model.parameters(), weight_decay=-0.1)
 
 
 # Test optimizer with a negative custom scalar (should raise a ValueError)
 def test_optimizer_with_negative_custom_scalar():
     model = torch.nn.Linear(10, 10)
     with pytest.raises(ValueError):
-        optimizer = StableAdamWUnfused(
+        StableAdamWUnfused(
             model.parameters(), precision="custom_fp16", custom_scalar=-65536
         )
 

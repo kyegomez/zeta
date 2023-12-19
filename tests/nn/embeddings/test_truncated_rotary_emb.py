@@ -1,6 +1,4 @@
 import pytest
-import torch
-from torch import nn
 from zeta.nn.embeddings.truncated_rope import TruncatedRotaryEmbedding
 
 
@@ -50,7 +48,7 @@ def test_negative_dimension():
     b = 1.0
     rho = 0.0
     with pytest.raises(ValueError):
-        module = TruncatedRotaryEmbedding(dim, a, b, rho)
+        TruncatedRotaryEmbedding(dim, a, b, rho)
 
 
 # Test case for initializing with a > b
@@ -60,7 +58,7 @@ def test_a_greater_than_b():
     b = 0.5
     rho = 0.0
     with pytest.raises(ValueError):
-        module = TruncatedRotaryEmbedding(dim, a, b, rho)
+        TruncatedRotaryEmbedding(dim, a, b, rho)
 
 
 # Test case for initializing with rho > b
@@ -70,4 +68,4 @@ def test_rho_greater_than_b():
     b = 1.0
     rho = 1.5
     with pytest.raises(ValueError):
-        module = TruncatedRotaryEmbedding(dim, a, b, rho)
+        TruncatedRotaryEmbedding(dim, a, b, rho)
