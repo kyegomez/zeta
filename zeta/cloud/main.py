@@ -1,6 +1,8 @@
 import logging
 from typing import Any
-from sky import Resources, AWS
+
+from sky import AWS, Resources
+
 from zeta.cloud.sky_api import SkyInterface
 
 skyapi = SkyInterface(stream_logs_enabled=True)
@@ -14,8 +16,9 @@ logger.setLevel(logging.INFO)
 def zetacloud(
     task_name: str = None,
     cluster_name: str = "ZetaTrainingRun",
+    setup: str = "pip install -r requirements.txt",
     cloud: Any = AWS(),
-    gpus: str = None,
+    gpus: str = "V100:4",
     filename: str = "train.py",
     stop: bool = False,
     down: bool = False,
@@ -34,7 +37,7 @@ def zetacloud(
     try:
         task = skyapi.create_task(
             name=task_name,
-            setup="pip install -r requirements.txt",
+            setup=setup,
             run=f"python {filename}",
             workdir=".",
         )

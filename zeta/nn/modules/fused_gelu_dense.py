@@ -1,5 +1,6 @@
-import torch 
+import torch
 from torch import nn
+
 
 class FusedDenseGELUDense(nn.Module):
     """FuseFusedDenseGELUDense
@@ -10,7 +11,7 @@ class FusedDenseGELUDense(nn.Module):
         bias (bool, optional): Bias. Defaults to True.
         has_fp16_weights (bool, optional): Use fp16 weights. Defaults to False.
         threshold (float, optional): Threshold for quantization. Defaults to 6.0.
-        
+
     Examples:
         >>> x = torch.randn(1, 512)
         >>> model = FusedDenseGELUDense(512, 1024)
@@ -18,6 +19,7 @@ class FusedDenseGELUDense(nn.Module):
         >>> out.shape
         torch.Size([1, 512])
     """
+
     def __init__(
         self,
         dim: int,
@@ -26,18 +28,18 @@ class FusedDenseGELUDense(nn.Module):
         has_fp16_weights: bool = False,
         threshold: float = 6.0,
         *args,
-        **kwargs
+        **kwargs,
     ):
         super(FusedDenseGELUDense, self).__init__()
-        self.dim = dim 
+        self.dim = dim
         self.dim_out = dim_out
         self.bias = bias
         self.has_fp16_weights = has_fp16_weights
         self.threshold = threshold
-        
-        
+
         try:
             import bitsandbytes as bnb
+
             # Using bitsandbytes for quantization
             self.dense1 = bnb.nn.Linear8bitLt(
                 dim,
@@ -46,9 +48,9 @@ class FusedDenseGELUDense(nn.Module):
                 has_fp16_weights=has_fp16_weights,
                 threshold=threshold,
                 *args,
-                **kwargs
+                **kwargs,
             )
-            
+
             # Reverse
             self.dense2 = bnb.nn.Linear8bitLt(
                 dim_out,
@@ -57,31 +59,19 @@ class FusedDenseGELUDense(nn.Module):
                 has_fp16_weights=has_fp16_weights,
                 threshold=threshold,
                 *args,
-                **kwargs
+                **kwargs,
             )
-        
+
         except ModuleNotFoundError:
             # Using torch.nn.Linear
-            self.dense1 = nn.Linear(
-                dim,
-                dim_out,
-                bias=bias
-                *args,
-                **kwargs
-            )
-            
+            self.dense1 = nn.Linear(dim, dim_out, bias=bias * args, **kwargs)
+
             # Dense 2
-            self.dense2 = nn.Linear(
-                dim_out,
-                dim,
-                bias=bias
-                *args,
-                **kwargs
-            )
-            
+            self.dense2 = nn.Linear(dim_out, dim, bias=bias * args, **kwargs)
+
         # Activation
         self.act = nn.GELU()
-        
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass
 
@@ -95,4 +85,3 @@ class FusedDenseGELUDense(nn.Module):
         x = self.act(x)
         x = self.dense2(x)
         return x
-            
