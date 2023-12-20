@@ -336,6 +336,40 @@ niva(
 
 ```
 
+
+### ZetaCloud
+Train or finetune any model on any cluster in 1 click with zetacloud, just pass in your file and the GPU type and quantity you want! To gain access first `pip install zetascale` then run `zeta -h` in the terminal. 
+
+- Flexible Pricing with pooling from many clouds
+- Easy Deployment with 1 click
+- Various options for cloud providers!
+
+```bash
+Zetacloud CLI
+
+options:
+  -h, --help            show this help message and exit
+  -t TASK_NAME, --task_name TASK_NAME
+                        Task name
+  -c CLUSTER_NAME, --cluster_name CLUSTER_NAME
+                        Cluster name
+  -cl CLOUD, --cloud CLOUD
+                        Cloud provider
+  -g GPUS, --gpus GPUS  GPUs
+  -f FILENAME, --filename FILENAME
+                        Filename
+  -s, --stop            Stop flag
+  -d, --down            Down flag
+  -sr, --status_report  Status report flag
+
+```
+
+- A simple run example code would be like:
+
+```bash
+zeta -f train.py -g A100:8
+```
+
 # Documentation
 [Click here for the documentation, it's at zeta.apac.ai](https://zeta.apac.ai)
 

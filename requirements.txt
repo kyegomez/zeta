@@ -28,4 +28,5 @@ torchaudio==2.1.2
 mkdocs
 mkdocs-material
 mkdocs-glightbox
-glightbox
+skypilot==0.4.1
+argparse

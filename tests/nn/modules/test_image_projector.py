@@ -249,17 +249,13 @@ def test_patch_projector_output_shape_consistency(sample_input_tensor):
 # Test case for edge case: invalid max_patch_size
 def test_patch_projector_invalid_max_patch_size():
     with pytest.raises(ValueError):
-        ImagePatchCreatorProjector(
-            max_patch_size=0, embedding_dim=768
-        )
+        ImagePatchCreatorProjector(max_patch_size=0, embedding_dim=768)
 
 
 # Test case for edge case: invalid embedding_dim
 def test_patch_projector_invalid_embedding_dim():
     with pytest.raises(ValueError):
-        ImagePatchCreatorProjector(
-            max_patch_size=16, embedding_dim=0
-        )
+        ImagePatchCreatorProjector(max_patch_size=16, embedding_dim=0)
 
 
 # Test case for edge case: invalid input tensor shape
