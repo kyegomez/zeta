@@ -12,6 +12,7 @@ from zeta.optim.decoupled_sophia import SophiaG
 from zeta.optim.stable_adam import StableAdamWUnfused
 from zeta.optim.gradient_ascent import GradientAscent
 from zeta.optim.gradient_equillibrum import GradientEquilibrum
+from zeta.optim.lion8b import DecoupledLionW8Bit
 
 __all__ = [
     "BatchedOptimizer",
@@ -26,4 +27,5 @@ __all__ = [
     "StableAdamWUnfused",
     "GradientAscent",
     "GradientEquilibrum",
+    "DecoupledLionW8Bit"
 ]
