@@ -27,5 +27,5 @@ __all__ = [
     "StableAdamWUnfused",
     "GradientAscent",
     "GradientEquilibrum",
-    "DecoupledLionW8Bit"
+    "DecoupledLionW8Bit",
 ]
