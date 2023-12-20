@@ -68,6 +68,7 @@ nav:
   - Home:
       - Overview: "index.md"
       - Contributing: "contributing.md"
+      - ZetaCloud: "zeta/cloud/main.md"
   - Zeta:
       - Overview: "zeta/index.md"
       - zeta.nn:
