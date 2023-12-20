@@ -13,7 +13,7 @@ logger.setLevel(logging.INFO)
 
 def zetacloud(
     task_name: str = None,
-    cluster_name: str = "[ZetaTrainingRun]",
+    cluster_name: str = "ZetaTrainingRun",
     cloud: Any = AWS(),
     gpus: str = None,
     filename: str = "train.py",

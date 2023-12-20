@@ -109,6 +109,7 @@ nav:
               - MultiModalAdapterDenseNetwork: "zeta/nn/modules/mm_adapter.md"
               - CustomMLP: "zeta/nn/modules/custom_mlp.md"
               - PolymorphicNeuronLayer: "zeta/nn/modules/polymorphic_activation.md"
+              - FusedDenseGELUDense: "zeta/nn/modules/fused_gelu_dense.md"
           - zeta.nn.attention:
               - FlashAttention: "zeta/nn/attention/flash_attention.md"
               - MultiQueryAttention: "zeta/nn/attention/multiquery.md"
