@@ -340,6 +340,10 @@ niva(
 ### ZetaCloud
 Train or finetune any model on any cluster in 1 click with zetacloud, just pass in your file and the GPU type and quantity you want! To gain access first `pip install zetascale` then run `zeta -h` in the terminal. 
 
+- Flexible Pricing with pooling from many clouds
+- Easy Deployment with 1 click
+- Various options for cloud providers!
+
 ```bash
 Zetacloud CLI
 
