@@ -206,7 +206,6 @@ class ScaledAdam(BatchedOptimizer):
             with torch.enable_grad():
                 loss = closure()
 
-
         for group, group_params_names in zip(
             self.param_groups, self.parameters_names
         ):

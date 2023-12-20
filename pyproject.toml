@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zetascale"
-version = "0.9.9"
+version = "1.1.6"
 description = "Transformers at zeta scales"
 authors = ["Zeta Team <kye@apac.ai>"]
 license = "MIT"
@@ -40,6 +40,9 @@ beartype = "0.16.4"
 tiktoken = "0.5.2"
 tqdm = "4.66.1"
 rich = "13.7.0"
+argparse = "^1.4.0"
+skypilot = "0.4.1"
+
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -73,6 +76,7 @@ preview = true
 
 
 
-
+[tool.poetry.scripts]
+zeta = 'zeta.cli.main:main'
 
 
