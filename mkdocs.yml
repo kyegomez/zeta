@@ -68,6 +68,7 @@ nav:
   - Home:
       - Overview: "index.md"
       - Contributing: "contributing.md"
+      - ZetaCloud: "zeta/cloud/main.md"
   - Zeta:
       - Overview: "zeta/index.md"
       - zeta.nn:
@@ -109,6 +110,8 @@ nav:
               - MultiModalAdapterDenseNetwork: "zeta/nn/modules/mm_adapter.md"
               - CustomMLP: "zeta/nn/modules/custom_mlp.md"
               - PolymorphicNeuronLayer: "zeta/nn/modules/polymorphic_activation.md"
+              - FusedDenseGELUDense: "zeta/nn/modules/fused_gelu_dense.md"
+              - FusedDropoutLayerNorm: "zeta/nn/modules/fused_dropout_layernorm.md"
           - zeta.nn.attention:
               - FlashAttention: "zeta/nn/attention/flash_attention.md"
               - MultiQueryAttention: "zeta/nn/attention/multiquery.md"

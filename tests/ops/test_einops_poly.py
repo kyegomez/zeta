@@ -148,9 +148,7 @@ def test_reduce_many_with_sum_reduction():
 # Additional tests for rearrange_with_anon_dims function
 def test_rearrange_with_anon_dims_invalid_dim_list():
     with pytest.raises(ValueError):
-        rearrange_with_anon_dims(
-            input_data, pattern="...a b c", a=(1,)
-        )
+        rearrange_with_anon_dims(input_data, pattern="...a b c", a=(1,))
 
 
 def test_rearrange_with_anon_dims_invalid_pattern():

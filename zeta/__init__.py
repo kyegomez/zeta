@@ -11,3 +11,4 @@ from zeta.rl import *  # noqa: F403, E402
 from zeta.optim import *  # noqa: F403, E402
 from zeta.ops import *  # noqa: F403, E402
 from zeta.quant import *  # noqa: F403, E402
+from zeta.cloud import *  # noqa: F403, E402
