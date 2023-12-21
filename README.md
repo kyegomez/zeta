@@ -337,6 +337,21 @@ niva(
 ```
 
 
+### `FusedDenseGELUDense`
+- Increase model speed by 2x with this module that fuses together 2 hyper-optimized dense ops from bits and bytes and a gelu together!
+
+```python
+import torch
+from zeta.nn import FusedDenseGELUDense
+
+x = torch.randn(1, 512)
+model = FusedDenseGELUDense(512, 1024)
+out = model(x)
+out.shape
+
+```
+
+
 ### ZetaCloud
 Train or finetune any model on any cluster in 1 click with zetacloud, just pass in your file and the GPU type and quantity you want! To gain access first `pip install zetascale` then run `zeta -h` in the terminal. 
 
