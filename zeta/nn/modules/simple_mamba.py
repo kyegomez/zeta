@@ -6,7 +6,6 @@ from einops import rearrange, repeat, einsum
 from typing import Optional, Union
 
 
-
 # [HELPERS] ----------------------------------------------------------------------------------------
 class RMSNorm(nn.Module):
     def __init__(self, dim: int, eps: float = 1e-5):
@@ -57,8 +56,6 @@ class ResidualBlock(nn.Module):
         return output
 
 
-
-
 class Mamba(nn.Module):
     def __init__(
         self, vocab_size: int = None, dim: int = None, depth: int = None
@@ -98,7 +95,6 @@ class Mamba(nn.Module):
         return logits
 
 
-
 class MambaBlock(nn.Module):
     def __init__(
         self,
@@ -107,7 +103,7 @@ class MambaBlock(nn.Module):
         depth: int,
         d_state: int = 16,
         expand: int = 2,
-        dt_rank: Union[int, str] = 'auto',
+        dt_rank: Union[int, str] = "auto",
         d_conv: int = 4,
         conv_bias: bool = True,
         bias: bool = False,
@@ -136,7 +132,6 @@ class MambaBlock(nn.Module):
         self.A_log = nn.Parameter(torch.log(A))
         self.D = nn.Parameter(torch.ones(dim_inner))
         self.out_proj = nn.Linear(dim_inner, dim, bias=bias)
-        
 
     def forward(self, x):
         """Mamba block forward. This looks the same as Figure 3 in Section 3.4 in the Mamba paper [1].
@@ -260,4 +255,3 @@ class MambaBlock(nn.Module):
             y = y + u * rearrange(D, "d_in -> d_in 1")
 
         return y
-
