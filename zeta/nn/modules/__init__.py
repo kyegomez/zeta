@@ -46,6 +46,7 @@ from zeta.nn.modules.video_autoencoder import CausalConv3d
 from zeta.nn.modules.visual_expert import VisualExpert
 from zeta.nn.modules.yolo import yolo
 from zeta.nn.modules.swiglu import SwiGLU, SwiGLUStacked
+from zeta.nn.modules.img_patch_embed import ImgPatchEmbed
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -111,4 +112,5 @@ __all__ = [
     "AdaptiveLayerNorm",
     "SwiGLU",
     "SwiGLUStacked",
+    "ImgPatchEmbed",
 ]
