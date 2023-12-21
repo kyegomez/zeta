@@ -4,12 +4,9 @@
 import math
 
 import torch
-import torch.nn as nn
+from torch import nn
 
-from zeta.nn.biases.base import BaseBias
-
-
-class RelativePositionBias(BaseBias):
+class RelativePositionBias(nn.Module):
     def __init__(
         self,
         bidirectional: int = True,
