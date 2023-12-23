@@ -3,6 +3,15 @@ import torch.nn.functional as F
 
 
 class ResidualBlock(nn.Module):
+    """
+    Residual Block module for a vision model.
+
+    Args:
+        in_channels (int): Number of input channels.
+        out_channels (int): Number of output channels.
+        stride (int, optional): Stride value for the convolutional layers. Defaults to 1.
+    """
+
     def __init__(self, in_channels, out_channels, stride=1):
         super(ResidualBlock, self).__init__()
         self.conv1 = nn.Conv2d(
@@ -32,6 +41,25 @@ class ResidualBlock(nn.Module):
 
 
 class VisionRewardModel(nn.Module):
+    """
+    VisionRewardModel is a neural network model that extracts image features and predicts rewards.
+
+    Args:
+        None
+
+    Attributes:
+        layer1 (ResidualBlock): The first residual block for image feature extraction.
+        layer2 (ResidualBlock): The second residual block for image feature extraction.
+        layer3 (ResidualBlock): The third residual block for image feature extraction.
+        layer4 (ResidualBlock): The fourth residual block for image feature extraction.
+        fc1 (nn.Linear): The fully connected layer for feature transformation.
+        fc2 (nn.Linear): The fully connected layer for reward prediction.
+
+    Methods:
+        forward(x): Performs forward pass through the network.
+
+    """
+
     def __init__(self):
         super(VisionRewardModel, self).__init__()
 

@@ -5,6 +5,15 @@ from zeta.utils.main import exists, l2norm
 
 
 class AbsolutePositionalEmbedding(nn.Module):
+    """
+    Absolute Positional Embedding module.
+
+    Args:
+        dim (int): The dimension of the embedding.
+        max_seq_len (int): The maximum sequence length.
+        l2norm_embed (bool, optional): Whether to apply L2 normalization to the embeddings. Defaults to False.
+    """
+
     def __init__(self, dim, max_seq_len, l2norm_embed=False):
         super().__init__()
         self.scale = dim**-0.5 if not l2norm_embed else 1.0

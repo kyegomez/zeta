@@ -21,6 +21,23 @@ def pad_at_dim(t, pad, dim=-1, value=0.0):
 
 
 class AlibiPositionalBias(BaseBias):
+    """
+    AlibiPositionalBias class represents a positional bias module for neural networks.
+
+    Args:
+        heads (int): Number of heads in the neural network.
+        num_heads (int): Number of heads in the neural network.
+
+    Attributes:
+        slopes (Tensor): Tensor containing the slopes for the bias.
+        bias (Tensor): Tensor containing the bias values.
+
+    Methods:
+        get_bias(i, j, device): Returns the bias tensor for the given indices.
+        forward(i, j): Computes and returns the bias tensor for the given indices.
+
+    """
+
     def __init__(self, heads, num_heads, **kwargs):
         super().__init__()
         self.heads = heads
@@ -81,6 +98,18 @@ class AlibiPositionalBias(BaseBias):
 
 
 class LearnedAlibiPositionalBias(AlibiPositionalBias):
+    """
+    LearnedAlibiPositionalBias is a subclass of AlibiPositionalBias that introduces learned biases.
+
+    Args:
+        heads (int): Number of attention heads.
+        num_heads (int): Number of heads per layer.
+
+    Attributes:
+        learned_logslopes (nn.Parameter): Learned logarithmic slopes.
+
+    """
+
     def __init__(self, heads, num_heads):
         super().__init__(heads, num_heads)
         log_slopes = torch.log(self.slopes)
