@@ -10,6 +10,18 @@ class PositionalEmbedding(nn.Embedding):
         positions=None,
         **kwargs,
     ):
+        """
+        Forward pass of the PositionalEmbedding module.
+
+        Args:
+            x (torch.Tensor): Input tensor.
+            positions (torch.Tensor, optional): Positions tensor. If None, positions are generated based on the input tensor size. Default is None.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            torch.Tensor: Embedded tensor.
+
+        """
         if positions is None:
             # being consistent with Fairseq, which starts from 2.
             positions = (

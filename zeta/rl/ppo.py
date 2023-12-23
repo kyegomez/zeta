@@ -3,6 +3,23 @@ import torch.nn as nn
 
 
 class ActorCritic(nn.Module):
+    """
+    A class representing an Actor-Critic model for Proximal Policy Optimization (PPO).
+
+    Args:
+        num_inputs (int): The number of input features.
+        num_outputs (int): The number of output actions.
+        hidden_size (int): The size of the hidden layer.
+
+    Attributes:
+        critic (nn.Sequential): The critic network.
+        actor (nn.Sequential): The actor network.
+
+    Methods:
+        forward(x): Performs a forward pass through the network.
+
+    """
+
     def __init__(self, num_inputs, num_outputs, hidden_size):
         super(ActorCritic, self).__init__()
         self.critic = nn.Sequential(
@@ -18,6 +35,17 @@ class ActorCritic(nn.Module):
         )
 
     def forward(self, x):
+        """
+        Performs a forward pass through the network.
+
+        Args:
+            x (torch.Tensor): The input tensor.
+
+        Returns:
+            dist (torch.distributions.Categorical): The probability distribution over actions.
+            value (torch.Tensor): The estimated value of the input state.
+
+        """
         value = self.critic(x)
         probs = self.actor(x)
         dist = torch.distributions.Categorical(probs)
