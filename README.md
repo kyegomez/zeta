@@ -352,6 +352,29 @@ out.shape
 ```
 
 
+### `FusedDropoutLayerNorm`
+- FusedDropoutLayerNorm is a fused kernel of dropout and layernorm to speed up FFNs or MLPS by 2X
+
+```python
+import torch
+from torch import nn
+from zeta.nn import FusedDropoutLayerNorm
+
+# Initialize the module
+model = FusedDropoutLayerNorm(dim=512)
+
+# Create a sample input tensor
+x = torch.randn(1, 512)
+
+# Forward pass
+output = model(x)
+
+# Check output shape
+print(output.shape)  # Expected: torch.Size([1, 512])
+
+```
+
+
 ### ZetaCloud
 Train or finetune any model on any cluster in 1 click with zetacloud, just pass in your file and the GPU type and quantity you want! To gain access first `pip install zetascale` then run `zeta -h` in the terminal. [Here is the docs for more](https://zeta.apac.ai/en/latest/zeta/cloud/main/)
 
