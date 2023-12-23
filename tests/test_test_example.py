@@ -2,7 +2,7 @@ import time
 import unittest
 import torch
 
-from zeta import MultiheadAttention
+from zeta.nn.attention import MultiheadAttention
 
 
 class TestMultiheadAttention(unittest.TestCase):
