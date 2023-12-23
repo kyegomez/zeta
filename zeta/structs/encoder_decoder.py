@@ -3,11 +3,28 @@
 
 import torch.nn as nn
 
-from zeta.structs.decoder import Decoder
-from zeta.structs.encoder import Encoder
+from zeta.structs.transformer import Decoder, Encoder
 
 
 class EncoderDecoder(nn.Module):
+    """
+    A module that combines an encoder and a decoder for sequence-to-sequence tasks.
+
+    Args:
+        args (argparse.Namespace): The arguments passed to the module.
+        encoder_embed_tokens (torch.Tensor, optional): The input embeddings for the encoder. Defaults to None.
+        encoder_embed_positions (torch.Tensor, optional): The positions of the encoder input embeddings. Defaults to None.
+        decoder_embed_tokens (torch.Tensor, optional): The input embeddings for the decoder. Defaults to None.
+        decoder_embed_positions (torch.Tensor, optional): The positions of the decoder input embeddings. Defaults to None.
+        output_projection (torch.Tensor, optional): The projection layer for the decoder output. Defaults to None.
+        **kwargs: Additional keyword arguments.
+
+    Attributes:
+        args (argparse.Namespace): The arguments passed to the module.
+        encoder (Encoder): The encoder module.
+        decoder (Decoder): The decoder module.
+    """
+
     def __init__(
         self,
         args,
@@ -51,6 +68,19 @@ class EncoderDecoder(nn.Module):
         features_only=False,
         **kwargs,
     ):
+        """
+        Forward pass of the EncoderDecoder module.
+
+        Args:
+            src_tokens (torch.Tensor): The source tokens.
+            prev_output_tokens (torch.Tensor): The previous output tokens.
+            return_all_hiddens (bool, optional): Whether to return all hidden states. Defaults to False.
+            features_only (bool, optional): Whether to return only the features. Defaults to False.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            decoder_out (torch.Tensor): The output of the decoder module.
+        """
         encoder_out = self.encoder(
             src_tokens, return_all_hiddens=return_all_hiddens
         )

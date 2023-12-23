@@ -1,7 +1,7 @@
 import math
 from collections import namedtuple
 from dataclasses import dataclass
-from functools import partial, reduce, wraps
+from functools import partial, wraps
 from inspect import isfunction
 from random import random
 from typing import Callable, List, Optional

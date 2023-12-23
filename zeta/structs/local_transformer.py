@@ -10,6 +10,37 @@ from zeta.utils.main import eval_decorator, exists, top_k
 
 
 class LocalTransformer(nn.Module):
+    """
+    LocalTransformer module that implements a local self-attention transformer.
+
+    Args:
+        num_tokens (int): The number of tokens in the input vocabulary.
+        max_seq_len (int): The maximum sequence length.
+        dim (int): The dimensionality of the token and positional embeddings.
+        depth (int): The number of transformer layers.
+        causal (bool, optional): Whether to use causal attention. Defaults to True.
+        local_attn_window_size (int, optional): The size of the local attention window. Defaults to 512.
+        dim_head (int, optional): The dimensionality of each attention head. Defaults to 64.
+        heads (int, optional): The number of attention heads. Defaults to 8.
+        ff_mult (int, optional): The multiplier for the feedforward network dimension. Defaults to 4.
+        attn_dropout (float, optional): The dropout rate for attention layers. Defaults to 0.0.
+        ff_dropout (float, optional): The dropout rate for feedforward layers. Defaults to 0.0.
+        ignore_index (int, optional): The index to ignore during loss calculation. Defaults to -1.
+        use_xpos (bool, optional): Whether to use positional embeddings based on xpos. Defaults to False.
+        xpos_scale_base (None, optional): The base value for scaling xpos positional embeddings. Defaults to None.
+        use_dynamic_pos_bias (bool, optional): Whether to use dynamic positional bias. Defaults to False.
+
+    Attributes:
+        token_emb (nn.Embedding): Embedding layer for token embeddings.
+        pos_emb (nn.Embedding): Embedding layer for positional embeddings.
+        max_seq_len (int): The maximum sequence length.
+        layers (nn.ModuleList): List of transformer layers.
+        local_attn_window_size (int): The size of the local attention window.
+        dynamic_pos_bias (DynamicPositionBias or None): Dynamic positional bias layer, if enabled.
+        ignore_index (int): The index to ignore during loss calculation.
+        to_logits (nn.Sequential): Sequential layer for converting transformer output to logits.
+    """
+
     def __init__(
         self,
         *,
