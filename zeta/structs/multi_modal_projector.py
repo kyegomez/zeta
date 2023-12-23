@@ -28,8 +28,8 @@ def build_vision_projector(config, delay_load=False, **kwargs):
 
     Raises:
         ValueError: If the specified projector type is unknown.
-        
-        
+
+
     Example:
     >>> config = {"mm_projector_type": "identity"}
     >>> projector = build_vision_projector(config)

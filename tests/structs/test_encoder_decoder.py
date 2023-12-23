@@ -3,6 +3,7 @@ import pytest
 from zeta.structs.encoder_decoder import EncoderDecoder
 from argparse import Namespace
 
+
 def test_encoder_decoder_initialization():
     args = Namespace(share_all_embeddings=True)
     encoder_decoder = EncoderDecoder(args)
@@ -11,6 +12,7 @@ def test_encoder_decoder_initialization():
     assert encoder_decoder.args == args
     assert encoder_decoder.args.share_all_embeddings == True
     assert encoder_decoder.args.share_decoder_input_output_embed == True
+
 
 def test_encoder_decoder_forward():
     args = Namespace(share_all_embeddings=True)
@@ -23,6 +25,7 @@ def test_encoder_decoder_forward():
 
     assert isinstance(output, torch.Tensor)
     assert output.shape == prev_output_tokens.shape
+
 
 def test_encoder_decoder_forward_features_only():
     args = Namespace(share_all_embeddings=True)

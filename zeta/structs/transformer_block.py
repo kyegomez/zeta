@@ -152,4 +152,3 @@ class TransformerBlock(nn.Module):
             attn_out = attn_out + lora_o(out)
 
         return attn_out + ff_out
-
