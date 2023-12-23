@@ -14,23 +14,29 @@ class IdentityMap(nn.Module):
         return {"mm_projector_type": "identity"}
 
 
-class SimpleResBlock(nn.Module):
-    def __init__(self, channels):
-        super().__init__()
-        self.pre_norm = nn.LayerNorm(channels)
-
-        self.proj = nn.Sequential(
-            nn.Linear(channels, channels),
-            nn.GELU(),
-            nn.Linear(channels, channels),
-        )
-
-    def forward(self, x):
-        x = self.pre_norm(x)
-        return x + self.proj(x)
-
-
 def build_vision_projector(config, delay_load=False, **kwargs):
+    """
+    Builds a vision projector based on the given configuration.
+
+    Args:
+        config: The configuration object containing the projector type and other parameters.
+        delay_load: Whether to delay the loading of the projector.
+        **kwargs: Additional keyword arguments.
+
+    Returns:
+        A vision projector module based on the specified projector type.
+
+    Raises:
+        ValueError: If the specified projector type is unknown.
+        
+        
+    Example:
+    >>> config = {"mm_projector_type": "identity"}
+    >>> projector = build_vision_projector(config)
+    >>> print(projector)
+    IdentityMap()
+
+    """
     projector_type = getattr(config, "mm_projector_type", "linear")
 
     if projector_type == "linear":

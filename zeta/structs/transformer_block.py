@@ -153,5 +153,3 @@ class TransformerBlock(nn.Module):
 
         return attn_out + ff_out
 
-
-# transformer

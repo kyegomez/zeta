@@ -22,6 +22,17 @@ def _round_filters(filters, width_mult):
 
 
 class ConvBNReLU(nn.Sequential):
+    """
+    A class representing a convolutional layer followed by batch normalization and ReLU activation.
+
+    Args:
+        in_planes (int): Number of input channels.
+        out_planes (int): Number of output channels.
+        kernel_size (int): Size of the convolutional kernel.
+        stride (int, optional): Stride of the convolution. Default is 1.
+        groups (int, optional): Number of groups for grouped convolution. Default is 1.
+    """
+
     def __init__(self, in_planes, out_planes, kernel_size, stride=1, groups=1):
         padding = (kernel_size - 1) // 2
         super(ConvBNReLU, self).__init__(
@@ -95,6 +106,17 @@ class MBConv(nn.Module):
         kernel_size,
         reduction_ratio=4,
     ):
+        """
+        MobileNetV2 Bottleneck Block (MBConv) module.
+
+        Args:
+            in_planes (int): Number of input channels.
+            out_planes (int): Number of output channels.
+            expand_ratio (int): Expansion ratio for the hidden dimension.
+            stride (int): Stride value for the depthwise convolution.
+            kernel_size (int): Kernel size for the depthwise convolution.
+            reduction_ratio (int, optional): Reduction ratio for the Squeeze-and-Excitation module. Defaults to 4.
+        """
         super(MBConv, self).__init__()
         self.stride = stride
         self.use_residual = in_planes == out_planes and stride == 1
@@ -127,6 +149,15 @@ class MBConv(nn.Module):
         )
 
     def forward(self, x):
+        """
+        Forward pass of the MBConv module.
+
+        Args:
+            x (torch.Tensor): Input tensor.
+
+        Returns:
+            torch.Tensor: Output tensor.
+        """
         if self.use_residual:
             return x + self.conv(x)
         else:
