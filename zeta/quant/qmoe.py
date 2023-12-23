@@ -225,28 +225,3 @@ class QMOEQuantizer(nn.Module):
         if self.ready():
             return quantize(x, self.scale, self.zero, self.maxq)
         return x
-
-
-if __name__ == "__main__":
-    import time
-
-    D = 2048
-    K = 8
-
-    torch.random.manual_seed(0)
-    X = torch.randn(128, 512, D).cuda()
-    W = torch.randn(K, 768, D).cuda()
-    quantizer = QMOEQuantizer()
-    quantizer.configure(2)
-
-    H = hessian(X).repeat(K, 1, 1)
-    Q = batch_gptq(W, H, quantizer)
-    tick = time.time()
-    COUNT = 10
-    for i in range(COUNT):
-        H = hessian(X).repeat(K, 1, 1)
-        Q = batch_gptq(W, H, quantizer)
-        torch.cuda.synchronize()
-    print((time.time() - tick) / COUNT)
-
-    print(Q[0])
