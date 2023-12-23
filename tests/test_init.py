@@ -13,7 +13,7 @@ def test_imports():
         "optim",
         "ops",
         "quant",
-        "cloud"
+        "cloud",
     ]
     missing_modules = []
     for module in modules:
