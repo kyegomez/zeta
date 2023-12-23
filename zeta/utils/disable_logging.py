@@ -2,10 +2,12 @@ import logging
 import os
 import warnings
 
+
 def disable_warnings_and_logs():
     """
     Disables various warnings and logs.
     """
+
     class CustomFilter(logging.Filter):
         def filter(self, record):
             unwanted_logs = [
