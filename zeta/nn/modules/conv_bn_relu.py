@@ -1,5 +1,5 @@
-
 from torch import nn
+
 
 class ConvBNReLU(nn.Sequential):
     """
@@ -28,8 +28,7 @@ class ConvBNReLU(nn.Sequential):
             nn.BatchNorm2d(out_planes),
             nn.ReLU6(inplace=True),
         )
-    
+
     def forward(self, x):
         # Placeholder code to access the 'x' variable
         return x
-        

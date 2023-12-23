@@ -2,6 +2,7 @@ import torch
 import pytest
 from zeta.nn.modules.simple_resblock import SimpleResBlock
 
+
 def test_simple_resblock():
     # Initialize a SimpleResBlock with 10 channels
     resblock = SimpleResBlock(10)

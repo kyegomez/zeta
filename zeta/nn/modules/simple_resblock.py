@@ -1,5 +1,6 @@
 from torch import nn
 
+
 class SimpleResBlock(nn.Module):
     """
     A simple residual block module.

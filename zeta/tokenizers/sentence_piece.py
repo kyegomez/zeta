@@ -57,6 +57,18 @@ class SentencePieceTokenizer:
         assert self.sp_model.vocab_size() == self.sp_model.get_piece_size()
 
     def encode(self, s: str, bos: bool, eos: bool) -> List[int]:
+        """
+        Encodes a given string using the SentencePiece tokenizer.
+
+        Args:
+            s (str): The input string to be encoded.
+            bos (bool): Whether to add a beginning of sentence token.
+            eos (bool): Whether to add an end of sentence token.
+
+        Returns:
+            List[int]: The list of encoded tokens.
+
+        """
         assert isinstance(s, str)
         t = self.sp_model.encode(s)
         if bos:
@@ -66,6 +78,14 @@ class SentencePieceTokenizer:
         return t
 
     def decode(self, t: List[int]) -> str:
+        """Decode a list of token IDs into a string.
+
+        Args:
+            t (List[int]): _description_
+
+        Returns:
+            str: _description_
+        """
         return self.sp_model.decode(t)
 
     def encode_infilling(self, s: str) -> List[int]:

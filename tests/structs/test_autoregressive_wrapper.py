@@ -3,6 +3,7 @@ import pytest
 from zeta.structs.auto_regressive_wrapper import AutoregressiveWrapper
 from torch import nn
 
+
 def test_autoregressive_wrapper_initialization():
     net = nn.Linear(10, 10)
     wrapper = AutoregressiveWrapper(net)
@@ -14,6 +15,7 @@ def test_autoregressive_wrapper_initialization():
     assert wrapper.ignore_index == -100
     assert wrapper.mask_prob == 0.0
 
+
 def test_autoregressive_wrapper_forward():
     net = nn.Linear(10, 10)
     wrapper = AutoregressiveWrapper(net)
@@ -23,6 +25,7 @@ def test_autoregressive_wrapper_forward():
 
     assert isinstance(logits, torch.Tensor)
     assert logits.shape == torch.Size([1, 10, 10])
+
 
 def test_autoregressive_wrapper_generate():
     net = nn.Linear(10, 10)
