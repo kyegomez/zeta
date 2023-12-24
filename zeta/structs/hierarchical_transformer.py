@@ -10,7 +10,7 @@ from einops.layers.torch import Rearrange
 from torch import nn
 from vector_quantize_pytorch import RandomProjectionQuantizer
 
-from zeta.structs.attn_layers import rotate_half
+from zeta.structs.transformer  import rotate_half
 from zeta.nn.attention.attend import Attend
 from zeta.nn.attention.local_attention_mha import LocalMHA
 from zeta.nn.embeddings.rope import RotaryEmbedding
