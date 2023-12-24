@@ -1,7 +1,6 @@
 from torch import nn
 
-from zeta.structs.attn_layers import GLU
-from zeta.structs.transformer import ReluSquared
+from zeta.structs.transformer import GLU, ReluSquared
 
 
 def exists(val):
