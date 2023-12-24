@@ -2,27 +2,54 @@ from sumtree import SumTree
 import torch
 import random
 
+
 class PrioritizedSequenceReplayBuffer:
-    def __init__(self,state_size,action_size,buffer_size,device,eps=1e-5,alpha=0.1,beta=0.1,
-                 decay_window=5,
-                 decay_coff=0.4,
-                 pre_priority=0.7):
+    def __init__(
+        self,
+        state_size,
+        action_size,
+        buffer_size,
+        device,
+        eps=1e-5,
+        alpha=0.1,
+        beta=0.1,
+        decay_window=5,
+        decay_coff=0.4,
+        pre_priority=0.7,
+    ):
+        """
+        Initializes the PrioritizedRPS object.
+
+        Args:
+            state_size (int): The size of the state space.
+            action_size (int): The size of the action space.
+            buffer_size (int): The size of the replay buffer.
+            device (str): The device to be used for computation.
+            eps (float, optional): A small constant added to priorities to ensure non-zero probabilities. Defaults to 1e-5.
+            alpha (float, optional): The exponent controlling the prioritization of experiences. Defaults to 0.1.
+            beta (float, optional): The exponent controlling the importance sampling weights. Defaults to 0.1.
+            decay_window (int, optional): The number of steps over which the priority decay is applied. Defaults to 5.
+            decay_coff (float, optional): The coefficient controlling the rate of priority decay. Defaults to 0.4.
+            pre_priority (float, optional): The initial priority value for new experiences. Defaults to 0.7.
+        """
         self.tree = SumTree(data_size=buffer_size)
-        
+
         # PESR params
         self.eps = eps
         self.alpha = alpha
         self.beta = beta
-        self.max_priority = 1.
+        self.max_priority = 1.0
         self.decay_window = decay_window
         self.decay_coff = decay_coff
         self.pre_priority = pre_priority
-        
+
         # buffer params
         self.state = torch.empty(buffer_size, state_size, dtype=torch.float)
         self.action = torch.empty(buffer_size, action_size, dtype=torch.float)
         self.reward = torch.empty(buffer_size, dtype=torch.float)
-        self.next_state = torch.empty(buffer_size, state_size, dtype=torch.float)
+        self.next_state = torch.empty(
+            buffer_size, state_size, dtype=torch.float
+        )
         self.done = torch.empty(buffer_size, dtype=torch.uint8)
 
         self.count = 0
@@ -31,7 +58,7 @@ class PrioritizedSequenceReplayBuffer:
 
         # device
         self.device = device
-        
+
     def add(self, transition):
         state, action, reward, next_state, done = transition
 
@@ -48,13 +75,15 @@ class PrioritizedSequenceReplayBuffer:
         # update counters
         self.count = (self.count + 1) % self.size
         self.real_size = min(self.size, self.real_size + 1)
-        
-    def sample(self,batch_size):
-        assert self.real_size >= batch_size, "buffer contains less samples than batch size"
+
+    def sample(self, batch_size):
+        assert (
+            self.real_size >= batch_size
+        ), "buffer contains less samples than batch size"
 
         sample_idxs, tree_idxs = [], []
         priorities = torch.empty(batch_size, 1, dtype=torch.float)
-        
+
         segment = self.tree.total_priority / batch_size
         for i in range(batch_size):
             a, b = segment * i, segment * (i + 1)
@@ -79,27 +108,30 @@ class PrioritizedSequenceReplayBuffer:
             self.action[sample_idxs].to(self.device),
             self.reward[sample_idxs].to(self.device),
             self.next_state[sample_idxs].to(self.device),
-            self.done[sample_idxs].to(self.device)
+            self.done[sample_idxs].to(self.device),
         )
         return batch, weights, tree_idxs
-    
-    def update_priorities(self,data_idxs,abs_td_errors):
+
+    def update_priorities(self, data_idxs, abs_td_errors):
         """
         when we get the TD-error, we should update the transition priority p_j
         And update decay_window's transition priorities
         """
-        if isinstance(abs_td_errors,torch.Tensor):
+        if isinstance(abs_td_errors, torch.Tensor):
             abs_td_errors = abs_td_errors.detach().cpu().numpy()
-        
-        for data_idx, td_error in zip(data_idxs,abs_td_errors):
+
+        for data_idx, td_error in zip(data_idxs, abs_td_errors):
             # first update the batch: p_j
             # p_j <- max{|delta_j| + eps, pre_priority * p_j}
-            old_priority = self.pre_priority * self.tree.nodes[data_idx + self.tree.size - 1]
+            old_priority = (
+                self.pre_priority
+                * self.tree.nodes[data_idx + self.tree.size - 1]
+            )
             priority = (td_error + self.eps) ** self.alpha
-            priority = max(priority,old_priority)
-            self.tree.update(data_idx,priority)
-            self.max_priority = max(self.max_priority,priority)
-            
+            priority = max(priority, old_priority)
+            self.tree.update(data_idx, priority)
+            self.max_priority = max(self.max_priority, priority)
+
         # And then apply decay
         if self.count >= self.decay_window:
             # count points to the next position
@@ -109,4 +141,4 @@ class PrioritizedSequenceReplayBuffer:
                 decayed_priority = priority * (self.decay_coff ** (i + 1))
                 tree_idx = idx + self.tree.size - 1
                 existing_priority = self.tree.nodes[tree_idx]
-                self.tree.update(idx,max(decayed_priority,existing_priority))
+                self.tree.update(idx, max(decayed_priority, existing_priority))

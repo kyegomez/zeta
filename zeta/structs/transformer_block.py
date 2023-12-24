@@ -2,7 +2,7 @@ import torch
 from einops import rearrange
 from torch import nn
 
-from zeta.structs.transformer  import Attention, RotaryEmbedding
+from zeta.structs.transformer import Attention, RotaryEmbedding
 from zeta.structs.simple_transformer import SwiGLU
 from zeta.nn.embeddings.xpos_relative_position import apply_rotary_pos_emb
 from zeta.nn.modules.layernorm import LayerNorm
