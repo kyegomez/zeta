@@ -47,6 +47,12 @@ from zeta.nn.modules.visual_expert import VisualExpert
 from zeta.nn.modules.yolo import yolo
 from zeta.nn.modules.swiglu import SwiGLU, SwiGLUStacked
 from zeta.nn.modules.img_patch_embed import ImgPatchEmbed
+from zeta.nn.modules.dense_connect import DenseBlock
+from zeta.nn.modules.highway_layer import HighwayLayer
+from zeta.nn.modules.multi_scale_block import MultiScaleBlock
+from zeta.nn.modules.feedback_block import FeedbackBlock
+from zeta.nn.modules.dual_path_block import DualPathBlock
+from zeta.nn.modules.recursive_block import RecursiveBlock
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -60,7 +66,6 @@ from zeta.nn.modules.img_patch_embed import ImgPatchEmbed
 # from zeta.nn.modules.transformations import image_transform
 # from zeta.nn.modules.squeeze_excitation import SqueezeExcitation
 # from zeta.nn.modules.clex import Clex
-
 __all__ = [
     "CNNNew",
     "CombinedLinear",
@@ -113,4 +118,10 @@ __all__ = [
     "SwiGLU",
     "SwiGLUStacked",
     "ImgPatchEmbed",
+    "DenseBlock",
+    "HighwayLayer",
+    "MultiScaleBlock",
+    "FeedbackBlock",
+    "DualPathBlock",
+    "RecursiveBlock",
 ]
