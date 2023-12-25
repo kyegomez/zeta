@@ -2,7 +2,6 @@ torch==2.1.1
 fairscale==0.4.0
 timm==0.6.13
 einops==0.7.0
-apex
 memory-profiler
 lion-pytorch==0.0.7
 bitsandbytes==0.38.1
