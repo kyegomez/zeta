@@ -53,6 +53,19 @@ from zeta.nn.modules.multi_scale_block import MultiScaleBlock
 from zeta.nn.modules.feedback_block import FeedbackBlock
 from zeta.nn.modules.dual_path_block import DualPathBlock
 from zeta.nn.modules.recursive_block import RecursiveBlock
+from zeta.nn.modules._activations import (
+    PytorchGELUTanh,
+    NewGELUActivation,
+    GELUActivation,
+    FastGELUActivation,
+    QuickGELUActivation,
+    ClippedGELUActivation,
+    AccurateGELUActivation,
+    MishActivation,
+    LinearActivation,
+    LaplaceActivation,
+    ReLUSquaredActivation,
+)
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -66,6 +79,7 @@ from zeta.nn.modules.recursive_block import RecursiveBlock
 # from zeta.nn.modules.transformations import image_transform
 # from zeta.nn.modules.squeeze_excitation import SqueezeExcitation
 # from zeta.nn.modules.clex import Clex
+
 __all__ = [
     "CNNNew",
     "CombinedLinear",
@@ -124,4 +138,15 @@ __all__ = [
     "FeedbackBlock",
     "DualPathBlock",
     "RecursiveBlock",
+    "PytorchGELUTanh",
+    "NewGELUActivation",
+    "GELUActivation",
+    "FastGELUActivation",
+    "QuickGELUActivation",
+    "ClippedGELUActivation",
+    "AccurateGELUActivation",
+    "MishActivation",
+    "LinearActivation",
+    "LaplaceActivation",
+    "ReLUSquaredActivation",
 ]
