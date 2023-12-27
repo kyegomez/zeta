@@ -23,7 +23,7 @@ RUN pip install poetry
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-interaction --no-ansi
 
-# Install the 'swarms' package if it's not included in the poetry.lock
+# Install the 'zeta' package if it's not included in the poetry.lock
 RUN pip install zeta
 
 # Assuming tests require pytest to run
