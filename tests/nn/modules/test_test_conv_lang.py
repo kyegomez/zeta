@@ -90,9 +90,3 @@ def test_invalid_activation_raises_error():
         )
 
 
-# 6. Test Coverage (requires pytest-cov)
-def test_coverage():
-    pytest.main(["--cov=your_module", "test_your_module.py"])
-
-
-# Add more tests as needed...
