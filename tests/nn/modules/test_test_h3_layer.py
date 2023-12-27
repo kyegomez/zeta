@@ -54,10 +54,3 @@ def test_invalid_dimension_raises_error():
     with pytest.raises(ValueError):
         H3Layer(0)
 
-
-# 6. Test Coverage (requires pytest-cov)
-def test_coverage():
-    pytest.main(["--cov=your_module", "test_your_module.py"])
-
-
-# Add more tests as needed...

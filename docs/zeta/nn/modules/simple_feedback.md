@@ -112,6 +112,3 @@ This particular sequence ensures that the neural network can learn a rich repres
 
 ---
 
-**Notes**:
-
-Remember to replace `"from zeta.nn.modules import SimpleFeedForward"` with the actual import statement depending on where the `SimpleFeedForward` function resides in your project structure. The above examples assume it's placed in a module named `your_module`.

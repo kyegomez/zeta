@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, patch
 import torch.nn as nn
 
 from zeta.training.parallel_wrapper import (
-    ParallelWrapper,  # assuming the class is in your_module.py
+    ParallelWrapper,  
 )
 
 

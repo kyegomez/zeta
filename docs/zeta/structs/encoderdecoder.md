@@ -99,7 +99,7 @@ This method executes the forward pass of the module.
 ```python
 # Imports
 import torch
-from _your_module_ import Encoder, Decoder, EncoderDecoder
+from zeta.structs import Encoder, Decoder, EncoderDecoder
 
 # Arguments
 args = argparse.Namespace(

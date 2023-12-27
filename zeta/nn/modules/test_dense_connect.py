@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import unittest
 
-from your_module import DenseBlock
+from zeta.nn.modules.dense_connect import DenseBlock
 
 
 class DenseBlockTestCase(unittest.TestCase):
