@@ -1,6 +1,8 @@
 import logging
 import os
 import warnings
+import tensorflow as tf
+import numexpr as ne
 
 
 def disable_warnings_and_logs():
@@ -23,10 +25,18 @@ def disable_warnings_and_logs():
     warnings.filterwarnings("ignore")
 
     # disable tensorflow warnings
-    os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+    os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
+    tf.get_logger().setLevel("ERROR")
+
+    ## disable tensorflow logs
+    os.getenv("TF_CPP_MIN_LOG_LEVEL", "3")
+
+    # disable numexpr INFO logs
+    ne.set_num_threads(1)
+    ne.set_vml_num_threads(1)
 
     # disable bnb warnings and others
-    logging.getLogger().setLevel(logging.WARNING)
+    logging.getLogger().setLevel(logging.ERROR)
 
     # add custom filter to root logger
     logger = logging.getLogger()

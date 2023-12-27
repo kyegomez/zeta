@@ -72,6 +72,11 @@ from zeta.nn.modules.triple_skip import TripleSkipBlock
 from zeta.nn.modules.dynamic_routing_block import DynamicRoutingBlock
 from zeta.nn.modules.gated_residual_block import GatedResidualBlock
 from zeta.nn.modules.stochastic_depth import StochasticSkipBlocK
+from zeta.nn.modules.quantized_layernorm import QuantizedLN
+
+from zeta.nn.modules.slerp_model_merger import SLERPModelMerger
+from zeta.nn.modules.avg_model_merger import AverageModelMerger
+
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -159,4 +164,7 @@ __all__ = [
     "DynamicRoutingBlock",
     "GatedResidualBlock",
     "StochasticSkipBlocK",
+    "QuantizedLN",
+    "SLERPModelMerger",
+    "AverageModelMerger",
 ]
