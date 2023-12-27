@@ -1,47 +1,129 @@
 # group_dict_by_key
 
-# Module/Function Name: group_dict_by_key (Internally within `zeta.utils`)
+# Module Name: Zeta.Utils 
 
-Function `group_dict_by_key` is a utility function which is designed to split specific dictionary based on the condition provided by the user. This function accepts two arguments: a condition (a function), and a dictionary. The key feature of this function is the implicit usage of the user-defined function to be used as a condition to split the dictionary on. This function allows users to take a very flexible approach in handling, processing, and manipulating dictionary objects in Python.
+## Group dictionary keys `group_dict_by_key` based on a condition function
 
-## Function Signature
+The `group_dict_by_key` function in `Zeta.Utils` is a utility function that facilitates grouping keys of a dictionary based on a specified condition. The condition is defined by a custom function. 
+
+The function returns two dictionaries where one dictionary contains the keys that meet the condition and the other dictionary contains keys that do not meet the condition. This can be useful in scenarios where you would like to separate out dictionary entries based on specific conditions.
+
+### Function Definition
+
+The following is the definition of the `group_dict_by_key` function:
 
 ```python
-def group_dict_by_key(cond: function, d: dict) -> Tuple[dict, dict]
+def group_dict_by_key(cond, d):
+    """
+    Group dictionary keys based on a condition.
+
+    Args:
+        cond (function): Condition to split dictionary.
+        d (dict): The dictionary to group.
+
+    Returns:
+        tuple: Two dictionaries split based on the condition.
+    """
+    return_val = [dict(), dict()]
+    for key in d.keys():
+        match = bool(cond(key))
+        ind = int(not match)
+        return_val[ind][key] = d[key]
+    return (*return_val,)
 ```
 
-This function takes in a `function` parameter which will be used to divide the dictionary into two parts, and the `dictionary` to be divided. The function can be named according to the condition of use, and its definition is entirely up to the user. The dictionary `d` is the dictionary to be divided.
+### Arguments:
 
-## Function Parameters
+The `group_dict_by_key` function accepts the following two arguments:
 
-| Parameter | Type | Description | Default Value |
-| ------- | -------- | ------------------------------------------------------ | ---------------- |
-| cond | function | User-defined function to be used to split the dictionary | NA |
-| d | dict | Dictionary to be divided | NA |
+| Argument | Type | Description |
+| --- | --- | --- | 
+| `cond` | function | A function that defines the condition based on which the dictionary keys will be split. This function should take a key as input and return a Boolean value indicating whether the key meets the condition or not. |
+| `d` | dict | The dictionary that will be split into two dictionaries based on the condition provided by the `cond` function. |
 
-## Returns
+### Returns:
 
-This function returns a `Tuple[dict, dict]`. Specifically, it outputs a tuple of dictionaries divided based on the condition provided.
+The `group_dict_by_key` function returns two dictionaries:
 
-## How it Works
+1. The first dictionary contains keys that satisfy the condition specified by the `cond` function.
 
-The function `group_dict_by_key` starts by initializing two empty dictionaries `return_val`. It then iterates through every key in the input dictionary `d`. For each key, it evaluates the user-defined condition function `cond(key)`. If the condition is matched, the current key and value pair is added to the first new dictionary. If the condition is not matched, the current element is added to the second new dictionary. Therefore, the function iterates through all key-value pairs in the input dictionary and divide them into two dictionaries based on whether or not they meet the user-defined condition.
+2. The second dictionary contains keys that do not satisfy the `cond` function.
 
-## Examples and Usage
+The returned dictionaries have the same values mapped to the same keys as the original dictionary. 
 
-#### Import
+### Usage Example:
 
-In order to use this function, you must first understand how to import it. Here is an example of how you might do this:
+#### Example 1: 
+
+Consider having a dictionary of student marks and the goal is to group the students into those who have scored 60 and above (pass) and below 60 (fail). The `cond` function will check if the marks are greater than or equal to 60. 
 
 ```python
-from zeta.utils import group_dict_by_key
+students_marks = {
+        "John": 85,
+        "Peter": 60,
+        "Tracy": 72,
+        "Paul": 50,
+        "Angela": 67,
+        "Robert": 40
+}
+
+# define the condition function to check if marks >= 60
+cond = lambda marks : marks >= 60
+
+pass_students, fail_students = group_dict_by_key(cond, students_marks)
 ```
 
-#### Use
-
-Here are three different examples of how you'd use `group_dict_by_key` function:
-
-1. Grouping dictionary keys based on length: 
+The two dictionaries returned from `group_dict_by_key` would be:
 
 ```python
-cond =
+pass_students = {
+        "John": 85,
+        "Peter": 60,
+        "Tracy": 72,
+        "Angela": 67,
+}
+
+fail_students = {
+        "Paul": 50,
+        "Robert": 40
+}
+```
+
+#### Example 2:
+
+If you have a dictionary of items and their prices, and you want to separate them into items that are below or equal to $20 and items that cost more than $20:
+
+```python
+items_prices = {
+    "apple": 2,
+    "orange": 3,
+    "mango": 1,
+    "blueberry": 5,
+    "grape": 10,
+    "guava": 25,
+    "dragon fruit": 50,
+}
+
+# define the condition function to check if price > 20
+cond = lambda price : price > 20
+
+pricey, affordable = group_dict_by_key(cond, items_prices)
+```
+
+The returned dictionaries would be:
+
+```python
+pricey = {
+    "guava": 25,
+    "dragon fruit": 50,
+}
+
+affordable = {
+    "apple": 2,
+    "orange": 3,
+    "mango": 1,
+    "blueberry": 5,
+    "grape": 10,
+}
+```
+

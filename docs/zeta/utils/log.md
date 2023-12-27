@@ -1,58 +1,72 @@
 # log
 
-# Module Name: zeta.utils.log
-
-## Table of Contents
-
-- [Introduction](#Introduction)
-- [Arguments](#Arguments)
-- [Methods](#Methods)
-- [Examples](#Examples)
-- [Tips](#Tips)
-- [References](#References)
+# zeta.utils.log
 
 ## Introduction
-This document is a detailed and comprehensive guide on how to use the `log` module that exists within the `zeta.utils` library.
 
-`log` is a utility function signature within the `zeta.utils` library, which specifically takes in a PyTorch Tensor and returns its natural logarithm (base `e`) after applying a clamp operation. Clamping refers to setting the value within an interval `min` and `max`. Here we only want to ensure that the tensor values are not lower than a small value `eps` which is often taken to prevent division by zero or log of zero errors.
+The `log` function serves as a small utility helper to calculate the natural logarithm of a tensor using PyTorch's `torch.log` function, while safeguarding against division by zero error by setting a minimum clamp value.
 
-## Arguments
+The minimum clamp value serves as a protection from taking the log of 0 which would result in undefined mathematical operation (division by zero). The aim of this is to ensure computational stability, especially in context where the input tensor contains zero or near-zero values. 
 
-This function accepts two arguments: `t` and `eps`.
+## Function Definition
 
-| Argument | Type | Default | Description |
-| -------  | ---- | ------- | ----------- |
-| `t` | torch.Tensor  | N/A | The input tensor on which the natural logarithm operation is performed. |
-| `eps` | float | 1e-20 | A very small value to which tensor values are set if they are less than `eps`. This helps in avoiding computation errors when we evaluate log of these tensor values.| 
+This function, `zeta.utils.log(t, eps=1e-20)`, has the following parameters:
 
-All arguments are compulsory, but you can omit `eps` during a function call; in this case, its default value (1e-20) would be used.
+* `t` : A PyTorch tensor that the logarithm will be taken from. This tensor can have any shape.
+* `eps` (default: `1e-20`): A small value which sets the minimum value for clamping. This essentially serves as a "safety net" preventing the input tensor from being zero or negative, which would result in an error when we take the log.
 
-## Methods
+## Return Value
+The function `zeta.utils.log(t, eps=1e-20)` returns a tensor of the same shape, where each element represents the natural logarithm of the corresponding element from the input tensor `t` with a minimum clamp established by `eps`.
 
-`log` is a standalone function and does not have any class or instance-specific methods. 
+## Functionality and Usage
 
-To call it, use `zeta.utils.log(t, eps)` where `t` is the tensor and `eps` is the optional small value as explained above. 
-
-## Examples
-
-These examples demonstrate how to utilize the `log` function within the `zeta.utils` library.
-
-- First, import the necessary libraries:
+The implementation of the function is as follows:
 
 ```python
-    import torch
-    from zeta.utils import log
+def log(t, eps=1e-20):
+    return torch.log(t.clamp(min=eps))
 ```
 
-- Using `log` function with a simple tensor:
+`t.clamp(min=eps)` restricts the values within tensor `t` to be greater or equal to the `eps` value. This is to avoid any fraudulent computations involving negative or zero values when the logarithm function is applied to these clamp restricted values by `torch.log`.
+
+This function is typically used in situations where it's necessary to calculate the natural log of tensor values in machine learning models, especially in those contexts where the input tensor might contain zero or near-zero values due to computations in the model or the nature of the input data.
+
+Here is a simple example usage of `zeta.utils.log`:
 
 ```python
-    # Define tensor
-    t = torch.tensor([0.0, 1.0, 2.0, 3.0])
-    
-    # Apply log transformation
-    log_t = log(t)  
+import torch
+import zeta.utils as zutils
 
-    print(log_t)  
+t = torch.tensor([0.0, 0.1, 1.0, 10.0])
+res = zutils.log(t)
+
+print(res)
 ```
-The expected output should
+```console
+tensor([-46.0517,  -2.3026,   0.0000,   2.3026])
+```
+
+**Note**: As seen in the example above, instead of `inf` which is typically what we get by applying log to zero, our log utility function gives a large negative number (-46.0517), thanks to the `eps` clamping.
+
+## Additional Tips
+
+As mentioned earlier, the purpose of the `eps` parameter is to prevent possible mathematical errors when taking the log of zero or negative numbers. However, the default value of `eps` is set to `1e-20` which can be too small in some contexts, leading to extreme values when taking the log.
+
+Depending on the scale and the nature of your data, it may be useful to adjust `eps` to a larger value to avoid very large negative numbers but remember, setting `eps` too high might introduce a bias. As always, it’s a balance and the right value of `eps` depends on your specific situation.
+
+Here is another example of how adjusting `eps` can affect your results:
+
+```python
+import torch
+import zeta.utils as zutils
+
+t = torch.tensor([0.0, 0.1, 1.0, 10.0])
+res = zutils.log(t, eps=1e-10)
+
+print(res)
+```
+```console
+tensor([-23.0259,  -2.3026,   0.0000,   2.3026])
+```
+
+In this example, by setting `eps` to `1e-10` we've effectively "softened" the result from applying log to zero from `-46.0517` to `-23.0259`.

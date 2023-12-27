@@ -1,59 +1,82 @@
 # pick_and_pop
 
-# Documentation for `pick_and_pop` function in `zeta.utils` 
+# Module/Function Name: pick_and_pop
 
-## Introduction
+## Overview 
 
-The `pick_and_pop` function in the `zeta.utils` library is a handy utility function for dictionary manipulation. It provides an efficient way to extract specific key-value pairs from a Python dictionary and also simultaneously remove these key-value pairs from the original dictionary. This operation is beneficial when needing a subset of data from a large dictionary for further processing while removing it from the parent dictionary for memory efficiency.
+The `pick_and_pop` function is a utility function that is specifically aimed at manipulating dictionaries. It removes specified keys from a given dictionary and then returns a new dictionary that contains the removed key-value pairs. This function can be particularly useful when you need to prune a dictionary to a simpler version that contains only desired keys-value pairs.
 
-## Class or Function Definition
+The `pick_and_pop` function is defined in the Zeta utility module (`zeta.utils`). A dictionary in Python is an unordered collection of data in a key-value pair format. Dictionaries can have keys and values of any datatype, which makes dictionary highly valuable and versatile data structures for handling and organizing data.
 
-Function signature:
+## Function Definition 
 
 ```python
-pick_and_pop(keys: list, d: dict) -> dict
+def pick_and_pop(keys, d):
+    """
+    Remove and return values from a dictionary based on provided keys.
+
+    Args:
+        keys (list): List of keys to remove from the dictionary.
+        d (dict): The dictionary to pick from.
+
+    Returns:
+        dict: A dictionary with the specified keys and their values.
+    """
+    values = list(map(lambda key: d.pop(key), keys))
+    return dict(zip(keys, values))
 ```
 
-## Parameters
+## Parameters and Description 
 
-The `pick_and_pop` function takes two parameters. 
+| Parameter | Type | Default |  Description |
+| --- | --- | --- | --- |
+| `keys` | list | N/A | List of keys from the dictionary to be removed and returned as a new dictionary. |
+| `d` | dict | N/A | The original dictionary where keys are picked and popped. |
 
-|Parameter|Type|Description|
-|---------|----|-----------|
-|`keys`|list|List of keys to remove from the dictionary|
-|`d`|dict|The dictionary to pick from|
+The function pick_and_pop accepts two arguments, a list of keys and a dictionary. The keys are provided in a list, and are the ones that the user wishes to remove from the dictionary. This function returns a new dictionary composed of these key-value pairs.
 
-## Returns
+## Functionality and Usage 
 
-The `pick_and_pop` function returns a new dictionary containing the key value pairs specified in the `keys` list parameter.
+The `pick_and_pop` function works by iterating over the list of keys and pops each key from the dictionary. The popped value is then appended to a list of values. After all the keys have been looped over, a new dictionary is created and returned by zipping together the list of keys and the list of values.
 
-## Functionality and Usage
+The return type of this function is a dictionary.
 
-The `pick_and_pop` function makes use of the `pop` method native to Python dictionaries. The `pop` method is specified in a lambda function which is then mapped onto the list of `keys`. This effectively extracts the value associated to each key in `keys` from dictionary `d` and also removes this key-value pair from `d`.
-
-A new dictionary, containing the key-value pairs specified in `keys`, is then created and returned using the built-in `dict` function in combination with the `zip` function to pair each key in `keys` with its corresponding value.
-
-## Usage Examples
-
-### Example 1: Basic Usage
-
+### Usage Example 1
 ```python
-# import the function
-from zeta.utils import pick_and_pop
+d = {"name": "John", "age": 30, "city": "New York"}
+keys = ["name", "city"]
 
-# initialize a dictionary
-d = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
-print('Original d:', d)
+result = pick_and_pop(keys, d)
+print(result)  # Returns: {'name': 'John', 'city': 'New York'}
+```
 
-# specify the keys we want to pop from the dictionary
-keys = ['a', 'c']
+### Usage Example 2
+```python
+d = {1: "apple", 2: "banana", 3: "cherry", 4: "date"}
+keys = [2, 4]
 
-# apply the function
-res = pick_and_pop(keys, d)
-print('Result:', res)
-print('Modified d:', d)
+result = pick_and_pop(keys, d)
+print(result)  # Returns: {2: 'banana', 4: 'date'}
+```
 
-# Output:
-# Original d: {'a': 1, 'b': 2, 'c': 3, 'd': 4}
-# Result: {'a': 1, 'c': 3}
-# Modified
+### Usage Example 3
+```python
+d = {"a": [1, 2, 3], "b": [4, 5, 6], "c": [7, 8, 9]}
+keys = ["a", "c"]
+
+result = pick_and_pop(keys, d)
+print(result)  # Returns: {'a': [1, 2, 3], 'c': [7, 8, 9]}
+```
+
+## Additional Tips 
+
+It's important to understand that the `pick_and_pop` function directly alters the original dictionary `d` by removing the keys from it. If you want to retain the data in the original dictionary, you should create a copy of the original dictionary and pass the copy to the `pick_and_pop` function.
+
+## References 
+
+- Python official documentaion: https://docs.python.org/3/tutorial/datastructures.html#dictionaries
+- Python Glossary - dictionary: https://docs.python.org/3/glossary.html#term-dictionary
+- Python map() function: https://docs.python.org/3/library/functions.html#map
+- Python zip() function: https://docs.python.org/3/library/functions.html#zip
+
+After understanding this function, you will have a good knowledge of manipulating dictionaries in Python. This utility function simplifies the task of extracting certain key-value pairs from a dictionary into a new dictionary, which can be very useful in data wrangling and preprocessing tasks.

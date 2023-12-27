@@ -1,12 +1,29 @@
 # group_by_key_prefix
 
-# Function Name: group_by_key_prefix
+# Module/Function Name: group_by_key_prefix
 
-The function group_by_key_prefix splits a dictionary into two based on whether the keys in the original dictionary start with a specified prefix. This allows us to organize the input dictionary by separating entries that are categorized by their key prefix. 
+## Overview
+This utility function group_by_key_prefix contained in the zeta.utils library, serves to provide functionality that allows users to easily group items in a dictionary based on the prefix of keys. This is particularly useful when handling complex nested dictionaries where classifying and grouping keys can enhance readability and processing.
 
-## Function Definition and Parameters 
+We see this functionality in many practical scenarios such as parsing and grouping HTTP headers, processing JSON data, or categorizing data in large datasets - all based on prefixed keys.
 
-The function group_by_key_prefix is defined as follows: 
+## Function Definition
+
+### `group_by_key_prefix(prefix, d)`
+
+#### Parameters:
+
+| Parameter | Type | Description | Default |
+|-----------|------|-------------|---------|
+| prefix | str | This is the prefix that the function checks for in each key of the passed dictionary | - |
+| d | dict | This is the dictionary that needs to be processed and grouped | - |
+ 
+The function takes two parameters: `prefix` which is a string and `d` which is a dictionary. 
+
+The function checks each key of the passed dictionary `d` and groups them based on whether they start with the specified `prefix` or not. 
+
+#### Returns:
+The function returns a tuple of two dictionaries. One dictionary contains all items where keys start with the given prefix and the other dictionary contains all items where keys do not start with the given prefix.
 
 ```python
 def group_by_key_prefix(prefix, d):
@@ -14,51 +31,79 @@ def group_by_key_prefix(prefix, d):
     Group dictionary items by keys that start with a specific prefix.
 
     Args:
-        prefix (str): The prefix to check for.
-        d (dict): The dictionary to group.
+    prefix (str): The prefix to check for.
+    d (dict): The dictionary to group.
 
     Returns:
-        tuple: Two dictionaries split based on the prefix condition.
+    tuple: Two dictionaries split based on the prefix condition.
     """
     return group_dict_by_key(partial(string_begins_with, prefix), d)
 ```
 
-Here, the function takes two parameters. They are:
+## Function Usage & Examples
 
-1. prefix -
-   Type: str
-   Description: It is the prefix string that the function uses to check if the keys in the dictionary start with this piece of string.
+Let's go through examples that illustrate the usage of this function:
 
-2. d -
-   Type: dict
-   Description: This is the dictionary that the function is required to perform the operation on. The function traverses the keys of this dictionary and groups them into two dictionaries based on whether or not they start with the specified prefix.
+### Example 1 - Basic Scenario:
 
-## Usage Examples
-
-Now, let's run through some examples of how to use this function and what kind of output we can expect in different scenarios:
-
-### Example 1: Handling general case
-
-First, let's look at how the function handles a general case.
+In a scenario where we have a dictionary of various fruits and we wish to group them based on the first letter of the fruit's name. For example, we can choose "a" as our prefix. Here's how we can process the dictionary:
 
 ```python
-# First, we define a dictionary to be used for this example
-example_dict = {"pear" : 1, "apple" : 2, "banana" : 3, "peach" : 4, "peanut" : 5}
+import zeta.utils as zutils
 
-# Now, let's use the function to split this dictionary based on the prefix "pea"
-split_dict = group_by_key_prefix("pea", example_dict)
+fruits = {
+    "apple": 5,
+    "avocado": 2,
+    "banana": 4,
+    "blackberry": 3,
+    "cherry": 7,
+    "apricot": 1
+}
 
-# This will output two dictionaries:
-# The first containing all those entries whose keys start with "pea", and the second containing the rest.
+prefix = "a"
+grouped_fruits = zutils.group_by_key_prefix(prefix, fruits)
+print(grouped_fruits)
 ```
 
-### Example 2: Handling an empty input dictionary
+### Example 2 - Empty Dictionary:
 
-Next, let's examine how the function handles an empty input dictionary.
+In the scenario where we pass an empty dictionary, we will receive two empty dictionaries in return as there are no keys to process:
 
 ```python
-# In this case, we use an empty dictionary as our input
+import zeta.utils as zutils
+
 empty_dict = {}
 
-# Then we split this empty dictionary based on any prefix, say "test"
-split_dict
+prefix = "a"
+grouped_dict = zutils.group_by_key_prefix(prefix, empty_dict)
+print(grouped_dict)  # output: ({}, {})
+```
+
+### Example 3 - No Keys With Specified Prefix:
+
+If there are no keys in the dictionary that start with the specified prefix, then one of the dictionaries returned in the tuple will be empty:
+
+```python
+import zeta.utils as zutils
+
+fruits = {
+    "banana": 4,
+    "blackberry": 3,
+    "cherry": 7
+}
+
+prefix = "a"
+grouped_fruits = zutils.group_by_key_prefix(prefix, fruits)
+print(grouped_fruits)  # output: ({}, {'banana': 4, 'blackberry': 3, 'cherry': 7})
+```
+
+## Additional Tips & Best Practices:
+1. Prefix search is case-sensitive. If keys contain capital letters, make sure to provide a capital letter as the prefix too if you're looking for an exact match.
+2. This function does not search prefixes recursively. If dictionary values are themselves dictionaries, the function will not process keys for those nested dictionaries.
+3. Be mindful of dictionary key types. This function will not work if keys are not string type.
+
+## References & Further Reading:
+1. Python Dictionary Official Documentation: https://docs.python.org/3/tutorial/datastructures.html#dictionaries
+2. Functional Programming in Python: https://docs.python.org/3/howto/functional.html
+
+This documentation provides an explanation on using the `group_by_key_prefix` utility function. For details on other functions provided by the `zeta.utils` library, refer to the respective documentation.

@@ -1,46 +1,71 @@
 # gif_to_tensor
 
-# Module/Function Name: gif_to_tensor
+# Module Name: `gif_to_tensor`
 
-## Introduction
-
-The `gif_to_tensor` function in the `zeta.utils` library is a utility function to convert an animated GIF into a PyTorch tensor. This function is very handy when handling image data, especially when the task is related to processing animated GIFs in machine learning or deep learning applications. 
-
-In the `zeta.utils` library, the `gif_to_tensor` function serves as an essential bridge between raw GIF files and the tensor format required for many other PyTorch operations. 
+The `gif_to_tensor` module is a Python function that converts a GIF (Graphics Interchange Format) image into a tensor. This module is very useful in machine learning tasks where GIFs are used as input. For instance, in video understanding or some forms of anomaly detection, short snippets of video as GIFs can be very useful. Hence this function is a fundamental and powerful function that can work with the Pytorch framework in creating machine learning models.
 
 ## Function Definition
 
-```python
+``` python
+def gif_to_tensor(path: str, channels: int = 3, transform = torch.transforms.ToTensor()) -> torch.Tensor:
+    """
+    This function reads a GIF image from disk, applies transforms and converts it into a stack of tensors.
+
+    Parameters:
+
+    - path (str): The file path of the GIF image.
+    - channels (int): The number of color channels in the image. Default value is 3 (RGB). 
+    - transform (torch.transforms.ToTensor()): The transform function that is applied to each frame of the GIF image. Default transform is ToTensor() which converts the image into tensor.
+
+    Returns:
+
+    - torch.Tensor: A tensor representation of the GIF image.
+
+    Note:
+
+    - The created tensor is a 4D-tensor of shape (frames, channels, height, width) where frames is the number of frames in the GIF image.
+    """
+
+    # function implementation here
+```
+
+## Function Usage
+The `gif_to_tensor` function is fairly simple and straightforward to use. It takes three parameters - `path`, `channels` and `transform`- and returns a tensor. You primarily need to provide the `path` parameter - which points to the GIF image you want to convert into a tensor, while the other parameters are optional.
+
+Here are three ways of using the `gif_to_tensor` function:
+
+``` python
+import torch
+import torchvision.transforms as T
+from PIL import Image
+
+# gif_to_tensor function
 def gif_to_tensor(path, channels=3, transform=T.ToTensor()):
     img = Image.open(path)
     tensors = tuple(map(transform, seek_all_images(img, chanels=channels)))
     return torch.stack(tensors, dim=1)
+
+# Example 1: Basic usage with just the path parameter
+result = gif_to_tensor('./path_to_your_gif.gif')
+print(result.shape)  # Outputs: torch.Size([Frames, 3, Height, Width])
+
+# Example 2: Specifying the number of channels
+result = gif_to_tensor('./path_to_your_gif.gif', channels=1)
+print(result.shape)  # If the input gif is grayscale, Outputs: torch.Size([Frames, 1, Height, Width])
+
+# Example 3: Applying multiple transforms
+custom_transform = T.Compose([T.Resize((100, 100)), T.ToTensor()])
+result = gif_to_tensor('./path_to_your_gif.gif', transform=custom_transform)
+print(result.shape)  # Outputs: torch.Size([Frames, 3, 100, 100]), if the input gif has 3 color channels
 ```
 
-## Parameters
+## Additional Information
+The created tensor is a 4D tensor of shape (frames, channels, height, width), where frames is the number of frames in the gif image. The values (pixel intensities) in the returned tensor are in the range `[0, 1]` if the transform `T.ToTensor()` is used.
 
-| Parameter   | Type                               | Description                                                                                                                               | Default Value         |
-|-------------|------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|-----------------------|
-| `path`        | str                                | A string specifying the path to the gif file.                                                                                              | None                  |
-| `channels`    | int                                | An integer specifying the number of channels in the image. Typical values are 1 (grayscale), 3 (RGB), or 4 (RGBA).                        | 3 (RGB)               |
-| `transform`   | torchvision.transforms.Transforms | A PyTorch transformation to be applied to each image frame. PyTorch provides a number of transformations like `ToTensor()`, `Normalize()`. | `T.ToTensor()` |
+Notice that the `seek_all_images` function used in the implementation of `gif_to_tensor` is not defined in the provided code. This function is expected to find and return all frames in the animated gif image. You need to consider this when using `gif_to_tensor` in your code. Make sure to define such a function or use equivalent functionality from existing libraries.
 
-## Functionality and Usage
-
-This function performs the following operations:
-
-1. Opens the GIF image using the path provided.
-2. Iterates over all the frames in the GIF image.
-3. Applies the transformation to each frame to convert it into a PyTorch tensor.
-4. Stacks all the tensors for each frame along a new dimension.
-
-The output of the function is a single tensor representing all frames of the GIF. The dimension corresponding to the frames in the output tensor is 1.
-
-Below, we show three examples of using this function:
-
-1. **Basic Usage:**
-    In this simplest use case, we only need to provide the path to the GIF file. The function will return a tensor representing the GIF, using default settings for channels (RGB) and transformation (convert to tensor).
-
-    ```python
-    import torchvision.transforms as T
-   
+## References
+For more information on torch.Tensor, PIL.Image and torchvision.transforms, refer to:
+- Pytorch's official documentation: [torch.Tensor](https://pytorch.org/docs/stable/tensors.html)
+- Python Imaging Library (PIL) documentation: [PIL.Image](https://pillow.readthedocs.io/en/stable/reference/Image.html)
+- Torchvision transforms documentation: [torchvision.transforms](https://pytorch.org/vision/stable/transforms.html)

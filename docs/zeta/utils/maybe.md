@@ -1,26 +1,47 @@
 # maybe
 
-# Module Name: maybe
+# Module/Function Name: maybe
 
-## Overview:
+```python
+def maybe(fn):
+    """
+    Decorator that calls a function if the first argument exists.
 
-The `maybe` function is a Python decorator, that wraps a function and calls it only if the first argument to the function exists. This can help in implementing conditional function calls based on the existence of the first input argument. It is intended to improve code organization and readability, and it can be particularly useful when dealing with functions that require the existence of an input argument for successful execution.
+    Args:
+        fn (function): The function to wrap.
 
-## Module Interface:
+    Returns:
+        function: The wrapped function.
+    """
 
-The module provides a function wrapper `maybe` that accepts one input parameter, the function to be wrapped. The wrapped function `inner(x, *args, **kwargs)` has the ability to take any positional and keyword arguments.
+    @wraps(fn)
+    def inner(x, *args, **kwargs):
+        if not exists(x):
+            return x
+        return fn(x, *args, **kwargs)
 
-Hereafter is a detailed table demonstrating `maybe` module interface.
+    return inner 
+```
 
-| Function Name | Argument | Description                                                                                       | Type | Default |
-|---------------|----------|---------------------------------------------------------------------------------------------------|------|---------|
-| maybe         | fn       | This argument refers to the function that needs to be wrapped. This function should be callable. | Any  | None    |
+## Description:
 
-## Example Usage:
+The `maybe` function is a Python decorator that wraps a given function (`fn`) and alters its behavior in such a way that it only calls this function if the first argument provided (`x`) exists. In the context of this decorator, "exists" typically means that `x` is not `None` although this could be adjusted to accommodate any variations on what it means for `x` to "exist" depending on your specific use case.
 
-In this section, we will provide several examples to demonstrate how you can use the `maybe` function.
+This type of decorator can be tremendously useful in a number of contexts, including data preprocessing, data validation, error handling, and more.
 
-### Example 1 - Basic Usage:
+## Parameters:
+
+| Parameter | Type        | Description                    |
+|-----------|-------------|--------------------------------|
+| fn        | function    | The function to be decorated |
+
+## Returns:
+
+| Return    | Type        | Description                    |
+|-----------|-------------|--------------------------------|
+| function  | function    | The decorated function |
+
+## Usage Example:
 
 ```python
 from functools import wraps
@@ -40,27 +61,18 @@ def maybe(fn):
 def add_one(x):
     return x + 1
 
-print(add_one(4))  # Output: 5
-print(add_one(None))  # Output: None
+print(add_one(None))  # Returns: None
+print(add_one(2))     # Returns: 3
 ```
 
-In this snippet, we define a decorator `maybe` which wraps the function `add_one`. When the input to `add_one` is None, no operation is done and None is returned.
+In this example, we have created a `maybe` decorator using the given `maybe` function and applied it to the `add_one` function. When we call `add_one` with `None` as the argument, the `maybe` decorator checks if `None` exists (which it does not), and so it simply returns `None` without calling the `add_one` function. 
 
-### Example 2 - Varied Input:
+However, when we call `add_one` with `2` as the argument, the `maybe` decorator checks if `2` exists (which it does), and so it proceeds to call the `add_one` function, resulting in `3`.
 
-```python
-@maybe
-def add(x, y):
-    return x + y
+## Additional Information:
 
-print(add(4, 5))  # Output: 9
-print(add(None, 5))  # Output: None
-```
+The `maybe` decorator utilises the `@wraps` decorator from the `functools` module which updates the wrapper function to look like the wrapped function. This includes the function name, docstring, and module, amongst other attributes.
 
-In this example, we wrap a function `add` which takes two arguments. When the first argument is None, `maybe` prevents `add` from being executed and returns `None` instead. 
+The `if not exists(x)` part of the `inner` function acts as a short-circuit evaluation. This means `fn(x, *args, **kwargs)` is not executed if the `x` argument does not exist, thus preventing potential errors or exceptions from occurring.
 
-### Example 3 - Complex Functions:
-
-```python
-@maybe
-def complex_func(x
+Please ensure to define an `exists` function according to your requirement, as it works with the `maybe` decorator to determine whether or not the function `fn` should be invoked.

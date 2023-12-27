@@ -1,59 +1,97 @@
 # top_k
 
-# zeta.utils Package Documentation
-
-## The `zeta.utils` module
-
-`zeta.utils` is a utility module that provides various utility functions aimed at simplifying and bolstering the efficiency of data transformation and manipulation processes. This documentation explores, in depth, the usefulness, rationale behind, and significance of the provided functions, which will further help users to leverage them in their specific use cases effectively.
-
-Our focus is the `top_k` function that selectively returns elements from the tensor, having values within the top k percentile.
-
-<br>
-
-# Function Name: `top_k`
-
-The `top_k` function is aimed at aiding common procedures encountered in machine learning and data science involving tensor manipulations. Specifically, it speeds up the rank-based filtering of elements in a tensor. 
-
-**Definition/Signature**:
+# Module/Function Name: top_k
 
 ```python
 def top_k(logits, thres=0.9):
+    k = ceil((1 - thres) * logits.shape[-1])
+    val, ind = torch.topk(logits, k)
+    probs = torch.full_like(logits, float("-inf"))
+    probs.scatter_(1, ind, val)
+    return probs
 ```
 
-**Parameters**:
+The `top_k` function is utility function that is used to retrieve the top k logits based on a threshold. It takes in the logits and a threshold value, picks out the top k logits that meet the threshold, and then returns those logits.
 
-The function accepts the following arguments:
+## Parameters
+| Parameter | Type | Description | Default |
+| :---      | :--- | :---        | :---    |
+| logits   | Tensor | A rank 1 tensor representing the logits you want to filter | Required |
+| thres | float | A float representing the threshold for filtering, the default value is 0.9 | 0.9 |
 
-| Parameters | Type   | Description                                                                                              | Default Value |
-|------------|--------|----------------------------------------------------------------------------------------------------------|---------------|
-| logits     | tensor | A tensor whose elements are required to be ranked and top k percentile to be separated.  | None          |
-| thres      | float  | A threshold value determining the percentile of top elements to be selected from the tensor. | 0.9           |
+## Returns
+| Return | Type | Description |
+| :---   | :--- | :---    |
+| probs | Tensor | The tensor after being filtered |
 
-<br>
+## Usage Examples
 
-**How It Works**:
+Now, let's go through a few examples of how you can use the `top_k` function.
 
-The `top_k` function works by utilizing PyTorch's topk function to pull the top-k elements from a tensor, based on the specified threshold. It then builds a new tensor filled with -inf (representing negative infinity) and scatter the top-k elements into it. This implies that the returned tensor has the top-k elements from the original tensor and -inf for the rest. This aids easy selection and corresponding actions on the top-k elements without the strain of performing an explicit sort operation on the tensor and then slicing off the top-k elements.
+### Example 1: Basic usage
 
-**Returns**:
-
-A tensor which has the top-k elements from the original tensor and -inf for the rest.
-
-<br>
-
-**Example Usage(s)**:
-
-Below are three illustrative examples of leveraging the `top_k` function:
-
-**Example 1:**
+In the most basic usage, you would pass a tensor of logits and receive a filtered tensor.
 
 ```python
 import torch
 from math import ceil
-from zeta.utils import top_k
+def top_k(logits, thres=0.9):
+    k = ceil((1 - thres) * logits.shape[-1])
+    val, ind = torch.topk(logits, k)
+    probs = torch.full_like(logits, float("-inf"))
+    probs.scatter_(1, ind, val)
+    return probs
 
-# Initialize tensor
-tensor = torch.rand(1, 10) 
+logits = torch.tensor([0.1, 0.4, 0.3, 0.2, 0.5])
+probs = top_k(logits)
+print(probs) 
+```
 
-# Apply function with threshold 0.9
-filtered_tensor = top_k(tensor, thres=0.
+### Example 2: Changing the Threshold
+
+The threshold value can be adjusted according to your requirements. A higher threshold may result in values being included that would otherwise be excluded.
+
+```python
+import torch
+from math import ceil
+def top_k(logits, thres=0.8):
+    k = ceil((1 - thres) * logits.shape[-1])
+    val, ind = torch.topk(logits, k)
+    probs = torch.full_like(logits, float("-inf"))
+    probs.scatter_(1, ind, val)
+    return probs
+
+logits = torch.tensor([0.1, 0.4, 0.3, 0.2, 0.5])
+probs = top_k(logits)
+print(probs) 
+```
+
+### Example 3: Using a Different Tensor
+
+The input tensor can be changed as needed. The only requirement is that the tensor should be a 1D tensor.
+
+```python
+import torch
+from math import ceil
+def top_k(logits, thres=0.9):
+    k = ceil((1 - thres) * logits.shape[-1])
+    val, ind = torch.topk(logits, k)
+    probs = torch.full_like(logits, float("-inf"))
+    probs.scatter_(1, ind, val)
+    return probs
+
+logits = torch.tensor([0.1, 0.4, 0.7, 0.2, 0.5])
+probs = top_k(logits)
+print(probs) 
+```
+
+## Additional Information and Tips:
+
+- The function `top_k` makes use of the `torch.topk()` function to find the top k values in the tensor and returns these values and their respective indices.
+- The indices are used with the `torch.Tensor.scatter_()` function to replace the selected elements in a new tensor filled with `-inf` along the specified dimension with the specified value.
+  
+## References:
+
+- For more information about the functions used, refer to the PyTorch documentation:
+  - [torch.topk()](https://pytorch.org/docs/stable/generated/torch.topk.html)
+  - [torch.Tensor.scatter_()](https://pytorch.org/docs/stable/generated/torch.Tensor.scatter_.html)

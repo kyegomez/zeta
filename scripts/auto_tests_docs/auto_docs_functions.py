@@ -16,7 +16,7 @@ api_key = os.getenv("OPENAI_API_KEY")
 model = OpenAIChat(
     model_name="gpt-4",
     openai_api_key=api_key,
-    max_tokens=500,
+    max_tokens=1000,
 )
 
 
