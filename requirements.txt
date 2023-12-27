@@ -5,7 +5,7 @@ memory-profiler
 bitsandbytes==0.41.3.post2
 typing==3.7.4.3
 einops-exts==0.0.4
-torchvision==0.16.1
+torchvision
 tokenmonster==1.1.12
 accelerate
 datasets==2.10.1
