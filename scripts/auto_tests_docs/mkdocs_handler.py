@@ -22,8 +22,8 @@ def generate_file_list(directory, output_file):
                     # Remove the file extension
                     file_name, _ = os.path.splitext(file)
                     # Write the file name and path to the output file
-                    f.write(f'- {file_name}: "{directory}{file_path}"\n')
+                    f.write(f'- {file_name}: "{directory}/{file_path}"\n')
 
 
 # Use the function to generate the file list
-generate_file_list("docs/zeta/models", "file_list.txt")
+generate_file_list("docs/zeta/nn/modules", "file_list.txt")
