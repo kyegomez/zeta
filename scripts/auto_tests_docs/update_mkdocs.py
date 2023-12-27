@@ -2,7 +2,9 @@ import yaml
 
 
 def update_mkdocs(
-    class_names, base_path="docs/zeta/nn/modules", mkdocs_file="mkdocs.yml"
+    class_names,
+    base_path="docs/zeta/nn/modules",
+    mkdocs_file="mkdocs.yml",
 ):
     """
     Update the mkdocs.yml file with new documentation links.

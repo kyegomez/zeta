@@ -1,6 +1,5 @@
 import torch
 from torch import nn
-import time
 
 # Noe automatic tf32 ops which mess with numerics
 torch.backends.cuda.matmul.allow_tf32 = False

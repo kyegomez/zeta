@@ -1,6 +1,5 @@
 # FILEPATH: /Users/defalt/Desktop/Athena/research/zeta/tests/nn/modules/test_img_patch_embed.py
 
-import pytest
 from torch import nn
 import torch
 from zeta.nn.modules.img_patch_embed import ImgPatchEmbed

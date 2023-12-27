@@ -1,6 +1,5 @@
 # FILEPATH: /Users/defalt/Desktop/Athena/research/zeta/tests/nn/modules/test_simple_mamba.py
 
-import pytest
 import torch
 from torch import nn
 from zeta.nn.modules.simple_mamba import Mamba, ResidualBlock, RMSNorm

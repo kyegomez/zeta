@@ -1,9 +1,7 @@
 import pytest
-import random
 import torch
 from zeta.rl.priortized_rps import (
     PrioritizedSequenceReplayBuffer,
-    SumTree,
 )  # Replace 'your_module' with the actual module where classes are defined
 
 

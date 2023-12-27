@@ -26,7 +26,7 @@ def test_DenseBlock_forward():
 @pytest.mark.parametrize("invalid_submodule", [None, 5, "invalid", []])
 def test_DenseBlock_init_invalid_submodule(invalid_submodule):
     with pytest.raises(TypeError):
-        dense_block = DenseBlock(invalid_submodule)
+        DenseBlock(invalid_submodule)
 
 
 @pytest.mark.parametrize("invalid_input", [None, 5, "invalid", []])
@@ -34,4 +34,4 @@ def test_DenseBlock_forward_invalid_input(invalid_input):
     conv = nn.Conv2d(1, 20, 5)
     dense_block = DenseBlock(conv)
     with pytest.raises(Exception):
-        output = dense_block(invalid_input)
+        dense_block(invalid_input)
