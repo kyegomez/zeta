@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 
 from scripts.auto_tests_docs.docs import DOCUMENTATION_WRITER_SOP
 from swarms import OpenAIChat
+from zeta.utils import *
 
 load_dotenv()
 
@@ -15,7 +16,7 @@ api_key = os.getenv("OPENAI_API_KEY")
 model = OpenAIChat(
     model_name="gpt-4",
     openai_api_key=api_key,
-    max_tokens=4000,
+    max_tokens=500,
 )
 
 
@@ -23,36 +24,40 @@ def process_documentation(item):
     """
     Process the documentation for a given function using OpenAI model and save it in a Markdown file.
     """
-    doc = inspect.getdoc(item)
-    source = inspect.getsource(item)
-    input_content = (
-        f"Name: {item.__name__}\n\nDocumentation:\n{doc}\n\nSource"
-        f" Code:\n{source}"
-    )
-    print(input_content)
+    try:
+        doc = inspect.getdoc(item)
+        source = inspect.getsource(item)
+        input_content = (
+            f"Name: {item.__name__}\n\nDocumentation:\n{doc}\n\nSource"
+            f" Code:\n{source}"
+        )
 
-    # Process with OpenAI model
-    processed_content = model(
-        DOCUMENTATION_WRITER_SOP(input_content, "swarms.utils")
-    )
+        # Process with OpenAI model
+        processed_content = model(
+            DOCUMENTATION_WRITER_SOP(input_content, "zeta.utils")
+        )
 
-    doc_content = f"# {item.__name__}\n\n{processed_content}\n"
+        doc_content = f"# {item.__name__}\n\n{processed_content}\n"
 
-    # Create the directory if it doesn't exist
-    dir_path = "docs/swarms/utils"
-    os.makedirs(dir_path, exist_ok=True)
+        # Create the directory if it doesn't exist
+        dir_path = "docs/zeta/utils"
+        os.makedirs(dir_path, exist_ok=True)
 
-    # Write the processed documentation to a Markdown file
-    file_path = os.path.join(dir_path, f"{item.__name__.lower()}.md")
-    with open(file_path, "w") as file:
-        file.write(doc_content)
+        # Write the processed documentation to a Markdown file
+        file_path = os.path.join(dir_path, f"{item.__name__.lower()}.md")
+        with open(file_path, "w") as file:
+            file.write(doc_content)
+
+        print(f"Succesfully processed {item.__name__}.")
+    except Exception as e:
+        print(f"Error processing {item.__name__}: {e}")
 
 
 def main():
-    # Gathering all functions from the swarms.utils module
+    # Gathering all functions from the zeta.utils module
     functions = [
         obj
-        for name, obj in inspect.getmembers(sys.modules["swarms.utils"])
+        for name, obj in inspect.getmembers(sys.modules["zeta.utils"])
         if inspect.isfunction(obj)
     ]
 
@@ -66,7 +71,7 @@ def main():
     for thread in threads:
         thread.join()
 
-    print("Documentation generated in 'docs/swarms/utils' directory.")
+    print("Documentation generated in 'docs/zeta/utils' directory.")
 
 
 if __name__ == "__main__":

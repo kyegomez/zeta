@@ -1,8 +1,0 @@
-- paralleltransformerblock: "paralleltransformerblock.md"
-- hierarchicalblock: "hierarchicalblock.md"
-- vitransformerwrapper: "vitransformerwrapper.md"
-- localtransformer: "localtransformer.md"
-- autoregressivewrapper: "autoregressivewrapper.md"
-- simpletransformer: "simpletransformer.md"
-- encoder: "encoder.md"
-- encoderdecoder: "encoderdecoder.md"

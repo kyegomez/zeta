@@ -7,10 +7,10 @@ from dotenv import load_dotenv
 
 from scripts.auto_tests_docs.docs import TEST_WRITER_SOP_PROMPT
 from swarms import OpenAIChat
-from swarms.utils.parse_code import extract_code_from_markdown
-from swarms.utils import (
+from swarms.utils.parse_code import (
     extract_code_from_markdown,
 )
+from zeta.utils import *
 
 load_dotenv()
 
@@ -37,10 +37,9 @@ def process_documentation(item):
 
     # Process with OpenAI model
     processed_content = model(
-        TEST_WRITER_SOP_PROMPT(input_content, "swarms.utils", "swarms.utils")
+        TEST_WRITER_SOP_PROMPT(input_content, "zeta.utils", "zeta.utils")
     )
     processed_content = extract_code_from_markdown(processed_content)
-    print(processed_content)
 
     doc_content = f"{processed_content}"
 
@@ -53,12 +52,14 @@ def process_documentation(item):
     with open(file_path, "w") as file:
         file.write(doc_content)
 
+    print(f"Test generated for {item.__name__}.")
+
 
 def main():
-    # Gathering all functions from the swarms.utils module
+    # Gathering all functions from the zeta.utils module
     functions = [
         obj
-        for name, obj in inspect.getmembers(sys.modules["swarms.utils"])
+        for name, obj in inspect.getmembers(sys.modules["zeta.utils"])
         if inspect.isfunction(obj)
     ]
 

@@ -778,7 +778,3 @@ def all_unique(arr):
 
 def apply_fns(fns, tensors):
     return [fn(tensors) for fn, tensor in zip(fns, tensors)]
-
-
-def cast_tuple(t, length=1):
-    return t if isinstance(t, tuple) else ((t,) * length)
