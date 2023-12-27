@@ -7,23 +7,19 @@ from dotenv import load_dotenv
 
 from scripts.auto_tests_docs.docs import DOCUMENTATION_WRITER_SOP
 from swarms import OpenAIChat
-from zeta.structs.auto_regressive_wrapper import AutoregressiveWrapper
-from zeta.structs.encoder_decoder import EncoderDecoder
-from zeta.structs.hierarchical_transformer import (
-    HierarchicalBlock,
-    HierarchicalTransformer,
-)
-from zeta.structs.local_transformer import LocalTransformer
-from zeta.structs.simple_transformer import (
-    ParallelTransformerBlock,
-    SimpleTransformer,
-)
-from zeta.structs.transformer import (
-    Encoder,
-    Transformer,
-    ViTransformerWrapper,
-)
 
+##########
+from zeta.models.andromeda import Andromeda
+from zeta.models.base import BaseModel
+from zeta.models.gpt4 import GPT4, GPT4MultiModal
+from zeta.models.llama import LLama2
+from zeta.models.max_vit import MaxVit
+from zeta.models.mega_vit import MegaVit
+from zeta.models.palme import PalmE
+from zeta.models.vit import ViT
+from zeta.models.navit import NaViT
+
+####################
 load_dotenv()
 
 api_key = os.getenv("OPENAI_API_KEY")
@@ -49,14 +45,14 @@ def process_documentation(cls):
 
     # Process with OpenAI model (assuming the model's __call__ method takes this input and returns processed content)
     processed_content = model(
-        DOCUMENTATION_WRITER_SOP(input_content, "zeta.structs")
+        DOCUMENTATION_WRITER_SOP(input_content, "zeta.models")
     )
 
     # doc_content = f"# {cls.__name__}\n\n{processed_content}\n"
     doc_content = f"{processed_content}\n"
 
     # Create the directory if it doesn't exist
-    dir_path = "docs/zeta/structs"
+    dir_path = "docs/zeta/models"
     os.makedirs(dir_path, exist_ok=True)
 
     # Write the processed documentation to a Markdown file
@@ -69,16 +65,16 @@ def process_documentation(cls):
 
 def main():
     classes = [
-        AutoregressiveWrapper,
-        Encoder,
-        EncoderDecoder,
-        HierarchicalBlock,
-        HierarchicalTransformer,
-        LocalTransformer,
-        ParallelTransformerBlock,
-        Transformer,
-        ViTransformerWrapper,
-        SimpleTransformer,
+        Andromeda,
+        BaseModel,
+        GPT4,
+        GPT4MultiModal,
+        LLama2,
+        MaxVit,
+        MegaVit,
+        PalmE,
+        ViT,
+        NaViT,
     ]
 
     threads = []
@@ -91,7 +87,7 @@ def main():
     for thread in threads:
         thread.join()
 
-    print("Documentation generated in 'docs/zeta' directory.")
+    print("Documentation generated in 'docs/zeta/models' directory.")
 
 
 if __name__ == "__main__":

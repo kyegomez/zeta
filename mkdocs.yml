@@ -177,6 +177,17 @@ nav:
           - fsdp: "zeta/training/fsdp.md"
           - ParallelWrapper: "zeta/training/parallel_wrapper.md"
           - train: "zeta/training/train.md"
+      - zeta.models:
+          - vit: "vit.md"
+          - gpt4multimodal: "gpt4multimodal.md"
+          - maxvit: "maxvit.md"
+          - llama2: "llama2.md"
+          - gpt4: "gpt4.md"
+          - andromeda: "andromeda.md"
+          - basemodel: "basemodel.md"
+          - palme: "palme.md"
+          - megavit: "megavit.md"
+          - navit: "navit.md"
       - zeta.quant:
           - QUIK: "zeta/quant/quik.md"
           - BitLinear: "zeta/quant/bitlinear.md"
