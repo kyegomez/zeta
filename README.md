@@ -29,7 +29,7 @@ Creating a model empowered with the aforementioned breakthrough research feature
 
 ```python
 import torch
-from zeta.nn.attention import FlashAttention
+from zeta.nn import FlashAttention
 
 q = torch.randn(2, 4, 6, 8)
 k = torch.randn(2, 4, 10, 8)
