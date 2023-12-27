@@ -42,6 +42,8 @@ The following code shows how to use the SLERPModelMerger class to merge two PyTo
 
 ```python
 import torch.nn as nn
+from zeta.nn import SLERPModelMerger
+
 model1 = nn.Linear(10, 10)
 model2 = nn.Linear(10, 10)
 
