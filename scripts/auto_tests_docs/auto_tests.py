@@ -4,22 +4,25 @@ import re
 import threading
 from swarms import OpenAIChat
 from scripts.auto_tests_docs.docs import TEST_WRITER_SOP_PROMPT
-from zeta.structs.auto_regressive_wrapper import AutoregressiveWrapper
-from zeta.structs.encoder_decoder import EncoderDecoder
-from zeta.structs.hierarchical_transformer import (
-    HierarchicalBlock,
-    HierarchicalTransformer,
-)
-from zeta.structs.local_transformer import LocalTransformer
-from zeta.structs.simple_transformer import (
-    ParallelTransformerBlock,
-    SimpleTransformer,
-)
-from zeta.structs.transformer import (
-    Encoder,
-    Transformer,
-    ViTransformerWrapper,
-)
+
+
+# Import all classes from zeta.structs
+# Tests will be automatically generated in the tests folder using parallized gpt4 with each of the file logic handled autonomously thus
+# leading to a much faster testing process where you just import your classes or functions and tests are automatically generated
+# Automating tests and documentation frees up atleast 75% of your time to focus on the actual logic of your code
+from zeta.models.andromeda import Andromeda
+from zeta.models.base import BaseModel
+from zeta.models.gpt4 import GPT4, GPT4MultiModal
+from zeta.models.llama import LLama2
+from zeta.models.max_vit import MaxVit
+from zeta.models.mega_vit import MegaVit
+from zeta.models.palme import PalmE
+from zeta.models.vit import ViT
+from zeta.models.navit import NaViT
+
+####################
+
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -65,14 +68,14 @@ def create_test(cls):
 
     # Process with OpenAI model (assuming the model's __call__ method takes this input and returns processed content)
     processed_content = model(
-        TEST_WRITER_SOP_PROMPT(input_content, "zeta", "zeta.nn")
+        TEST_WRITER_SOP_PROMPT(input_content, "zeta", "zeta.models")
     )
     processed_content = extract_code_from_markdown(processed_content)
 
     doc_content = f"{processed_content}"
 
     # Create the directory if it doesn't exist
-    dir_path = "tests/structs"
+    dir_path = "tests/models"
     os.makedirs(dir_path, exist_ok=True)
 
     # Write the processed documentation to a Python file
@@ -85,16 +88,16 @@ def create_test(cls):
 
 def main():
     classes = [
-        AutoregressiveWrapper,
-        Encoder,
-        Transformer,
-        ViTransformerWrapper,
-        SimpleTransformer,
-        ParallelTransformerBlock,
-        EncoderDecoder,
-        LocalTransformer,
-        HierarchicalBlock,
-        HierarchicalTransformer,
+        Andromeda,
+        BaseModel,
+        GPT4,
+        GPT4MultiModal,
+        LLama2,
+        MaxVit,
+        MegaVit,
+        PalmE,
+        ViT,
+        NaViT,
     ]
 
     threads = []
@@ -107,7 +110,7 @@ def main():
     for thread in threads:
         thread.join()
 
-    print("Tests generated in 'tests/structs' directory.")
+    print("Tests generated in 'tests/models' directory.")
 
 
 if __name__ == "__main__":
