@@ -88,5 +88,3 @@ def test_invalid_activation_raises_error():
         ConvolutionLanguageBlock(
             128, 256, 3, 1, activation="invalid_activation"
         )
-
-

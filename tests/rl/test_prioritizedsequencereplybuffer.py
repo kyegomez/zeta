@@ -2,7 +2,7 @@ import pytest
 import torch
 from zeta.rl.priortized_rps import (
     PrioritizedSequenceReplayBuffer,
-)  
+)
 
 
 @pytest.fixture

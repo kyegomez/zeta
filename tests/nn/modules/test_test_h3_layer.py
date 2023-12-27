@@ -53,4 +53,3 @@ def test_with_mocked_ssm():
 def test_invalid_dimension_raises_error():
     with pytest.raises(ValueError):
         H3Layer(0)
-

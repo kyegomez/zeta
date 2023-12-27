@@ -3,7 +3,7 @@ import pytest
 from torch import nn
 from zeta.ops.mos import (
     MixtureOfSoftmaxes,
-)  
+)
 
 
 # Create a fixture for initializing the model
