@@ -44,7 +44,10 @@ def test_step_without_closure():
 def test_step_with_closure():
     params = [torch.randn(3, 3, requires_grad=True) for _ in range(2)]
     optimizer = DecoupledLionW8Bit(params)
-    closure = lambda: torch.sum(params[0] ** 2 + params[1] ** 2)
+
+    def closure():
+        return torch.sum(params[0] ** 2 + params[1] ** 2)
+
     loss = optimizer.step(closure)
 
     assert loss is not None
@@ -62,7 +65,10 @@ def test_step_param_no_grad():
 def test_step_param_with_grad():
     params = [torch.randn(3, 3, requires_grad=True) for _ in range(2)]
     optimizer = DecoupledLionW8Bit(params)
-    closure = lambda: torch.sum(params[0] ** 2 + params[1] ** 2)
+
+    def closure():
+        return torch.sum(params[0] ** 2 + params[1] ** 2)
+
     closure().backward()
     optimizer.step_param(params[0], optimizer.param_groups[0])
 
@@ -72,7 +78,10 @@ def test_step_param_with_grad():
 def test_step_param_not_cuda():
     params = [torch.randn(3, 3, requires_grad=True) for _ in range(2)]
     optimizer = DecoupledLionW8Bit(params, quantize=True)
-    closure = lambda: torch.sum(params[0] ** 2 + params[1] ** 2)
+
+    def closure():
+        return torch.sum(params[0] ** 2 + params[1] ** 2)
+
     closure().backward()
 
     with pytest.raises(NotImplementedError):
@@ -96,7 +105,10 @@ def test_step_without_closure():
 def test_step_with_closure():
     params = [torch.randn(3, 3, requires_grad=True) for _ in range(2)]
     optimizer = DecoupledLionW8Bit(params)
-    closure = lambda: torch.sum(params[0] ** 2 + params[1] ** 2)
+
+    def closure():
+        return torch.sum(params[0] ** 2 + params[1] ** 2)
+
     loss = optimizer.step(closure)
 
     assert loss is not None
@@ -114,7 +126,10 @@ def test_step_param_no_grad():
 def test_step_param_with_grad():
     params = [torch.randn(3, 3, requires_grad=True) for _ in range(2)]
     optimizer = DecoupledLionW8Bit(params)
-    closure = lambda: torch.sum(params[0] ** 2 + params[1] ** 2)
+
+    def closure():
+        return torch.sum(params[0] ** 2 + params[1] ** 2)
+
     closure().backward()
     optimizer.step_param(params[0], optimizer.param_groups[0])
 
@@ -124,7 +139,10 @@ def test_step_param_with_grad():
 def test_step_param_not_cuda():
     params = [torch.randn(3, 3, requires_grad=True) for _ in range(2)]
     optimizer = DecoupledLionW8Bit(params, quantize=True)
-    closure = lambda: torch.sum(params[0] ** 2 + params[1] ** 2)
+
+    def closure():
+        return torch.sum(params[0] ** 2 + params[1] ** 2)
+
     closure().backward()
 
     with pytest.raises(NotImplementedError):

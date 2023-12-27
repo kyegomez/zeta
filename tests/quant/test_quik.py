@@ -1,6 +1,4 @@
-import pytest
 import torch
-from torch import nn
 from zeta.quant.quick import QUIK
 
 

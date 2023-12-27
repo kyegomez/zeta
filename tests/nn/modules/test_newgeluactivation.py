@@ -46,16 +46,16 @@ def test_newgeluactivation_forward_values(test_input, expected):
 def test_newgeluactivation_forward_handle_empty():
     gelu = NewGELUActivation()
     with pytest.raises(RuntimeError):
-        out = gelu.forward(torch.tensor([]))
+        gelu.forward(torch.tensor([]))
 
 
 def test_newgeluactivation_forward_handle_none():
     gelu = NewGELUActivation()
     with pytest.raises(TypeError):
-        out = gelu.forward(None)
+        gelu.forward(None)
 
 
 def test_newgeluactivation_forward_handle_string():
     gelu = NewGELUActivation()
     with pytest.raises(TypeError):
-        out = gelu.forward("string")
+        gelu.forward("string")

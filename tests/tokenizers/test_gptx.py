@@ -1,5 +1,4 @@
 import torch
-import pytest
 from zeta.tokenizers.gptx_tokenizer import LanguageTokenizerGPTX
 
 

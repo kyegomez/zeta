@@ -1,4 +1,3 @@
-import pytest
 import torch
 from zeta.nn.modules.fused_gelu_dense import FusedDenseGELUDense
 
@@ -8,8 +7,8 @@ def test_class_init():
 
     assert model.dim == 512
     assert model.dim_out == 1024
-    assert model.bias == True
-    assert model.has_fp16_weights == False
+    assert model.bias is True
+    assert model.has_fp16_weights is False
     assert model.threshold == 6.0
 
 
@@ -20,8 +19,8 @@ def test_class_init_with_args():
 
     assert model.dim == 512
     assert model.dim_out == 1024
-    assert model.bias == False
-    assert model.has_fp16_weights == True
+    assert model.bias is False
+    assert model.has_fp16_weights is True
     assert model.threshold == 5.0
 
 

@@ -1,5 +1,4 @@
 import torch
-import pytest
 from zeta.nn.modules.simple_resblock import SimpleResBlock
 
 

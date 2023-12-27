@@ -144,7 +144,14 @@ nav:
               - Decoder: "zeta/nn/architecture/decoder.md"
               - Transformer: "zeta/nn/architecture/transformer.md"
               - TransformerBlock: "zeta/nn/architecture/transformerblock.md"
-              - VideoTokenizer: "zeta/nn/architecture/video_tokenizer.md"
+              - paralleltransformerblock: "paralleltransformerblock.md"
+              - hierarchicalblock: "hierarchicalblock.md"
+              - vitransformerwrapper: "vitransformerwrapper.md"
+              - localtransformer: "localtransformer.md"
+              - autoregressivewrapper: "autoregressivewrapper.md"
+              - simpletransformer: "simpletransformer.md"
+              - encoder: "encoder.md"
+              - encoderdecoder: "encoderdecoder.md"
           - zeta.training.loss:
               - Nebula: "zeta/training/nebula.md"
           - zeta.training.optimizers:

@@ -1,5 +1,4 @@
 import torch
-import pytest
 from zeta.structs.encoder_decoder import EncoderDecoder
 from argparse import Namespace
 
@@ -10,8 +9,8 @@ def test_encoder_decoder_initialization():
 
     assert isinstance(encoder_decoder, EncoderDecoder)
     assert encoder_decoder.args == args
-    assert encoder_decoder.args.share_all_embeddings == True
-    assert encoder_decoder.args.share_decoder_input_output_embed == True
+    assert encoder_decoder.args.share_all_embeddings is True
+    assert encoder_decoder.args.share_decoder_input_output_embed is True
 
 
 def test_encoder_decoder_forward():
