@@ -133,6 +133,9 @@ nav:
               - gatedresidualblock: "zeta/nn/modules/gatedresidualblock.md"
               - tripleskipblock: "zeta/nn/modules/tripleskipblock.md"
               - DynamicRoutingBlock: "zeta/nn/modules/dynamicroutingblock.md"
+              - AverageModelMerger: "zeta/nn/modules/averagemodelmerger.md"
+              - SLERPModelMerger: "zeta/nn/modules/slerpmodelmerger.md"
+              - QuantizedLN: "zeta/nn/modules/quantizedln.md"
           - zeta.nn.attention:
               - FlashAttention: "zeta/nn/attention/flash_attention.md"
               - MultiQueryAttention: "zeta/nn/attention/multiquery.md"

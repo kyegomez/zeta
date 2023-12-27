@@ -9,11 +9,9 @@ from scripts.auto_tests_docs.docs import DOCUMENTATION_WRITER_SOP
 from swarms import OpenAIChat
 
 ##########
-from zeta.nn.modules.triple_skip import TripleSkipBlock
-from zeta.nn.modules.dynamic_routing_block import DynamicRoutingBlock
-from zeta.nn.modules.gated_residual_block import GatedResidualBlock
-from zeta.nn.modules.stochastic_depth import StochasticSkipBlocK
-
+from zeta.nn.modules.quantized_layernorm import QuantizedLN
+from zeta.nn.modules.slerp_model_merger import SLERPModelMerger
+from zeta.nn.modules.avg_model_merger import AverageModelMerger
 
 ####################
 load_dotenv()
@@ -23,7 +21,7 @@ api_key = os.getenv("OPENAI_API_KEY")
 model = OpenAIChat(
     model_name="gpt-4",
     openai_api_key=api_key,
-    max_tokens=2000,
+    max_tokens=3000,
 )
 
 
@@ -61,10 +59,9 @@ def process_documentation(cls):
 
 def main():
     classes = [
-        TripleSkipBlock,
-        DynamicRoutingBlock,
-        GatedResidualBlock,
-        StochasticSkipBlocK,
+        QuantizedLN,
+        SLERPModelMerger,
+        AverageModelMerger,
     ]
 
     threads = []
