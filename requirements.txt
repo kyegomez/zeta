@@ -1,5 +1,4 @@
 torch==2.1.2
-fairscale==0.4.0
 timm==0.6.13
 einops==0.7.0
 memory-profiler
