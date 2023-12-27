@@ -2,7 +2,7 @@ import pytest
 import torch
 from zeta.rl.priortized_replay_buffer import (
     PrioritizedReplayBuffer,
-)  
+)
 
 
 @pytest.fixture

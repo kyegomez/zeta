@@ -1,7 +1,7 @@
 import pytest
 from zeta.rl.sumtree import (
     SumTree,
-)  
+)
 
 
 # Fixture for initializing SumTree instances with a given size
