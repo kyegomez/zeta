@@ -38,6 +38,7 @@ from zeta.utils.main import (
     interpolate_pos_encoding_2d,
 )
 
+from zeta.utils.enforce_types import enforce_types
 
 __all__ = [
     "track_cuda_memory_usage",
@@ -73,4 +74,5 @@ __all__ = [
     "cast_if_src_dtype",
     "get_sinusoid_encoding_table",
     "interpolate_pos_encoding_2d",
+    "enforce_types",
 ]
