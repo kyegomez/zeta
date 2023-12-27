@@ -7,7 +7,8 @@ from torch import Tensor, nn
 import logging
 
 
-logger = logging.get_logger(__name__)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 
 class PytorchGELUTanh(nn.Module):
