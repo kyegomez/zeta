@@ -25,3 +25,4 @@ mkdocs-material
 mkdocs-glightbox
 skypilot==0.4.1
 argparse
+sumtree
