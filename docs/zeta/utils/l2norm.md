@@ -1,8 +1,27 @@
 # l2norm
 
-# Module Name: zeta.utils
+# Module Name: `l2norm`
+---
 
-## Function: l2norm
+Function: `l2norm(t, groups=1)`
+
+The `l2norm` is a function written in Python that uses the PyTorch library to normalize tensors. This particular function uses the `L2` or Euclidean norm. The function also handles grouped tensors and normalizes over each group separately. This function can be crucial in many scenarios where input tensors need to be normalized.
+
+## Parameters:
+
+| Parameter | Type | Default value | Description |
+|-----------|------|---------------|-------------|
+| t         | Tensor | N/A | Input tensor to be normalized. |
+| groups    | int | 1 | Number of groups to split the tensor in. |
+
+## Returns:
+
+| Output | Type | Description |
+|--------|------|-------------|
+| Tensor | Tensor | The L2-normalized tensor.
+
+_Source Code:_
+
 ```python
 def l2norm(t, groups=1):
     t = rearrange(t, "... (g d) -> ... g d", g=groups)
@@ -10,51 +29,56 @@ def l2norm(t, groups=1):
     return rearrange(t, "... g d -> ... (g d)")
 ```
 
-### Overview
-The function `l2norm` as the name suggests, is used for L2 normalization of tensors. L2 normalization is the process of dividing a feature vector by its L2 norm, which results in a vector on the unit sphere. It helps deal with issues involving scale variance in data.
+This function first rearranges the tensor `t` into the specified number of `groups`. After this rearrangement, it normalizes each group using the PyTorch function `F.normalize()` with `p=2`, which indicates the use of L2 or Euclidean norm and `dim=-1`, which normalizes over the last dimension. Finally, the function returns the tensor after rearranging it back to its original structure.
 
-The `l2norm` function takes in a tensor and an optional `groups` parameter, rearranges the elements of the tensor as per the `groups` parameter, performs the normalization and then again rearranges elements to their original order.
+## Usage Examples :
 
-The function makes use of the `rearrange` function from the `einops` library and the `normalize` function from PyTorch's `torch.nn.functional` library.
-
-### Parameters
-The `l2norm` function has the following parameters:
-
-| Argument | Type | Description | Default Value |
-| --- | --- | ---| --- |
-| t | torch.Tensor | The tensor that requires L2 normalization. | - |
-| groups | int | The number of groups to divide the tensor into before applying normalization. | 1 |
-
-### Usage
-Here are three examples showcasing the usage of the `l2norm` function:
-
-#### Example 1 
+### Example 1:
 ```python
-from zeta.utils import l2norm
-import torch
+# Ignore import errors, they are part of the example code
+from torch import randn
+from einops import rearrange
 
-# Creating a 3-dimensional tensor
-tensor = torch.rand(4,2,2)
-
-# Using l2norm without specifying groups
-normalized_tensor = l2norm(tensor)
-
-# Print the output
-print(normalized_tensor)
+t = randn(2, 2, 3)  
+result = l2norm(t, groups=2)
 ```
 
-In this example, we create a random 3-dimensional tensor and use the `l2norm` function to normalize it without specifying the `groups` parameter. Thus, the tensor will not be divided into groups before normalization.
+In this example, we generate a random tensor `t` with dimensions (2,2,3) using the `torch.randn()` function. Then we call the `l2norm` function with this tensor as the argument and normalize over 2 groups.
 
-#### Example 2
+### Example 2:
 ```python
-from zeta.utils import l2norm
-import torch
+# Ignore import errors, they are part of the example code
+from torch import randn
+from einops import rearrange
 
-# Creating a 3-dimensional tensor
-tensor = torch.rand(4,2,2)
+t = randn(3, 3, 3) 
+result = l2norm(t, groups=1)
+```
 
-# Using l2norm specifying groups as 2
-normalized_tensor = l2norm(tensor, groups=2)
+In this example, we generate a random tensor `t` with dimensions (3,3,3) using the `torch.randn()` function. Then we call the `l2norm` function with this tensor as the argument and normalize over a single group.
 
-# Print the output
+### Example 3:
+```python
+# Ignore import errors, they are part of the example code
+from torch import randn
+from einops import rearrange
 
+t = randn(4, 4, 2) 
+result = l2norm(t, groups=4)
+```
+
+In this example, we generate a random tensor `t` with dimensions (4,4,2) using the `torch.randn()` function. Then we call the `l2norm` function with this tensor as the argument and normalize over 4 groups.
+
+---
+
+_Tips on usage_:
+
+While using the `l2norm` function, it is necessary to understand the dimensions of the input tensor and the number of groups that we wish to normalize over. More groups would mean more `dim` divisions, followed by individual normalization. This could potentially improve the accuracy of certain ML models where normalization is important.
+
+A suitable value for `groups` would depend entirely on the task at hand and would often need to be determined through experimentation. 
+
+Possible errors may arise if the number of groups is not a divisor of the number of dimensions in the tensor. In such a case, a more suitable value for `groups` should be selected.
+
+---
+
+_For more detailed information, please refer to the Pytorch documentation linked [here](https://pytorch.org/docs/stable/tensors.html) and the Einops documentation linked [here](https://einops.rocks/)_.

@@ -2,12 +2,13 @@
 
 # Module Name: module_device
 
-This decorator provides an extended functionality to PyTorch's nn.Module. PyTorch's nn.Module does not have a specific property that explicitly points out which device it resides on. This decorator provides the `device` property to the class that can be used to return the device of a particular PyTorch's nn.Module class.
+The `module_device` is a Python decorator function that efficiently manages a device on which a PyTorch neural network models, which is a subclass of `torch.nn.Module`, is loaded. This decorator helps in tracking the device on which different components (such as tensors) of the model are, especially in complex design models where different tensors can be on separate devices. This helps to avoid any device mismatch errors during computation.
 
-## Function Definition
+Moreover, it allows the developers to add their custom functions or operations that could be performed whenever the device changes. Also, it has an in-built compatibility check feature, which elegantly handles the case of trying to transfer to GPUs when CUDA is not available.
 
-The decorator is defined as follows:
+To dive deep, let's see the main components and details of this function.
 
+## Class Defintion:
 ```python
 def module_device(
     device_property_name: str = "device",
@@ -15,42 +16,69 @@ def module_device(
     compatibility_check: bool = False,
 ):
 ```
+This function has three parameters – `device_property_name`, `on_device_transfer`, and `compatibility_check`.
 
-### Parameters
+| Parameter              | Type   |  Default  |  Description                                                                                                                                 |
+|------------------------|--------|-----------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| device_property_name   | string |  "device" | Name of the attribute which would track the device of the decorated class.                                                                  |
+| on_device_transfer     | callable/disable | None   | A callable function that will be invoked whenever the device changes. This function will be executed after the object is transferred to a new device. If None, no function will be executed. |
+| compatibility_check    | boolean    | False   | If True, checks the compatibility of the device change in case of CUDA not being available when trying to transfer to GPUs.   |
 
-| Parameter              | Type    | Default Value | Description |
-|------------------------|---------|---------------|-------------|
-| device_property_name   | str     | "device"        | The name of the device property. |
-| on_device_transfer     | function| None            | A function to be called whenever the device is transferred.|
-| compatibility_check    | bool    | False           | If set to True, raises an exception if "cuda" is in the device string while CUDA is not available. |
+Here, `_dummy` is a registered buffer, a PyTorch state that is not a parametric tensor of the model but you want to save the model, so it persists across saving/loading roundtrips.
 
-## Inner Functions and Properties
+In case of multiple GPUs and your model spans them, this decorator will store all the devices.
 
-### decorator
+The `decorator` function wraps around a user-defined class. It keeps track of the device and throws an error when an incompatible device is used and updates the new device property in case of valid device change. It can also assist in performing user defined operations in case of device change using `on_device_transfer` function.
 
-```python
-def decorator(klass):
-```
-The function takes a class as input and then checks if the input `klass` is a subclass of torch.nn.Module.
+## Usage Examples:
+Let's look at three ways to use this function.
 
-### \_\_init\_\_
-
-```python
-def __init__(self, *args, **kwargs):
-```
-It overrides the original `__init__` method of the class and registers a buffer named "_dummy", which is a non-persistent tensor containing a single zero. 
-
-### \_\_to
+### Example 1:
+In the first example, we simply use this decorator to add a new device property (named "my_cuda_device" here) to our model, which always stores the current device of our model.
 
 ```python
-def __to(self, device, *args, **kwargs):
-```
-This function is overloading the `to()` method of the torch.nn.Module class. It first checks if the `compatibility_check` flag is true and CUDA is not available, but the device is "cuda". If this is the case, a RuntimeError is raised. Otherwise, the `to()` method of torch.nn.Module is called with the specified parameters.
+from torch.nn import Module
+from torch import tensor
 
-### _device_property
+@module_device(device_property_name="my_cuda_device")
+class MyModel(Module):
+	def __init__(self, input_size, output_size):
+		super(MyModel, self).__init__()
+		self.fc1 = nn.Linear(input_size, output_size)
+
+MyModel_obj = MyModel(10, 10)
+MyModel_obj.to('cuda')
+
+print(MyModel_obj.my_cuda_device)  # Output: cuda:<device_no> 
+```
+### Example 2:
+
+In the second example, we will define a function that will be executed whenever the device changes. Here for simplicity, we will just print a simple message.
 
 ```python
-@property
-def _device_property(self):
+def transfer_fn(self, device):
+    print(f"Transferred to {device}")
+
+@module_device(on_device_transfer=transfer_fn)
+class SecondModel(Module):
+    pass
+
+SecondModel_obj = SecondModel()
+SecondModel_obj.to('cuda')  # Output: Transferred to cuda:<device_no> 
 ```
-The `_device_property` helps in fetching the device property of the object. It does not take any parameters and returns the device on which the model is residing. It does this by checking the device of all parameters and buffers of the model. if the model resides on more than one device, it returns all the
+### Example 3:
+
+In the third example, we will use both the features discussed above together:
+
+```python
+def transfer_fn(self, device):
+    print(f"Transferred to {device}")
+
+@module_device(device_property_name="my_device", on_device_transfer=transfer_fn)
+class ThirdModel(Module):
+    pass
+
+ThirdModel_obj = ThirdModel()
+ThirdModel_obj.to('cuda')  # Output: Transferred to cuda:<device_no> 
+print(ThirdModel_obj.my_device)  # Output: cuda:<device_no> 
+```

@@ -1,59 +1,73 @@
 # top_p
 
-# Zeta Utils Library Documentation
+# Module Name: zeta.utils.top_p
 
-The Zeta Utils library is a simple utility library providing a single function, `top_p`, for manipulating and filtering PyTorch tensor-based data sets according to a specified threshold value.
-
-## `top_p` Function
-
-### Function Objective
-
-`top_p` function sorts the values in a tensor, calculates a cumulative sum from a softmax and then applies a threshold to exclude the highest probabilities. Useful when trying to constrain outputs in a certain range.
-
-### Function Definition
-
+Function: 
 ```python
 def top_p(logits, thres=0.9):
 ```
 
-### Parameters
+The `top_p` function is a part of the `zeta.utils` library. This function uses a process known as nucleus sampling, or top-p sampling, to handle logits from a language model. This function is intended to be used with the softmax output of language model sequences, making it an important method for text generation tasks.
 
-| Parameter | Type  | Default Value | Description                                                                                                                               |
-|-----------|-------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| `logits`  | Tensor| None          | Input tensor containing the values to be processed.                                                                                       |
-| `thres`   | Float | 0.9           | Threshold value used to filter the highest probabilities.                                                                                  |
+Nucleus sampling is a form of sampling to solve the problem of text generation. It selects the highest probability tokens whose cumulative probability mass exceeds a given threshold.
 
+This function is especially useful for deep learning algorithms involved in text generation tasks, where using pure maximum likelihood approximations might lead to highly repetitive and nonsensical outputs. By applying the `top_p` function, we can ensure more diverse and sensible outputs from such text generation models.
 
-### Return Types
+## Parameters:
 
-The function returns a Tensor with the same dimensions as the input tensor where the probabilities above the threshold have been filled with negative infinity (`float("-inf")`).
+Name | Type | Description | Default Value
+--- | --- | --- | ---
+logits | Tensor | These are the model's output log probabilities, expected to be in the format of a 2D tensor. ||
+thres | float | A hyperparameter for top-p sampling, it adjusts the trade-off between randomness and fidelity in the generated text. This parameter indicates the cumulative probability threshold used for the nucleus sampling. | 0.9
 
-### Internal Functioning 
+The function returns logits processed by top-p sampling method, with least probable options removed according to the defined threshold value.
 
-- First, `logits` are sorted by descending order, receiving both the sorted values and their corresponding indices.
-- Next, the softmax of the sorted values is calculated and a cumulative sum over the results is performed.
-- Then, a tensor of the same dimension as cum_probs is created, filled with True if the cumulative probability is above the threshold (1 - `thres`), and False otherwise.
-- After that, a little shift is made on this tensor to the right so that the values do not exceed the threshold value limit. The first element is explicitly set to 0 (or false).
-- Afterwards, the sorted tensor is updated by replacing values at sorted_indices_to_remove (those above threshold) with negative infinity (`float("-inf")`).
-- Finally, the `scatter` function rearranges the updated sorted_logits back into the original structure.
+## Usage 
 
+For this function, we first begin by importing the necessary libraries, which in this case are `torch` and its sublibrary `torch.nn.functional`.
 
-## Usage examples 
-
-### Example 1
-
-```python
+``` python
 import torch
-from torch.nn import functional as F
-from zeta.utils import top_p
+import torch.nn.functional as F
 
-logits = torch.randn(10, 10)
-result = top_p(logits)
+def top_p(logits, thres=0.9):
+    sorted_logits, sorted_indices = torch.sort(logits, descending=True)
+    cum_probs = torch.cumsum(F.softmax(sorted_logits, dim=-1), dim=-1)
+
+    sorted_indices_to_remove = cum_probs > (1 - thres)
+    sorted_indices_to_remove[:, 1:] = sorted_indices_to_remove[:, :-1].clone()
+    sorted_indices_to_remove[:, 0] = 0
+
+    sorted_logits[sorted_indices_to_remove] = float("-inf")
+    return sorted_logits.scatter(1, sorted_indices, sorted_logits)
 ```
 
-This example demonstrates the basic use of the `top_p` function which accepts a tensor with random values and a default threshold value of `0.9`.
+We can illustrate the process using a simple example.
 
-### Example 2
+``` python
+# Define logits tensor         
+logits = torch.tensor([[0.5, 0.4, 0.1]]) 
 
-```python
-import torch
+# Call the top_p function   
+filtered_logits = top_p(logits, thres=0.9)
+print('The filtered logits are:')
+print(filtered_logits)
+
+# this should give us:
+# tensor([[[0.5000], [0.4000], [-inf.]])
+```
+
+In this example, `'filtered_logits'` now contains the logits from `'logits'` but the least probable entries (inferior to `thres`) have been replaced by `-inf.` which makes them impossible to be chosen in a subsequent random sampling.
+
+Keep in mind that in actual use cases the logits tensor would be the output of a pretrained language model and would have more complex dimensions, but the function would be used in the same way.
+
+## Tips
+- The choice of threshold value `'thres'` in the function `top_p(logits, thres=0.9)` is very important, as it determines the trade-off between fidelity (how closely the generated text matches the given input text) and diversity (how different the generated text is from the input text). A smaller threshold value may lead to more repetitive and less diverse text, while a larger threshold value may lead to more diverse but also more unpredictable and potentially incoherent text. You can fine-tune this value based on your specific needs and objectives.
+
+## References
+- [The Curious Case of Neural Text Degeneration](https://arxiv.org/abs/1904.09751)
+- [Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer](https://arxiv.org/abs/1910.10683)
+
+Reference to PyTorch which this function is heavily tied to:
+
+- [PyTorch Documentation](https://pytorch.org/docs/stable/index.html) for further exploration.

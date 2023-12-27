@@ -1,64 +1,110 @@
 # init_zero_
 
-# Module Name: zeta.utils
+# **Zeta.utils**
 
-## Function Name: init_zero_
+## **Overview**
 
-The `init_zero_` function is used to initialize the weights and bias of a PyTorch layer to zero. Initialization of the weights and biases of a layer play a crucial role regarding the performance of a deep learning model. Here, we're initializing every parameter to zero, turning the model into a "zero model". This is useful for certain tasks where you need your model to start with a clean slate.
+`zeta.utils` is a small set of utility functions designed specifically to work in Pytorch-based environments. The primary purpose of these utilities is to streamline common operations and data manipulations that are frequently used when working with Pytorch. 
 
-This function is designed to work with any layer type available in the `torch.nn.Module` of PyTorch framework. However, it should be noted that if we initialize parameters of all layers as zero, then all the neurons at each layer will learn the same features during training. This function should be used when you're sure that initializing parameters to zero fits your specific needs.
+In this particular module, most of the functions are generally geared towards simplifying and optimizing weight and bias initialization of torch layers. In neural network architectures, appropriate initialization of weights and biases is crucial to ensuring models converge during training.
 
-Below is the function definition and description of the parameters:
+## **Function Definition: `init_zero_`**
 
-| Function parameters | Description                                                                                                        |
-|---------------------|--------------------------------------------------------------------------------------------------------------------|
-| layer               |A `torch.nn.Module` object: The layer to initialize.|
+### **Function Signature**
+```python
+def init_zero_(layer:torch.nn.Module):
+```
+Initializes all the weights and biases of a specified torch layer to zero.
+
+<details close=''>
+<summary><b>Function Parameters</b></summary>
+<p>
+
+| Argument | Type | Default Value | Description |
+| --- | --- | --- | --- |
+| `layer` | torch.nn.Module | None | The layer whose weights and bias you want to initialize to zero. |
+
+</p>
+</details>
+
+### **Functionality and Usage**
+
+`init_zero_` performs weight and bias initialization by filling the provided layer tensor with zeros. Zero initialization is typically used for debugging purposes and is generally not recommended for training models. 
+
+However, in some cases, zero initialization can serve a useful purpose in assigning uniform initial importance to all input features. Additionally, using zero initialization can avoid potential issues with exploding or vanishing gradients, especially in larger and more complex models. 
+
+<details close=''>
+<summary><b>Usage Examples</b></summary>
+<p>
+
+Before we proceed, let us first import the required modules and dependencies.
 
 ```python
-def init_zero_(layer):
-    """
-    Initialize the weights and bias of a torch layer to zero.
-
-    Args:
-        layer (torch.nn.Module): The layer to initialize.
-    """
-    nn.init.constant_(layer.weight, 0.0)
-    if layer.bias is not None:
-        nn.init.constant_(layer.bias, 0.0)
+import torch
+from torch import nn
+from zeta.utils import init_zero_, exists
 ```
 
-## How to Use init_zero_
-
-Below we provide three different examples showing the usage of `init_zero_` function.
-
-### Example 1: Initializing a Linear Layer with `init_zero_`
+**Example 1: Initializing a Single Linear Layer**
 
 ```python
-import torch.nn as nn
-import zeta.utils as utils
+# Create a single linear layer
+layer = nn.Linear(10, 5)
 
-# define a linear layer
-linear_layer = nn.Linear(10, 5)
+# Initialize weights and bias to zero
+init_zero_(layer)
 
-# initialize the layer with zeros
-utils.init_zero_(linear_layer)
-
-# print the weights and the bias of the layer
-print(linear_layer.weight)
-print(linear_layer.bias)
+print("Weights:", layer.weight)
+print("Bias:", layer.bias)
 ```
 
-### Example 2: Initializing a Convolutional Layer with `init_zero_`
+In this example, you can observe that after applying `init_zero_()`, all the weights and biases of the layer are initialized to zero.
+
+**Example 2: Initializing All Layers in a Neural Network Model**
 
 ```python
-import torch.nn as nn
-import zeta.utils as utils
+# Create a simple neural network
+model = nn.Sequential(
+    nn.Linear(10, 5),
+    nn.ReLU(),
+    nn.Linear(5, 1)
+)
 
-# define a 2d convolutional layer
-conv_layer = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1)
+# Loop through each layer in the model
+for layer in model:
+    # Check if the layer has a weight, i.e., is a nn.Linear() layer
+    if exists(layer, 'weight'):
+        init_zero_(layer)
 
-# initialize the layer with zeros
-utils.init_zero_(conv_layer)
+# Check weights of first layer
+print("Weights of First Layer:", model[0].weight)
+print("Bias of First Layer:", model[0].bias)
 
-# print the weights and the bias of the layer
+# Check weights of third layer
+print("Weights of Third Layer:", model[2].weight)
+print("Bias of Third Layer:", model[2].bias)
+```
 
+In this example, `init_zero_` is used to initialize all the weights and biases in a neural network model to zero.
+
+</p>
+</details>
+
+### **Additional Information**
+
+When working with this utility, it's important to remember that although zero initializing weights and biases can be useful for debugging, it is generally not effective for training deep learning models. This is because all neurons in the network start producing the same output and subsequent layers receive virtually identical signals; breaking the symmetry is crucial for the model to learn from various features in the dataset.
+
+Moreover, this function preserves the data type and device of the original tensor, so you do not have to worry about device or dtype mismatches.
+
+### **External Resources**
+
+For further exploration and understanding, you may refer to the following resources and references -
+1. PyTorch Documentation: [torch.nn.init.constant_](https://pytorch.org/docs/stable/nn.init.html#torch.nn.init.constant_)
+2. Blog post on Initialization Techniques: [Weight Initialization in Neural Networks: A Journey From the Basics to Kaiming](https://towardsdatascience.com/weight-initialization-in-neural-networks-a-journey-from-the-basics-to-kaiming-954fb9b47c79)
+
+That concludes the documentation for the `init_zero_` function in `zeta.utils`. For usage and technical details on other functions in the module, refer to their respective documentation.
+
+---
+
+## **Function Definition: `exists`**
+[comment]: <> (This is a placeholder for the `exists` function from `zeta.utils`. It should be documented in the similar exhaustive manner)

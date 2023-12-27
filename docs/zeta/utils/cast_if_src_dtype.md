@@ -1,56 +1,89 @@
 # cast_if_src_dtype
 
-# Zeta Utils Documentation
+# Module Name: `cast_if_src_dtype`
+****
+# Description
+`cast_if_src_dtype` is a utility function that checks the data type (`dtype`) of a given tensor. If the tensor's `dtype` matches the provided source `dtype` (`src_dtype`), the function will cast the tensor to the target `dtype` (`tgt_dtype`). After the casting operation, the function returns the updated tensor and a `boolean` flag indicating whether the tensor data type was updated.
 
-## Table of Contents
+This function provides a convenient way to enforce specific data types for torch tensors.
 
-1. [cast_if_src_dtype](#cast_if_src_dtype)
+# Class/Function Signature in Pytorch
 
-<a name='cast_if_src_dtype'></a>
-## cast_if_src_dtype 
-`cast_if_src_dtype(tensor, src_dtype, tgt_dtype)`
+```python
+def cast_if_src_dtype(
+    tensor: torch.Tensor, src_dtype: torch.dtype, tgt_dtype: torch.dtype
+):
+    updated = False
+    if tensor.dtype == src_dtype:
+        tensor = tensor.to(dtype=tgt_dtype)
+        updated = True
+    return tensor, updated
+```
+# Parameters
 
-This function is utilized to change the data type (`dtype`) of a given tensor if the current data type matches the source data type specified. The process of changing one type to another is called "Casting" in both general computing and PyTorch. 
+| Parameter | Type | Description |
+| :-------- | :--: | :---------- |
+| `tensor`  | `torch.Tensor` | The tensor whose data type is to be checked and potentially updated. |
+| `src_dtype` | `torch.dtype` | The source data type that should trigger the casting operation. |
+| `tgt_dtype` | `torch.dtype` | The target data type that the `tensor` will be cast into if the source data type matches its data type. |
 
-The function requires three arguments: `tensor`, `src_dtype`, and `tgt_dtype`.
+# Functionality and Use
+**Functionality:** `cast_if_src_dtype` takes in three parameters: a tensor, a source data type, and a target data type. If the data type of the tensor equals the source data type, the function casts this tensor to the target data type. The function then returns both the potentially modified tensor and a flag indicating whether the cast was performed.
 
-You would want to use this function when working with different data types in PyTorch. For instance, it ensures uniform data types across tensors for operations that require tensors of the same type. With this utility function, we can cast our tensor to the desired type only if the source type matches our tensor.
+**Usage**: This utility function is used when certain operations or functions require inputs of a specific data type. A common scenario is when tensors with floating-point data types need to be converted to integers or vice versa.
 
-Below is the table summary of the arguments of this function:
+# Usage Examples
+Below are some examples of how the function could be used:
 
-| Argument | Type | Description |
-| :- | :- | :- |
-| tensor   | torch.Tensor | The input tensor whose data type may need to be changed. |
-| src_dtype | torch.dtype | The source data type to be matched. If the current data type of the tensor matches this, it will be changed. |
-| tgt_dtype | torch.dtype | The target data type to which the tensor will be casted if its current data type matches the source data type. |
-
-The function returns two variables:
-
- 1. The potentially updated tensor.
- 2. A boolean variable (`True` if the tensor was updated, `False` if not).
-
-### Examples
-
-#### Basic Example
-
-Here's an example of how it works. We'll start by importing the necessary tools:
-
+## Example 1
 ```python
 import torch
 from zeta.utils import cast_if_src_dtype
-```
-Now, let's say we're given the following tensor of integers:
 
+# Given: a float tensor
+tensor = torch.tensor([1.0, 2.0, 3.0])
+
+# We want to convert it to integer type tensor if its data type is float32
+tensor, updated = cast_if_src_dtype(tensor, torch.float32, torch.int32)
+
+print(tensor) # tensor([1, 2, 3], dtype=torch.int32)
+print(updated) # True
+```
+
+## Example 2
 ```python
-t1 = torch.tensor([1, 2, 3, 4, 5])
-print(t1.dtype)  # Outputs torch.int64
-```
-We want to cast this tensor to `float32` only if it's current dtype is `int64`. Here's how to do it:
+import torch
+from zeta.utils import cast_if_src_dtype
 
+# Given: an integer tensor
+tensor = torch.tensor([1, 2, 3])
+
+# We want to convert it to float type tensor if its data type is int32
+tensor, updated = cast_if_src_dtype(tensor, torch.int32, torch.float32)
+
+print(tensor) # tensor([1.0, 2.0, 3.0])
+print(updated) # True
+```
+
+## Example 3
 ```python
-t1, updated = cast_if_src_dtype(t1, torch.int64, torch.float32)
+import torch
+from zeta.utils import cast_if_src_dtype
 
-print(t1.dtype)  # Outputs torch.float32
-print(updated)  # Outputs True
+# Given: an integer tensor
+tensor = torch.tensor([1, 2, 3])
+
+# If the data type is not equal to the source data type, the tensor will remain the same
+tensor, updated = cast_if_src_dtype(tensor, torch.float32, torch.int32)
+
+print(tensor) # tensor([1, 2, 3])
+print(updated) # False
 ```
-In this
+# Resources and References
+For more information on tensor operations and data types in PyTorch, refer to the official PyTorch documentation:
+
+- [PyTorch Tensor Operations](https://pytorch.org/docs/stable/tensors.html)
+- [PyTorch Data Types](https://pytorch.org/docs/stable/tensor_attributes.html#torch.torch.dtype)
+
+# Note
+The `cast_if_src_dtype` function doesn't modify the original tensor in-place. Instead, it creates a new tensor with the updated data type. Keep that in mind during function calls, and be sure to substitute the original tensor with the returned tensor to reflect the change in the rest of your code.
