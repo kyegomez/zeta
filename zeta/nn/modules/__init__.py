@@ -67,6 +67,12 @@ from zeta.nn.modules._activations import (
     ReLUSquaredActivation,
 )
 
+
+from zeta.nn.modules.triple_skip import TripleSkipBlock
+from zeta.nn.modules.dynamic_routing_block import DynamicRoutingBlock
+from zeta.nn.modules.gated_residual_block import GatedResidualBlock
+from zeta.nn.modules.stochastic_depth import StochasticSkipBlocK
+
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
 # from zeta.nn.modules.scaled_sinusoidal import ScaledSinuosidalEmbedding
@@ -149,4 +155,8 @@ __all__ = [
     "LinearActivation",
     "LaplaceActivation",
     "ReLUSquaredActivation",
+    "TripleSkipBlock",
+    "DynamicRoutingBlock",
+    "GatedResidualBlock",
+    "StochasticSkipBlocK",
 ]

@@ -9,15 +9,11 @@ from scripts.auto_tests_docs.docs import DOCUMENTATION_WRITER_SOP
 from swarms import OpenAIChat
 
 ##########
-from zeta.models.andromeda import Andromeda
-from zeta.models.base import BaseModel
-from zeta.models.gpt4 import GPT4, GPT4MultiModal
-from zeta.models.llama import LLama2
-from zeta.models.max_vit import MaxVit
-from zeta.models.mega_vit import MegaVit
-from zeta.models.palme import PalmE
-from zeta.models.vit import ViT
-from zeta.models.navit import NaViT
+from zeta.nn.modules.triple_skip import TripleSkipBlock
+from zeta.nn.modules.dynamic_routing_block import DynamicRoutingBlock
+from zeta.nn.modules.gated_residual_block import GatedResidualBlock
+from zeta.nn.modules.stochastic_depth import StochasticSkipBlocK
+
 
 ####################
 load_dotenv()
@@ -27,7 +23,7 @@ api_key = os.getenv("OPENAI_API_KEY")
 model = OpenAIChat(
     model_name="gpt-4",
     openai_api_key=api_key,
-    max_tokens=4000,
+    max_tokens=2000,
 )
 
 
@@ -45,14 +41,14 @@ def process_documentation(cls):
 
     # Process with OpenAI model (assuming the model's __call__ method takes this input and returns processed content)
     processed_content = model(
-        DOCUMENTATION_WRITER_SOP(input_content, "zeta.models")
+        DOCUMENTATION_WRITER_SOP(input_content, "zeta.nn.modules")
     )
 
     # doc_content = f"# {cls.__name__}\n\n{processed_content}\n"
     doc_content = f"{processed_content}\n"
 
     # Create the directory if it doesn't exist
-    dir_path = "docs/zeta/models"
+    dir_path = "docs/zeta/nn/modules"
     os.makedirs(dir_path, exist_ok=True)
 
     # Write the processed documentation to a Markdown file
@@ -65,16 +61,10 @@ def process_documentation(cls):
 
 def main():
     classes = [
-        Andromeda,
-        BaseModel,
-        GPT4,
-        GPT4MultiModal,
-        LLama2,
-        MaxVit,
-        MegaVit,
-        PalmE,
-        ViT,
-        NaViT,
+        TripleSkipBlock,
+        DynamicRoutingBlock,
+        GatedResidualBlock,
+        StochasticSkipBlocK,
     ]
 
     threads = []
@@ -87,7 +77,7 @@ def main():
     for thread in threads:
         thread.join()
 
-    print("Documentation generated in 'docs/zeta/models' directory.")
+    print("Documentation generated in 'docs/zeta/nn/modules' directory.")
 
 
 if __name__ == "__main__":
