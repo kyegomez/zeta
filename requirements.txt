@@ -10,6 +10,8 @@ tokenmonster==1.1.12
 accelerate
 tensorflow
 datasets==2.10.1
+jax
+jaxlib
 torchdiffeq==0.2.3
 sentencepiece==0.1.98
 beartype==0.15.0

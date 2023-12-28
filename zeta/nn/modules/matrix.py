@@ -1,21 +1,7 @@
+import jax.numpy as jnp
 import numpy as np
-import subprocess
+import tensorflow as tf
 import torch
-
-try:
-    import jax.numpy as jnp
-except ImportError:
-    print("JAX not installed")
-    print("Installing JAX")
-    subprocess.run(["pip3", "install", "jax"])
-    subprocess.run(["pip3", "install", "jaxlib"])
-
-try:
-    import tensorflow as tf
-except ImportError:
-    print("Tensorflow not installed")
-    print("Installing Tensorflow")
-    subprocess.run(["pip3", "install", "tensorflow"])
 
 
 class Matrix:
