@@ -1,6 +1,6 @@
 import pytest
 import torch
-from zeta.nn import HierarchicalBlock
+from zeta.structs import HierarchicalBlock
 
 
 def test_HierarchicalBlock_init():

@@ -1,6 +1,6 @@
 import pytest
 import torch
-from zeta.nn import ViTransformerWrapper, Encoder
+from zeta.structs import ViTransformerWrapper, Encoder
 from torch.nn import Module
 
 

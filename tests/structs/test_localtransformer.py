@@ -1,7 +1,7 @@
 from torch import nn
 import pytest
 import torch
-from zeta.nn import LocalTransformer
+from zeta.structs import LocalTransformer
 from torch.autograd import gradcheck
 from zeta.nn.modules.dynamic_module import DynamicPositionBias
 

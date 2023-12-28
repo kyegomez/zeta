@@ -1,7 +1,7 @@
 import pytest
 import torch
 import torch.nn as nn
-from zeta.nn import SimpleTransformer
+from zeta.structs import SimpleTransformer
 
 
 def test_valid_init():
