@@ -3,7 +3,7 @@ import pytest
 import torch
 from zeta.structs import LocalTransformer
 from torch.autograd import gradcheck
-from zeta.nn.modules.dynamic_module import DynamicPositionBias
+from zeta.nn import DynamicPositionBias
 
 
 @pytest.fixture

@@ -1,3 +1,5 @@
+# Zeta 
+
 Build SOTA AI Models 80% faster with modular, high-performance, and scalable building blocks!
 
 [![Docs](https://readthedocs.org/projects/zeta/badge/)](https://zeta.readthedocs.io)

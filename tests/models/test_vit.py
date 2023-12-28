@@ -1,6 +1,7 @@
 import torch
 import pytest
-from zeta.models import ViT, Encoder
+from zeta.models import ViT
+from zeta.structs import Encoder
 
 # Sample Tests
 
