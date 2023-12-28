@@ -51,6 +51,8 @@ Returns:
 ```python
 import torch.nn as nn
 import torch.nn.functional as F
+from zeta.nn import HighwayLayer
+
 
 class HighwayLayer(nn.Module):
     def __init__(self, dim):
