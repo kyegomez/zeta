@@ -147,23 +147,6 @@ nav:
               - MixtureOfAttention: "zeta/nn/attention/mixture_of_attention.md"
               - MixtureOfAutoregressiveAttention: "zeta/nn/attention/mixture_of_attention_ar.md"
               - SparseAttention: "zeta/nn/attention/sparse_attn.md"
-          - zeta.structs:
-              - Decoder: "zeta/nn/architecture/decoder.md"
-              - Transformer: "zeta/nn/architecture/transformer.md"
-              - TransformerBlock: "zeta/nn/architecture/transformerblock.md"
-              - paralleltransformerblock: "paralleltransformerblock.md"
-              - hierarchicalblock: "hierarchicalblock.md"
-              - vitransformerwrapper: "vitransformerwrapper.md"
-              - localtransformer: "localtransformer.md"
-              - autoregressivewrapper: "autoregressivewrapper.md"
-              - simpletransformer: "simpletransformer.md"
-              - encoder: "encoder.md"
-              - encoderdecoder: "encoderdecoder.md"
-          - zeta.training.loss:
-              - Nebula: "zeta/training/nebula.md"
-          - zeta.training.optimizers:
-              - DecoupledLionW: "zeta/training/optimizers/decoupled_lion.md"
-              - SophiaG: "zeta/training/optimizers/sophia.md"
       - zeta.tokenizers:
           - MultiModalTokenizer: "zeta/tokenizers/multi_modal_tokenizer.md"
           - LanguageTokenizerGPTX: "zeta/tokenizers/language_tokenizer.md"
@@ -211,6 +194,8 @@ nav:
       - zeta.optim:
           - StableAdamWUnfused: "zeta/optims/adamw.md"
           - GradientAscent: "zeta/optims/ga.md"
+          - DecoupledLionW: "zeta/training/optimizers/decoupled_lion.md"
+          - SophiaG: "zeta/training/optimizers/sophia.md"
       - zeta.training:
           - fsdp: "zeta/training/fsdp.md"
           - ParallelWrapper: "zeta/training/parallel_wrapper.md"
@@ -226,6 +211,18 @@ nav:
           - palme: "zeta/models/palme.md"
           - megavit: "zeta/models/megavit.md"
           - navit: "zeta/models/navit.md"
+      - zeta.structs:
+          - Decoder: "zeta/nn/architecture/decoder.md"
+          - Transformer: "zeta/nn/architecture/transformer.md"
+          - TransformerBlock: "zeta/nn/architecture/transformerblock.md"
+          - paralleltransformerblock: "paralleltransformerblock.md"
+          - hierarchicalblock: "hierarchicalblock.md"
+          - vitransformerwrapper: "vitransformerwrapper.md"
+          - localtransformer: "localtransformer.md"
+          - autoregressivewrapper: "autoregressivewrapper.md"
+          - simpletransformer: "simpletransformer.md"
+          - encoder: "encoder.md"
+          - encoderdecoder: "encoderdecoder.md"
       - zeta.quant:
           - QUIK: "zeta/quant/quik.md"
           - BitLinear: "zeta/quant/bitlinear.md"
