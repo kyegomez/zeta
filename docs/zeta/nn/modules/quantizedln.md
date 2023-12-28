@@ -82,6 +82,8 @@ Define a custom network that uses have the `QuantizedLN` module:
 
 ```python
 import torch.nn as nn
+from zeta.nn.modules import QuantizedLN
+
 
 class CustomNetwork(nn.Module):
     def __init__(self):
@@ -110,6 +112,8 @@ The `QuantizedLN` module in a multi-layer setup:
 
 ```python
 import torch.nn as nn
+from zeta.nn.modules import QuantizedLN
+
 
 class DeepNetwork(nn.Module):
     def __init__(self):

@@ -63,6 +63,7 @@ First, you need to import the necessary module:
 import torch
 import torch.nn as nn
 from torch.nn.functional import relu
+from zeta.nn import StochasticSkipBlock
 ```
 
 Now, you need to define the architecture of the model:
@@ -125,6 +126,8 @@ This shows how to train the model using StochasticSkipBlock module. Please note,
 from torch.optim import SGD
 from torch.nn.functional import binary_cross_entropy
 import torch.optim as optim
+from zeta.nn import StochasticSkipBlock
+
 
 #initiate model
 model = MyModel()
