@@ -8,6 +8,7 @@ einops-exts==0.0.4
 torchvision
 tokenmonster==1.1.12
 accelerate
+tensorflow
 datasets==2.10.1
 torchdiffeq==0.2.3
 sentencepiece==0.1.98
