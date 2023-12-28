@@ -1,6 +1,7 @@
 import pytest
 import torch
-from zeta.structs import Transformer, AttentionLayers
+from zeta.structs import Transformer
+from zeta.structs.transformer import AttentionLayers
 
 # assuming that you are testing the Transformer class
 

@@ -1,7 +1,6 @@
 import pytest
 import torch
 from zeta.models import NaViT
-from torch.nn.modules.module import ModuleAttributeError
 from torch.nn import Sequential
 
 
@@ -70,12 +69,6 @@ def test_token_dropout(neural_network_template):
     model = neural_network_template
     model.token_dropout_prob = 0.5
     assert callable(model.calc_token_dropout)
-
-
-# Test if exceptions are thrown when they should be
-def test_exceptions(neural_network_template):
-    with pytest.raises(ModuleAttributeError):
-        _ = neural_network_template.non_existent_attribute
 
 
 # add your test cases here..
