@@ -1,6 +1,6 @@
 import torch
 import pytest
-from zeta.nn import ParallelTransformerBlock
+from zeta.structs import ParallelTransformerBlock
 from torch.autograd import gradcheck
 
 

@@ -2,7 +2,7 @@ import torch
 import argparse
 import pytest
 
-from zeta.nn import EncoderDecoder, Encoder, Decoder
+from zeta.structs import EncoderDecoder, Encoder, Decoder
 
 
 @pytest.fixture
