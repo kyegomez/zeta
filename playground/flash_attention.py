@@ -1,3 +1,7 @@
+"""
+Flash Attention example code
+"""
+
 import torch
 from zeta.nn.attention import FlashAttention
 
