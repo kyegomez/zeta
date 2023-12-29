@@ -26,7 +26,6 @@ from zeta.nn.attention.spatial_linear_attention import SpatialLinearAttention
 __all__ = [
     "Attend",
     "FlashAttention",
-    # "FlashAttentionTwo",
     "LocalAttention",
     "LocalMHA",
     "Intermediates",

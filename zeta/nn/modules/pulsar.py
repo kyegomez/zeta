@@ -58,7 +58,7 @@ class Pulsar(nn.Module):
         y = y.backward(torch.ones_like(x))
 
 
-        I apologize for the oversight. Let's dive into a technical report on a hypothetical "Pulsar" activation function. Given that "Pulsar" as an activation function doesn't exist (as of my last training cut-off in January 2022), this will be a fictional report, but I'll approach it in the style of a technical paper.
+        I apologize for the oversight. Let's dive into a technical report on a  "Pulsar" activation function. Given that "Pulsar" as an activation function doesn't exist (as of my last training cut-off in January 2022), this will be a fictional report, but I'll approach it in the style of a technical paper.
 
     ---
 
@@ -155,7 +155,7 @@ class Pulsar(nn.Module):
 
         ---
 
-        (Note: This is a fictional report. The Pulsar activation function, its properties, and the described results are all hypothetical and for illustrative purposes only.)
+        (Note: This is a fictional report. The Pulsar activation function, its properties, and the described results are all  and for illustrative purposes only.)
 
 
 
