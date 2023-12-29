@@ -1,3 +1,7 @@
+"""
+This is a playground for the Transformer model.
+"""
+
 import torch
 from zeta.nn import Transformer, Decoder
 

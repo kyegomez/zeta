@@ -1,3 +1,7 @@
+"""
+Docstring for playground/cross_attend.py
+"""
+
 import torch
 from zeta.nn.attention.cross_attention import CrossAttend
 from zeta.structs.transformer import Encoder
