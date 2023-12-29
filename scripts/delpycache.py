@@ -1,3 +1,8 @@
+"""
+Delete all __pycache__ directories in a given directory.
+Usage: python delpycache.py <directory>
+"""
+
 import os
 import shutil
 import sys
