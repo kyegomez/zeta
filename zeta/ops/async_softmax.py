@@ -75,26 +75,3 @@ class AsynchronizedAttention(nn.Module):
         )
 
         return attention_output
-
-
-# Example usage
-if __name__ == "__main__":
-    # Define the parameters
-    batch_size, seq_length, d_model, n_heads = 2, 16, 512, 8
-    unified_max_value = torch.tensor(
-        6.0
-    )  # This value should be set based on the dataset/model
-
-    # Create random tensors for Q, K, and V
-    Q = torch.randn(batch_size, seq_length, d_model)
-    K = torch.randn(batch_size, seq_length, d_model)
-    V = torch.randn(batch_size, seq_length, d_model)
-
-    # Initialize the AsynchronizedAttention module
-    attention_module = AsynchronizedAttention(
-        d_model, n_heads, unified_max_value
-    )
-
-    # Compute the attention output
-    attention_output = attention_module(Q)
-    print("Attention Output Shape:", attention_output)
