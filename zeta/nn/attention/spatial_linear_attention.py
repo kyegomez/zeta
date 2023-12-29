@@ -2,11 +2,19 @@ import torch
 import torch.nn as nn
 
 from einops import rearrange
-
-from einops_exts import rearrange_many
+from zeta.ops.einops_poly import rearrange_many
 
 
 class SpatialLinearAttention(nn.Module):
+    """
+    Spatial Linear Attention module.
+
+    Args:
+        dim (int): Input dimension. Defaults to None.
+        heads (int): Number of attention heads. Defaults to 4.
+        dim_head (int): Dimension of each attention head. Defaults to 32.
+    """
+
     def __init__(self, dim: int = None, heads: int = 4, dim_head: int = 32):
         super().__init__()
         self.scale = dim_head**-0.5
@@ -17,6 +25,15 @@ class SpatialLinearAttention(nn.Module):
         self.to_out = nn.Conv2d(hidden_dim, dim, 1)
 
     def forward(self, x):
+        """
+        Forward pass of the Spatial Linear Attention module.
+
+        Args:
+            x (torch.Tensor): Input tensor of shape (batch_size, channels, frames, height, width).
+
+        Returns:
+            torch.Tensor: Output tensor of shape (batch_size, channels, frames, height, width).
+        """
         b, c, f, h, w = x.shape
         x = rearrange(x, "b c f h w -> (b f) c h w")
 
