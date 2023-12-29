@@ -1,9 +1,17 @@
+"""
+This script extracts the package names and versions from a requirements.txt file and writes them to a new file.
+The new file can be used to install the same package versions on another machine.
+"""
+
 import pkg_resources
 
 
 def get_package_versions(requirements_path, output_path):
+    """
+    Extract package names and versions from a requirements.txt file and write them to a new file.
+    """
     try:
-        with open(requirements_path, "r") as file:
+        with open(requirements_path, "r", encoding="utf-8") as file:
             requirements = file.readlines()
     except FileNotFoundError:
         print(f"Error: The file '{requirements_path}' was not found.")
