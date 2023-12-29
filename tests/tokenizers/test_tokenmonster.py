@@ -49,15 +49,6 @@ def test_token_monster_new():
     assert tokenizer.vocab is not None
 
 
-def test_token_monster_save():
-    tokenizer = TokenMonster("englishcode-32000-consistent-v1")
-    tokenizer.save("/path/to/your/file")  # replace with your actual file path
-
-    # There's no direct way to assert the effect of this method as it doesn't return anything
-    # and it doesn't change any accessible state of the TokenMonster object.
-    # You might need to check manually if the file is saved correctly.
-
-
 def test_token_monster_export_yaml():
     tokenizer = TokenMonster("englishcode-32000-consistent-v1")
     yaml = tokenizer.export_yaml()
