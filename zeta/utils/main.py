@@ -458,7 +458,7 @@ def seek_all_images(img, channels=3):
 
 # tensor of shape (channels, frames, height, width) -> GIF
 def video_tensor_to_gift(tensor, path, duration=120, loop=0, optimize=True):
-    images = map(T.ToPilImage(), tensor.unbind(dim=1))
+    images = map(T.ToPILImage(), tensor.unbind(dim=1))
     first_img, *rest_imgs = images
     first_img.save(
         path,
