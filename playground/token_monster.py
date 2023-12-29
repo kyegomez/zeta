@@ -1,3 +1,7 @@
+"""
+This is a playground for the TokenMonster tokenizer.
+"""
+
 import torch
 from zeta.tokenizers import TokenMonster
 
