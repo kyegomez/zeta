@@ -1,136 +1,120 @@
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
 from einops import rearrange
+from torch import nn
 
 
 class MultiModalCrossAttention(nn.Module):
     """
-    Multi-modal cross attention module for integrating text and image features.
+    Enhanced CrossAttention module with conditional layer normalization, lambda masking, and dropout.
+
 
     Args:
-    - dim (int): Hidden dimension of the input.
-    - num_heads (int): Number of heads for multi-head attention.
-    - dropout_rate (float): Dropout probability.
-    - normalize_qk (bool): Whether to normalize the query and key vectors.
+        dim (int): Dimension of the model.
+        heads (int): Number of attention heads.
+        context_dim (int): Dimension of the context.
+        dim_head (int, optional): Dimension of each attention head. Defaults to 64.
+        dropout (float, optional): Dropout rate. Defaults to 0.1.
+        qk (bool, optional): Whether to use conditional layer normalization. Defaults to False.
+        post_attn_norm (bool, optional): Whether to use post-attention normalization. Defaults to False.
+        attention_strategy (str, optional): Attention strategy. Defaults to None.
+        mask (torch.Tensor, optional): Mask tensor. Defaults to None.
 
-    Usage:
-    - Instantiate the module and pass text and image hidden states to it.
+    Examples:
+        import torch
+        import torch.nn as nn
+        from zeta.nn.attention.cross_attn_images import CrossAttention
+        x = torch.randn(1, 32, 1024)
+        context = torch.randn(1, 32, 1024)
+        attn = CrossAttention(1024, 8, 1024)
+        out = attn(x, context)
+        out.shape
+        torch.Size([1, 32, 1024])
     """
 
     def __init__(
         self,
-        dim,
-        num_heads,
-        dropout_rate=0.3,
-        normalize_qk=True,
-        img_size=(32, 32),
-        channels=3,
+        dim: int,
+        heads: int,
+        context_dim: int,
+        dim_head: int = 64,
+        dropout: float = 0.1,
+        qk: bool = False,
+        post_attn_norm: bool = False,
+        attention_strategy: str = None,  # "average",
+        mask: torch.Tensor = None,
     ):
         super().__init__()
+        self.heads = heads
+        self.scale = dim_head**-0.5
+        self.qk = qk
+        self.post_attn_norm = post_attn_norm
+        self.attention_strategy = attention_strategy
+        self.mask = mask
+        self.context_dim = context_dim
 
-        self.dim = dim
-        self.head_dim = dim // num_heads
-        self.normalize_qk = normalize_qk
+        # Linear layers for q, k, v
+        self.to_q = nn.Linear(dim, dim_head * heads, bias=False)
+        self.to_k = nn.Linear(dim, dim_head * heads, bias=False)
+        self.to_v = nn.Linear(dim, dim_head * heads, bias=False)
 
-        self.dropout = nn.Dropout(dropout_rate)
-        self.norm = nn.LayerNorm(dim)
+        self.norm_q = nn.LayerNorm(dim)
+        self.norm_k = nn.LayerNorm(dim)
 
-        # Projection layers for text-to-image attention
-        self.query_proj = nn.Linear(dim, dim)
-        self.key_proj = nn.Linear(dim, dim)
-        self.value_proj = nn.Linear(dim, dim)
+        self.attend = nn.Softmax(dim=-1)
+        self.dropout = nn.Dropout(dropout)
 
-        # Projection layers for image-to-text attention
-        self.query_proj_reverse = nn.Linear(dim, dim)
-        self.key_proj_reverse = nn.Linear(dim, dim)
-        self.value_proj_reverse = nn.Linear(dim, dim)
-
-        # Output linear layer
-        self.output_linear = nn.Linear(2 * dim, dim)
-
-        # Additional layer to match the image feature dimension
-        self.image_to_feature_dim = nn.Linear(
-            channels * img_size[0] * img_size[1], dim
+        self.to_out = nn.Sequential(
+            nn.Linear(dim_head * heads, dim), nn.Dropout(dropout)
         )
 
-    def forward(self, text_hidden, image_hidden):
+    def forward(self, x: torch.Tensor, context: torch.Tensor) -> torch.Tensor:
+        """Forward pass of the MultiModalCrossAttention module.
+
+        Args:
+            x (torch.Tensor): _description_
+            context (torch.Tensor): _description_
+
+        Returns:
+            torch.Tensor: _description_
         """
-        text_hidden: Hidden states from text model.
-        image_hidden: Hidden states from image model (4D tensor).
-        """
+        # Compute query, key, value
+        q = self.to_q(x)
+        k = self.to_k(context)
+        v = self.to_v(context)
 
-        # Flatten image features and project to the correct dimension
-        image_hidden = rearrange(image_hidden, "b c h w -> b (h w) c")
-        image_hidden = self.image_to_feature_dim(image_hidden)
+        # Optional conditional layer normalization
+        if self.qk:
+            q = self.norm_q(q)
+            k = self.norm_k(k)
 
-        # Text-to-Image Attention
-        query = self.query_proj(text_hidden)
-        key = self.key_proj(image_hidden)
-        value = self.value_proj(image_hidden)
-
-        if self.normalize_qk:
-            query = self.norm(query)
-            key = self.norm(key)
-
-        attn_weights = F.softmax(
-            torch.matmul(query, key.transpose(-2, -1)) / (self.head_dim**0.5),
-            dim=-1,
+        # Reshape for multi-head attention
+        q, k, v = map(
+            lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads),
+            (q, k, v),
         )
-        attn_weights = self.dropout(attn_weights)
-        text_to_image = torch.matmul(attn_weights, value)
 
-        # Image-to-Text Attention
-        query_reverse = self.query_proj_reverse(image_hidden)
-        key_reverse = self.key_proj_reverse(text_hidden)
-        value_reverse = self.value_proj_reverse(text_hidden)
+        # Scaled dot-product attention
+        dots = torch.einsum("bhid,bhjd->bhij", q, k) * self.scale
 
-        if self.normalize_qk:
-            query_reverse = self.norm(query_reverse)
-            key_reverse = self.norm(key_reverse)
+        # Optional masking
+        if self.mask is not None:
+            dots.masked_fill_(~self.mask, float("-inf"))
 
-        attn_weights_reverse = F.softmax(
-            torch.matmul(query_reverse, key_reverse.transpose(-2, -1))
-            / (self.head_dim**0.5),
-            dim=-1,
-        )
-        attn_weights_reverse = self.dropout(attn_weights_reverse)
-        image_to_text = torch.matmul(attn_weights_reverse, value_reverse)
+        # Softmax and dropout on attention weights
+        attn = self.attend(dots)
+        attn = self.dropout(attn)
 
-        # Concatenate and pass through linear layer
-        combined_output = torch.cat((text_to_image, image_to_text), dim=-1)
-        output = self.output_linear(combined_output)
+        # Compute output
+        out = torch.einsum("bhij,bhjd->bhid", attn, v)
+        out = rearrange(out, "b h n d -> b n (h d)")
 
-        return output
+        # Average or concatenate heads based on strategy
+        if self.attention_strategy == "average":
+            out = out.mean(dim=1)
 
-    # Parameters for demonstration
+        # Post-attention normalization
+        if self.post_attn_norm:
+            out = self.norm_post_attn(out)
 
-
-batch_size = 32
-text_seq_length = 128
-image_height, image_width = 32, 32
-channels = 3
-feature_dim = 512
-num_heads = 8
-
-# Initialize the MultiModalCrossAttention module
-cross_attn = MultiModalCrossAttention(
-    dim=feature_dim,
-    num_heads=num_heads,
-    img_size=(image_height, image_width),
-    channels=channels,
-)
-
-# Generate random text features: [batch_size, text_seq_length, feature_dim]
-text_features = torch.randn(batch_size, text_seq_length, feature_dim)
-
-# Generate random image features: [batch_size, channels, image_height, image_width]
-image_features = torch.randn(batch_size, channels, image_height, image_width)
-
-# Forward pass
-output = cross_attn(text_features, image_features)
-
-# Output shape
-print(
-    f"Output Shape: {output.shape}"
-)  # Expected shape: [batch_size, text_seq_length, feature_dim]
+        # Output projection
+        return self.to_out(out)
