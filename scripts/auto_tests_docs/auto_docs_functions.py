@@ -7,16 +7,16 @@ from dotenv import load_dotenv
 
 from scripts.auto_tests_docs.docs import DOCUMENTATION_WRITER_SOP
 from swarms import OpenAIChat
-from zeta.utils import *
+from zeta.ops import *
 
 load_dotenv()
 
 api_key = os.getenv("OPENAI_API_KEY")
 
 model = OpenAIChat(
-    model_name="gpt-4",
+    model_name="gpt-4-1106-preview",
     openai_api_key=api_key,
-    max_tokens=1000,
+    max_tokens=2000,
 )
 
 
@@ -34,13 +34,13 @@ def process_documentation(item):
 
         # Process with OpenAI model
         processed_content = model(
-            DOCUMENTATION_WRITER_SOP(input_content, "zeta.utils")
+            DOCUMENTATION_WRITER_SOP(input_content, "zeta.ops")
         )
 
         doc_content = f"# {item.__name__}\n\n{processed_content}\n"
 
         # Create the directory if it doesn't exist
-        dir_path = "docs/zeta/utils"
+        dir_path = "docs/zeta/ops"
         os.makedirs(dir_path, exist_ok=True)
 
         # Write the processed documentation to a Markdown file
@@ -54,10 +54,10 @@ def process_documentation(item):
 
 
 def main():
-    # Gathering all functions from the zeta.utils module
+    # Gathering all functions from the zeta.ops module
     functions = [
         obj
-        for name, obj in inspect.getmembers(sys.modules["zeta.utils"])
+        for name, obj in inspect.getmembers(sys.modules["zeta.ops"])
         if inspect.isfunction(obj)
     ]
 
@@ -71,7 +71,7 @@ def main():
     for thread in threads:
         thread.join()
 
-    print("Documentation generated in 'docs/zeta/utils' directory.")
+    print("Documentation generated in 'docs/zeta/ops' directory.")
 
 
 if __name__ == "__main__":

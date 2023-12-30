@@ -18,6 +18,7 @@ from zeta.nn.attention.multihead_attention import MultiheadAttention
 from zeta.nn.attention.multiquery_attention import MultiQueryAttention
 from zeta.nn.attention.sparse_attention import SparseAttention
 from zeta.nn.attention.spatial_linear_attention import SpatialLinearAttention
+from zeta.nn.attention.linear_attention import LinearAttention
 
 # from zeta.nn.attention.flash_attention2 import FlashAttentionTwo
 # from zeta.nn.attention.mgqa import MGQA
@@ -26,7 +27,6 @@ from zeta.nn.attention.spatial_linear_attention import SpatialLinearAttention
 __all__ = [
     "Attend",
     "FlashAttention",
-    # "FlashAttentionTwo",
     "LocalAttention",
     "LocalMHA",
     "Intermediates",
@@ -39,4 +39,5 @@ __all__ = [
     "MultiModalCrossAttention",
     "SparseAttention",
     "SpatialLinearAttention",
+    "LinearAttention",
 ]

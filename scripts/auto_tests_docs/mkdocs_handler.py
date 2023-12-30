@@ -26,4 +26,4 @@ def generate_file_list(directory, output_file):
 
 
 # Use the function to generate the file list
-generate_file_list("docs/zeta/nn/modules", "file_list.txt")
+generate_file_list("docs/zeta/ops", "file_list.txt")
