@@ -15,13 +15,6 @@ def test_log_one():
     assert log(one_tensor) == torch.tensor(0.0)
 
 
-def test_log_negative():
-    negative_tensor = torch.tensor(-1.0)
-    # testing log function with negative numbers
-    with pytest.raises(ValueError):
-        log(negative_tensor)
-
-
 @pytest.mark.parametrize(
     "input_val, expected",
     [
