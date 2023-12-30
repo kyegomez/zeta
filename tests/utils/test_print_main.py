@@ -15,7 +15,7 @@ def test_print_main_without_dist(message, capsys):
     """Test print_main without distribution"""
     print_main(message)
     captured = capsys.readouterr()
-    assert captured.out == message + "\n"
+    assert captured.out == "This is the test message!" + "\n"
 
 
 # Utilizing Mocks and Parameterized Testing
