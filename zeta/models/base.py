@@ -5,4 +5,4 @@ class BaseModel(ABC):
         pass
 
     def forward(self):
-        raise NotImplementedError
+        pass
