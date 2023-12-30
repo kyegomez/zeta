@@ -190,7 +190,6 @@ nav:
           - video_tensor_to_gift: "zeta/utils/video_tensor_to_gift.md"
       - zeta.ops:
           - img_compose_decompose: "zeta/ops/img_compose_decompose.md"
-          - rearrange: "zeta/ops/rearrange.md"
           - img_transpose_2daxis: "zeta/ops/img_transpose_2daxis.md"
           - img_transpose: "zeta/ops/img_transpose.md"
           - img_order_of_axes: "zeta/ops/img_order_of_axes.md"

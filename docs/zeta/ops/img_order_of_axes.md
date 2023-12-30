@@ -4,14 +4,11 @@ The `img_order_of_axes` function is a utility designed to reorder the axes of an
 
 This documentation provides an in-depth understanding of the `img_order_of_axes` function, its architecture, and the rationale behind its design. We will cover multiple usage examples, detailing the parameters, expected inputs and outputs, along with additional tips and resources.
 
-## Introduction
-
 The `img_order_of_axes` function plays a crucial role in scenarios where a batch of images needs to be combined into a single image with individual images laid out horizontally. This function is particularly useful when there is a need to visualize multiple similar images side by side, such as comparing different stages of image processing or visualization of input-output pairs in machine learning tasks.
 
 ## Function Definition
 
 ### img_order_of_axes(x)
-
 Rearranges the axes of an image tensor from batch-height-width-channel order to height-(batch * width)-channel order.
 
 #### Parameters:
@@ -23,9 +20,6 @@ Rearranges the axes of an image tensor from batch-height-width-channel order to 
 #### Returns:
 A rearranged tensor that combines the batch and width dimensions, resulting in a shape of (h, b * w, c).
 
-## Functionality and Usage
-
-The `img_order_of_axes` function relies on the 'rearrange' utility, which is commonly provided by libraries like `einops`. This function provides a simple, yet powerful operation that alters the shape and order of axes in a tensor without changing its data. For image tensors, it's often necessary to manipulate their structure to conform to visualization standards or input requirements of certain algorithms.
 
 ### Usage Example 1:
 
@@ -36,7 +30,6 @@ import torch
 from einops import rearrange
 from zeta.ops import img_order_of_axes
 
-# Assuming torch is the backend used for tensors
 # Create a dummy batch of images with shape (b, h, w, c)
 batch_size, height, width, channels = 4, 100, 100, 3
 dummy_images = torch.rand(batch_size, height, width, channels)
@@ -96,11 +89,3 @@ output = model(large_image.unsqueeze(0))  # Add batch dimension of 1 at the begi
 - It's important to note that the `rearrange` function used within `img_order_of_axes` is not a PyTorch built-in function. It requires the `einops` library which offers more flexible operations for tensor manipulation.
 - To install `einops`, use the package manager of your choice, e.g., `pip install einops` for Python's pip package manager.
 - When visualizing the rearranged tensor, ensure that the visualization tool or library you choose can handle non-standard image shapes, as the resulting tensor will have a width that is a multiple of the original width.
-
-## References and Resources
-
-For more information on tensor manipulation and visualization, please refer to the following resources:
-
-- [Einops Documentation](https://einops.rocks/)
-- [PyTorch Tensors Documentation](https://pytorch.org/docs/stable/tensors.html)
-- [Image Visualization Techniques](https://matplotlib.org/3.1.1/gallery/images_contours_and_fields/image_demo.html) (using Matplotlib)
