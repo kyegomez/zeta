@@ -319,7 +319,7 @@ def top_k(logits, thres=0.9):
 
 
 def top_a(logits, min_p_pow=2.0, min_p_ratio=0.02):
-    probs = F.softmax(logits, dim=-1)
+    probs = nn.Softmax(logits, dim=-1)
     limit = torch.pow(torch.max(probs), min_p_pow) * min_p_ratio
 
     logits[probs < limit] = float("-inf")
