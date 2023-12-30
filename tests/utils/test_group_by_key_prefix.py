@@ -51,3 +51,5 @@ def test_group_by_key_prefix_parametrized(prefix, d, result):
         ("a", {"aaa": 1, "abc": 2, 3: "ccc"}),
         (2, {"aaa": 1, "abc": 2}),
     ],
+)
+
