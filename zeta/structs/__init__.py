@@ -20,8 +20,7 @@ from zeta.structs.transformer import (
     ViTransformerWrapper,
 )
 from zeta.structs.transformer_block import TransformerBlock
-
-# from zeta.structs.efficient_net import EfficientNet
+from zeta.structs.simple_vision_encoder import VisionEncoder
 
 __all__ = [
     "AutoregressiveWrapper",
@@ -41,4 +40,5 @@ __all__ = [
     "CLIPVisionTower",
     "build_vision_tower",
     "build_vision_projector",
+    "VisionEncoder",
 ]

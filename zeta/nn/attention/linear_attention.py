@@ -69,4 +69,3 @@ class LinearAttention(nn.Module):
 
         out = self.nonlin(out)
         return self.to_out(out)
-
