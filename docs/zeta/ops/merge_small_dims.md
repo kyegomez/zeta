@@ -1,13 +1,6 @@
 # merge_small_dims
 
-
-The `merge_small_dims` is a utility function within the fictional `zeta.ops` library, built to manipulate tensor dimensions in order to optimize computation. This document provides comprehensive information, examples, and guidelines for its usage. The following sections will cover the purpose, functionality, usage examples, and additional tips related to `merge_small_dims`.
-
-## Overview and Introduction
-
-The `zeta.ops` library provides utility operations for working with tensors. It is common for tensor-oriented computations to encounter scenarios where the shape of a tensor may include dimensions with smaller sizes that can be beneficially merged to optimize performance or conform to specific requirement constraints.
-
-The `merge_small_dims` function specifically targets such use-cases. It allows reshaping of a tensor by merging its smaller dimensions (below a certain threshold) while ensuring that the overall element count of the tensor remains unchanged. This operation is particularly useful in developing deep learning models where tensor dimensions might need adjustments before passing through layers or operations.
+allows reshaping of a tensor by merging its smaller dimensions (below a certain threshold) while ensuring that the overall element count of the tensor remains unchanged. This operation is particularly useful in developing deep learning models where tensor dimensions might need adjustments before passing through layers or operations.
 
 ## Class/Function Definition
 
@@ -34,7 +27,7 @@ When to use `merge_small_dims`:
 
 ```python
 from typing import List
-from zeta.ops import merge_small_dims  # Assuming zeta.ops is the library path
+from zeta.ops import merge_small_dims
 
 # Original tensor shape
 orig_shape = [2, 3, 1, 5, 1]

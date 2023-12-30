@@ -1,39 +1,10 @@
 # `MixtureOfSoftmaxes` Documentation
 
-The `MixtureOfSoftmaxes` module is an implementation of the Mixture of Softmaxes (MoS) as described by Yang et al. in 2017. This module enhances the expressiveness of the softmax function by combining multiple softmaxes. It is particularly useful for tasks where the relationship between input features and output classes is complex and can benefit from a combination of multiple softmax distributions.
-
-## Table of Contents
-
-- [Overview](#overview)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Initialization](#initialization)
-  - [Forward Pass](#forward-pass)
-- [Examples](#examples)
-  - [Basic Example](#basic-example)
-  - [Complex Task](#complex-task)
-- [Parameters](#parameters)
-- [Return Value](#return-value)
-- [Additional Information](#additional-information)
-- [References](#references)
-
-## Overview <a name="overview"></a>
 
 The `MixtureOfSoftmaxes` module is designed to improve the modeling capabilities of the softmax function by allowing the combination of multiple softmax distributions. It takes an input tensor and computes a weighted sum of softmax outputs from different softmax layers. These weights are learned during training, enabling the model to adapt to the data's characteristics effectively.
 
 The primary use case of the MoS module is in scenarios where a single softmax may not capture the complex relationships between input features and output classes. By combining multiple softmax distributions with learned mixture weights, the module provides a flexible approach to handle such situations.
 
-## Installation <a name="installation"></a>
-
-Before using the `MixtureOfSoftmaxes` module, ensure you have the required dependencies installed. You'll need:
-
-- zetascale
-
-You can install Zeta using pip:
-
-```bash
-pip install zetascale
-```
 
 Once you have the dependencies installed, you can import the module in your Python code.
 
@@ -139,10 +110,5 @@ The `forward` method of the `MixtureOfSoftmaxes` module returns two values:
 ## Additional Information <a name="additional-information"></a>
 
 - The MoS module can be used in a variety of deep learning tasks, including classification, natural language processing, and more.
+
 - It is important to fine-tune the number of mixtures and other hyperparameters based on the specific task and dataset.
-
-## References <a name="references"></a>
-
-- Yang, Z., Hu, Z., Salakhutdinov, R., and Berg-Kirkpatrick, T. (2017). Improved variational inference with inverse autoregressive flow. In Proceedings of the 34th International Conference on Machine Learning (ICML).
-
-This documentation provides a comprehensive guide on using the `MixtureOfSoftmaxes` module. Feel free to explore its capabilities and adapt it to your specific machine learning tasks.
