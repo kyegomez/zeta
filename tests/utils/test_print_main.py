@@ -11,11 +11,11 @@ def message():
 
 
 # Basic Test
-def test_print_main_without_dist(message, capsys):
+def test_print_main_without_dist(message):
     """Test print_main without distribution"""
     print_main(message)
-    captured = capsys.readouterr()
-    assert captured == "This is the test message!" + "\n"
+    captured = capsys.readout()
+    assert captured.out  == message + "\n"
 
 
 # Utilizing Mocks and Parameterized Testing
