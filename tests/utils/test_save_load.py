@@ -41,7 +41,7 @@ class TestSaveLoad:
         module = TestModuleDecorated(10)
         module.save(path)
 
-        loaded_module = TestModuleDecorated(1)
+        loaded_module = TestModuleDecorated(10)
         loaded_module.load(path)
         assert loaded_module.num == 10
 
