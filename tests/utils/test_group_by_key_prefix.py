@@ -43,5 +43,3 @@ def test_group_by_key_prefix_parametrized(prefix, d, result):
     Test various cases using parametrized testing.
     """
     assert group_by_key_prefix(prefix, d), "Results match expected"
-
-
