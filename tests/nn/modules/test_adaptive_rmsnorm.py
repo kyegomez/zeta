@@ -7,7 +7,7 @@ def test_adaptive_rmsnorm_init():
     arn = AdaptiveRMSNorm(10, dim_cond=5)
     assert isinstance(arn, AdaptiveRMSNorm)
     assert arn.dim_cond == 5
-    assert arn.channel_first == False
+    assert arn.channel_first is False
     assert arn.scale == 10**0.5
     assert isinstance(arn.to_gamma, nn.Linear)
     assert arn.to_bias is None
