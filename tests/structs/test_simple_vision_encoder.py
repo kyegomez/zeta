@@ -6,9 +6,9 @@ def test_simple_vision_encoder_init():
     sve = SimpleVisionEncoder()
     assert sve.size == (384, 384)
     assert sve.model_name == "vikhyatk/moondream0"
-    assert sve.return_shape == False
+    assert sve.return_shape is False
     assert isinstance(sve.model, torch.jit.ScriptModule)
-    assert sve.preprocess.transforms[-1].scale == True
+    assert sve.preprocess.transforms[-1].scale is True
     assert sve.preprocess.transforms[-1].dtype == torch.float32
 
 
@@ -24,4 +24,4 @@ def test_simple_vision_encoder_init_custom_model_name():
 
 def test_simple_vision_encoder_init_return_shape():
     sve = SimpleVisionEncoder(return_shape=True)
-    assert sve.return_shape == True
+    assert sve.return_shape is True
