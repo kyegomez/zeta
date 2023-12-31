@@ -254,9 +254,7 @@ Returns:
 
 Let's explore some usage examples of the functions provided by the zeta library.
 
-#### 5.1 Example 1: Matrix Inverse Root using
-
- Eigen Method
+#### 5.1 Example 1: Matrix Inverse Root using Eigen Method
 
 In this example, we will compute the matrix inverse root of a symmetric positive definite matrix using the eigen method. We will use the following parameters:
 
