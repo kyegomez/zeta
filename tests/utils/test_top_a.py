@@ -2,9 +2,15 @@ import pytest
 import torch
 from zeta.utils import top_a
 
+# logits map from [-1, 1] to [-inf, inf]
+# top_a(logits, min_p_pow=2.0, min_p_ratio=0.02)
+#   takes logits and returns a tensor of the same size
+#   top_a does not return +inf, it caps at 1
+#   top_a returns -inf if the input is -1
+
 
 def test_top_a():
-    logits = torch.Tensor([1.0, 2.0, 3.0])
+    logits = torch.Tensor([1.0, 0.0, -1.0])
     output = top_a(logits)
     assert torch.is_tensor(output), "Output should be a Torch tensor"
     assert (
@@ -15,11 +21,11 @@ def test_top_a():
 @pytest.mark.parametrize(
     "logits, min_p_pow, min_p_ratio",
     [
-        (torch.Tensor([1.0, 2.0, 3.0]), 2.0, 0.02),
-        (torch.Tensor([-1.0, -2.0, -3.0]), 2.0, 0.02),
-        (torch.Tensor([10.0, 20.0, 30.0]), 2.0, 0.02),
-        (torch.Tensor([10.0, 20.0, 30.0]), 3.0, 0.02),
-        (torch.Tensor([10.0, 20.0, 30.0]), 2.0, 0.10),
+        (torch.Tensor([1.0, 0.5, -0.2]), 2.0, 0.02),
+        (torch.Tensor([-1.0, -0.5, -1.0]), 2.0, 0.02),
+        (torch.Tensor([.02, 0.001, -0.002]), 2.0, 0.02),
+        (torch.Tensor([0.03, 0.0, -.04]), 3.0, 0.02),
+        (torch.Tensor([0.9999, -0.777, -0.0009]), 2.0, 0.10),
     ],
 )
 def test_top_a_values(logits, min_p_pow, min_p_ratio):

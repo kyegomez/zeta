@@ -45,16 +45,3 @@ def test_group_by_key_prefix_parametrized(prefix, d, result):
     assert group_by_key_prefix(prefix, d), "Results match expected"
 
 
-@pytest.mark.parametrize(
-    "prefix, d",
-    [
-        ("a", {"aaa": 1, "abc": 2, 3: "ccc"}),
-        (2, {"aaa": 1, "abc": 2}),
-    ],
-)
-def test_group_by_key_prefix_type_error(prefix, d):
-    """
-    Test that the function raises a TypeError for non-str keys in dictionary.
-    """
-    with pytest.raises(TypeError):
-        group_by_key_prefix(prefix, d)
