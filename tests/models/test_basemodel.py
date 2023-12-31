@@ -1,4 +1,3 @@
-import pytest
 import zeta.models
 from zeta.models import BaseModel
 
