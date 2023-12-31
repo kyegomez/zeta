@@ -319,7 +319,7 @@ def top_k(logits, thres=0.9):
 
 
 def top_a(logits, min_p_pow=2.0, min_p_ratio=0.02):
-    probs = F.softmax(logits, dim=-1)
+    probs = nn.Softmax(logits, dim=-1)
     limit = torch.pow(torch.max(probs), min_p_pow) * min_p_ratio
 
     logits[probs < limit] = float("-inf")
@@ -458,7 +458,7 @@ def seek_all_images(img, channels=3):
 
 # tensor of shape (channels, frames, height, width) -> GIF
 def video_tensor_to_gift(tensor, path, duration=120, loop=0, optimize=True):
-    images = map(T.ToPilImage(), tensor.unbind(dim=1))
+    images = map(T.ToPILImage(), tensor.unbind(dim=1))
     first_img, *rest_imgs = images
     first_img.save(
         path,

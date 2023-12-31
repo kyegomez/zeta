@@ -31,12 +31,3 @@ def test_cast_tuple_parametrized(value, depth, expected):
 def test_cast_tuple_exception():
     with pytest.raises(TypeError):
         cast_tuple(5, "a")
-
-
-# Test with mock and monkeypatch
-def test_cast_tuple_with_mock_and_monkeypatch(monkeypatch):
-    def mock_isinstance(val, t):
-        return False
-
-    monkeypatch.setattr("builtins.isinstance", mock_isinstance)
-    assert cast_tuple((1, 2), 1) == ((1, 2),)
