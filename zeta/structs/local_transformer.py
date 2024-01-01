@@ -135,7 +135,7 @@ class LocalTransformer(nn.Module):
 
         # dynamic pos bias
 
-        attn_bias =# einops conflicts with ruff, so noqa on next line None
+        attn_bias = None
         if exists(self.dynamic_pos_bias):
             w = self.local_attn_window_size
             attn_bias = self.dynamic_pos_bias(w, w * 2)
