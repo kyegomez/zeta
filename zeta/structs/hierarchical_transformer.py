@@ -712,7 +712,8 @@ class HierarchicalTransformer(nn.Module):
     def generate(
         self, prompt, seq_len, temperature=1.0, filter_thres=0.9, **kwargs
     ):
-        b, t, device = *prompt.shape, prompt.device
+        # einops conflicts with ruff, so noqa on next line
+        b, t, device = *prompt.shape, prompt.device # noqa: F841
 
         out = prompt
 
