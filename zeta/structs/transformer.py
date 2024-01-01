@@ -910,6 +910,7 @@ class Attention(nn.Module):
         prev_attn=None,
         mem=None,
     ):
+        # einops conflicts with ruff, so noqa on next line
         b, n, _, h, kv_h, head_scale, device, has_context = (
             *x.shape,
             self.heads,
@@ -917,7 +918,7 @@ class Attention(nn.Module):
             self.head_scale,
             x.device,
             exists(context),
-        )
+        ) # noqa F841
         kv_input = default(context, x)
 
         q_input = x
@@ -1698,12 +1699,13 @@ class Transformer(nn.Module):
         attn_z_loss_weight=1e-4,
         **kwargs,
     ):
+        # einops conflicts with ruff, so noqa on next line
         b, n, device, num_mem, emb_frac_gradient = (
             *x.shape,
             x.device,
             self.num_memory_tokens,
             self.emb_frac_gradient,
-        )
+        ) # noqa F841    
         return_hiddens = (
             return_mems
             | return_attn
