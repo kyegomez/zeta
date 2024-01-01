@@ -109,7 +109,8 @@ class LocalTransformer(nn.Module):
     def generate(
         self, prime, seq_len, temperature=1.0, filter_thres=0.9, **kwargs
     ):
-        n, device = prime.shape[1], prime.device
+        # einops conflicts with ruff, so noqa on next line
+        n, device = prime.shape[1], prime.device # noqa F841
 
         out = prime
 
@@ -134,7 +135,7 @@ class LocalTransformer(nn.Module):
 
         # dynamic pos bias
 
-        attn_bias = None
+        attn_bias =# einops conflicts with ruff, so noqa on next line None
         if exists(self.dynamic_pos_bias):
             w = self.local_attn_window_size
             attn_bias = self.dynamic_pos_bias(w, w * 2)
