@@ -1,9 +1,9 @@
 import torch
-from zeta.structs.simple_vision_encoder import SimpleVisionEncoder
+from zeta.structs.simple_vision_encoder import VisionEncoder
 
 
 def test_simple_vision_encoder_init():
-    sve = SimpleVisionEncoder()
+    sve = VisionEncoder()
     assert sve.size == (384, 384)
     assert sve.model_name == "vikhyatk/moondream0"
     assert sve.return_shape is False
@@ -13,15 +13,15 @@ def test_simple_vision_encoder_init():
 
 
 def test_simple_vision_encoder_init_custom_size():
-    sve = SimpleVisionEncoder(size=(512, 512))
+    sve = VisionEncoder(size=(512, 512))
     assert sve.size == (512, 512)
 
 
 def test_simple_vision_encoder_init_custom_model_name():
-    sve = SimpleVisionEncoder(model_name="custom/model")
+    sve = VisionEncoder(model_name="custom/model")
     assert sve.model_name == "custom/model"
 
 
 def test_simple_vision_encoder_init_return_shape():
-    sve = SimpleVisionEncoder(return_shape=True)
+    sve = VisionEncoder(return_shape=True)
     assert sve.return_shape is True
