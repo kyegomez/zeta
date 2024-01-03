@@ -5,7 +5,7 @@ from zeta.quant.qlora import QloraLinear
 from zeta.quant.niva import niva
 from zeta.quant.absmax import absmax_quantize
 from zeta.quant.half_bit_linear import HalfBitLinear
-
+from zeta.quant.lfq import LFQ
 
 __all__ = [
     "QUIK",
@@ -15,4 +15,5 @@ __all__ = [
     "QloraLinear",
     "niva",
     "HalfBitLinear",
+    "LFQ",
 ]
