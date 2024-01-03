@@ -1,3 +1,6 @@
+""" Vision utilities for image preprocessing, etc. """
+# noqa: E501
+
 import base64
 import os
 from io import BytesIO
