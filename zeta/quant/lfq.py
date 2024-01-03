@@ -6,15 +6,14 @@ In the simplest setup, each dimension is quantized into {-1, 1}.
 An entropy penalty is used to encourage utilization.
 """
 
-from math import log2, ceil
 from collections import namedtuple
+from math import ceil, log2
 
 import torch
-from torch import nn, einsum, Tensor
 import torch.nn.functional as F
+from einops import pack, rearrange, reduce, unpack
+from torch import Tensor, einsum, nn
 from torch.nn import Module
-
-from einops import rearrange, reduce, pack, unpack
 
 # constants
 
@@ -74,6 +73,29 @@ class LFQ(Module):
         num_codebooks (int, optional): The number of codebooks. Defaults to 1.
         keep_num_codebooks_dim (bool, optional): Whether to keep the number of codebooks dimension. Defaults to None.
         codebook_scale (float, optional): The scale factor for the codebook. Defaults to 1.0.
+
+    Examples::
+        import torch
+        from zeta.nn import LFQ
+
+        # you can specify either dim or codebook_size
+        # if both specified, will be validated against each other
+
+        quantizer = LFQ(
+            codebook_size = 65536,      # codebook size, must be a power of 2
+            dim = 16,                   # this is the input feature dimension, defaults to log2(codebook_size) if not defined
+            entropy_loss_weight = 0.1,  # how much weight to place on entropy loss
+            diversity_gamma = 1.        # within entropy loss, how much weight to give to diversity of codes, taken from https://arxiv.org/abs/1911.05894
+        )
+
+        image_feats = torch.randn(1, 16, 32, 32)
+
+        quantized, indices, entropy_aux_loss = quantizer(image_feats)
+
+        # (1, 16, 32, 32), (1, 32, 32), (1,)
+
+        assert image_feats.shape == quantized.shape
+        assert (quantized == quantizer.indices_to_codes(indices)).all()
     """
 
     def __init__(
@@ -166,6 +188,15 @@ class LFQ(Module):
         return self.codebook.dtype
 
     def indices_to_codes(self, indices, project_out=True):
+        """Indices to codes.
+
+        Args:
+            indices (_type_): _description_
+            project_out (bool, optional): _description_. Defaults to True.
+
+        Returns:
+            _type_: _description_
+        """
         is_img_or_video = indices.ndim >= (3 + int(self.keep_num_codebooks_dim))
 
         if not self.keep_num_codebooks_dim:
