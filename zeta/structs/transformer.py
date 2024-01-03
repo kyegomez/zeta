@@ -1,3 +1,4 @@
+""" Transformer module. """
 import math
 from collections import namedtuple
 from dataclasses import dataclass
@@ -951,7 +952,7 @@ class Attention(nn.Module):
 
         if exists(rotary_pos_emb) and not has_context:
             freqs, xpos_scale = rotary_pos_emb
-            l = freqs.shape[-1]
+            l = freqs.shape[-1] # noqa F741
 
             q_xpos_scale, k_xpos_scale = (
                 (xpos_scale, xpos_scale**-1.0)
