@@ -1,3 +1,4 @@
+""" Transformer module. """
 import math
 from collections import namedtuple
 from dataclasses import dataclass
@@ -910,7 +911,8 @@ class Attention(nn.Module):
         prev_attn=None,
         mem=None,
     ):
-        b, n, _, h, kv_h, head_scale, device, has_context = (
+        # einops conflicts with ruff, so noqa on next line
+        b, n, _, h, kv_h, head_scale, device, has_context = ( # noqa F841
             *x.shape,
             self.heads,
             self.kv_heads,
@@ -950,7 +952,7 @@ class Attention(nn.Module):
 
         if exists(rotary_pos_emb) and not has_context:
             freqs, xpos_scale = rotary_pos_emb
-            l = freqs.shape[-1]
+            l = freqs.shape[-1] # noqa F741
 
             q_xpos_scale, k_xpos_scale = (
                 (xpos_scale, xpos_scale**-1.0)
@@ -1698,12 +1700,13 @@ class Transformer(nn.Module):
         attn_z_loss_weight=1e-4,
         **kwargs,
     ):
-        b, n, device, num_mem, emb_frac_gradient = (
+        # einops conflicts with ruff, so noqa on next line
+        b, n, device, num_mem, emb_frac_gradient = ( # noqa F841
             *x.shape,
             x.device,
             self.num_memory_tokens,
             self.emb_frac_gradient,
-        )
+        ) 
         return_hiddens = (
             return_mems
             | return_attn
