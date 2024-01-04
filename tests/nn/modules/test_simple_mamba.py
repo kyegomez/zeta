@@ -4,9 +4,10 @@ from torch import nn
 from zeta.nn.modules.simple_mamba import (
     Mamba,
     MambaBlock,
-    ResidualBlock,
     RMSNorm,
 )
+
+from zeta.rl.vision_model_rl import ResidualBlock
 
 
 def test_mamba_class_init():
