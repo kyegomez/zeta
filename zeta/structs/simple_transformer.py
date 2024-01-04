@@ -373,7 +373,8 @@ class AutoregressiveWrapper(nn.Module):
 
 
         """
-        b, t, device = *start_tokens.shape, start_tokens.device
+        # einops conflicts with ruff, so noqa on next line
+        b, t, device = *start_tokens.shape, start_tokens.device # noqa F841
 
         out = start_tokens
 
