@@ -89,6 +89,7 @@ custom_rel_pos_bias = RelativePositionBias(bidirectional=False, num_buckets=64, 
 The FeedForward module performs a feedforward operation on the input tensor x. It consists of a multi-layer perceptron (MLP) with an optional activation function and LayerNorm. 
 
 ```python
+import torch
 from zeta.nn import FeedForward
 
 model = FeedForward(
@@ -291,8 +292,8 @@ print(f"Output shape: {y.shape}")
 The VisionEmbedding class is designed for converting images into patch embeddings, making them suitable for processing by transformer-based models. This class plays a crucial role in various computer vision tasks and enables the integration of vision data into transformer architectures!
 
 ```python
-from zeta.nn import VisionEmbedding
 import torch
+from zeta.nn import VisionEmbedding
 
 # Create an instance of VisionEmbedding
 vision_embedding = VisionEmbedding(

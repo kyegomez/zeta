@@ -10,6 +10,7 @@ from torch import Tensor, nn
 from zeta.nn.modules.rms_norm import RMSNorm
 from zeta.utils import exists
 
+
 class MambaBlock(nn.Module):
     """
     Initialize a single Mamba block.
@@ -256,11 +257,15 @@ class Mamba(nn.Module):
                 for _ in range(depth)
             ]
         )
-        
+
         # Projection for img
         self.img_proj = nn.Linear(img_dim, dim)
 
-    def forward(self, x: Tensor, context: Tensor = None,):
+    def forward(
+        self,
+        x: Tensor,
+        context: Tensor = None,
+    ):
         """
         Args:
             x (long tensor): shape (b, l)    (See Glossary at top for definitions of b, l, d_in, n...)
@@ -273,11 +278,11 @@ class Mamba(nn.Module):
 
         """
         x = self.embedding(x)
-        
+
         if exists(context):
             # Project the image
             projected_img = self.img_proj(context)
-            
+
             # Concatenate the image and text
             x = torch.cat([x, projected_img], dim=1)
 
@@ -288,6 +293,3 @@ class Mamba(nn.Module):
         logits = self.lm_head(x)
 
         return logits
-
-
-
