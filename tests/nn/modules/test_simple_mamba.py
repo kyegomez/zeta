@@ -8,8 +8,6 @@ from zeta.nn.modules.simple_mamba import (
 )
 
 
-
-
 def test_mamba_class_init():
     model = Mamba(10000, 512, 6)
 
@@ -25,8 +23,6 @@ def test_mamba_forward():
     out = model(x)
 
     assert out.shape == torch.Size([1, 50, 10000])
-
-
 
 
 def test_mamba_different_vocab_size():
@@ -53,16 +49,12 @@ def test_mamba_different_depth():
     assert out.shape == torch.Size([1, 50, 10000])
 
 
-
 def test_mamba_with_dropout():
     model = Mamba(10000, 512, 6, dropout=0.5)
     x = torch.randint(0, 10000, (1, 50))
     out = model(x)
 
     assert out.shape == torch.Size([1, 50, 10000])
-
-
-
 
 
 def test_mamba_with_custom_layer():
