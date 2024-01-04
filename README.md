@@ -47,8 +47,8 @@ print(output.shape)
 ### `SwiGLU`
 - Powers Transformer models
 ```python
-from zeta.nn import SwiGLUStacked
 import torch
+from zeta.nn import SwiGLUStacked
 
 x = torch.randn(5, 10)
 swiglu = SwiGLUStacked(10, 20)
@@ -59,8 +59,8 @@ swiglu(x).shape
 ### ```RelativePositionBias```
 - ```RelativePositionBias``` quantizes the distance between two positions into a certain number of buckets and then uses an embedding to get the relative position bias. This mechanism aids in the attention mechanism by providing biases based on relative positions between the query and key, rather than relying solely on their absolute positions.
 ```python
-from zeta.nn import RelativePositionBias
 import torch
+from zeta.nn import RelativePositionBias
 
 # Initialize the RelativePositionBias module
 rel_pos_bias = RelativePositionBias()
@@ -380,7 +380,7 @@ print(output.shape)  # Expected: torch.Size([1, 512])
 
 ```python
 import torch
-from zeta.nn.modules.simple_mamba import MambaBlock
+from zeta.nn import MambaBlock
 
 # Initialize Mamba
 block = MambaBlock(dim=64, depth=1)
