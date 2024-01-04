@@ -4,7 +4,6 @@ from torch import nn
 from zeta.nn.modules.simple_mamba import (
     Mamba,
     MambaBlock,
-    ResidualBlock,
     RMSNorm,
 )
 
@@ -24,23 +23,6 @@ def test_mamba_forward():
     out = model(x)
 
     assert out.shape == torch.Size([1, 50, 10000])
-
-
-def test_residual_block_class_init():
-    block = ResidualBlock(512)
-
-    assert isinstance(block.norm1, RMSNorm)
-    assert isinstance(block.norm2, RMSNorm)
-    assert isinstance(block.fc1, nn.Linear)
-    assert isinstance(block.fc2, nn.Linear)
-
-
-def test_residual_block_forward():
-    block = ResidualBlock(512)
-    x = torch.randn(1, 50, 512)
-    out = block(x)
-
-    assert out.shape == torch.Size([1, 50, 512])
 
 
 def test_mamba_different_vocab_size():
@@ -67,28 +49,12 @@ def test_mamba_different_depth():
     assert out.shape == torch.Size([1, 50, 10000])
 
 
-def test_residual_block_different_dim():
-    block = ResidualBlock(1024)
-    x = torch.randn(1, 50, 1024)
-    out = block(x)
-
-    assert out.shape == torch.Size([1, 50, 1024])
-
-
 def test_mamba_with_dropout():
     model = Mamba(10000, 512, 6, dropout=0.5)
     x = torch.randint(0, 10000, (1, 50))
     out = model(x)
 
     assert out.shape == torch.Size([1, 50, 10000])
-
-
-def test_residual_block_with_dropout():
-    block = ResidualBlock(512, dropout=0.5)
-    x = torch.randn(1, 50, 512)
-    out = block(x)
-
-    assert out.shape == torch.Size([1, 50, 512])
 
 
 def test_mamba_with_custom_layer():
