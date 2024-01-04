@@ -1,26 +1,13 @@
 from __future__ import annotations
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from einops import rearrange, repeat, einsum
+
 from typing import Optional, Union
 
+import torch
+import torch.nn.functional as F
+from einops import einsum, rearrange, repeat
+from torch import Tensor, nn
 
-# [HELPERS] ----------------------------------------------------------------------------------------
-class RMSNorm(nn.Module):
-    def __init__(self, dim: int, eps: float = 1e-5):
-        super().__init__()
-        self.eps = eps
-        self.weight = nn.Parameter(torch.ones(dim))
-
-    def forward(self, x):
-        output = (
-            x
-            * torch.rsqrt(x.pow(2).mean(-1, keepdim=True) + self.eps)
-            * self.weight
-        )
-
-        return output
+from zeta.nn.modules.rms_norm import RMSNorm
 
 
 class ResidualBlock(nn.Module):
@@ -56,46 +43,31 @@ class ResidualBlock(nn.Module):
         return output
 
 
-class Mamba(nn.Module):
-    def __init__(
-        self, vocab_size: int = None, dim: int = None, depth: int = None
-    ):
-        """Full Mamba model."""
-        super().__init__()
-
-        self.embedding = nn.Embedding(vocab_size, dim)
-        self.layers = nn.ModuleList([ResidualBlock(dim) for _ in range(depth)])
-        self.norm_f = RMSNorm(dim)
-
-        self.lm_head = nn.Linear(dim, vocab_size, bias=False)
-        self.lm_head.weight = (
-            self.embedding.weight
-        )  # Tie output projection to embedding weights. See "Weight Tying" paper
-
-    def forward(self, x):
-        """
-        Args:
-            x (long tensor): shape (b, l)    (See Glossary at top for definitions of b, l, d_in, n...)
-
-        Returns:
-            logits: shape (b, l, vocab_size)
-
-        Official Implementation:
-            class MambaLMHeadModel, https://github.com/state-spaces/mamba/blob/main/mamba_ssm/models/mixer_seq_simple.py#L173
-
-        """
-        x = self.embedding(x)
-
-        for layer in self.layers:
-            x = layer(x)
-
-        x = self.norm_f(x)
-        logits = self.lm_head(x)
-
-        return logits
-
-
 class MambaBlock(nn.Module):
+    """
+    Initialize a single Mamba block.
+
+    Args:
+        dim (int): The input dimension.
+        dim_inner (Optional[int]): The inner dimension. If not provided, it is set to dim * expand.
+        depth (int): The depth of the Mamba block.
+        d_state (int): The state dimension. Default is 16.
+        expand (int): The expansion factor. Default is 2.
+        dt_rank (Union[int, str]): The rank of the temporal difference (Δ) tensor. Default is "auto".
+        d_conv (int): The dimension of the convolutional kernel. Default is 4.
+        conv_bias (bool): Whether to include bias in the convolutional layer. Default is True.
+        bias (bool): Whether to include bias in the linear layers. Default is False.
+
+    Examples:
+        >>> import torch
+        >>> from zeta.nn.modules.simple_mamba import MambaBlock
+        >>> block = MambaBlock(dim=64, depth=1)
+        >>> x = torch.randn(1, 10, 64)
+        >>> y = block(x)
+        >>> y.shape
+        torch.Size([1, 10, 64])
+    """
+
     def __init__(
         self,
         dim: int,
@@ -133,7 +105,7 @@ class MambaBlock(nn.Module):
         self.D = nn.Parameter(torch.ones(dim_inner))
         self.out_proj = nn.Linear(dim_inner, dim, bias=bias)
 
-    def forward(self, x):
+    def forward(self, x: Tensor):
         """Mamba block forward. This looks the same as Figure 3 in Section 3.4 in the Mamba paper [1].
 
         Args:
@@ -167,7 +139,7 @@ class MambaBlock(nn.Module):
 
         return output
 
-    def ssm(self, x):
+    def ssm(self, x: Tensor):
         """Runs the SSM. See:
             - Algorithm 2 in Section 3.2 in the Mamba paper [1]
             - run_SSM(A, B, C, u) in The Annotated S4 [2]
@@ -255,3 +227,42 @@ class MambaBlock(nn.Module):
             y = y + u * rearrange(D, "d_in -> d_in 1")
 
         return y
+
+
+class Mamba(nn.Module):
+    def __init__(
+        self, vocab_size: int = None, dim: int = None, depth: int = None
+    ):
+        """Full Mamba model."""
+        super().__init__()
+
+        self.embedding = nn.Embedding(vocab_size, dim)
+        self.layers = nn.ModuleList([ResidualBlock(dim) for _ in range(depth)])
+        self.norm_f = RMSNorm(dim)
+
+        self.lm_head = nn.Linear(dim, vocab_size, bias=False)
+        self.lm_head.weight = (
+            self.embedding.weight
+        )  # Tie output projection to embedding weights. See "Weight Tying" paper
+
+    def forward(self, x: Tensor):
+        """
+        Args:
+            x (long tensor): shape (b, l)    (See Glossary at top for definitions of b, l, d_in, n...)
+
+        Returns:
+            logits: shape (b, l, vocab_size)
+
+        Official Implementation:
+            class MambaLMHeadModel, https://github.com/state-spaces/mamba/blob/main/mamba_ssm/models/mixer_seq_simple.py#L173
+
+        """
+        x = self.embedding(x)
+
+        for layer in self.layers:
+            x = layer(x)
+
+        x = self.norm_f(x)
+        logits = self.lm_head(x)
+
+        return logits
