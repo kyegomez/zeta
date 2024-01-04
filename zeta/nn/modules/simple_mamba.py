@@ -8,7 +8,7 @@ from einops import einsum, rearrange, repeat
 from torch import Tensor, nn
 
 from zeta.nn.modules.rms_norm import RMSNorm
-
+from zeta.utils import exists
 
 class MambaBlock(nn.Module):
     """
@@ -76,7 +76,9 @@ class MambaBlock(nn.Module):
         )
 
         # x_proj takes in `x` and outputs the input-specific Δ, B, C
-        self.x_proj = nn.Linear(dim_inner, dt_rank + self.d_state * 2, bias=False)
+        self.x_proj = nn.Linear(
+            dim_inner, dt_rank + self.d_state * 2, bias=False
+        )
 
         # dt_proj projects Δ from dt_rank to d_in
         self.dt_proj = nn.Linear(dt_rank, dim_inner, bias=True)
@@ -221,19 +223,21 @@ class Mamba(nn.Module):
         expand (int): The expansion factor. Default is 2.
         dt_rank (Union[int, str]): The rank of the temporal difference (Δ) tensor. Default is "auto".
         d_conv (int): The dimension of the convolutional kernel. Default is 4.
-    
+
     Examples:
     x = torch.randint(0, 16, (1, 64))
     model = Mamba(16, 64, 5, 16)
     out = model(x)
     print(out)
     """
+
     def __init__(
         self,
         vocab_size: int = None,
         dim: int = None,
         depth: int = 5,
         d_state: int = 16,
+        img_dim: int = 64,
         *args,
         **kwargs,
     ):
@@ -242,14 +246,21 @@ class Mamba(nn.Module):
 
         self.embedding = nn.Embedding(vocab_size, dim)
         self.norm_f = RMSNorm(dim)
-
         self.lm_head = nn.Linear(dim, vocab_size, bias=False)
         self.lm_head.weight = self.embedding.weight
-        self.mamba_layers = nn.ModuleList([
-            MambaBlock(dim=dim, depth=depth, d_state=d_state, *args, **kwargs) for _ in range(depth)
-        ])
+        self.mamba_layers = nn.ModuleList(
+            [
+                MambaBlock(
+                    dim=dim, depth=depth, d_state=d_state, *args, **kwargs
+                )
+                for _ in range(depth)
+            ]
+        )
+        
+        # Projection for img
+        self.img_proj = nn.Linear(img_dim, dim)
 
-    def forward(self, x: Tensor):
+    def forward(self, x: Tensor, context: Tensor = None,):
         """
         Args:
             x (long tensor): shape (b, l)    (See Glossary at top for definitions of b, l, d_in, n...)
@@ -262,6 +273,13 @@ class Mamba(nn.Module):
 
         """
         x = self.embedding(x)
+        
+        if exists(context):
+            # Project the image
+            projected_img = self.img_proj(context)
+            
+            # Concatenate the image and text
+            x = torch.cat([x, projected_img], dim=1)
 
         for layer in self.mamba_layers:
             x = layer(self.norm_f(x)) + x
@@ -270,4 +288,6 @@ class Mamba(nn.Module):
         logits = self.lm_head(x)
 
         return logits
+
+
 
