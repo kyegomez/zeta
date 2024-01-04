@@ -375,6 +375,28 @@ print(output.shape)  # Expected: torch.Size([1, 512])
 ```
 
 
+### `Mamba`
+- Pytorch implementation of the new SSM model architecture Mamba
+
+```python
+import torch
+from zeta.nn.modules.simple_mamba import MambaBlock
+
+# Initialize Mamba
+block = MambaBlock(dim=64, depth=1)
+
+# Random input
+x = torch.randn(1, 10, 64)
+
+# Apply the model to the block
+y = block(x)
+
+print(y.shape)
+#torch.Size([1, 10, 64])
+
+```
+
+
 ### ZetaCloud
 Train or finetune any model on any cluster in 1 click with zetacloud, just pass in your file and the GPU type and quantity you want! To gain access first `pip install zetascale` then run `zeta -h` in the terminal. [Here is the docs for more](https://zeta.apac.ai/en/latest/zeta/cloud/main/)
 
