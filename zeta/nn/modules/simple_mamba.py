@@ -76,7 +76,9 @@ class MambaBlock(nn.Module):
         )
 
         # x_proj takes in `x` and outputs the input-specific Δ, B, C
-        self.x_proj = nn.Linear(dim_inner, dt_rank + self.d_state * 2, bias=False)
+        self.x_proj = nn.Linear(
+            dim_inner, dt_rank + self.d_state * 2, bias=False
+        )
 
         # dt_proj projects Δ from dt_rank to d_in
         self.dt_proj = nn.Linear(dt_rank, dim_inner, bias=True)
@@ -221,13 +223,14 @@ class Mamba(nn.Module):
         expand (int): The expansion factor. Default is 2.
         dt_rank (Union[int, str]): The rank of the temporal difference (Δ) tensor. Default is "auto".
         d_conv (int): The dimension of the convolutional kernel. Default is 4.
-    
+
     Examples:
     x = torch.randint(0, 16, (1, 64))
     model = Mamba(16, 64, 5, 16)
     out = model(x)
     print(out)
     """
+
     def __init__(
         self,
         vocab_size: int = None,
@@ -245,9 +248,14 @@ class Mamba(nn.Module):
 
         self.lm_head = nn.Linear(dim, vocab_size, bias=False)
         self.lm_head.weight = self.embedding.weight
-        self.mamba_layers = nn.ModuleList([
-            MambaBlock(dim=dim, depth=depth, d_state=d_state, *args, **kwargs) for _ in range(depth)
-        ])
+        self.mamba_layers = nn.ModuleList(
+            [
+                MambaBlock(
+                    dim=dim, depth=depth, d_state=d_state, *args, **kwargs
+                )
+                for _ in range(depth)
+            ]
+        )
 
     def forward(self, x: Tensor):
         """
@@ -270,4 +278,3 @@ class Mamba(nn.Module):
         logits = self.lm_head(x)
 
         return logits
-
