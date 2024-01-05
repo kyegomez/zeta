@@ -47,8 +47,8 @@ print(output.shape)
 ### `SwiGLU`
 - Powers Transformer models
 ```python
-from zeta.nn import SwiGLUStacked
 import torch
+from zeta.nn import SwiGLUStacked
 
 x = torch.randn(5, 10)
 swiglu = SwiGLUStacked(10, 20)
@@ -59,8 +59,8 @@ swiglu(x).shape
 ### ```RelativePositionBias```
 - ```RelativePositionBias``` quantizes the distance between two positions into a certain number of buckets and then uses an embedding to get the relative position bias. This mechanism aids in the attention mechanism by providing biases based on relative positions between the query and key, rather than relying solely on their absolute positions.
 ```python
-from zeta.nn import RelativePositionBias
 import torch
+from zeta.nn import RelativePositionBias
 
 # Initialize the RelativePositionBias module
 rel_pos_bias = RelativePositionBias()
@@ -89,6 +89,7 @@ custom_rel_pos_bias = RelativePositionBias(bidirectional=False, num_buckets=64, 
 The FeedForward module performs a feedforward operation on the input tensor x. It consists of a multi-layer perceptron (MLP) with an optional activation function and LayerNorm. 
 
 ```python
+import torch
 from zeta.nn import FeedForward
 
 model = FeedForward(
@@ -291,8 +292,8 @@ print(f"Output shape: {y.shape}")
 The VisionEmbedding class is designed for converting images into patch embeddings, making them suitable for processing by transformer-based models. This class plays a crucial role in various computer vision tasks and enables the integration of vision data into transformer architectures!
 
 ```python
-from zeta.nn import VisionEmbedding
 import torch
+from zeta.nn import VisionEmbedding
 
 # Create an instance of VisionEmbedding
 vision_embedding = VisionEmbedding(
@@ -371,6 +372,28 @@ output = model(x)
 
 # Check output shape
 print(output.shape)  # Expected: torch.Size([1, 512])
+
+```
+
+
+### `Mamba`
+- Pytorch implementation of the new SSM model architecture Mamba
+
+```python
+import torch
+from zeta.nn import MambaBlock
+
+# Initialize Mamba
+block = MambaBlock(dim=64, depth=1)
+
+# Random input
+x = torch.randn(1, 10, 64)
+
+# Apply the model to the block
+y = block(x)
+
+print(y.shape)
+#torch.Size([1, 10, 64])
 
 ```
 

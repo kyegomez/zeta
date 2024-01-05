@@ -110,7 +110,7 @@ class LocalTransformer(nn.Module):
         self, prime, seq_len, temperature=1.0, filter_thres=0.9, **kwargs
     ):
         # einops conflicts with ruff, so noqa on next line
-        n, device = prime.shape[1], prime.device # noqa F841
+        n, device = prime.shape[1], prime.device  # noqa F841
 
         out = prime
 
