@@ -81,7 +81,7 @@ from zeta.nn.modules.adaptive_rmsnorm import AdaptiveRMSNorm
 
 ######
 from zeta.nn.modules.simple_mamba import MambaBlock, Mamba
-
+from zeta.nn.modules.laser import Laser
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
 # from zeta.nn.modules.scaled_sinusoidal import ScaledSinuosidalEmbedding
@@ -174,4 +174,5 @@ __all__ = [
     "AdaptiveRMSNorm",
     "MambaBlock",
     "Mamba",
+    "Laser",
 ]
