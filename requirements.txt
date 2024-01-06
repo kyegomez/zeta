@@ -9,7 +9,7 @@ torchvision
 tokenmonster==1.1.12
 accelerate
 tensorflow
-datasets==2.10.1
+datasets==2.14.5
 jax
 jaxlib
 torchdiffeq==0.2.3
