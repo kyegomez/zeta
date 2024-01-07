@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zetascale"
-version = "1.4.4"
+version = "1.4.5"
 description = "Transformers at zeta scales"
 authors = ["Zeta Team <kye@apac.ai>"]
 license = "MIT"
@@ -29,7 +29,7 @@ transformers = "4.36.0"
 einops-exts = "0.0.4"
 torchvision = "*"
 accelerate = "0.25.0"
-datasets = "2.16.1"
+datasets = "*"
 lion-pytorch = "0.0.7"
 jax = "*"
 jaxlib = "*"
@@ -74,8 +74,6 @@ line-length = 80
 line-length = 80
 target-version = ['py38']
 preview = true
-
-
 
 
 [tool.poetry.scripts]
