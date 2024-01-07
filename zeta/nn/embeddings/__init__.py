@@ -18,7 +18,7 @@ from zeta.nn.embeddings.xpos_relative_position import (
     rotate_every_two,
     duplicate_interleave,
     apply_rotary_pos_emb,
-    XPOS
+    XPOS,
 )
 from zeta.nn.embeddings.yarn import YarnEmbedding
 from zeta.nn.embeddings.sine_positional import SinePositionalEmbedding
