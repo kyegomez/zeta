@@ -9,12 +9,12 @@ class Conv2DFeedforward(nn.Module):
     A Convolutional feed-forward network, as proposed in VAN_ (Vision Attention Network, Guo et al.)
 
     .. _VAN: https://arxiv.org/pdf/2202.09741.pdf
-    
-    
+
+
     Example::
-        
+
         >>> import torch
-        >>> from zeta.nn.modules.conv_mlp import Conv2DFeedforward
+        >>> from zeta.nn import Conv2DFeedforward
         >>> m = Conv2DFeedforward(256, 1, 256)
         >>> x = torch.randn(2, 64, 256)
         >>> m(x).shape
