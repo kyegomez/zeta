@@ -444,6 +444,11 @@ Book a [1-on-1 Session with Kye](https://calendly.com/apacai/agora), the Creator
 
 - We need help writing tests and documentation!
 
+## Accelerate Backlog
+Help us accelerate our backlog by supporting us financially! Note, we're an open source corporation and so all the revenue we generate is through donations at the moment ;)
+
+<a href="https://polar.sh/kyegomez"><img src="https://polar.sh/embed/fund-our-backlog.svg?org=kyegomez" /></a>
+
 
 # License 
 - Apache
