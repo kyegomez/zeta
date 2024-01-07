@@ -4,10 +4,6 @@ from zeta.nn.embeddings.embedding import (
     Embedding,
     TextEmbedding,
 )
-from zeta.nn.embeddings.multiway_network import (
-    MultiwayEmbedding,
-    MultiwayNetwork,
-)
 from zeta.nn.embeddings.nominal_embeddings import NominalEmbedding
 from zeta.nn.embeddings.positional import PositionalEmbedding
 from zeta.nn.embeddings.positional_interpolation import (
@@ -26,6 +22,12 @@ from zeta.nn.embeddings.yarn import YarnEmbedding
 from zeta.nn.embeddings.sine_positional import SinePositionalEmbedding
 from zeta.nn.embeddings.qft_embeddings import QFTSPEmbeddings
 from zeta.nn.embeddings.qfsp_embeddings import QFTSPEmbedding
+from zeta.nn.embeddings.multiway_network import (
+    set_split_position,
+    MultiwayWrapper,
+    MultiwayNetwork,
+    MultiwayEmbedding,
+)
 
 __all__ = [
     "AbsolutePositionalEmbedding",
@@ -48,4 +50,8 @@ __all__ = [
     "SinePositionalEmbedding",
     "QFTSPEmbeddings",
     "QFTSPEmbedding",
+    "set_split_position",
+    "MultiwayWrapper",
+    "MultiwayNetwork",
+    "MultiwayEmbedding",
 ]

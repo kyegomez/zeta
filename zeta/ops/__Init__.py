@@ -44,6 +44,16 @@ from zeta.ops.softmax import (
     temp_softmax,
 )
 from zeta.ops.unitwise_norm import unitwise_norm
+from zeta.ops.dilated_attn_ops import (
+    padding_to_multiple_of,
+    get_data_parallel_group,
+    get_rank,
+    get_world_size,
+    get_data_parallel_rank,
+    get_data_parallel_world_size,
+    Allgather,
+    all_gather_func
+)
 
 __all__ = [
     "EinopsToAndFrom",
@@ -84,4 +94,12 @@ __all__ = [
     "channel_shuffle_new",
     "unsqueeze_2d_new",
     "squeeze_2d_new",
+    "padding_to_multiple_of",
+    "get_data_parallel_group",
+    "get_rank",
+    "get_world_size",
+    "get_data_parallel_rank",
+    "get_data_parallel_world_size",
+    "Allgather",
+    "all_gather_func",
 ]

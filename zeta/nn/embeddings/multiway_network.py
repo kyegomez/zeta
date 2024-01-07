@@ -1,6 +1,3 @@
-# Copyright (c) 2022 Agora
-# Licensed under The MIT License [see LICENSE for details]
-
 import copy
 
 import torch
@@ -13,6 +10,12 @@ def set_split_position(position):
             module.split_position = position
 
     return apply_fn
+
+
+def MultiwayWrapper(args, module, dim=1):
+    if args.multiway:
+        return MultiwayNetwork(module, dim=dim)
+    return module
 
 
 class MultiwayNetwork(nn.Module):
