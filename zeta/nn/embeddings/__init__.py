@@ -14,9 +14,11 @@ from zeta.nn.embeddings.sinusoidal import SinusoidalEmbeddings
 from zeta.nn.embeddings.truncated_rope import TruncatedRotaryEmbedding
 from zeta.nn.embeddings.vis_lang_emb import VisionLanguageEmbedding
 from zeta.nn.embeddings.xpos_relative_position import (
-    XPOS,
-    apply_rotary_pos_emb,
+    fixed_pos_embedding,
     rotate_every_two,
+    duplicate_interleave,
+    apply_rotary_pos_emb,
+    XPOS
 )
 from zeta.nn.embeddings.yarn import YarnEmbedding
 from zeta.nn.embeddings.sine_positional import SinePositionalEmbedding
@@ -54,4 +56,6 @@ __all__ = [
     "MultiwayWrapper",
     "MultiwayNetwork",
     "MultiwayEmbedding",
+    "fixed_pos_embedding",
+    "duplicate_interleave",
 ]
