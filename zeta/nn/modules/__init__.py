@@ -87,7 +87,7 @@ from zeta.nn.modules.laser import Laser
 ######
 from zeta.nn.modules.fused_gelu_dense import FusedDenseGELUDense
 from zeta.nn.modules.fused_dropout_layernom import FusedDropoutLayerNorm
-
+from zeta.nn.modules.conv_mlp import Conv2DFeedforward
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
 # from zeta.nn.modules.scaled_sinusoidal import ScaledSinuosidalEmbedding
@@ -183,4 +183,5 @@ __all__ = [
     "Laser",
     "FusedDenseGELUDense",
     "FusedDropoutLayerNorm",
+    "Conv2DFeedforward"
 ]
