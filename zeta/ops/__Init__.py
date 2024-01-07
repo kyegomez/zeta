@@ -52,7 +52,7 @@ from zeta.ops.dilated_attn_ops import (
     get_data_parallel_rank,
     get_data_parallel_world_size,
     Allgather,
-    all_gather_func
+    all_gather_func,
 )
 
 __all__ = [
