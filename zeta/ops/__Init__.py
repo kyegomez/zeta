@@ -55,6 +55,9 @@ from zeta.ops.dilated_attn_ops import (
     all_gather_func,
 )
 
+from zeta.ops.absmax import absmax
+
+
 __all__ = [
     "EinopsToAndFrom",
     "rearrange_many",
@@ -102,4 +105,5 @@ __all__ = [
     "get_data_parallel_world_size",
     "Allgather",
     "all_gather_func",
+    "absmax"
 ]
