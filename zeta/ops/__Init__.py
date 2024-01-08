@@ -105,5 +105,5 @@ __all__ = [
     "get_data_parallel_world_size",
     "Allgather",
     "all_gather_func",
-    "absmax"
+    "absmax",
 ]
