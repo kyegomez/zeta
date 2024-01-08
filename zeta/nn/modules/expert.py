@@ -40,4 +40,3 @@ class Experts(nn.Module):
         hidden2 = self.act(torch.einsum("end,edh->enh", hidden1, self.w2))
         out = torch.einsum("end,edh->enh", hidden2, self.w3)
         return out
-
