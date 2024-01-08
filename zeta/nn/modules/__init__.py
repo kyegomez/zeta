@@ -20,7 +20,7 @@ from zeta.nn.modules.log_ff import LogFF
 from zeta.nn.modules.lora import Lora
 from zeta.nn.modules.mbconv import MBConv
 from zeta.nn.modules.mlp import MLP
-from zeta.nn.modules.mlp_mixer import MLPBlock, MixerBlock, MLPMixer 
+from zeta.nn.modules.mlp_mixer import MLPBlock, MixerBlock, MLPMixer
 from zeta.nn.modules.nebula import Nebula
 from zeta.nn.modules.polymorphic_activation import PolymorphicActivation
 from zeta.nn.modules.polymorphic_neuron import PolymorphicNeuronLayer
@@ -192,5 +192,5 @@ __all__ = [
     "MixerBlock",
     "WSConv2d",
     "StochDepth",
-    "NFNStem"
+    "NFNStem",
 ]
