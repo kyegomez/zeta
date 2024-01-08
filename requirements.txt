@@ -13,7 +13,7 @@ datasets==2.10.1
 jax
 jaxlib
 torchdiffeq==0.2.3
-sentencepiece==0.1.98
+sentencepiece==0.1.99
 beartype==0.15.0
 xformers
 vector-quantize-pytorch==1.12.0
