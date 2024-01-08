@@ -2,7 +2,6 @@ from torch import nn, Tensor
 import torch.nn.functional as F
 
 
-
 # These extra constant values ensure that the activations
 # are variance preserving
 class VPGELU(nn.Module):

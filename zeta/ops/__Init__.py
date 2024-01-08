@@ -57,7 +57,7 @@ from zeta.ops.dilated_attn_ops import (
 
 from zeta.ops.absmax import absmax
 from zeta.ops.misc_act import (
-    VPGELU, 
+    VPGELU,
     VPReLU,
 )
 

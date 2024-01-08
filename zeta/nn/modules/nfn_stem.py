@@ -77,9 +77,3 @@ class NFNStem(nn.Module):
         out = self.activation(self.conv2(out))
         out = self.conv3(out)
         return out
-
-
-x = torch.randn(1, 3, 224, 224)
-model = NFNStem()
-out = model(x)
-print(out)
