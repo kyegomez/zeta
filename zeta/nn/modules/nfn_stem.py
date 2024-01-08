@@ -1,4 +1,3 @@
-import torch
 from torch import nn, Tensor
 from zeta.nn.modules.ws_conv2d import WSConv2d
 from typing import List
