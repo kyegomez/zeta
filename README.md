@@ -435,7 +435,8 @@ zeta -f train.py -g A100:8
 [Click here for the documentation, it's at zeta.apac.ai](https://zeta.apac.ai)
 
 # 🤝 Schedule a 1-on-1 Session
-Book a [1-on-1 Session with Kye](https://calendly.com/apacai/agora), the Creator, to discuss any issues, provide feedback, or explore how we can improve Zeta for you.
+Want to train a custom AI model for a real-world task like General Multi-Modal Models, Facial Recognitions, Drug Discovery, Humanoid Robotics? I'll help you create the model architecture then train the model and then optimize it to meet your quality assurance standards.
+Book a [1-on-1 Session with Kye here.](https://calendly.com/apacai/agora), the Creator, to discuss any issues, provide feedback, or explore how we can improve Zeta for you or help you build your own custom models!
 
 ## Contributing
 - We need you to help us build the most re-useable, reliable, and high performance ML framework ever.
