@@ -20,7 +20,7 @@ from zeta.nn.modules.log_ff import LogFF
 from zeta.nn.modules.lora import Lora
 from zeta.nn.modules.mbconv import MBConv
 from zeta.nn.modules.mlp import MLP
-from zeta.nn.modules.mlp_mixer import MLPMixer
+from zeta.nn.modules.mlp_mixer import MLPBlock, MixerBlock, MLPMixer 
 from zeta.nn.modules.nebula import Nebula
 from zeta.nn.modules.polymorphic_activation import PolymorphicActivation
 from zeta.nn.modules.polymorphic_neuron import PolymorphicNeuronLayer
@@ -88,6 +88,9 @@ from zeta.nn.modules.laser import Laser
 from zeta.nn.modules.fused_gelu_dense import FusedDenseGELUDense
 from zeta.nn.modules.fused_dropout_layernom import FusedDropoutLayerNorm
 from zeta.nn.modules.conv_mlp import Conv2DFeedforward
+from zeta.nn.modules.ws_conv2d import WSConv2d
+from zeta.nn.modules.stoch_depth import StochDepth
+from zeta.nn.modules.nfn_stem import NFNStem
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -185,4 +188,9 @@ __all__ = [
     "FusedDenseGELUDense",
     "FusedDropoutLayerNorm",
     "Conv2DFeedforward",
+    "MLPBlock",
+    "MixerBlock",
+    "WSConv2d",
+    "StochDepth",
+    "NFNStem"
 ]

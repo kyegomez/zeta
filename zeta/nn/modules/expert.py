@@ -26,11 +26,12 @@ class Experts(nn.Module):
         self,
         dim: int,
         experts: int = 16,
+        custom_experts: callable = None,
     ):
         super().__init__()
         self.w1 = nn.Parameter(torch.randn(experts, dim, dim * 2))
-        self.w2 = nn.Parameter(torch.randn(experts, dim * 4, dim * 4))
-        self.w3 = nn.Parameter(torch.randn(experts, dim * 4, dim))
+        self.w2 = nn.Parameter(torch.randn(experts, dim * 2, dim * 2))
+        self.w3 = nn.Parameter(torch.randn(experts, dim * 2, dim))
         self.act = nn.LeakyReLU(inplace=True)
 
     def forward(self, x):
@@ -39,3 +40,4 @@ class Experts(nn.Module):
         hidden2 = self.act(torch.einsum("end,edh->enh", hidden1, self.w2))
         out = torch.einsum("end,edh->enh", hidden2, self.w3)
         return out
+

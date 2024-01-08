@@ -1,5 +1,6 @@
-import torch 
+import torch
 from torch import Tensor
+
 
 def absmax(x: Tensor):
     """
@@ -12,4 +13,3 @@ def absmax(x: Tensor):
         Tensor: The absolute maximum value of the tensor.
     """
     return torch.max(torch.abs(x))
-
