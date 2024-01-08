@@ -56,7 +56,10 @@ from zeta.ops.dilated_attn_ops import (
 )
 
 from zeta.ops.absmax import absmax
-
+from zeta.ops.misc_act import (
+    VPGELU, 
+    VPReLU,
+)
 
 __all__ = [
     "EinopsToAndFrom",
@@ -106,4 +109,6 @@ __all__ = [
     "Allgather",
     "all_gather_func",
     "absmax",
+    "VPGELU",
+    "VPReLU",
 ]
