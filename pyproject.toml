@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zetascale"
-version = "1.5.5"
+version = "1.5.7"
 description = "Transformers at zeta scales"
 authors = ["Zeta Team <kye@apac.ai>"]
 license = "MIT"
