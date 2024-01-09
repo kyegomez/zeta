@@ -11,7 +11,7 @@ def sparsemax(x: Tensor):
 
     Returns:
         torch.Tensor: The output of the sparsemax function.
-        
+
     Example:
     >>> x = torch.tensor([1, 2, 3, 4, 5], dtype=torch.float32)
     >>> sparsemax(x)
@@ -22,7 +22,9 @@ def sparsemax(x: Tensor):
 
     x = x - torch.max(x, dim=dim, keepdim=True)[0].expand_as(x)
     zs = torch.sort(x=x, dim=dim, descending=True)[0]
-    range = torch.arange(start=1, end=number_of_logits + 1, device=x.device).view(1, -1)
+    range = torch.arange(
+        start=1, end=number_of_logits + 1, device=x.device
+    ).view(1, -1)
     range = range.expand_as(zs)
 
     bound = 1 + range * zs
