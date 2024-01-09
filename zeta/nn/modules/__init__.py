@@ -18,7 +18,11 @@ from zeta.nn.modules.layernorm import LayerNorm, l2norm
 from zeta.nn.modules.leaky_relu import LeakyRELU
 from zeta.nn.modules.log_ff import LogFF
 from zeta.nn.modules.lora import Lora
-from zeta.nn.modules.mbconv import MBConv
+from zeta.nn.modules.mbconv import (
+    SqueezeExcitation,
+    MBConvResidual,
+    MBConv,
+)
 from zeta.nn.modules.mlp import MLP
 from zeta.nn.modules.mlp_mixer import MLPBlock, MixerBlock, MLPMixer
 from zeta.nn.modules.nebula import Nebula
@@ -91,6 +95,10 @@ from zeta.nn.modules.conv_mlp import Conv2DFeedforward
 from zeta.nn.modules.ws_conv2d import WSConv2d
 from zeta.nn.modules.stoch_depth import StochDepth
 from zeta.nn.modules.nfn_stem import NFNStem
+from zeta.nn.modules.film import Film
+from zeta.nn.modules.video_to_tensor import video_to_tensor, video_to_tensor_vr
+from zeta.nn.modules.proj_then_softmax import FusedProjSoftmax
+from zeta.nn.modules.top_n_gating import TopNGating
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -193,4 +201,12 @@ __all__ = [
     "WSConv2d",
     "StochDepth",
     "NFNStem",
+    "Film",
+    "DropSample",
+    "SqueezeExcitation",
+    "MBConvResidual",
+    "video_to_tensor",
+    "video_to_tensor_vr",
+    "FusedProjSoftmax",
+    "TopNGating",
 ]

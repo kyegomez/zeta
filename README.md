@@ -397,6 +397,27 @@ print(y.shape)
 
 ```
 
+### `FiLM`
+
+```python
+import torch
+from zeta.nn import Film
+
+# Initialize the Film layer
+film_layer = Film(dim=128, hidden_dim=64, expanse_ratio=4)
+
+# Create some dummy data for conditions and hiddens
+conditions = torch.randn(10, 128)  # Batch size is 10, feature size is 128
+hiddens = torch.randn(10, 1, 128)  # Batch size is 10, sequence length is 1, feature size is 128
+
+# Pass the data through the Film layer
+modulated_features = film_layer(conditions, hiddens)
+
+# Print the shape of the output
+print(modulated_features.shape)  # Should be [10, 1, 128]
+
+```
+
 
 ### ZetaCloud
 Train or finetune any model on any cluster in 1 click with zetacloud, just pass in your file and the GPU type and quantity you want! To gain access first `pip install zetascale` then run `zeta -h` in the terminal. [Here is the docs for more](https://zeta.apac.ai/en/latest/zeta/cloud/main/)
