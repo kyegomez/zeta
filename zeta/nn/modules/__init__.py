@@ -87,9 +87,6 @@ from zeta.nn.modules.adaptive_rmsnorm import AdaptiveRMSNorm
 ######
 from zeta.nn.modules.simple_mamba import MambaBlock, Mamba
 from zeta.nn.modules.laser import Laser
-
-
-######
 from zeta.nn.modules.fused_gelu_dense import FusedDenseGELUDense
 from zeta.nn.modules.fused_dropout_layernom import FusedDropoutLayerNorm
 from zeta.nn.modules.conv_mlp import Conv2DFeedforward
@@ -100,6 +97,7 @@ from zeta.nn.modules.film import Film
 from zeta.nn.modules.video_to_tensor import video_to_tensor, video_to_tensor_vr
 from zeta.nn.modules.proj_then_softmax import FusedProjSoftmax
 from zeta.nn.modules.top_n_gating import TopNGating
+from zeta.nn.modules.moe_router import MoERouter
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -210,4 +208,5 @@ __all__ = [
     "video_to_tensor_vr",
     "FusedProjSoftmax",
     "TopNGating",
+    "MoERouter"
 ]
