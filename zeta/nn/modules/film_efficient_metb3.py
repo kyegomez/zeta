@@ -1,3 +1,4 @@
+import torch
 from torch import nn, Tensor
 from zeta.nn.modules.mbconv import MBConv
 from zeta.nn.modules.film import Film
@@ -36,8 +37,8 @@ class FiLMEfficientNetB3(nn.Module):
             self.mb_conv_layers = nn.ModuleList(
                 [
                     MBConv(
-                        dim,
-                        dim,
+                        dim_in=in_channels,
+                        dim_out=dim,
                         downsample=downsample,
                         dropout=dropout,
                         *args,
@@ -58,7 +59,7 @@ class FiLMEfficientNetB3(nn.Module):
         x = img
 
         # Apply MBConv and film layers
-        for mb_conv, film in zip(self.mbconv_layers, self.film_layers):
+        for mb_conv, film in zip(self.mb_conv_layers, self.film_layers):
             x = mb_conv(x)
             x = film(x, text)
 
@@ -69,20 +70,26 @@ class FiLMEfficientNetB3(nn.Module):
         return x
 
 
-# x = torch.randn(1, 3, 224, 224)
-# text = torch.randn(1, 128)
-# model = FiLMEfficientNetB3(
-#     in_channels=3,
-#     out_channels=1000,
-#     dim=128,
-#     downsample=1,
-#     kernel_size=3,
-#     stride=1,
-#     padding=1,
-#     dropout=0.1,
-#     num_mbconv_blocks=26,
-#     num_film_layers=26,
-#     expanse_ratio=4,
-# )
-# output = model(text, x)
-# print(output.shape)
+# Assuming the MBConv and Film layers are properly defined in the modules, 
+# the FiLMEfficientNetB3 can be instantiated and used as follows:
+
+# Example usage
+film_efficient_net = FiLMEfficientNetB3(
+    in_channels=512,
+    out_channels=1000,
+    dim=512,
+    downsample=1,
+    kernel_size=3,
+    stride=1,
+    padding=1,
+    dropout=0.1,
+    
+)
+
+# Mock inputs
+text_input = torch.randn(1, 512)  # Example text input
+img_input = torch.randn(1, 3, 224, 224)  # Example image input
+
+# Forward pass
+output = film_efficient_net(text_input, img_input)
+print(output.shape)  # Expected shape: (1, 1000), which depends on the final projection layer

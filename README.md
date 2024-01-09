@@ -455,16 +455,37 @@ zeta -f train.py -g A100:8
 # Documentation
 [Click here for the documentation, it's at zeta.apac.ai](https://zeta.apac.ai)
 
+----
+
+## Community
+
+Join our growing community around the world, for real-time support, ideas, and discussions on how to build better models 😊 
+
+- View our official [Docs](https://zeta.apac.ai)
+- Chat live with us on [Discord](https://discord.gg/kS3rwKs3ZC)
+- Follow us on [Twitter](https://twitter.com/kyegomez)
+- Connect with us on [LinkedIn](https://www.linkedin.com/company/the-swarm-corporation)
+- Visit us on [YouTube](https://www.youtube.com/channel/UC9yXyitkbU_WSy7bd_41SqQ)
+- [Join the Swarms community on Discord!](https://discord.gg/AJazBmhKnr)
+
+---
+
 # 🤝 Schedule a 1-on-1 Session
 Want to train a custom AI model for a real-world task like General Multi-Modal Models, Facial Recognitions, Drug Discovery, Humanoid Robotics? I'll help you create the model architecture then train the model and then optimize it to meet your quality assurance standards.
+
 Book a [1-on-1 Session with Kye here.](https://calendly.com/apacai/agora), the Creator, to discuss any issues, provide feedback, or explore how we can improve Zeta for you or help you build your own custom models!
 
-## Contributing
-- We need you to help us build the most re-useable, reliable, and high performance ML framework ever.
+## 🫶 Contributions:
 
-- [Check out the project board here!](https://github.com/users/kyegomez/projects/7/views/2)
+The easiest way to contribute is to pick any issue with the `good first issue` tag 💪. Read the Contributing guidelines [here](/CONTRIBUTING.md). Bug Report? [File here](https://github.com/kyegomez/zeta/issues/new/choose) | Feature Request? [File here](https://github.com/kyegomez/zeta/issues/new/choose)
 
-- We need help writing tests and documentation!
+Zeta is an open-source project, and contributions are VERY welcome. If you want to contribute, you can create new features, fix bugs, or improve the infrastructure. Please refer to the [CONTRIBUTING.md](https://github.com/kyegomez/zeta/blob/master/CONTRIBUTING.md) and our [contributing board](https://github.com/users/kyegomez/projects/1) to participate in Roadmap discussions!
+
+<a href="https://github.com/kyegomez/zeta/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=kyegomez/zeta" />
+</a>
+
+----
 
 ## Accelerate Backlog
 Help us accelerate our backlog by supporting us financially! Note, we're an open source corporation and so all the revenue we generate is through donations at the moment ;)
