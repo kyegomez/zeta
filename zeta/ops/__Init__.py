@@ -60,6 +60,7 @@ from zeta.ops.misc_act import (
     VPGELU,
     VPReLU,
 )
+from zeta.ops.sparsemax import sparsemax
 
 __all__ = [
     "EinopsToAndFrom",
@@ -111,4 +112,5 @@ __all__ = [
     "absmax",
     "VPGELU",
     "VPReLU",
+    "sparsemax"
 ]

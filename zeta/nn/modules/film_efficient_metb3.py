@@ -70,7 +70,7 @@ class FiLMEfficientNetB3(nn.Module):
         return x
 
 
-# Assuming the MBConv and Film layers are properly defined in the modules, 
+# Assuming the MBConv and Film layers are properly defined in the modules,
 # the FiLMEfficientNetB3 can be instantiated and used as follows:
 
 # Example usage
@@ -83,7 +83,6 @@ film_efficient_net = FiLMEfficientNetB3(
     stride=1,
     padding=1,
     dropout=0.1,
-    
 )
 
 # Mock inputs
@@ -92,4 +91,6 @@ img_input = torch.randn(1, 3, 224, 224)  # Example image input
 
 # Forward pass
 output = film_efficient_net(text_input, img_input)
-print(output.shape)  # Expected shape: (1, 1000), which depends on the final projection layer
+print(
+    output.shape
+)  # Expected shape: (1, 1000), which depends on the final projection layer
