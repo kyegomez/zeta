@@ -27,16 +27,20 @@ class SqueezeExcitation(nn.Module):
         hidden_dim = int(dim * shrinkage_rate)
 
         self.gate = nn.Sequential(
-            reduce("b c h w -> b c", "mean"),
+            # reduce("b c h w -> b c", "mean"),
             nn.Linear(dim, hidden_dim, bias=False),
             nn.SiLU(),
             nn.Linear(hidden_dim, dim, bias=False),
             nn.Sigmoid(),
-            rearrange("b c -> b c 11"),
+            # rearrange("b c -> b c 11"),
         )
 
     def forward(self, x):
-        return x + self.gate(x)
+        # return x + self.gate(x)
+        x = reduce(x, "b c h w -> b c", "mean")
+        x = self.gate(x)
+        x = rearrange(x, "b c -> b c 11")
+        return x + x
 
 
 class MBConvResidual(nn.Module):
