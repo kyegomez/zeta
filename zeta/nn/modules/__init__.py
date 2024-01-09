@@ -19,6 +19,7 @@ from zeta.nn.modules.leaky_relu import LeakyRELU
 from zeta.nn.modules.log_ff import LogFF
 from zeta.nn.modules.lora import Lora
 from zeta.nn.modules.mbconv import (
+    DropSample,
     SqueezeExcitation,
     MBConvResidual,
     MBConv,
