@@ -3,6 +3,7 @@ from torch import nn, Tensor
 import torch.nn.functional as F
 from zeta.ops.sparsemax import sparsemax
 
+
 class MoERouter(nn.Module):
     """
     MoERouter is a module that routes input data to multiple experts based on a specified mechanism.
@@ -15,13 +16,13 @@ class MoERouter(nn.Module):
 
     Raises:
         ValueError: If the mechanism is not "softmax" or "gumbel".
-        
+
     Input Shape:
         (B, SEQ_LEN, DIM) where SEQ_LEN is the sequence length and DIM is the input dimension.
-    
+
     Output Shape:
         (B, SEQ_LEN, NUM_EXPERTS) where NUM_EXPERTS is the number of experts.
-        
+
     Example:
         >>> x = torch.randn(2, 4, 6)
         >>> router = MoERouter(dim=6, num_experts=2, hidden_layers=[32, 64])
@@ -79,25 +80,24 @@ class MoERouter(nn.Module):
 
         elif self.mechanism == "gumbel":
             return F.gumbel_softmax(x, hard=True)
-        
+
         elif self.mechanism == "topk":
             return torch.topk(x, k=self.num_experts, dim=1)[1]
-        
+
         elif self.mechanism == "sample":
             return torch.multinomial(x, num_samples=2, replacement=False)
-        
+
         elif self.mechanism == "weighted_average":
             return x.mean(dim=0)
-        
+
         elif self.mechanism == "gate":
             return torch.sigmoid(x)
-        
+
         elif self.mechanism == "top1":
             return torch.topk(x, 1, dim=1)[1]
-        
+
         elif self.mechanism == "sparsemax":
             return sparsemax(x)
 
         else:
             raise ValueError("Mechanism must be either softmax or gumbel")
-

@@ -208,5 +208,5 @@ __all__ = [
     "video_to_tensor_vr",
     "FusedProjSoftmax",
     "TopNGating",
-    "MoERouter"
+    "MoERouter",
 ]

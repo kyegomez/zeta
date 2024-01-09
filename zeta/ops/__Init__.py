@@ -112,5 +112,5 @@ __all__ = [
     "absmax",
     "VPGELU",
     "VPReLU",
-    "sparsemax"
+    "sparsemax",
 ]
