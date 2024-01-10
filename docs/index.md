@@ -25,7 +25,7 @@ You can install `zeta` with pip in a
         The headless installation of `zeta` is designed for environments where graphical user interfaces (GUI) are not needed, making it more lightweight and suitable for server-side applications.
 
         ```bash
-        pip install zeta
+        pip install zetascale
         ```
 
 
