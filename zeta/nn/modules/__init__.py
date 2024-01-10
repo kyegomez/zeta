@@ -41,7 +41,7 @@ from zeta.nn.modules.simple_attention import simple_attention
 from zeta.nn.modules.simple_feedforward import SimpleFeedForward
 from zeta.nn.modules.simple_res_block import SimpleResBlock
 from zeta.nn.modules.skipconnection import SkipConnection
-from zeta.nn.modules.spacial_transformer import SpacialTransformer
+from zeta.nn.modules.spacial_transformer import SpatialTransformer
 from zeta.nn.modules.subln import SubLN
 from zeta.nn.modules.super_resolution import SuperResolutionNet
 from zeta.nn.modules.time_up_sample import TimeUpSample2x
@@ -98,6 +98,8 @@ from zeta.nn.modules.video_to_tensor import video_to_tensor, video_to_tensor_vr
 from zeta.nn.modules.proj_then_softmax import FusedProjSoftmax
 from zeta.nn.modules.top_n_gating import TopNGating
 from zeta.nn.modules.moe_router import MoERouter
+from zeta.nn.modules.perceiver_layer import PerceiverLayer
+from zeta.nn.modules.u_mamba import UMambaBlock
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -133,7 +135,7 @@ __all__ = [
     "RNNL",
     "ShuffleNet",
     "simple_attention",
-    "SpacialTransformer",
+    "SpatialTransformer",
     "SubLN",
     "SuperResolutionNet",
     "TokenLearner",
@@ -209,4 +211,6 @@ __all__ = [
     "FusedProjSoftmax",
     "TopNGating",
     "MoERouter",
+    "PerceiverLayer",
+    "UMambaBlock"
 ]
