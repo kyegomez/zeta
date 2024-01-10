@@ -8,7 +8,6 @@ from einops import einsum, rearrange, repeat
 from torch import Tensor, nn
 
 
-
 class SSML(nn.Module):
     """
     Initialize a single Mamba block.

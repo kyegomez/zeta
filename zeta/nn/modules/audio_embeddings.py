@@ -1,8 +1,11 @@
 import torch.nn as nn
 from einops import rearrange
 
+
 class AudioToTextEmbeddings(nn.Module):
-    def __init__(self, input_channels, output_dim, seq_len: int, kernel_size=3, stride=1):
+    def __init__(
+        self, input_channels, output_dim, seq_len: int, kernel_size=3, stride=1
+    ):
         """
         Initializes the module to transform audio tensor to a format similar to text tensor.
 
@@ -16,8 +19,12 @@ class AudioToTextEmbeddings(nn.Module):
         self.input_channels = input_channels
         self.output_dim = output_dim
         self.seq_len = seq_len
-        self.conv1d = nn.Conv1d(input_channels, output_dim, kernel_size, stride=stride)
-        self.flatten = nn.Flatten(start_dim=1)  # Flatten all dimensions except batch
+        self.conv1d = nn.Conv1d(
+            input_channels, output_dim, kernel_size, stride=stride
+        )
+        self.flatten = nn.Flatten(
+            start_dim=1
+        )  # Flatten all dimensions except batch
 
     def forward(self, x):
         """
@@ -30,7 +37,7 @@ class AudioToTextEmbeddings(nn.Module):
                           T = Time frames.
 
         Returns:
-        torch.Tensor: Output 3D tensor of shape [B, T', output_dim], where T' is the 
+        torch.Tensor: Output 3D tensor of shape [B, T', output_dim], where T' is the
                       transformed time dimension.
         """
         b, c, t = x.shape
@@ -40,15 +47,15 @@ class AudioToTextEmbeddings(nn.Module):
         # Reshape to have sequence length as the second dimension
         b, c_t = x.shape
         x = x.view(b, -1, self.conv1d.out_channels)
-        
+
         b, t, c = x.shape
         x = rearrange(x, "b t c -> b c t")
         proj = nn.Linear(t, self.seq_len)
         x = proj(x)
         x = rearrange(x, "b c t -> b t c")
-        
-        
+
         return x
+
 
 # # Example usage:
 # # Define the transformer with appropriate input channels and desired output dimension
