@@ -100,6 +100,7 @@ from zeta.nn.modules.top_n_gating import TopNGating
 from zeta.nn.modules.moe_router import MoERouter
 from zeta.nn.modules.perceiver_layer import PerceiverLayer
 from zeta.nn.modules.u_mamba import UMambaBlock
+from zeta.nn.modules.audio_embeddings import AudioToTextEmbeddings
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -212,5 +213,6 @@ __all__ = [
     "TopNGating",
     "MoERouter",
     "PerceiverLayer",
-    "UMambaBlock"
+    "UMambaBlock",
+    "AudioToTextEmbeddings",
 ]

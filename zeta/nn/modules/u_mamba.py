@@ -10,7 +10,7 @@ class UMambaBlock(nn.Module):
     """
     UMambaBlock is a 5d Mamba block that can be used as a building block for a 5d visual model
     From the paper: https://arxiv.org/pdf/2401.04722.pdf
-    
+
     Args:
         dim (int): The input dimension.
         dim_inner (Optional[int]): The inner dimension. If not provided, it is set to dim * expand.
@@ -21,7 +21,7 @@ class UMambaBlock(nn.Module):
         d_conv (int): The dimension of the convolutional kernel. Default is 4.
         conv_bias (bool): Whether to include bias in the convolutional layer. Default is True.
         bias (bool): Whether to include bias in the linear layers. Default is False.
-    
+
     Examples::
         import torch
         # img:         B, C, H, W, D
@@ -33,8 +33,9 @@ class UMambaBlock(nn.Module):
         # Forward pass
         y = block(img_tensor)
         print(y.shape)
-        
+
     """
+
     def __init__(
         self,
         dim: int = None,
@@ -65,7 +66,7 @@ class UMambaBlock(nn.Module):
         # If dim_inner is not provided, set it to dim * expand
         self.in_proj = nn.Linear(dim, dim_inner, bias=False)
         self.out_proj = nn.Linear(dim_inner, dim, bias=False)
-        
+
         # Implement 2d convolutional layer
         # 3D depthwise convolution
         self.conv1 = nn.Conv3d(
@@ -73,29 +74,27 @@ class UMambaBlock(nn.Module):
             out_channels=dim_inner,
             kernel_size=3,
             padding=1,
-            stride=1
+            stride=1,
         )
-        
+
         self.conv2 = nn.Conv3d(
             in_channels=dim_inner,
             out_channels=dim,
             kernel_size=3,
             padding=1,
-            stride=1
+            stride=1,
         )
-        
-        
+
         # Init instance normalization
         self.instance_norm = nn.InstanceNorm3d(dim)
         self.instance_norm2 = nn.InstanceNorm3d(dim_inner)
-        
+
         # Leaky RELU
         self.leaky_relu = nn.LeakyReLU()
-        
+
         # Layernorm
         self.norm = nn.LayerNorm(dim)
-        
-        
+
         # Mamba block
         self.mamba = MambaBlock(
             dim=dim,
@@ -106,8 +105,7 @@ class UMambaBlock(nn.Module):
             conv_bias=conv_bias,
             bias=bias,
         )
-        
-        
+
     def forward(self, x: Tensor):
         """
         B, C, H, W, D
@@ -115,33 +113,32 @@ class UMambaBlock(nn.Module):
         b, c, h, w, d = x.shape
         input = x
         print(f"Input shape: {x.shape}")
-        
+
         # Apply convolution
         x = self.conv1(x)
         print(f"Conv1 shape: {x.shape}")
-        
+
         # # Instance Normalization
         x = self.instance_norm(x) + self.leaky_relu(x)
         print(f"Instance Norm shape: {x.shape}")
-        
+
         # TODO: Add another residual connection here
-        
+
         x = self.conv2(x)
-        
+
         x = self.instance_norm(x) + self.leaky_relu(x)
-    
+
         x = x + input
-            
+
         # # Flatten to B, L, C
         x = rearrange(x, "b c h w d -> b (h w d) c")
         print(f"Faltten shape: {x.shape}")
         x = self.norm(x)
-        
+
         # Maybe use a mamba block here then reshape back to B, C, H, W, D
         x = self.mamba(x)
-        
+
         # Reshape back to B, C, H, W, D
         x = rearrange(x, "b (h w d) c -> b c h w d", h=h, w=w, d=d)
-        
+
         return x
-        

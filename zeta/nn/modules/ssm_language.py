@@ -7,8 +7,6 @@ import torch.nn.functional as F
 from einops import einsum, rearrange, repeat
 from torch import Tensor, nn
 
-from zeta.nn.modules.rms_norm import RMSNorm
-from zeta.utils import exists
 
 
 class SSML(nn.Module):
@@ -122,7 +120,6 @@ class SSML(nn.Module):
 
         return output
 
-
     def ssm(self, x: Tensor):
         """Runs the SSM. See:
             - Algorithm 2 in Section 3.2 in the Mamba paper [1]
@@ -211,6 +208,7 @@ class SSML(nn.Module):
             y = y + u * rearrange(D, "d_in -> d_in 1")
 
         return y
+
 
 x = torch.randn(1, 10, 64)
 ssml = SSML(dim=64, depth=1)
