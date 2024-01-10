@@ -11,7 +11,8 @@
 
 ## 👋 Hello
 
-zeta provides you with all the building blocks you need to build reliable, production-grade, and scalable multi-agent apps!
+zeta provides you with all the modular lego blocks you need to build bleeding edge AI models as fast as possible.
+
 
 ## 💻 Install
 
