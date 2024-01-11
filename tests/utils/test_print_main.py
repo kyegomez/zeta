@@ -14,7 +14,7 @@ def message():
 def test_print_main_without_dist(message):
     """Test print_main without distribution"""
     print_main(message)
-    captured = capsys.readout()
+    captured = capsys.readout()  # noqa: F821
     assert captured.out == message + "\n"
 
 

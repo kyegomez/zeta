@@ -45,17 +45,8 @@ def test_default_exception():
 
 
 # Grouping and Marking Tests
-@pytest.mark.value
-def test_default_value():
-    assert default("value", "default") == "value"
-
-
-@pytest.mark.none
-def test_default_none():
-    assert default(None, "default") == "default"
-
-
 # Clean Code Practices & Documentation
+@pytest.mark.value
 def test_default_value():
     """
     Test that the default function returns the correct value when one is provided.
@@ -63,11 +54,11 @@ def test_default_value():
     assert default("value", "default") == "value"
 
 
+@pytest.mark.none
 def test_default_none():
     """
     Test that the default function correctly handles None values.
     """
     assert default(None, "default") == "default"
-
 
 # Continue adding more tests to cover all edge cases and normal uses...

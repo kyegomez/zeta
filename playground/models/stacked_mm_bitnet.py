@@ -163,7 +163,7 @@ class Attend(nn.Module):
         self.sdp_kwargs = sdp_kwargs
 
     def flash_attn(self, q, k, v, mask=None, attn_bias=None):
-        batch, heads, q_len, _, k_len, is_cuda, device = (
+        batch, heads, q_len, _, k_len, is_cuda, device = ( # noqa F841
             *q.shape,
             k.shape[-2],
             q.is_cuda,
@@ -398,15 +398,6 @@ class LayerIntermediates:
 
 # helpers
 
-
-def exists(val):
-    return val is not None
-
-
-def default(val, d):
-    if exists(val):
-        return val
-    return d() if callable(d) else d
 
 
 def cast_tuple(val, depth):
@@ -1278,7 +1269,7 @@ class Attention(nn.Module):
         return_intermediates=False,
         cache: Optional[Intermediates] = None,
     ):
-        b, n, _, h, kv_h, head_scale, device, has_context = (
+        b, n, _, h, kv_h, head_scale, device, has_context = ( # noqa F841
             *x.shape,
             self.heads,
             self.kv_heads,
@@ -2172,7 +2163,7 @@ class TransformerWrapper(nn.Module):
         cache: Optional[LayerIntermediates] = None,
         **kwargs,
     ):
-        b, n, device, num_mems, has_memory_tokens, emb_frac_gradient = (
+        b, n, device, num_mems, has_memory_tokens, emb_frac_gradient = ( # noqa F841
             *x.shape,
             x.device,
             self.num_memory_tokens,

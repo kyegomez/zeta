@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 from scripts.auto_tests_docs.docs import DOCUMENTATION_WRITER_SOP
 from swarms import OpenAIChat
-from zeta.ops import *
+from zeta.ops import *  # noqa: F403
 
 load_dotenv()
 
