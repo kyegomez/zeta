@@ -1,11 +1,13 @@
 import math
 
 import torch
+from torch.nn import LayerNorm
 import torch.nn.functional as F
 from einops import rearrange, repeat
 from torch import einsum, nn
 
-from zeta import LayerNorm, default, exists, l2norm
+from zeta.utils.main import default, exists, l2norm
+
 
 
 class CrossAttention(nn.Module):
