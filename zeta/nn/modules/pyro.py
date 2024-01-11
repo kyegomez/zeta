@@ -32,7 +32,7 @@ def hyper_optimize(
 
     Returns:
         decorator (function): Decorator function that applies the specified optimizations to the target function.
-        
+
     Example::
     @hyper_optimize(
         torch_fx=False,
@@ -49,8 +49,8 @@ def hyper_optimize(
     print(out)
 
     """
+
     def decorator(fn):
-        original_fn = fn
         if isinstance(fn, nn.Module):
             target = fn.forward
         else:
@@ -107,4 +107,3 @@ def hyper_optimize(
         )
 
     return decorator
-
