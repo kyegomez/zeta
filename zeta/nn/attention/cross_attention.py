@@ -5,8 +5,6 @@ import torch.nn.functional as F
 from einops import rearrange, repeat
 from torch import einsum, nn
 
-from zeta import LayerNorm, default, exists, l2norm
-
 
 class CrossAttention(nn.Module):
     def __init__(
