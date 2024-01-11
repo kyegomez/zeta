@@ -9,7 +9,6 @@ from torch import einsum, nn
 from zeta.utils.main import default, exists, l2norm
 
 
-
 class CrossAttention(nn.Module):
     def __init__(
         self,
