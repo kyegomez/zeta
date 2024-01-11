@@ -264,6 +264,7 @@ nav:
           - niva: "zeta/quant/niva.md"
   - Examples:
     - Overview: "examples/index.md"
+    - PytorchCS: "examples/torch_cs.md"
   - Corporate:
     - Overview: "corporate/main.md"
     - Product:
