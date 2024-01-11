@@ -418,6 +418,28 @@ print(modulated_features.shape)  # Should be [10, 1, 128]
 
 ```
 
+### `hyper_optimize`
+- torch.fx, torch.script, torch.compile, dynamic quantization, mixed precision through torch.amp, with execution time metrics all in once place!
+```python
+import torch
+from zeta.nn import hyper_optimize
+
+@hyper_optimize(
+    torch_fx=False,
+    torch_script=False,
+    torch_compile=True,
+    quantize=True,
+    mixed_precision=True,
+    enable_metrics=True,
+)
+def model(x):
+    return x @ x
+
+out = model(torch.randn(1, 3, 32, 32))
+print(out)
+
+```
+
 
 ### ZetaCloud
 Train or finetune any model on any cluster in 1 click with zetacloud, just pass in your file and the GPU type and quantity you want! To gain access first `pip install zetascale` then run `zeta -h` in the terminal. [Here is the docs for more](https://zeta.apac.ai/en/latest/zeta/cloud/main/)
