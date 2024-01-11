@@ -104,6 +104,7 @@ from zeta.nn.modules.audio_to_text import audio_to_text
 from zeta.nn.modules.patch_video import patch_video
 from zeta.nn.modules.image_to_text import img_to_text
 from zeta.nn.modules.video_to_text import video_to_text
+from zeta.nn.modules.pyro import hyper_optimize
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -221,4 +222,5 @@ __all__ = [
     "patch_video",
     "img_to_text",
     "video_to_text",
+    "hyper_optimize",
 ]
