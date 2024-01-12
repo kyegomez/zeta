@@ -114,6 +114,8 @@ from zeta.nn.modules.vit_denoiser import (
 from zeta.nn.modules.v_layernorm import VLayerNorm
 from zeta.nn.modules.parallel_wrapper import Parallel
 from zeta.nn.modules.v_pool import DepthWiseConv2d, Pool
+from zeta.nn.modules.moe import MixtureOfExperts
+from zeta.nn.modules.flex_conv import FlexiConv
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -240,4 +242,6 @@ __all__ = [
     "Parallel",
     "DepthWiseConv2d",
     "Pool",
+    "MixtureOfExperts",
+    "FlexiConv",
 ]
