@@ -5,6 +5,18 @@ from einops.layers.torch import Rearrange
 
 
 def to_patch_embedding(x: Tensor, patch_size: int, patch_dim: int, dim):
+    """
+    Converts the input tensor into patch embeddings.
+
+    Args:
+        x (Tensor): The input tensor.
+        patch_size (int): The size of each patch.
+        patch_dim (int): The dimension of each patch.
+        dim: The output dimension of the patch embedding.
+
+    Returns:
+        Tensor: The patch embedding tensor.
+    """
     return nn.Sequential(
         Rearrange(
             "b c (h p1) (w p2) -> b (h w) (p1 p2 c)",
@@ -15,6 +27,44 @@ def to_patch_embedding(x: Tensor, patch_size: int, patch_dim: int, dim):
         nn.Linear(patch_dim, dim),
         nn.LayerNorm(dim),
     )
+
+
+def posemb_sincos_2d(
+    patches,
+    temperature: int = 10000,
+    dtype=torch.float32,
+):
+    """
+    Computes positional embeddings using sine and cosine functions for a 2D grid.
+
+    Args:
+        patches (torch.Tensor): Input patches of shape (batch_size, height, width, dim).
+        temperature (int, optional): Temperature parameter for the positional embeddings. Defaults to 10000.
+        dtype (torch.dtype, optional): Data type of the positional embeddings. Defaults to torch.float32.
+
+    Returns:
+        torch.Tensor: Positional embeddings of shape (batch_size, height * width, dim).
+
+    Raises:
+        AssertionError: If the feature dimension is not a multiple of 4.
+    """
+    _, h, w, dim, device, dtype = *patches.shape, patches.device, patches.dtype
+
+    y, x = torch.mesgrid(
+        torch.arange(h, device=device),
+        torch.arange(w, device=device),
+        indexing="ij",
+    )
+    assert (
+        dim % 4
+    ) == 0, "feature dimension must be a multiple of 4 for sincos emb"
+    omega = torch.arange(dim // 4, device=device) / (dim // 4 - 1)
+    omega = 1.0 / (temperature**omega)
+
+    y = y.flatten()[:, None] * omega[None, :]
+    x = x.flatten()[:, None] * omega[None, :]
+    pe = torch.cat((x.sin(), x.cos(), y.sin(), y.cos()), dim=1)
+    return pe.type(dtype)
 
 
 class VisionAttention(nn.Module):

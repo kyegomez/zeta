@@ -100,4 +100,4 @@ class MoERouter(nn.Module):
             return sparsemax(x)
 
         else:
-            raise ValueError("Mechanism must be either softmax or gumbel")
+            return x
