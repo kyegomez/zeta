@@ -30,7 +30,7 @@ from zeta.nn.embeddings.multiway_network import (
     MultiwayNetwork,
     MultiwayEmbedding,
 )
-from zeta.nn.embeddings.vis_emb import VisionEmbedding
+from zeta.nn.embeddings.vision_emb import VisionEmbedding
 
 __all__ = [
     "AbsolutePositionalEmbedding",
