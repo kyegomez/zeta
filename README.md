@@ -419,7 +419,7 @@ print(modulated_features.shape)  # Should be [10, 1, 128]
 ```
 
 ### `hyper_optimize`
-- torch.fx, torch.script, torch.compile, dynamic quantization, mixed precision through torch.amp, with execution time metrics all in once place!
+- A single wrapper for torch.fx, torch.script, torch.compile, dynamic quantization, mixed precision through torch.amp, with execution time metrics all in once place!
 ```python
 import torch
 from zeta.nn import hyper_optimize
