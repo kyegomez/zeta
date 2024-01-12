@@ -1,6 +1,5 @@
-import torch 
+import torch
 from torch import nn, Tensor
-
 
 
 class VLayerNorm(nn.Module):
@@ -16,7 +15,7 @@ class VLayerNorm(nn.Module):
         self.eps = eps
         self.g = nn.Parameter(torch.ones(1, dim, 1, 1))
         self.b = nn.Parameter(torch.zeros(1, dim, 1, 1))
-    
+
     def forward(self, x: Tensor):
         """
         Performs a forward pass of the VLayerNorm module.

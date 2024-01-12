@@ -19,6 +19,6 @@ class Parallel(nn.Module):
     def __init__(self, *fns):
         super().__init__()
         self.fns = nn.ModuleList(fns)
-    
+
     def forward(self, x):
         return sum([fn(x) for fn in self.fns])
