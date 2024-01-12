@@ -105,7 +105,15 @@ from zeta.nn.modules.patch_video import patch_video
 from zeta.nn.modules.image_to_text import img_to_text
 from zeta.nn.modules.video_to_text import video_to_text
 from zeta.nn.modules.pyro import hyper_optimize
-
+from zeta.nn.modules.vit_denoiser import (
+    to_patch_embedding,
+    posemb_sincos_2d,
+    VisionAttention,
+    VitTransformerBlock,
+)
+from zeta.nn.modules.v_layernorm import VLayerNorm
+from zeta.nn.modules.parallel_wrapper import Parallel
+from zeta.nn.modules.v_pool import DepthWiseConv2d, Pool
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
 # from zeta.nn.modules.scaled_sinusoidal import ScaledSinuosidalEmbedding
@@ -223,4 +231,12 @@ __all__ = [
     "img_to_text",
     "video_to_text",
     "hyper_optimize",
+    "to_patch_embedding",
+    "posemb_sincos_2d",
+    "VisionAttention",
+    "VitTransformerBlock",
+    "VLayerNorm",
+    "Parallel",
+    "DepthWiseConv2d",
+    "Pool",
 ]
