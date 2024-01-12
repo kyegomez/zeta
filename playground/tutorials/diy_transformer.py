@@ -128,7 +128,7 @@ class Neo(nn.Module):
             logits, embed = self.forward(
                 out, return_logits_with_embedding=True, **kwargs
             )
-            logits, embeds = logits[:, -1], embeds[:, -1]
+            logits, embeds = logits[:, -1], embeds[:, -1] # noqa F841
 
             if exists(filter_logits_fn):
                 logits = filter_logits_fn(logits, thre=filter_thres)

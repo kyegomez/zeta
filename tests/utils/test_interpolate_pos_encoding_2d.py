@@ -1,5 +1,6 @@
 import torch
 from zeta.utils import interpolate_pos_encoding_2d
+import pytest.raises
 
 # Note: You will need to import or define 'cast_if_src_dtype' function as it is used but not provided in the initial code snippet
 

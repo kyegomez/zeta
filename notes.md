@@ -1,0 +1,20 @@
+pip install pytest; cd tests/utils ; pytest test_video_tensor_to_gift.py
+
+['Andromeda', 'T_destination', '__annotations__', '__call__', '__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setstate__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_apply', '_backward_hooks', '_backward_pre_hooks', '_buffers', '_call_impl', '_compiled_call_impl', '_forward_hooks', '_forward_hooks_always_called', '_forward_hooks_with_kwargs', '_forward_pre_hooks', '_forward_pre_hooks_with_kwargs', '_get_backward_hooks', '_get_backward_pre_hooks', '_get_name', '_is_full_backward_hook', '_load_from_state_dict', '_load_state_dict_post_hooks', '_load_state_dict_pre_hooks', '_maybe_warn_non_full_backward_hook', '_modules', '_named_members', '_non_persistent_buffers_set', '_parameters', '_register_load_state_dict_pre_hook', '_register_state_dict_hook', '_replicate_for_data_parallel', '_save_to_state_dict', '_slow_forward', '_state_dict_hooks', '_state_dict_pre_hooks', '_version', '_wrapped_call_impl', 
+'add_module', 'apply', 
+'bfloat16', 'buffers', 
+'call_super_init', 'children', 'compile', 'cpu', 'cuda', 
+'decoder', 'double', 'dump_patches', 
+'eval', 'extra_repr', 
+'float', 'forward', 
+'get_buffer', 'get_extra_state', 'get_parameter', 'get_submodule', 
+'half', 
+'ipu', 
+'load_state_dict', 
+'modules', 
+'named_buffers', 'named_children', 'named_modules', 'named_parameters', 'parameters', 
+'register_backward_hook', 'register_buffer', 'register_forward_hook', 'register_forward_pre_hook', 'register_full_backward_hook', 'register_full_backward_pre_hook', 'register_load_state_dict_post_hook', 'register_module', 'register_parameter', 'register_state_dict_pre_hook', 'requires_grad_', 
+'set_extra_state', 'share_memory', 'state_dict', 
+'to', 'to_empty', 'train', 'training', 'type', 
+'xpu', 
+'zero_grad']

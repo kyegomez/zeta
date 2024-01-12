@@ -10,7 +10,7 @@ from swarms import OpenAIChat
 from swarms.utils.parse_code import (
     extract_code_from_markdown,
 )
-from zeta.utils import *
+from zeta.utils import *  # noqa: F403
 
 load_dotenv()
 
