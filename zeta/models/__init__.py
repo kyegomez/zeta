@@ -23,5 +23,5 @@ __all__ = [
     "LLama2",
     "Andromeda",
     "NaViT",
-    "MultiModalMamba"
+    "MultiModalMamba",
 ]

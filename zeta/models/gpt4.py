@@ -35,6 +35,7 @@ class GPT4(nn.Module):
         - attn_qk_norm_dim_scale: Attention query-key normalization dimension scale
         - embedding_provider: Embedding provider module
     """
+
     def __init__(
         self,
         num_tokens=50432,
@@ -53,7 +54,7 @@ class GPT4(nn.Module):
         attn_qk_norm=True,
         attn_qk_norm_dim_scale=True,
         *args,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
 
@@ -76,7 +77,7 @@ class GPT4(nn.Module):
                     attn_qk_norm=attn_qk_norm,
                     attn_qk_norm_dim_scale=attn_qk_norm_dim_scale,
                     *args,
-                    **kwargs
+                    **kwargs,
                 ),
             )
 
@@ -139,10 +140,10 @@ class GPT4MultiModal(torch.nn.Module):
         attn_flash=True,
         qk_norm=True,
         *args,
-        **kwargs
+        **kwargs,
     ):
         super(GPT4MultiModal, self).__init__()
-        
+
         # Encoder
         self.encoder = ViTransformerWrapper(
             image_size=image_size,
@@ -151,7 +152,7 @@ class GPT4MultiModal(torch.nn.Module):
                 dim=encoder_dim, depth=encoder_depth, heads=encoder_heads
             ),
         )
-        
+
         # Decoder
         self.decoder = Transformer(
             num_tokens=num_tokens,

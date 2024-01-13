@@ -26,7 +26,7 @@ class MultiModalMamba(nn.Module):
         return_embeddings (bool): Whether to return the embeddings or not. Defaults to False.
         expansion_ratio (int): Expansion ratio for the hidden dimension. Defaults to 4.
         post_fuse_norm (bool): Whether to apply layer normalization after the fusion or not. Defaults to True.
-        
+
         *args: Variable length argument list.
         **kwargs: Arbitrary keyword arguments.
 
@@ -141,14 +141,10 @@ class MultiModalMamba(nn.Module):
         self.linear = nn.Linear(encoder_dim, dim)
 
         # VisualExpert
-        self.visual_expert = VisualExpert(
-            dim, self.hidden_dim, dropout, heads
-        )
+        self.visual_expert = VisualExpert(dim, self.hidden_dim, dropout, heads)
 
         # MLP
-        self.mlp = MLP(
-            dim, dim, expansion_factor=4, depth=1, norm=True
-        )
+        self.mlp = MLP(dim, dim, expansion_factor=4, depth=1, norm=True)
 
     def forward(self, text: Tensor, img: Tensor) -> Tensor:
         """
