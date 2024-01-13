@@ -6,7 +6,7 @@ from torch import einsum, nn
 from zeta.utils import l2norm
 
 
-class LinearAttention(nn.Module):
+class LinearAttentionVision(nn.Module):
     """
     Linear Attention module that performs attention mechanism on the input feature map.
 
