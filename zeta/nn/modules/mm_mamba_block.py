@@ -5,6 +5,7 @@ from zeta.nn.modules.mlp import MLP
 from zeta.nn.modules.simple_mamba import MambaBlock
 from zeta.structs import ViTransformerWrapper, Encoder
 
+
 class MultiModalMambaBlock(nn.Module):
     """
     MultiModalMambaBlock is a PyTorch module that combines text and image embeddings using a multimodal fusion approach.
@@ -95,14 +96,10 @@ class MultiModalMambaBlock(nn.Module):
         self.linear = nn.Linear(encoder_dim, dim)
 
         # VisualExpert
-        self.visual_expert = VisualExpert(
-            dim, self.hidden_dim, dropout, heads
-        )
+        self.visual_expert = VisualExpert(dim, self.hidden_dim, dropout, heads)
 
         # MLP
-        self.mlp = MLP(
-            dim, dim, expansion_factor=4, depth=1, norm=True
-        )
+        self.mlp = MLP(dim, dim, expansion_factor=4, depth=1, norm=True)
 
     def forward(self, text: Tensor, img: Tensor) -> Tensor:
         """

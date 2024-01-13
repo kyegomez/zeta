@@ -19,6 +19,7 @@ from zeta.nn.attention.spatial_linear_attention import SpatialLinearAttention
 from zeta.nn.attention.linear_attention import LinearAttentionVision
 from zeta.nn.attention.agent_attn import AgentSelfAttention
 from zeta.nn.attention.linear_attn_l import LinearAttention
+
 # from zeta.nn.attention.flash_attention2 import FlashAttentionTwo
 # from zeta.nn.attention.mgqa import MGQA
 

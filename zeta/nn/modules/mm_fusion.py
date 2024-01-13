@@ -1,6 +1,4 @@
-import torch
-from torch import nn, Tensor
-
+from torch import Tensor
 
 
 def multi_modal_fusion(text: Tensor, img: Tensor):
