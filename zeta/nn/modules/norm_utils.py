@@ -35,6 +35,7 @@ class PreNorm(Module):
         """
         return self.fn(self.norm(x), **kwargs) + x
 
+
 class PostNorm(Module):
     """
     Post-normalization module that applies layer normalization after the input is passed through a given module.

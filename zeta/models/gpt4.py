@@ -1,5 +1,5 @@
 import torch
-from torch import nn
+from torch import nn, Tensor
 
 from zeta.structs.auto_regressive_wrapper import AutoregressiveWrapper
 from zeta.structs.transformer import (
@@ -35,7 +35,6 @@ class GPT4(nn.Module):
         - attn_qk_norm_dim_scale: Attention query-key normalization dimension scale
         - embedding_provider: Embedding provider module
     """
-
     def __init__(
         self,
         num_tokens=50432,
@@ -53,6 +52,8 @@ class GPT4(nn.Module):
         qk_norm=True,
         attn_qk_norm=True,
         attn_qk_norm_dim_scale=True,
+        *args,
+        **kwargs
     ):
         super().__init__()
 
@@ -74,6 +75,8 @@ class GPT4(nn.Module):
                     qk_norm=qk_norm,
                     attn_qk_norm=attn_qk_norm,
                     attn_qk_norm_dim_scale=attn_qk_norm_dim_scale,
+                    *args,
+                    **kwargs
                 ),
             )
 
@@ -83,9 +86,9 @@ class GPT4(nn.Module):
             print("Failed to initialize Andromeda: ", e)
             raise
 
-    def forward(self, text_tokens, **kwargs):
+    def forward(self, text: Tensor, **kwargs):
         try:
-            model_input = self.decoder.forward(text_tokens)[0]
+            model_input = self.decoder.forward(text)[0]
             return self.decoder(model_input, padded_x=model_input[0])
         except Exception as e:
             print("Failed in forward method: ", e)
@@ -93,6 +96,29 @@ class GPT4(nn.Module):
 
 
 class GPT4MultiModal(torch.nn.Module):
+    """
+    GPT4MultiModal is a multi-modal transformer model that combines image and text inputs.
+
+    Args:
+        image_size (int): The size of the input image (default: 256).
+        patch_size (int): The size of each image patch (default: 32).
+        encoder_dim (int): The dimension of the encoder layers (default: 512).
+        encoder_depth (int): The number of encoder layers (default: 6).
+        encoder_heads (int): The number of attention heads in the encoder (default: 8).
+        num_tokens (int): The number of tokens in the vocabulary (default: 20000).
+        max_seq_len (int): The maximum sequence length for the decoder (default: 1024).
+        decoder_dim (int): The dimension of the decoder layers (default: 512).
+        decoder_depth (int): The number of decoder layers (default: 6).
+        decoder_heads (int): The number of attention heads in the decoder (default: 8).
+        alibi_num_heads (int): The number of attention heads for the alibi mechanism (default: 4).
+        use_abs_pos_emb (bool): Whether to use absolute positional embeddings (default: False).
+        cross_attend (bool): Whether to enable cross-attention between encoder and decoder (default: True).
+        alibi_pos_bias (bool): Whether to use positional bias for the alibi mechanism (default: True).
+        rotary_xpos (bool): Whether to use rotary positional embeddings (default: True).
+        attn_flash (bool): Whether to use attention flash (default: True).
+        qk_norm (bool): Whether to normalize the query-key dot product (default: True).
+    """
+
     def __init__(
         self,
         image_size=256,
@@ -112,9 +138,12 @@ class GPT4MultiModal(torch.nn.Module):
         rotary_xpos=True,
         attn_flash=True,
         qk_norm=True,
+        *args,
+        **kwargs
     ):
         super(GPT4MultiModal, self).__init__()
-
+        
+        # Encoder
         self.encoder = ViTransformerWrapper(
             image_size=image_size,
             patch_size=patch_size,
@@ -122,7 +151,8 @@ class GPT4MultiModal(torch.nn.Module):
                 dim=encoder_dim, depth=encoder_depth, heads=encoder_heads
             ),
         )
-
+        
+        # Decoder
         self.decoder = Transformer(
             num_tokens=num_tokens,
             max_seq_len=max_seq_len,
@@ -140,7 +170,17 @@ class GPT4MultiModal(torch.nn.Module):
             ),
         )
 
-    def forward(self, img, text):
+    def forward(self, img: Tensor, text: Tensor):
+        """
+        Performs the forward pass of the GPT4 model.
+
+        Args:
+            img (Tensor): The input image tensor.
+            text (Tensor): The input text tensor.
+
+        Returns:
+            Tensor: The output tensor of the model.
+        """
         try:
             encoded = self.encoder(img, return_embeddings=True)
             return self.decoder(text, context=encoded)
