@@ -3,7 +3,7 @@ from torch import nn, Tensor
 from zeta.nn.modules.visual_expert import VisualExpert
 from zeta.nn.modules.mlp import MLP
 from zeta.nn.modules.simple_mamba import MambaBlock
-from zeta.structs import ViTransformerWrapper, Encoder
+from zeta.structs.transformer import ViTransformerWrapper, Encoder
 
 
 class MultiModalMambaBlock(nn.Module):
