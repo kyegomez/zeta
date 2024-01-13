@@ -117,6 +117,10 @@ from zeta.nn.modules.v_pool import DepthWiseConv2d, Pool
 from zeta.nn.modules.moe import MixtureOfExperts
 from zeta.nn.modules.flex_conv import FlexiConv
 from zeta.nn.modules.mm_layernorm import MMLayerNorm
+from zeta.nn.modules.fusion_ffn import MMFusionFFN
+from zeta.nn.modules.norm_utils import (
+    PostNorm
+)
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -245,5 +249,7 @@ __all__ = [
     "Pool",
     "MixtureOfExperts",
     "FlexiConv",
-    "MMLayerNorm"
+    "MMLayerNorm",
+    "MMFusionFFN",
+    "PostNorm"
 ]

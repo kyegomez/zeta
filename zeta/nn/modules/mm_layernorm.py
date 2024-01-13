@@ -12,8 +12,8 @@ class MMLayerNorm(nn.Module):
             num_modalities (int): Number of modalities to be fused.
             dim (int): Dimension of the input tensors.
             epsilon (float, optional): Small value added to the denominator for numerical stability. Defaults to 1e-5.
-            
-        Examples: 
+
+        Examples:
             >>> from zeta.nn.modules import MMLayerNorm
             >>> import torch
             >>> mm_ln = MMLayerNorm(num_modalities=2, dim=64)
@@ -63,4 +63,3 @@ class MMLayerNorm(nn.Module):
         # Apply learnable scale and shift
         output = self.gamma * combined + self.beta
         return output
-

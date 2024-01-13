@@ -1,14 +1,16 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from einops import rearrange
+import math
 
 
 class DynaConv(nn.Module):
     """
-    DynaConv is an experimental replacement for traditional convolutional layers.
+    DynaConv dynamically generates convolutional kernels based on the input features.
 
-    Instead of using fixed filters, this layer dynamically generates convolutional
-    kernels based on the input features using a small neural network.
+    This layer replaces traditional convolutional layers with a dynamic mechanism,
+    where convolutional kernels are generated on-the-fly by a small neural network.
 
     Args:
         in_channels (int): Number of channels in the input image.
@@ -69,45 +71,64 @@ class DynaConv(nn.Module):
         self.reset_parameters()
 
     def reset_parameters(self):
-        # Correctly calculate the gain for kaiming_uniform
-        gain = nn.init.calculate_gain(
-            "tanh"
-        )  # since we are using Tanh in the kernel generator
-        # Initialize the weights of the kernel generator network
+        gain = nn.init.calculate_gain("tanh")
         nn.init.kaiming_uniform_(self.kernel_generator[0].weight, a=gain)
         if self.bias is not None:
             fan_in, _ = nn.init._calculate_fan_in_and_fan_out(
                 self.kernel_generator[0].weight
             )
-            bound = 1 / torch.sqrt(
-                torch.tensor(fan_in, dtype=torch.float32)
-            )  # Convert fan_in to a tensor before sqrt
+            bound = 1 / math.sqrt(
+                fan_in
+            )  # Use math.sqrt for the scalar square root calculation
             nn.init.uniform_(self.bias, -bound, bound)
 
     def forward(self, x):
-        """
-        Forward pass of the DynaConv layer.
-
-        Args:
-            x (torch.Tensor): The input tensor.
-
-        Returns:
-            torch.Tensor: The result of the dynamic convolution.
-        """
         batch_size, _, H, W = x.shape
-        # Generate dynamic kernels
         x_unfold = F.unfold(
             x,
             kernel_size=self.kernel_size,
             stride=self.stride,
             padding=self.padding,
         )
-        kernels = self.kernel_generator(x_unfold.transpose(1, 2)).view(
-            batch_size, self.out_channels, -1
+
+        # The input to kernel_generator must match its expected input dimensions.
+        # We reshape x_unfold to have dimensions [batch_size * number of patches, in_channels * kernel_size * kernel_size]
+        x_unfold = rearrange(
+            x_unfold,
+            "b (c kh kw) l -> (b l) (c kh kw)",
+            c=self.in_channels,
+            kh=self.kernel_size[0],
+            kw=self.kernel_size[1],
         )
 
-        # Perform convolution with dynamic kernels
-        output = kernels.bmm(x_unfold).view(batch_size, self.out_channels, H, W)
+        kernels = self.kernel_generator(x_unfold).view(
+            batch_size,
+            -1,
+            self.out_channels,
+            self.kernel_size[0],
+            self.kernel_size[1],
+        )
+
+        # Apply the generated kernels for each patch
+        output = torch.einsum(
+            "blodij,blij->bod",
+            kernels,
+            x_unfold.view(
+                batch_size,
+                -1,
+                self.in_channels,
+                self.kernel_size[0],
+                self.kernel_size[1],
+            ),
+        )
+
+        # Reshape output to match the convolutional output
+        output = rearrange(
+            output,
+            "b (h w) d -> b d h w",
+            h=H // self.stride,
+            w=W // self.stride,
+        )
 
         # Add bias if necessary
         if self.bias is not None:
@@ -116,9 +137,7 @@ class DynaConv(nn.Module):
         return output
 
 
-# Example usage:
-dynaconv = DynaConv(
-    in_channels=3, out_channels=64, kernel_size=3, stride=1, padding=1
-)
-input_tensor = torch.randn(1, 3, 224, 224)  # Example input batch
-output = dynaconv(input_tensor)
+# # Example usage
+# dynaconv = DynaConv(in_channels=3, out_channels=64, kernel_size=3, stride=1, padding=1)
+# input_tensor = torch.randn(1, 3, 224, 224)  # Example input batch
+# output = dynaconv(input_tensor)
