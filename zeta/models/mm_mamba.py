@@ -1,9 +1,10 @@
 import torch
 from torch import Tensor, nn
 from zeta.nn.modules.rms_norm import RMSNorm
-from zeta.nn import MLP, VisualExpert
+from zeta.nn.modules.mlp import MLP
+from zeta.nn.modules.visual_expert import VisualExpert
 from zeta.nn.modules.simple_mamba import MambaBlock
-from zeta.structs import Encoder, ViTransformerWrapper
+from zeta.structs.transformer import ViTransformerWrapper, Encoder
 
 
 class MultiModalMamba(nn.Module):
