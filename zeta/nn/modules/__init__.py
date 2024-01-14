@@ -122,6 +122,7 @@ from zeta.nn.modules.norm_utils import PostNorm
 from zeta.nn.modules.mm_mamba_block import MultiModalMambaBlock
 from zeta.nn.modules.p_scan import PScan, pscan
 from zeta.nn.modules.ssm import selective_scan, selective_scan_seq, SSM
+from zeta.nn.modules.film_conditioning import FilmConditioning
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -259,4 +260,5 @@ __all__ = [
     "selective_scan",
     "selective_scan_seq",
     "SSM",
+    "FilmConditioning",
 ]
