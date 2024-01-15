@@ -41,7 +41,7 @@ from zeta.nn.modules.simple_attention import simple_attention
 from zeta.nn.modules.simple_feedforward import SimpleFeedForward
 from zeta.nn.modules.simple_res_block import SimpleResBlock
 from zeta.nn.modules.skipconnection import SkipConnection
-from zeta.nn.modules.spacial_transformer import SpatialTransformer
+from zeta.nn.modules.spatial_transformer import SpatialTransformer
 from zeta.nn.modules.subln import SubLN
 from zeta.nn.modules.super_resolution import SuperResolutionNet
 from zeta.nn.modules.time_up_sample import TimeUpSample2x
