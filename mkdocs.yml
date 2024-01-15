@@ -296,7 +296,7 @@ nav:
           - QUIK: "zeta/quant/quik.md"
           - BitLinear: "zeta/quant/bitlinear.md"
           - niva: "zeta/quant/niva.md"
-      - zeta.ops:
+      - zeta.rl:
         DPO: "zeta/rl/dpo.md"
   - Examples:
     - Overview: "examples/index.md"
