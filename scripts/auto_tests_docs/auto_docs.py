@@ -41,7 +41,6 @@ from zeta.nn.modules.ssm import SSM
 from zeta.nn.modules.film_conditioning import FilmConditioning
 
 
-
 ####################
 load_dotenv()
 
@@ -118,7 +117,7 @@ def main():
         SSM,
         FilmConditioning,
     ]
-    
+
     threads = []
     for cls in classes:
         thread = threading.Thread(target=process_documentation, args=(cls,))
