@@ -9,6 +9,7 @@ from zeta.models.mega_vit import MegaVit
 from zeta.models.palme import PalmE
 from zeta.models.vit import ViT
 from zeta.models.navit import NaViT
+from zeta.models.mm_mamba import MultiModalMamba
 
 
 __all__ = [
@@ -22,4 +23,5 @@ __all__ = [
     "LLama2",
     "Andromeda",
     "NaViT",
+    "MultiModalMamba",
 ]

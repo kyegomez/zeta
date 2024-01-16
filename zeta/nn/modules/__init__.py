@@ -41,7 +41,7 @@ from zeta.nn.modules.simple_attention import simple_attention
 from zeta.nn.modules.simple_feedforward import SimpleFeedForward
 from zeta.nn.modules.simple_res_block import SimpleResBlock
 from zeta.nn.modules.skipconnection import SkipConnection
-from zeta.nn.modules.spacial_transformer import SpatialTransformer
+from zeta.nn.modules.spatial_transformer import SpatialTransformer
 from zeta.nn.modules.subln import SubLN
 from zeta.nn.modules.super_resolution import SuperResolutionNet
 from zeta.nn.modules.time_up_sample import TimeUpSample2x
@@ -100,7 +100,30 @@ from zeta.nn.modules.top_n_gating import TopNGating
 from zeta.nn.modules.moe_router import MoERouter
 from zeta.nn.modules.perceiver_layer import PerceiverLayer
 from zeta.nn.modules.u_mamba import UMambaBlock
-from zeta.nn.modules.audio_embeddings import AudioToTextEmbeddings
+from zeta.nn.modules.audio_to_text import audio_to_text
+from zeta.nn.modules.patch_video import patch_video
+from zeta.nn.modules.image_to_text import img_to_text
+from zeta.nn.modules.video_to_text import video_to_text
+from zeta.nn.modules.pyro import hyper_optimize
+from zeta.nn.modules.vit_denoiser import (
+    to_patch_embedding,
+    posemb_sincos_2d,
+    VisionAttention,
+    VitTransformerBlock,
+)
+from zeta.nn.modules.v_layernorm import VLayerNorm
+from zeta.nn.modules.parallel_wrapper import Parallel
+from zeta.nn.modules.v_pool import DepthWiseConv2d, Pool
+from zeta.nn.modules.moe import MixtureOfExperts
+from zeta.nn.modules.flex_conv import FlexiConv
+from zeta.nn.modules.mm_layernorm import MMLayerNorm
+from zeta.nn.modules.fusion_ffn import MMFusionFFN
+from zeta.nn.modules.norm_utils import PostNorm
+from zeta.nn.modules.mm_mamba_block import MultiModalMambaBlock
+from zeta.nn.modules.p_scan import PScan, pscan
+from zeta.nn.modules.ssm import selective_scan, selective_scan_seq, SSM
+from zeta.nn.modules.film_conditioning import FilmConditioning
+from zeta.nn.modules.qkv_norm import qkv_norm, qk_norm
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -214,5 +237,31 @@ __all__ = [
     "MoERouter",
     "PerceiverLayer",
     "UMambaBlock",
-    "AudioToTextEmbeddings",
+    "audio_to_text",
+    "patch_video",
+    "img_to_text",
+    "video_to_text",
+    "hyper_optimize",
+    "to_patch_embedding",
+    "posemb_sincos_2d",
+    "VisionAttention",
+    "VitTransformerBlock",
+    "VLayerNorm",
+    "Parallel",
+    "DepthWiseConv2d",
+    "Pool",
+    "MixtureOfExperts",
+    "FlexiConv",
+    "MMLayerNorm",
+    "MMFusionFFN",
+    "PostNorm",
+    "MultiModalMambaBlock",
+    "PScan",
+    "pscan",
+    "selective_scan",
+    "selective_scan_seq",
+    "SSM",
+    "FilmConditioning",
+    "qkv_norm",
+    "qk_norm",
 ]
