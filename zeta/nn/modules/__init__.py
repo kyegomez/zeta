@@ -125,6 +125,19 @@ from zeta.nn.modules.ssm import selective_scan, selective_scan_seq, SSM
 from zeta.nn.modules.film_conditioning import FilmConditioning
 from zeta.nn.modules.qkv_norm import qkv_norm, qk_norm
 
+
+####
+from zeta.nn.modules.space_time_unet import (
+    FeedForwardV,
+    ContinuousPositionBias,
+    PseudoConv3d,
+    SpatioTemporalAttention,
+    ResnetBlock,
+    Downsample,
+    Upsample,
+    SpaceTimeUnet,
+)
+
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
 # from zeta.nn.modules.scaled_sinusoidal import ScaledSinuosidalEmbedding
@@ -264,4 +277,12 @@ __all__ = [
     "FilmConditioning",
     "qkv_norm",
     "qk_norm",
+    "FeedForwardV",
+    "ContinuousPositionBias",
+    "PseudoConv3d",
+    "SpatioTemporalAttention",
+    "ResnetBlock",
+    "Downsample",
+    "Upsample",
+    "SpaceTimeUnet",
 ]
