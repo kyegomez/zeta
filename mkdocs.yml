@@ -297,7 +297,7 @@ nav:
           - BitLinear: "zeta/quant/bitlinear.md"
           - niva: "zeta/quant/niva.md"
       - zeta.rl:
-        DPO: "zeta/rl/dpo.md"
+          - DPO: "zeta/rl/dpo.md"
   - Examples:
     - Overview: "examples/index.md"
     - PytorchCS: "examples/torch_cs.md"
