@@ -60,6 +60,7 @@ swiglu(x).shape
 - ```RelativePositionBias``` quantizes the distance between two positions into a certain number of buckets and then uses an embedding to get the relative position bias. This mechanism aids in the attention mechanism by providing biases based on relative positions between the query and key, rather than relying solely on their absolute positions.
 ```python
 import torch
+from torch import nn
 from zeta.nn import RelativePositionBias
 
 # Initialize the RelativePositionBias module
@@ -81,7 +82,7 @@ class MockAttention(nn.Module):
         return None  # Placeholder
 
 # Example 3: Modify default configurations
-custom_rel_pos_bias = RelativePositionBias(bidirectional=False, num_buckets=64, max_distance=256, n_heads=8)
+custom_rel_pos_bias = RelativePositionBias(bidirectional=False, num_buckets=64, max_distance=256, num_heads=8)
 
 ```
 
