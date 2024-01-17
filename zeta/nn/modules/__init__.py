@@ -139,6 +139,27 @@ from zeta.nn.modules.space_time_unet import (
 )
 from zeta.nn.modules.patch_img import patch_img
 from zeta.nn.modules.mm_ops import threed_to_text, text_to_twod
+from zeta.nn.modules.fused_dropout_add import (
+    jit_dropout_add,
+    fused_dropout_add,
+    jit_bias_dropout_add,
+    fused_bias_dropout_add,
+    
+)
+from zeta.nn.modules.blockdiag_butterfly import (
+    blockdiag_butterfly_multiply_reference,
+    BlockdiagButterflyMultiply,
+    blockdiag_weight_to_dense_weight,
+    blockdiag_multiply_reference,
+    BlockdiagMultiply,
+    fftconv_ref,
+    mul_sum,
+    Sin,
+    StructuredLinear,
+    
+)
+
+
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -290,4 +311,17 @@ __all__ = [
     "patch_img",
     "threed_to_text",
     "text_to_twod",
+    "jit_dropout_add",
+    "fused_dropout_add",
+    "jit_bias_dropout_add",
+    "fused_bias_dropout_add",
+    "blockdiag_butterfly_multiply_reference",
+    "BlockdiagButterflyMultiply",
+    "blockdiag_weight_to_dense_weight",
+    "blockdiag_multiply_reference",
+    "BlockdiagMultiply",
+    "fftconv_ref",
+    "mul_sum",
+    "Sin",
+    "StructuredLinear",    
 ]
