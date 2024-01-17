@@ -40,6 +40,17 @@ from zeta.utils.main import (
 
 from zeta.utils.enforce_types import enforce_types
 
+#######
+from zeta.utils.cuda_wrapper import (
+    get_cuda_bare_metal_version,
+    check_cuda_torch_binary_vs_bare_metal,
+    raise_if_cuda_home_none,
+    append_nvcc_threads,
+    check_cuda,
+)
+
+
+####
 __all__ = [
     "track_cuda_memory_usage",
     "benchmark",
@@ -75,4 +86,9 @@ __all__ = [
     "get_sinusoid_encoding_table",
     "interpolate_pos_encoding_2d",
     "enforce_types",
+    "get_cuda_bare_metal_version",
+    "check_cuda_torch_binary_vs_bare_metal",
+    "raise_if_cuda_home_none",
+    "append_nvcc_threads",
+    "check_cuda",
 ]

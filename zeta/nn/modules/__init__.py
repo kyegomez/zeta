@@ -137,6 +137,8 @@ from zeta.nn.modules.space_time_unet import (
     Upsample,
     SpaceTimeUnet,
 )
+from zeta.nn.modules.patch_img import patch_img
+from zeta.nn.modules.mm_ops import threed_to_text, text_to_twod
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -285,4 +287,7 @@ __all__ = [
     "Downsample",
     "Upsample",
     "SpaceTimeUnet",
+    "patch_img",
+    "threed_to_text",
+    "text_to_twod",
 ]

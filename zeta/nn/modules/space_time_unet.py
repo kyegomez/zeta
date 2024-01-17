@@ -42,11 +42,15 @@ class SinusoidalPosEmb(nn.Module):
 
     def forward(self, x):
         dtype, device = x.dtype, x.device
-        assert dtype == torch.float, "input to sinusoidal pos emb must be a float type"
+        assert (
+            dtype == torch.float
+        ), "input to sinusoidal pos emb must be a float type"
 
         half_dim = self.dim // 2
         emb = math.log(self.theta) / (half_dim - 1)
-        emb = torch.exp(torch.arange(half_dim, device=device, dtype=dtype) * -emb)
+        emb = torch.exp(
+            torch.arange(half_dim, device=device, dtype=dtype) * -emb
+        )
         emb = rearrange(x, "i -> i 1") * rearrange(emb, "j -> 1 j")
         return torch.cat((emb.sin(), emb.cos()), dim=-1).type(dtype)
 
@@ -153,11 +157,15 @@ class ContinuousPositionBias(nn.Module):
         positions = [torch.arange(d, device=device) for d in dimensions]
         grid = torch.stack(torch.meshgrid(*positions, indexing="ij"), dim=-1)
         grid = rearrange(grid, "... c -> (...) c")
-        rel_dist = rearrange(grid, "i c -> i 1 c") - rearrange(grid, "j c -> 1 j c")
+        rel_dist = rearrange(grid, "i c -> i 1 c") - rearrange(
+            grid, "j c -> 1 j c"
+        )
 
         # get all relative positions across all dimensions
 
-        rel_positions = [torch.arange(-d + 1, d, device=device) for d in dimensions]
+        rel_positions = [
+            torch.arange(-d + 1, d, device=device) for d in dimensions
+        ]
         rel_pos_grid = torch.stack(
             torch.meshgrid(*rel_positions, indexing="ij"), dim=-1
         )
@@ -208,7 +216,8 @@ class Attention(nn.Module):
         q, k, v = self.to_q(x), *self.to_kv(x).chunk(2, dim=-1)
 
         q, k, v = map(
-            lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads), (q, k, v)
+            lambda t: rearrange(t, "b n (h d) -> b h n d", h=self.heads),
+            (q, k, v),
         )
 
         out = self.attend(q, k, v, bias=rel_pos_bias)
@@ -222,7 +231,13 @@ class Attention(nn.Module):
 
 class PseudoConv3d(nn.Module):
     def __init__(
-        self, dim, dim_out=None, kernel_size=3, *, temporal_kernel_size=None, **kwargs
+        self,
+        dim,
+        dim_out=None,
+        kernel_size=3,
+        *,
+        temporal_kernel_size=None,
+        **kwargs,
     ):
         super().__init__()
         dim_out = default(dim_out, dim)
@@ -244,7 +259,9 @@ class PseudoConv3d(nn.Module):
         )
 
         if exists(self.temporal_conv):
-            nn.init.dirac_(self.temporal_conv.weight.data)  # initialized to be identity
+            nn.init.dirac_(
+                self.temporal_conv.weight.data
+            )  # initialized to be identity
             nn.init.zeros_(self.temporal_conv.bias.data)
 
     def forward(self, x, enable_time=True):
@@ -290,9 +307,10 @@ class SpatioTemporalAttention(nn.Module):
         causal_time_attn=False,
     ):
         super().__init__()
-        assert not (
-            flash and pos_bias
-        ), "learned positional attention bias is not compatible with flash attention"
+        assert not (flash and pos_bias), (
+            "learned positional attention bias is not compatible with flash"
+            " attention"
+        )
 
         self.spatial_attn = Attention(
             dim=dim, dim_head=dim_head, heads=heads, flash=flash
@@ -425,7 +443,9 @@ class ResnetBlock(nn.Module):
 # pixelshuffle upsamples and downsamples
 # where time dimension can be configured
 class Downsample(nn.Module):
-    def __init__(self, dim, downsample_space=True, downsample_time=False, nonlin=False):
+    def __init__(
+        self, dim, downsample_space=True, downsample_time=False, nonlin=False
+    ):
         super().__init__()
         assert downsample_space or downsample_time
 
@@ -472,7 +492,9 @@ class Downsample(nn.Module):
 
 
 class Upsample(nn.Module):
-    def __init__(self, dim, upsample_space=True, upsample_time=False, nonlin=False):
+    def __init__(
+        self, dim, upsample_space=True, upsample_time=False, nonlin=False
+    ):
         super().__init__()
         assert upsample_space or upsample_time
 
@@ -579,7 +601,9 @@ class SpaceTimeUnet(nn.Module):
 
         if condition_on_timestep:
             self.to_timestep_cond = nn.Sequential(
-                SinusoidalPosEmb(dim), nn.Linear(dim, timestep_cond_dim), nn.SiLU()
+                SinusoidalPosEmb(dim),
+                nn.Linear(dim, timestep_cond_dim),
+                nn.SiLU(),
             )
 
         # layers
@@ -606,7 +630,13 @@ class SpaceTimeUnet(nn.Module):
             mid_dim, mid_dim, timestep_cond_dim=timestep_cond_dim
         )
 
-        for _, self_attend, (dim_in, dim_out), compress_time, resnet_block_depth in zip(
+        for (
+            _,
+            self_attend,
+            (dim_in, dim_out),
+            compress_time,
+            resnet_block_depth,
+        ) in zip(
             range(num_layers),
             self_attns,
             dim_in_out,
@@ -627,9 +657,11 @@ class SpaceTimeUnet(nn.Module):
                                 for _ in range(resnet_block_depth)
                             ]
                         ),
-                        SpatioTemporalAttention(dim=dim_out, **attn_kwargs)
-                        if self_attend
-                        else None,
+                        (
+                            SpatioTemporalAttention(dim=dim_out, **attn_kwargs)
+                            if self_attend
+                            else None
+                        ),
                         Downsample(dim_out, downsample_time=compress_time),
                     ]
                 )
@@ -639,19 +671,24 @@ class SpaceTimeUnet(nn.Module):
                 mlist(
                     [
                         ResnetBlock(
-                            dim_out * 2, dim_in, timestep_cond_dim=timestep_cond_dim
+                            dim_out * 2,
+                            dim_in,
+                            timestep_cond_dim=timestep_cond_dim,
                         ),
                         mlist(
                             [
                                 ResnetBlock(
-                                    dim_in + (dim_out if ind == 0 else 0), dim_in
+                                    dim_in + (dim_out if ind == 0 else 0),
+                                    dim_in,
                                 )
                                 for ind in range(resnet_block_depth)
                             ]
                         ),
-                        SpatioTemporalAttention(dim=dim_in, **attn_kwargs)
-                        if self_attend
-                        else None,
+                        (
+                            SpatioTemporalAttention(dim=dim_in, **attn_kwargs)
+                            if self_attend
+                            else None
+                        ),
                         Upsample(dim_out, upsample_time=compress_time),
                     ]
                 )
@@ -675,14 +712,18 @@ class SpaceTimeUnet(nn.Module):
 
         if enable_time and is_video:
             frames = x.shape[2]
-            assert divisible_by(
-                frames, self.frame_multiple
-            ), f"number of frames on the video ({frames}) must be divisible by the frame multiple ({self.frame_multiple})"
+            assert divisible_by(frames, self.frame_multiple), (
+                f"number of frames on the video ({frames}) must be divisible by"
+                f" the frame multiple ({self.frame_multiple})"
+            )
 
         height, width = x.shape[-2:]
         assert divisible_by(height, self.image_size_multiple) and divisible_by(
             width, self.image_size_multiple
-        ), f"height and width of the image or video must be a multiple of {self.image_size_multiple}"
+        ), (
+            "height and width of the image or video must be a multiple of"
+            f" {self.image_size_multiple}"
+        )
 
         # main logic
 
@@ -732,5 +773,3 @@ class SpaceTimeUnet(nn.Module):
 
         x = self.conv_out(x, enable_time=enable_time)
         return x
-
-
