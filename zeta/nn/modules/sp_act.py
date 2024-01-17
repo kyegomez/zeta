@@ -1,11 +1,9 @@
-import torch 
+import torch
 from torch import nn
 
+
 class SPAct(nn.Module):
-    def __init__(
-        self,
-        alpha: float = 0.5
-    ):
+    def __init__(self, alpha: float = 0.5):
         """
         Initializes the SPAct module.
 
@@ -14,7 +12,7 @@ class SPAct(nn.Module):
         """
         super().__init__()
         self.alpha = alpha
-    
+
     def forward(self, x):
         """
         Performs the forward pass of the SPAct module.
@@ -26,7 +24,7 @@ class SPAct(nn.Module):
             torch.Tensor: The output tensor after applying the SPAct function.
         """
         return self.alpha * x + (1 - self.alpha) * torch.tanh(x)
-    
+
 
 # x = torch.randn(1, 3)
 
