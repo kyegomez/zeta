@@ -59,7 +59,7 @@ The purpose of the XPOS module is to incorporate positional information into the
 
     ```
     import torch
-    from xpos import XPOS
+    from zeta import XPOS
 
     # Create an instance of the XPOS module
     xpos = XPOS(head_dim=256)
