@@ -50,9 +50,11 @@ def check_cuda_torch_binary_vs_bare_metal(cuda_dir: str):
     Returns:
         None
     """
-    raw_output, bare_metal_major, bare_metal_minor = (
-        get_cuda_bare_metal_version(cuda_dir)
-    )
+    (
+        raw_output,
+        bare_metal_major,
+        bare_metal_minor,
+    ) = get_cuda_bare_metal_version(cuda_dir)
     torch_binary_major = torch.version.cuda.split(".")[0]
     torch_binary_minor = torch.version.cuda.split(".")[1]
 
@@ -102,16 +104,14 @@ def check_cuda():
         # which will fail if you are compiling in an environment without visible GPUs (e.g. during an nvidia-docker build command).
         print(
             "\nWarning: Torch did not find available GPUs on this system.\n",
-            (
-                "If your intention is to cross-compile, this is not an"
-                " error.\nBy default, Apex will cross-compile for Pascal"
-                " (compute capabilities 6.0, 6.1, 6.2),\nVolta (compute"
-                " capability 7.0), Turing (compute capability 7.5),\nand, if"
-                " the CUDA version is >= 11.0, Ampere (compute capability"
-                " 8.0).\nIf you wish to cross-compile for a single specific"
-                ' architecture,\nexport TORCH_CUDA_ARCH_LIST="compute'
-                ' capability" before running setup.py.\n'
-            ),
+            "If your intention is to cross-compile, this is not an"
+            " error.\nBy default, Apex will cross-compile for Pascal"
+            " (compute capabilities 6.0, 6.1, 6.2),\nVolta (compute"
+            " capability 7.0), Turing (compute capability 7.5),\nand, if"
+            " the CUDA version is >= 11.0, Ampere (compute capability"
+            " 8.0).\nIf you wish to cross-compile for a single specific"
+            ' architecture,\nexport TORCH_CUDA_ARCH_LIST="compute'
+            ' capability" before running setup.py.\n',
         )
         if os.environ.get("TORCH_CUDA_ARCH_LIST", None) is None:
             _, bare_metal_major, bare_metal_minor = get_cuda_bare_metal_version(
@@ -120,9 +120,9 @@ def check_cuda():
             if int(bare_metal_major) == 11:
                 os.environ["TORCH_CUDA_ARCH_LIST"] = "6.0;6.1;6.2;7.0;7.5;8.0"
                 if int(bare_metal_minor) > 0:
-                    os.environ["TORCH_CUDA_ARCH_LIST"] = (
-                        "6.0;6.1;6.2;7.0;7.5;8.0;8.6"
-                    )
+                    os.environ[
+                        "TORCH_CUDA_ARCH_LIST"
+                    ] = "6.0;6.1;6.2;7.0;7.5;8.0;8.6"
             else:
                 os.environ["TORCH_CUDA_ARCH_LIST"] = "6.0;6.1;6.2;7.0;7.5"
 
