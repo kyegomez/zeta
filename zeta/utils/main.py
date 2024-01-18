@@ -5,7 +5,7 @@ from math import ceil
 import einops
 import numpy as np
 import torch
-import torch.functional as F
+import torch.nn.functional as F
 import torch.nn as nn
 from accelerate import Accelerator
 from einops import rearrange
