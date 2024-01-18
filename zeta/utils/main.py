@@ -502,9 +502,8 @@ def cast_num_frames(t, *, frames):
     return F.pad(t, (0, 0, 0, 0, 0, frames - f))
 
 
-def max_neg_values(tensor):
-    return -torch.info(tensor.dtype).max
-
+def max_neg_values(t):
+    return t * -1e5
 
 def l2norm(t, groups=1):
     t = rearrange(t, "... (g d) -> ... g d", g=groups)
