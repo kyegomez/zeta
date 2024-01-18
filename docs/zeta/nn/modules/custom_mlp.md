@@ -110,12 +110,21 @@ mlp = CustomMLP(layer_sizes=[20, 10, 5], activation='sigmoid', dropout=0.2)
 
 ```python
 import torch
+from zeta.nn import CustomMLP
 
-# Input data (batch of 5 samples with 10 features each)
-input_data = torch.randn(5, 10)
+# Define the layer sizes
+layer_sizes = [5, 10, 1]
 
-# Forward pass through the MLP
-output = mlp(input_data)
+# Create the MLP
+mlp = CustomMLP(layer_sizes, activation="relu", dropout=0.5)
+
+# Create a random tensor of shape (batch_size, input_size)
+x = torch.randn(32, 5)
+
+# Pass the tensor through the MLP
+output = mlp(x)
+
+print(output)
 ```
 
 ### Example 3: Customizing and Forward Pass
