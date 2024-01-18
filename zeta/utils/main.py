@@ -505,6 +505,7 @@ def cast_num_frames(t, *, frames):
 def max_neg_values(t):
     return t * -1e5
 
+
 def l2norm(t, groups=1):
     t = rearrange(t, "... (g d) -> ... g d", g=groups)
     t = F.normalize(t, p=2, dim=-1)

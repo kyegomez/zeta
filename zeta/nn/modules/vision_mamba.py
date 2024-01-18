@@ -9,22 +9,33 @@ class VisionMambaBlock(nn.Module):
     VisionMambaBlock is a module that implements the Mamba block from the paper
     Vision Mamba: Efficient Visual Representation Learning with Bidirectional
     State Space Model
-
-
-    x = torch.randn(1, 512, 512)
-    model = VisionMambaBlock(
-        dim=512, n_heads=8, dt_rank=64, dim_inner=512, d_state=128
-    )
-    output = model(x)
-    print(output.shape)
-
-
+    
     Args:
-        nn (_type_): _description_
+        dim (int): The input dimension of the input tensor.
+        heads (int): The number of heads in the multi-head attention mechanism.
+        dt_rank (int): The rank of the state space model.
+        dim_inner (int): The dimension of the inner layer of the multi-head attention.
+        d_state (int): The dimension of the state space model.
+
+    
+    Example:
+    >>> block = VisionMambaBlock(dim=256, heads=8, dt_rank=32, dim_inner=512, d_state=256)
+    >>> x = torch.randn(1, 32, 256)
+    >>> out = block(x)
+    >>> out.shape
+    torch.Size([1, 32, 256])
     """
 
-    def __init__(self, dim, n_heads, dt_rank, dim_inner, d_state):
+    def __init__(
+        self, dim: int, heads: int, dt_rank: int, dim_inner: int, d_state: int
+    ):
         super().__init__()
+        self.dim = dim
+        self.heads = heads
+        self.dt_rank = dt_rank
+        self.dim_inner = dim_inner
+        self.d_state = d_state
+
         self.forward_conv1d = nn.Conv1d(
             in_channels=dim, out_channels=dim, kernel_size=1
         )
@@ -35,39 +46,6 @@ class VisionMambaBlock(nn.Module):
         self.activation = nn.SiLU()
         self.ssm = SSM(dim, dt_rank, dim_inner, d_state)
 
-    # def forward(self, x):
-    #     # x is of shape [batch_size, seq_len, dim]
-    #     # Use einops to rearrange for Conv1d
-    #     x_rearranged = rearrange(x, "b s d -> b d s")
-
-    #     # Forward Conv1d
-    #     forward_conv_output = self.forward_conv1d(x_rearranged)
-    #     forward_conv_output = rearrange(forward_conv_output, "b d s -> b s d")
-
-    #     # Skip Connection
-    #     x = x + forward_conv_output
-    #     x = self.norm(x)
-
-    #     # Self-Attention
-    #     self_attention_output = self.ssm(x)
-
-    #     # Skip Connection
-    #     x = x + self_attention_output
-    #     x = self.norm(x)
-
-    #     # Backward Conv1d
-    #     x_rearranged = rearrange(x, "b s d -> b d s")
-    #     backward_conv_output = self.backward_conv1d(x_rearranged)
-    #     backward_conv_output = rearrange(backward_conv_output, "b d s -> b s d")
-
-    #     # Skip Connection
-    #     x = x + backward_conv_output
-    #     x = self.norm(x)
-
-    #     # Activation
-    #     x = self.activation(x)
-
-    #     return x
     def forward(self, x: torch.Tensor):
         """Forward pass of the VisionMambaBlock module.
 
