@@ -144,7 +144,6 @@ from zeta.nn.modules.fused_dropout_add import (
     fused_dropout_add,
     jit_bias_dropout_add,
     fused_bias_dropout_add,
-    
 )
 from zeta.nn.modules.blockdiag_butterfly import (
     blockdiag_butterfly_multiply_reference,
@@ -156,9 +155,7 @@ from zeta.nn.modules.blockdiag_butterfly import (
     mul_sum,
     Sin,
     StructuredLinear,
-    
 )
-
 
 
 # from zeta.nn.modules.img_reshape import image_reshape
@@ -323,5 +320,5 @@ __all__ = [
     "fftconv_ref",
     "mul_sum",
     "Sin",
-    "StructuredLinear",    
+    "StructuredLinear",
 ]
