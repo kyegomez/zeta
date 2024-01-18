@@ -32,7 +32,7 @@ class VisionMambaBlock(nn.Module):
             in_channels=dim, out_channels=dim, kernel_size=1
         )
         self.norm = nn.LayerNorm(dim)
-        self.activation = nn.GELU()
+        self.activation = nn.SiLU()
         self.ssm = SSM(dim, dt_rank, dim_inner, d_state)
 
     # def forward(self, x):
