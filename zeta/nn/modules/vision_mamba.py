@@ -9,7 +9,7 @@ class VisionMambaBlock(nn.Module):
     VisionMambaBlock is a module that implements the Mamba block from the paper
     Vision Mamba: Efficient Visual Representation Learning with Bidirectional
     State Space Model
-    
+
     Args:
         dim (int): The input dimension of the input tensor.
         heads (int): The number of heads in the multi-head attention mechanism.
@@ -17,7 +17,7 @@ class VisionMambaBlock(nn.Module):
         dim_inner (int): The dimension of the inner layer of the multi-head attention.
         d_state (int): The dimension of the state space model.
 
-    
+
     Example:
     >>> block = VisionMambaBlock(dim=256, heads=8, dt_rank=32, dim_inner=512, d_state=256)
     >>> x = torch.randn(1, 32, 256)
