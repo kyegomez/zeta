@@ -27,6 +27,26 @@ The MambaBlock is designed as a fundamental block in deep learning networks, esp
 
 The MambaBlock accepts a predefined set of parameters such as depth, state, expand, convolutional parameters, etc., allowing flexibility and adaptability regarding different neural network architectures and use cases. Moreover, the forward function seamlessly processes input and provides tensor outputs.
 
+### Example
+
+```python
+import torch
+from zeta.nn import MambaBlock
+
+# Initialize Mamba
+block = MambaBlock(dim=64, depth=1)
+
+# Random input
+x = torch.randn(1, 10, 64)
+
+# Apply the model to the block
+y = block(x)
+
+print(y.shape)
+#torch.Size([1, 10, 64])
+```
+
+
 ### Additional Information and Tips
 Additional details and tips regarding the MambaBlock class can be found in the examples provided in the documentation. It's essential to understand the context in which the MambaBlock is being used in your specific use case for the best accuracy and results.
 
