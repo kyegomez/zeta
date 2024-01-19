@@ -157,6 +157,11 @@ from zeta.nn.modules.blockdiag_butterfly import (
     StructuredLinear,
 )
 
+from zeta.nn.modules.block_butterfly_mlp import (
+    BlockButterflyLinear,
+    BlockMLP,
+)
+
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -321,4 +326,6 @@ __all__ = [
     "mul_sum",
     "Sin",
     "StructuredLinear",
+    "BlockButterflyLinear",
+    "BlockMLP",
 ]
