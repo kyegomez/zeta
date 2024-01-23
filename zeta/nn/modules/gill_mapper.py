@@ -23,8 +23,8 @@ class GILLMapper(nn.Module):
         seq_length (int): The length of the input sequence.
         dropout (float, optional): The dropout rate. Defaults to 0.1.
         args (dict, optional): Additional arguments. Defaults to None.
-        
-    Example: 
+
+    Example:
         >>> model = GILLMapper(
         ...     img_emb_size=512,
         ...     text_emb_size=512,
@@ -71,7 +71,7 @@ class GILLMapper(nn.Module):
         self.img_embedding_layer = nn.Linear(
             self.img_emb_size, self.text_emb_size
         )
-        
+
         self.transformer_encoder = nn.TransformerEncoder(
             nn.TransformerEncoderLayer(
                 d_model=self.text_emb_size,
@@ -95,10 +95,10 @@ class GILLMapper(nn.Module):
         # Embed the image and text
         # img = self.img_embedding_layer(img)
         text = self.text_embedding_layer(text)
-        
+
         t_b, t_n, t_d = text.shape
         img = img_to_text(img, t_n, t_d)
-        
+
         # Transforming the img with the encoder
         img = self.transformer_encoder(img)
         print(f"img shape: {img.shape}")
