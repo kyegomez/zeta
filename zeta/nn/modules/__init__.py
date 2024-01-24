@@ -163,7 +163,8 @@ from zeta.nn.modules.block_butterfly_mlp import (
 )
 
 from zeta.nn.modules.gill_mapper import GILLMapper
-
+from zeta.nn.modules.add_norm import add_norm
+from zeta.nn.modules.to_logits import to_logits
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -331,4 +332,6 @@ __all__ = [
     "BlockButterflyLinear",
     "BlockMLP",
     "GILLMapper",
+    "add_norm",
+    "to_logits",
 ]
