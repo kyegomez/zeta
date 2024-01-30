@@ -1,5 +1,6 @@
 from torch import nn, Tensor
 
+
 def add_norm(x, dim: int, residual: Tensor):
     """_summary_
 
@@ -10,16 +11,13 @@ def add_norm(x, dim: int, residual: Tensor):
 
     Returns:
         _type_: _description_
-        
-        
-    Example:        
+
+
+    Example:
     x = torch.randn(1, 10, 10)
     y = torch.randn(1, 10, 10)
     model = add_norm(x, 10, y)
     print(model)
     """
-    layer = nn.Sequential(
-        nn.LayerNorm(dim)
-    )
+    layer = nn.Sequential(nn.LayerNorm(dim))
     return layer(x) + residual
-

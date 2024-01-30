@@ -1,5 +1,6 @@
 from torch import nn
 
+
 def to_logits(x, dim: int, num_tokens: int):
     """
     Converts the input tensor `x` into logits using a sequential layer.
@@ -11,7 +12,7 @@ def to_logits(x, dim: int, num_tokens: int):
 
     Returns:
         torch.Tensor: The logits tensor.
-        
+
     Example:
     >>> x = torch.randn(1, 10, 10)
     >>> model = to_logits(x, 10, 10)
@@ -19,8 +20,6 @@ def to_logits(x, dim: int, num_tokens: int):
 
     """
     layer = nn.Sequential(
-        nn.Softmax(-1),
-        nn.LayerNorm(dim),
-        nn.Linear(dim, num_tokens)
+        nn.Softmax(-1), nn.LayerNorm(dim), nn.Linear(dim, num_tokens)
     )
     return layer(x)
