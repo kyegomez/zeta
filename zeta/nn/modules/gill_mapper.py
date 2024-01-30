@@ -120,27 +120,3 @@ class GILLMapper(nn.Module):
         out = rearrange(out, "n b d -> b n d")
 
         return out
-
-
-# Image and text tensors
-img = torch.randn(1, 3, 224, 224)
-text = torch.randn(1, 100, 512)
-
-# Model Initialization
-model = GILLMapper(
-    img_emb_size=512,
-    text_emb_size=512,
-    num_encoder_layers=6,
-    num_decoder_layers=6,
-    heads=8,
-    dim_ffn=2048,
-    seq_length=100,
-    dropout=0.1,
-    args=None,
-)
-
-# Forward pass
-out = model(img, text)
-
-# Print output shape
-print(out.shape)
