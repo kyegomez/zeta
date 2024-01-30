@@ -165,6 +165,14 @@ from zeta.nn.modules.block_butterfly_mlp import (
 from zeta.nn.modules.gill_mapper import GILLMapper
 from zeta.nn.modules.add_norm import add_norm
 from zeta.nn.modules.to_logits import to_logits
+from zeta.nn.modules.cross_modal_reparametization import (
+    CrossModalReparamLinear,
+    cross_modal_ffn,
+    build_cross_modal_reparam_linear,
+    change_original_linear_to_reparam,
+    reparameterize_aux_into_target_model,
+    CrossModalReParametrization,
+)
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -334,4 +342,10 @@ __all__ = [
     "GILLMapper",
     "add_norm",
     "to_logits",
+    "CrossModalReParametrization",
+    "CrossModalReparamLinear",
+    "cross_modal_ffn",
+    "build_cross_modal_reparam_linear",
+    "change_original_linear_to_reparam",
+    "reparameterize_aux_into_target_model",
 ]
