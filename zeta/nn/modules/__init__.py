@@ -173,6 +173,9 @@ from zeta.nn.modules.cross_modal_reparametization import (
     reparameterize_aux_into_target_model,
     CrossModalReParametrization,
 )
+from zeta.nn.modules.qformer import QFormer
+from zeta.nn.modules.poly_expert_fusion_network import MLPProjectionFusion
+
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -348,4 +351,6 @@ __all__ = [
     "build_cross_modal_reparam_linear",
     "change_original_linear_to_reparam",
     "reparameterize_aux_into_target_model",
+    "QFormer",
+    "MLPProjectionFusion",
 ]
