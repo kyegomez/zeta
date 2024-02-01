@@ -48,6 +48,7 @@ from zeta.utils.cuda_wrapper import (
     append_nvcc_threads,
     check_cuda,
 )
+from zeta.utils.verbose_execution import VerboseExecution
 
 
 ####
@@ -91,4 +92,5 @@ __all__ = [
     "raise_if_cuda_home_none",
     "append_nvcc_threads",
     "check_cuda",
+    "VerboseExecution",
 ]
