@@ -18,9 +18,8 @@ def test_use_abs_pos_emb_parameter():
 # Check the forward function.
 def test_forward_function():
     model = GPT4()
-    text_tokens = torch.tensor(
-        [[2, 5, 9], [4, 1, 8]]
-    )  # Add more test cases here.
+    text_tokens = torch.tensor([[2, 5, 9], [4, 1,
+                                            8]])  # Add more test cases here.
     result = model.forward(text_tokens)
     assert result.size() == (2,)  # Replace with the expected result size.
 

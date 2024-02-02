@@ -7,6 +7,7 @@ from zeta.nn import DualPathBlock
 
 
 class TestDualPathBlock:
+
     @pytest.fixture
     def simple_modules(self):
         return nn.Linear(10, 10), nn.Linear(10, 10)
@@ -26,9 +27,8 @@ class TestDualPathBlock:
         assert isinstance(output, torch.Tensor)
         assert output.shape == mock_x.shape
 
-    @pytest.mark.parametrize(
-        "input_shape, output_shape", [((1, 10), (1, 10)), ((5, 10), (5, 10))]
-    )
+    @pytest.mark.parametrize("input_shape, output_shape", [((1, 10), (1, 10)),
+                                                           ((5, 10), (5, 10))])
     def test_shape_output(self, simple_modules, input_shape, output_shape):
         block = DualPathBlock(*simple_modules)
         mock_x = torch.randn(*input_shape)

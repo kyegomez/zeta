@@ -28,9 +28,9 @@ def test_optimizer_step_no_custom_scalar():
 # Test optimizer step with custom scalar
 def test_optimizer_step_with_custom_scalar():
     model = torch.nn.Linear(10, 10)
-    optimizer = StableAdamWUnfused(
-        model.parameters(), precision="custom_fp16", custom_scalar=65536
-    )
+    optimizer = StableAdamWUnfused(model.parameters(),
+                                   precision="custom_fp16",
+                                   custom_scalar=65536)
     loss = simple_loss(model.parameters())
     (loss * 65536).backward()
     optimizer.step()
@@ -89,12 +89,16 @@ def test_optimizer_with_weight_decay():
 # Test optimizer with different learning rates
 def test_optimizer_with_different_learning_rates():
     model = torch.nn.Linear(10, 10)
-    optimizer = StableAdamWUnfused(
-        [
-            {"params": model.weight, "lr": 0.001},
-            {"params": model.bias, "lr": 0.01},
-        ]
-    )
+    optimizer = StableAdamWUnfused([
+        {
+            "params": model.weight,
+            "lr": 0.001
+        },
+        {
+            "params": model.bias,
+            "lr": 0.01
+        },
+    ])
     loss = simple_loss(model.parameters())
     loss.backward()
     optimizer.step()
@@ -144,9 +148,9 @@ def test_optimizer_with_custom_precision():
 # Test optimizer with custom scalar and precision
 def test_optimizer_with_custom_scalar_and_precision():
     model = torch.nn.Linear(10, 10)
-    optimizer = StableAdamWUnfused(
-        model.parameters(), precision="custom_fp16", custom_scalar=65536
-    )
+    optimizer = StableAdamWUnfused(model.parameters(),
+                                   precision="custom_fp16",
+                                   custom_scalar=65536)
     loss = simple_loss(model.parameters())
     (loss * 65536).backward()
     optimizer.step()
@@ -179,9 +183,9 @@ def test_optimizer_with_negative_weight_decay():
 def test_optimizer_with_negative_custom_scalar():
     model = torch.nn.Linear(10, 10)
     with pytest.raises(ValueError):
-        StableAdamWUnfused(
-            model.parameters(), precision="custom_fp16", custom_scalar=-65536
-        )
+        StableAdamWUnfused(model.parameters(),
+                           precision="custom_fp16",
+                           custom_scalar=-65536)
 
 
 # Test optimizer with zero gradient and custom precision (should not raise exceptions)
@@ -195,9 +199,9 @@ def test_optimizer_with_zero_gradient_and_custom_precision():
 # Test optimizer with zero gradient and custom scalar and precision (should not raise exceptions)
 def test_optimizer_with_zero_gradient_and_custom_scalar_and_precision():
     model = torch.nn.Linear(10, 10)
-    optimizer = StableAdamWUnfused(
-        model.parameters(), precision="custom_fp16", custom_scalar=65536
-    )
+    optimizer = StableAdamWUnfused(model.parameters(),
+                                   precision="custom_fp16",
+                                   custom_scalar=65536)
     optimizer.step()
     assert True  # No exceptions were raised
 

@@ -11,9 +11,10 @@ def test_class_init():
 
 
 def test_class_init_with_args():
-    model = FusedDropoutLayerNorm(
-        512, dropout=0.2, eps=1e-6, elementwise_affine=False
-    )
+    model = FusedDropoutLayerNorm(512,
+                                  dropout=0.2,
+                                  eps=1e-6,
+                                  elementwise_affine=False)
 
     assert isinstance(model.dropout, nn.Dropout)
     assert isinstance(model.layer_norm, nn.LayerNorm)

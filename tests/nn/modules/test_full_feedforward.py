@@ -15,18 +15,20 @@ def test_feed_forward_forward(feed_forward_model):
 
 
 def test_feed_forward_relu_squared(feed_forward_model):
-    feed_forward_model_relu_squared = FeedForward(
-        768, 2048, 0.1, relu_squared=True
-    )
+    feed_forward_model_relu_squared = FeedForward(768,
+                                                  2048,
+                                                  0.1,
+                                                  relu_squared=True)
     x = torch.randn(1, 768)
     output = feed_forward_model_relu_squared(x)
     assert output.shape == (1, 2048)
 
 
 def test_feed_forward_post_act_ln(feed_forward_model):
-    feed_forward_model_post_act_ln = FeedForward(
-        768, 2048, 0.1, post_act_ln=True
-    )
+    feed_forward_model_post_act_ln = FeedForward(768,
+                                                 2048,
+                                                 0.1,
+                                                 post_act_ln=True)
     x = torch.randn(1, 768)
     output = feed_forward_model_post_act_ln(x)
     assert output.shape == (1, 2048)
@@ -47,9 +49,10 @@ def test_feed_forward_no_bias(feed_forward_model):
 
 
 def test_feed_forward_zero_init_output(feed_forward_model):
-    feed_forward_model_zero_init_output = FeedForward(
-        768, 2048, 0.1, zero_init_output=True
-    )
+    feed_forward_model_zero_init_output = FeedForward(768,
+                                                      2048,
+                                                      0.1,
+                                                      zero_init_output=True)
     x = torch.randn(1, 768)
     output = feed_forward_model_zero_init_output(x)
     assert output.shape == (1, 2048)
@@ -64,9 +67,11 @@ def test_feed_forward_glu(feed_forward_model):
 
 
 def test_feed_forward_glu_mult_bias(feed_forward_model):
-    feed_forward_model_glu_mult_bias = FeedForward(
-        768, 2048, 0.1, glu=True, glu_mult_bias=True
-    )
+    feed_forward_model_glu_mult_bias = FeedForward(768,
+                                                   2048,
+                                                   0.1,
+                                                   glu=True,
+                                                   glu_mult_bias=True)
     x = torch.randn(1, 768)
     output = feed_forward_model_glu_mult_bias(x)
     assert output.shape == (1, 2048)

@@ -15,9 +15,10 @@ def test_class_init():
 
 
 def test_class_init_with_args():
-    model = ImgPatchEmbed(
-        img_size=448, patch_size=32, in_chans=1, embed_dim=512
-    )
+    model = ImgPatchEmbed(img_size=448,
+                          patch_size=32,
+                          in_chans=1,
+                          embed_dim=512)
 
     assert isinstance(model.proj, nn.Conv2d)
     assert model.img_size == 448

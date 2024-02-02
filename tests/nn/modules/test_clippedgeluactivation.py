@@ -9,16 +9,8 @@ from zeta.nn import ClippedGELUActivation
 
 # Assume gelu function is in same module for simplicity
 def gelu(x: Tensor):
-    return (
-        0.5
-        * x
-        * (
-            1
-            + torch.tanh(
-                torch.sqrt(2 / torch.pi) * (x + 0.044715 * torch.pow(x, 3))
-            )
-        )
-    )
+    return (0.5 * x * (1 + torch.tanh(
+        torch.sqrt(2 / torch.pi) * (x + 0.044715 * torch.pow(x, 3)))))
 
 
 # Test if ValueError is raised when min > max

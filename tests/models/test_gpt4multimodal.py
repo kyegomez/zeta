@@ -39,9 +39,8 @@ def test_transformer_called_in_forward(mock_transformer, mock_model):
 
 
 @patch("zeta.models.ViTransformerWrapper", side_effect=Exception)
-def test_exception_in_transformer_catch_in_forward(
-    mock_transformer, mock_model
-):
+def test_exception_in_transformer_catch_in_forward(mock_transformer,
+                                                   mock_model):
     with pytest.raises(Exception):
         mock_model(img=None, text=None)
         mock_transformer.assert_called_once()

@@ -9,8 +9,7 @@ def test_interpolate_same_target_size():
     pos_embed = torch.rand((1, 36, 512))
     target_spatial_size = 36
     interpolated_pos_embed = interpolate_pos_encoding_2d(
-        target_spatial_size, pos_embed
-    )
+        target_spatial_size, pos_embed)
     assert torch.equal(pos_embed, interpolated_pos_embed)
 
 
@@ -19,8 +18,7 @@ def test_interpolate_pos_encoding_2d_dimension():
     pos_embed = torch.rand((1, 36, 512))
     target_spatial_size = 72
     interpolated_pos_embed = interpolate_pos_encoding_2d(
-        target_spatial_size, pos_embed
-    )
+        target_spatial_size, pos_embed)
     assert pos_embed.shape[:] == interpolated_pos_embed.shape[:]
 
 
@@ -29,8 +27,7 @@ def test_input_data_types():
     pos_embed = torch.rand((1, 36, 512), dtype=torch.float32)
     target_spatial_size = 72
     interpolated_pos_embed = interpolate_pos_encoding_2d(
-        target_spatial_size, pos_embed
-    )
+        target_spatial_size, pos_embed)
     assert pos_embed.dtype == interpolated_pos_embed.dtype
 
 

@@ -9,6 +9,7 @@ from zeta.nn import FeedbackBlock
 
 # Set up simple neural network module for testing FeedbackBlock
 class TestModule(nn.Module):
+
     def __init__(self):
         super(TestModule, self).__init__()
         self.linear = nn.Linear(10, 10)
@@ -48,14 +49,11 @@ def test_initialization(feedback_block):
         ),  # Test with mismatching dimension
     ],
 )
-def test_forward(
-    feedback_block, input_tensor, feedback_tensor, expected_output_shape
-):
+def test_forward(feedback_block, input_tensor, feedback_tensor,
+                 expected_output_shape):
     if isinstance(expected_output_shape, tuple):
-        assert (
-            feedback_block.forward(input_tensor, feedback_tensor).shape
-            == expected_output_shape
-        )
+        assert (feedback_block.forward(
+            input_tensor, feedback_tensor).shape == expected_output_shape)
     else:
         with expected_output_shape:
             feedback_block.forward(input_tensor, feedback_tensor)

@@ -15,9 +15,10 @@ def test_cross_attention_forward():
 
 # Test forward pass with cosine similarity
 def test_cross_attention_cosine_similarity():
-    cosine_attention = CrossAttention(
-        dim=512, context_dim=256, heads=4, cosine_sim=True
-    )
+    cosine_attention = CrossAttention(dim=512,
+                                      context_dim=256,
+                                      heads=4,
+                                      cosine_sim=True)
     x = torch.randn(32, 10, 512)
     context = torch.randn(32, 20, 256)
     output = cosine_attention(x, context)
@@ -35,9 +36,10 @@ def test_cross_attention_with_mask():
 
 # Test forward pass with layer normalization
 def test_cross_attention_with_layer_norm():
-    layer_norm_attention = CrossAttention(
-        dim=512, context_dim=256, heads=4, norm_context=True
-    )
+    layer_norm_attention = CrossAttention(dim=512,
+                                          context_dim=256,
+                                          heads=4,
+                                          norm_context=True)
     x = torch.randn(32, 10, 512)
     context = torch.randn(32, 20, 256)
     output = layer_norm_attention(x, context)
@@ -46,9 +48,10 @@ def test_cross_attention_with_layer_norm():
 
 # Test forward pass with dropout
 def test_cross_attention_with_dropout():
-    dropout_attention = CrossAttention(
-        dim=512, context_dim=256, heads=4, dropout=0.1
-    )
+    dropout_attention = CrossAttention(dim=512,
+                                       context_dim=256,
+                                       heads=4,
+                                       dropout=0.1)
     x = torch.randn(32, 10, 512)
     context = torch.randn(32, 20, 256)
     output = dropout_attention(x, context)

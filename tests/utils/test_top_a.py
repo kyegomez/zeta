@@ -13,9 +13,8 @@ def test_top_a():
     logits = torch.Tensor([1.0, 0.0, -1.0])
     output = top_a(logits)
     assert torch.is_tensor(output), "Output should be a Torch tensor"
-    assert (
-        output.size() == logits.size()
-    ), "Output size should match the input size"
+    assert (output.size() == logits.size()
+           ), "Output size should match the input size"
 
 
 @pytest.mark.parametrize(
@@ -31,14 +30,10 @@ def test_top_a():
 def test_top_a_values(logits, min_p_pow, min_p_ratio):
     output = top_a(logits, min_p_pow, min_p_ratio)
     assert torch.is_tensor(output), "Output should be a Torch tensor"
-    assert (
-        output.size() == logits.size()
-    ), "Output size should match the input size"
-    assert (output == float("-inf")).any() or (
-        output == 1
-    ).any(), (
-        "Output elements should either be negative infinity or 1 (inclusive)"
-    )
+    assert (output.size() == logits.size()
+           ), "Output size should match the input size"
+    assert (output == float("-inf")).any() or (output == 1).any(), (
+        "Output elements should either be negative infinity or 1 (inclusive)")
 
 
 def test_top_a_exception():
@@ -48,7 +43,9 @@ def test_top_a_exception():
 
 @pytest.fixture
 def mock_tensor(monkeypatch):
+
     class MockTensor:
+
         def __init__(self):
             self.size_val = 3
             self.values = [1.0, 1.0, 1.0]
@@ -62,6 +59,5 @@ def mock_tensor(monkeypatch):
 def test_top_a_with_mock_tensor(mock_tensor):
     output = top_a(torch.Tensor())
     assert output.size() == mock_tensor.size()
-    assert all(
-        [val in output.values for val in mock_tensor.values]
-    ), "Output values should match mocked tensor values"
+    assert all([val in output.values for val in mock_tensor.values
+               ]), "Output values should match mocked tensor values"

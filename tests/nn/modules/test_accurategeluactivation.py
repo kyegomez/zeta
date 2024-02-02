@@ -22,9 +22,8 @@ def test_forward():
 
 
 # Parameterized Testing
-@pytest.mark.parametrize(
-    "input_data", [([1.0, 2.0, 3.0]), ([-1.0, -2.0, -3.0]), ([0.0, 0.0, 0.0])]
-)
+@pytest.mark.parametrize("input_data", [([1.0, 2.0, 3.0]), ([-1.0, -2.0, -3.0]),
+                                        ([0.0, 0.0, 0.0])])
 def test_forward_parameterized(input_data):
     activation = AccurateGELUActivation()
     input_data = torch.Tensor(input_data)
@@ -41,6 +40,7 @@ def test_forward_exception():
 
 # Mocks and Monkeypatching
 def test_forward_monkeypatch(monkeypatch):
+
     def mock_tanh(x):
         return torch.Tensor([0.0 for _ in x])
 

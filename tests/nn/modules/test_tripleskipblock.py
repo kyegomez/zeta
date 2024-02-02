@@ -6,6 +6,7 @@ from zeta.nn.modules import TripleSkipBlock
 
 # Create Dummy Modules for Testing
 class DummyModule(nn.Module):
+
     def forward(self, x):
         return x * 2
 
@@ -22,8 +23,7 @@ def test_forward(triple_skip_block):
     x = torch.tensor([1, 2, 3], dtype=torch.float32)
     output = triple_skip_block(x)
     assert torch.all(
-        torch.eq(output, torch.tensor([15, 30, 45], dtype=torch.float32))
-    )
+        torch.eq(output, torch.tensor([15, 30, 45], dtype=torch.float32)))
 
 
 # Test for correct instance creation
@@ -54,8 +54,7 @@ def test_training_mode(triple_skip_block):
         ),
     ],
 )
-def test_with_different_inputs(
-    triple_skip_block, input_tensor, expected_output
-):
+def test_with_different_inputs(triple_skip_block, input_tensor,
+                               expected_output):
     output = triple_skip_block(input_tensor)
     assert torch.all(torch.eq(output, expected_output))

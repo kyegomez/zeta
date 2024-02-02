@@ -3,6 +3,7 @@ from zeta.utils.enforce_types import enforce_types
 
 
 def test_enforce_types_with_correct_types():
+
     @enforce_types
     def add(a: int, b: int) -> int:
         return a + b
@@ -11,6 +12,7 @@ def test_enforce_types_with_correct_types():
 
 
 def test_enforce_types_with_incorrect_types():
+
     @enforce_types
     def add(a: int, b: int) -> int:
         return a + b
@@ -20,6 +22,7 @@ def test_enforce_types_with_incorrect_types():
 
 
 def test_enforce_types_with_no_annotations():
+
     @enforce_types
     def add(a, b):
         return a + b
@@ -29,6 +32,7 @@ def test_enforce_types_with_no_annotations():
 
 
 def test_enforce_types_with_partial_annotations():
+
     @enforce_types
     def add(a: int, b):
         return a + b

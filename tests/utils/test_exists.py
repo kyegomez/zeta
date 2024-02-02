@@ -21,8 +21,9 @@ def test_exists_on_zero():
 
 
 @pytest.mark.parametrize(
-    "val", [True, False, 1, -1, [], [None], {}, {"None": None}, lambda x: x]
-)
+    "val", [True, False, 1, -1, [], [None], {}, {
+        "None": None
+    }, lambda x: x])
 def test_exists_on_values(val):
     assert exists(val) is True
 

@@ -24,8 +24,7 @@ def create_slope_tensor(num_heads):
 # Helper function to create a learned log slopes tensor
 def create_learned_logslopes_tensor(num_heads):
     logslopes = torch.log(
-        torch.tensor(AlibiPositionalBias._get_slopes(num_heads))
-    )
+        torch.tensor(AlibiPositionalBias._get_slopes(num_heads)))
     return nn.Parameter(logslopes)
 
 
@@ -233,9 +232,8 @@ def test_alibi_vs_learned_bias_values():
     i, j = 2, 4
 
     alibi_bias = AlibiPositionalBias(heads=num_heads, num_heads=num_heads)
-    learned_bias = LearnedAlibiPositionalBias(
-        heads=num_heads, num_heads=num_heads
-    )
+    learned_bias = LearnedAlibiPositionalBias(heads=num_heads,
+                                              num_heads=num_heads)
 
     alibi_result = alibi_bias(i, j)
     learned_result = learned_bias(i, j)

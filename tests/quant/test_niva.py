@@ -168,5 +168,4 @@ def test_niva_output_quantized():
     model.load_state_dict(torch.load("model_quantized.pt"))
     assert any(
         hasattr(module, "qconfig") and module.qconfig
-        for module in model.modules()
-    )
+        for module in model.modules())

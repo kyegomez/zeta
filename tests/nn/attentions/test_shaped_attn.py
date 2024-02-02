@@ -86,7 +86,7 @@ def test_shaped_attention_scale_factor():
     out = shaped_attention(x)
 
     # Calculate the scale factor manually
-    scale_factor = (dim // heads) ** -0.5
+    scale_factor = (dim // heads)**-0.5
 
     # Check if the attention scores are scaled correctly
     assert torch.allclose(out, x * scale_factor)

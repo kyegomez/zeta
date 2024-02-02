@@ -18,9 +18,9 @@ def test_mish_activation_forward_positive():
     x = torch.tensor([1.0, 2.0, 3.0])
     output = activation(x)
     # Expected values are approximations
-    assert torch.allclose(
-        output, torch.tensor([0.8651, 1.7924, 2.7306]), atol=1e-4
-    )
+    assert torch.allclose(output,
+                          torch.tensor([0.8651, 1.7924, 2.7306]),
+                          atol=1e-4)
 
 
 def test_mish_activation_forward_negative():
@@ -28,9 +28,9 @@ def test_mish_activation_forward_negative():
     x = torch.tensor([-1.0, -2.0, -3.0])
     output = activation(x)
     # Expected values are approximations
-    assert torch.allclose(
-        output, torch.tensor([-0.3034, -0.3297, -0.2953]), atol=1e-4
-    )
+    assert torch.allclose(output,
+                          torch.tensor([-0.3034, -0.3297, -0.2953]),
+                          atol=1e-4)
 
 
 # Tests for LinearActivation
@@ -57,9 +57,9 @@ def test_laplace_activation_forward():
     x = torch.tensor([1.0, 2.0, 3.0])
     output = activation(x)
     # Expected values are approximations
-    assert torch.allclose(
-        output, torch.tensor([0.6827, 0.8413, 0.9332]), atol=1e-4
-    )
+    assert torch.allclose(output,
+                          torch.tensor([0.6827, 0.8413, 0.9332]),
+                          atol=1e-4)
 
 
 # Tests for ReLUSquaredActivation

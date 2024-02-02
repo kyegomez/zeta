@@ -40,10 +40,8 @@ def test_inf_removal():
 def test_scattering():
     output = top_p(logits)
     assert torch.all(
-        torch.eq(
-            output, sorted_logits.scatter(1, sorted_indices, sorted_logits)
-        )
-    )
+        torch.eq(output, sorted_logits.scatter(1, sorted_indices,
+                                               sorted_logits)))
 
 
 # Test if the function is raising error for invalid `logits`

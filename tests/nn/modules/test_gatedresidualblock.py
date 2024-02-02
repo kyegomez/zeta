@@ -6,6 +6,7 @@ from zeta.nn.modules import GatedResidualBlock
 
 
 class TestGatedResidualBlock:
+
     @pytest.fixture(scope="class")
     def init_grb(self):
         sb1 = nn.Linear(3, 3)
@@ -23,9 +24,8 @@ class TestGatedResidualBlock:
         x = torch.rand(1, 3)
         out = init_grb(x)
         assert isinstance(out, torch.Tensor)
-        assert (
-            out.shape == x.shape
-        )  # outputs and input tensors should have same shape
+        assert (out.shape == x.shape
+               )  # outputs and input tensors should have same shape
 
     # Test learnable parameters
     def test_parameters(self, init_grb):

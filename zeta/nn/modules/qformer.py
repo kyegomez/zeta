@@ -1,10 +1,10 @@
 from einops import rearrange, reduce
 from torch import Tensor, nn
 
-from zeta.nn import (
+from zeta.nn.attention.multiquery_attention import (
     MultiQueryAttention,
-    SimpleFeedForward,
 )
+from zeta.nn.modules.simple_feedforward import SimpleFeedForward
 from zeta.nn.attention.cross_attention import CrossAttention
 
 

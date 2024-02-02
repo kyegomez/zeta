@@ -58,6 +58,5 @@ def test_sentence_piece_tokenizer_decode_infilling():
     decoded_text = tokenizer.decode_infilling(encoded_text)
 
     assert isinstance(decoded_text, str)
-    assert (
-        decoded_text == text[1:]
-    )  # the first character is removed in decode_infilling
+    assert (decoded_text == text[1:]
+           )  # the first character is removed in decode_infilling
