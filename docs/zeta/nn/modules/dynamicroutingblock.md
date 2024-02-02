@@ -74,7 +74,7 @@ drb = DynamicRoutingBlock(sb1, sb2, routing_module)
 The input can be passed to this block to yield the output:
 
 ```python
-x = torch.randn(10, 5)
+x = torch.randn(3, 5)
 y = drb(x)
 ```
 In the process, the dynamic routing block has learned to route between `sb1` and `sb2` depending on `routing_module`'s weights, allowing the module to discover which sub-block is more 'helpful' for any given input.
