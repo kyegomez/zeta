@@ -8,9 +8,9 @@ from zeta.utils import track_cuda_memory_usage
 @patch("torch.cuda.memory_allocated", side_effect=[1000, 2000])
 @patch("torch.cuda.synchronize")
 @patch("logging.info")
-def test_track_cuda_memory_usage_base(
-    mock_log_info, mock_sync, mock_mem_alloc, mock_cuda_avail
-):
+def test_track_cuda_memory_usage_base(mock_log_info, mock_sync, mock_mem_alloc,
+                                      mock_cuda_avail):
+
     @track_cuda_memory_usage
     def test_func():
         return "Test"
@@ -26,9 +26,9 @@ def test_track_cuda_memory_usage_base(
 @patch("torch.cuda.memory_allocated", side_effect=[1000, 2000])
 @patch("torch.cuda.synchronize")
 @patch("logging.info")
-def test_track_cuda_memory_usage_exception(
-    mock_log_info, mock_sync, mock_mem_alloc, mock_cuda_avail
-):
+def test_track_cuda_memory_usage_exception(mock_log_info, mock_sync,
+                                           mock_mem_alloc, mock_cuda_avail):
+
     @track_cuda_memory_usage
     def test_func():
         raise ValueError("Test exception")
@@ -46,9 +46,9 @@ def test_track_cuda_memory_usage_exception(
 @patch("torch.cuda.memory_allocated")
 @patch("torch.cuda.synchronize")
 @patch("logging.warning")
-def test_track_cuda_memory_usage_no_cuda(
-    mock_log_warn, mock_sync, mock_mem_alloc, mock_cuda_avail
-):
+def test_track_cuda_memory_usage_no_cuda(mock_log_warn, mock_sync,
+                                         mock_mem_alloc, mock_cuda_avail):
+
     @track_cuda_memory_usage
     def test_func():
         return "Test"
@@ -57,5 +57,4 @@ def test_track_cuda_memory_usage_no_cuda(
     mock_sync.assert_not_called()
     mock_mem_alloc.assert_not_called()
     mock_log_warn.assert_called_with(
-        "CUDA is not available, skip tracking memory usage"
-    )
+        "CUDA is not available, skip tracking memory usage")

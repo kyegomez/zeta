@@ -13,9 +13,11 @@ def test_class_init():
 
 
 def test_class_init_with_args():
-    model = FusedDenseGELUDense(
-        512, 1024, bias=False, has_fp16_weights=True, threshold=5.0
-    )
+    model = FusedDenseGELUDense(512,
+                                1024,
+                                bias=False,
+                                has_fp16_weights=True,
+                                threshold=5.0)
 
     assert model.dim == 512
     assert model.dim_out == 1024

@@ -34,10 +34,8 @@ def test_fixture_usage(sample_block):
 
 # 3. Parameterized Testing
 @pytest.mark.parametrize(
-    (
-        "in_channels, out_channels, kernel_size, padding, depth, stride,"
-        " activation, batchnorm, dilation, dropout"
-    ),
+    ("in_channels, out_channels, kernel_size, padding, depth, stride,"
+     " activation, batchnorm, dilation, dropout"),
     [
         (128, 256, 3, 1, 2, 1, "relu", True, 1, 0.1),
         (256, 512, 3, 1, 3, 1, "gelu", False, 2, 0.2),
@@ -85,6 +83,8 @@ def test_with_mocked_convolution_layer():
 # 5. Exception Testing
 def test_invalid_activation_raises_error():
     with pytest.raises(ValueError):
-        ConvolutionLanguageBlock(
-            128, 256, 3, 1, activation="invalid_activation"
-        )
+        ConvolutionLanguageBlock(128,
+                                 256,
+                                 3,
+                                 1,
+                                 activation="invalid_activation")

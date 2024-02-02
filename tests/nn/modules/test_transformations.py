@@ -65,12 +65,10 @@ def test_image_transform_defaults(image_size, is_train, mean, std):
 
 
 # Test the function with custom parameters
-def test_image_transform_custom(
-    image_size, is_train, mean, std, resize_longest_max, fill_color
-):
-    transform = image_transform(
-        image_size, is_train, mean, std, resize_longest_max, fill_color
-    )
+def test_image_transform_custom(image_size, is_train, mean, std,
+                                resize_longest_max, fill_color):
+    transform = image_transform(image_size, is_train, mean, std,
+                                resize_longest_max, fill_color)
     assert isinstance(transform, Compose)
     assert len(transform.transforms) == 5
     assert isinstance(transform.transforms[0], Resize)
@@ -93,12 +91,13 @@ def test_image_transform_inmem(image_size, is_train, mean, std, inmem):
 
 
 # Test the function with resize_longest_max parameter
-def test_image_transform_resize_longest_max(
-    image_size, is_train, mean, std, resize_longest_max
-):
-    transform = image_transform(
-        image_size, is_train, mean, std, resize_longest_max=resize_longest_max
-    )
+def test_image_transform_resize_longest_max(image_size, is_train, mean, std,
+                                            resize_longest_max):
+    transform = image_transform(image_size,
+                                is_train,
+                                mean,
+                                std,
+                                resize_longest_max=resize_longest_max)
     assert isinstance(transform, Compose)
     assert len(transform.transforms) == 4
     assert isinstance(transform.transforms[0], ResizeMaxSize)

@@ -31,7 +31,9 @@ def test_once_decorator():
         (1,),
         ("hello",),
         ([1, 2, 3],),
-        ({"a": 1},),
+        ({
+            "a": 1
+        },),
     ],
 )
 def test_once_decorator_with_different_arguments(args):
@@ -84,12 +86,10 @@ def test_once_decorator_with_multiple_instances():
 
     # Call the first function again
     decorated_mock1(30)
-    assert (
-        mock1.call_count == 1
-    ), "Decorated mock1 function called more than once!"
+    assert (mock1.call_count == 1
+           ), "Decorated mock1 function called more than once!"
 
     # Call the second function again
     decorated_mock2(40)
-    assert (
-        mock2.call_count == 1
-    ), "Decorated mock2 function called more than once!"
+    assert (mock2.call_count == 1
+           ), "Decorated mock2 function called more than once!"

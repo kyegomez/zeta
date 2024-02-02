@@ -22,9 +22,8 @@ def mock_routing_module(monkeypatch):
     def mock_forward(x):
         return torch.tensor(0.5)
 
-    monkeypatch.setattr(
-        "Reference to routing_module_class", "forward", mock_forward
-    )
+    monkeypatch.setattr("Reference to routing_module_class", "forward",
+                        mock_forward)
 
 
 @pytest.mark.parametrize("input1,input2", test_data)

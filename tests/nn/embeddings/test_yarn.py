@@ -142,10 +142,8 @@ def test_custom_init():
     assert module.dim == dim
     assert module.max_position_embeddings == max_position_embeddings
     assert module.base == base
-    assert (
-        module.original_max_position_embeddings
-        == original_max_position_embeddings
-    )
+    assert (module.original_max_position_embeddings ==
+            original_max_position_embeddings)
     assert module.extrapolation_factor == extrapolation_factor
     assert module.attn_factor == attn_factor
     assert module.beta_fast == beta_fast

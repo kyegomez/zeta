@@ -58,7 +58,9 @@ def test_mamba_with_dropout():
 
 
 def test_mamba_with_custom_layer():
+
     class CustomLayer(nn.Module):
+
         def forward(self, x):
             return x * 2
 

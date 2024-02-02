@@ -12,9 +12,8 @@ def test_laplace_activation_forward_default_parameters():
     input = torch.tensor([0.5, 1.0, 2.0])
     output = laplace_activation.forward(input)
 
-    expected_output = 0.5 * (
-        1.0 + torch.erf((input - 0.707107) / (0.282095 * math.sqrt(2.0)))
-    )
+    expected_output = 0.5 * (1.0 + torch.erf(
+        (input - 0.707107) / (0.282095 * math.sqrt(2.0))))
 
     assert torch.allclose(output, expected_output)
 
@@ -27,9 +26,8 @@ def test_laplace_activation_forward_custom_parameters():
     input = torch.tensor([0.5, 1.0, 2.0])
     output = laplace_activation.forward(input, mu, sigma)
 
-    expected_output = 0.5 * (
-        1.0 + torch.erf((input - mu) / (sigma * math.sqrt(2.0)))
-    )
+    expected_output = 0.5 * (1.0 + torch.erf(
+        (input - mu) / (sigma * math.sqrt(2.0))))
 
     assert torch.allclose(output, expected_output)
 

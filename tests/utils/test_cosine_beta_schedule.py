@@ -50,15 +50,10 @@ def test_cosine_beta_schedule_math():
     for timesteps in range(1, 100):
         betas = cosine_beta_schedule(timesteps)
         x = torch.linspace(0, timesteps, timesteps + 1, dtype=torch.float64)
-        expected_betas = 1 - (
-            torch.cos(
-                ((x[1:] / timesteps) + 0.008) / (1 + 0.008) * torch.pi * 0.5
-            )
-            ** 2
-            / torch.cos(
-                ((x[:-1] / timesteps) + 0.008) / (1 + 0.008) * torch.pi * 0.5
-            )
-            ** 2
-        )
+        expected_betas = 1 - (torch.cos(
+            ((x[1:] / timesteps) + 0.008) /
+            (1 + 0.008) * torch.pi * 0.5)**2 / torch.cos(
+                ((x[:-1] / timesteps) + 0.008) /
+                (1 + 0.008) * torch.pi * 0.5)**2)
         expected_betas = torch.clip(expected_betas, 0, 0.9999)
         assert torch.allclose(betas, expected_betas, atol=1e-7)

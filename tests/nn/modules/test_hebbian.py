@@ -2,8 +2,7 @@ import pytest
 import torch
 
 from zeta.nn.modules.hebbian import (
-    BasicHebbianGRUModel,
-)  # Import your module here
+    BasicHebbianGRUModel,)  # Import your module here
 
 
 # Fixture for creating an instance of the model

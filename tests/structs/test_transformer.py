@@ -12,9 +12,9 @@ def init_transformer():
     attn_layers = AttentionLayers(
         256
     )  # considering that AttentionLayers exist and received one parameter
-    return Transformer(
-        num_tokens=1000, max_seq_len=512, attn_layers=attn_layers
-    )
+    return Transformer(num_tokens=1000,
+                       max_seq_len=512,
+                       attn_layers=attn_layers)
 
 
 # Basic tests: Like creating objects
@@ -41,8 +41,8 @@ def test_forward(init_transformer, x, expected_output_size):
 
 # Exception Testing: Check if errors are raised correctly
 @pytest.mark.parametrize(
-    "wrong_input", [torch.randn(1), torch.randn(1, 512, 3), "string"]
-)
+    "wrong_input",
+    [torch.randn(1), torch.randn(1, 512, 3), "string"])
 def test_forward_exception(init_transformer, wrong_input):
     with pytest.raises(ValueError):
         init_transformer.forward(wrong_input)

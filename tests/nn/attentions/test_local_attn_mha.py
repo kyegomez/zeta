@@ -101,9 +101,8 @@ def test_local_mha_output_sparse():
     seq_len = 32
     emb_dim = 256
 
-    input_data = torch.zeros(
-        batch_size, seq_len, emb_dim
-    )  # Create a tensor with all zeros
+    input_data = torch.zeros(batch_size, seq_len,
+                             emb_dim)  # Create a tensor with all zeros
     output = local_mha(input_data)
     assert is_sparse(output)  # Check if the output is sparse
 

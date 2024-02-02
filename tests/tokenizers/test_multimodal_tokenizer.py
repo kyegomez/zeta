@@ -12,11 +12,9 @@ def test_multi_modal_tokenizer_initialization():
     assert tokenizer.tokenizer.pad_token == "<pad>"
     assert tokenizer.tokenizer.model_max_length == tokenizer.max_length
     assert tokenizer.im_idx == tokenizer.tokenizer.convert_tokens_to_ids(
-        "<image>"
-    )
+        "<image>")
     assert tokenizer.im_end_idx == tokenizer.tokenizer.convert_tokens_to_ids(
-        "</image>"
-    )
+        "</image>")
 
 
 def test_multi_modal_tokenizer_tokenize_texts():
