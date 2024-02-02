@@ -1,3 +1,4 @@
+""" init file for nn modules """
 from zeta.nn.modules.adaptive_conv import AdaptiveConv3DMod
 from zeta.nn.modules.adaptive_layernorm import AdaptiveLayerNorm
 from zeta.nn.modules.cnn_text import CNNNew

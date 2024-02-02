@@ -1,3 +1,5 @@
+"""Test cases for the main module of the cloud package."""
+
 import pytest
 from unittest.mock import MagicMock, patch
 from zeta.cloud.main import zetacloud
