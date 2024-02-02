@@ -3,17 +3,18 @@ import zeta
 
 def test_imports():
     modules = [
-        "nn",
-        "structs",
-        "models",
-        "utils",
-        "training",
-        "tokenizers",
-        "rl",
-        "optim",
-        "ops",
-        "quant",
         "cloud",
+        "models",
+        "nn",
+        "ops",
+        "optim",
+        "quant",
+        "rl",
+        "structs",
+        "tokenizers",
+        "training",
+        "utils",
+        
     ]
     missing_modules = []
     for module in modules:
