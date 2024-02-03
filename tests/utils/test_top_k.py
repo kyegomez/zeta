@@ -9,13 +9,15 @@ def test_top_k_positive_case():
     probs = top_k(logits, 0.9)
     k = ceil((1 - 0.9) * logits.shape[-1])
     assert probs.shape == logits.shape
-    assert (probs[probs != float("-inf")].numel() == k
-           )  # checks number of elements that aren't negative infinity
+    assert (
+        probs[probs != float("-inf")].numel() == k
+    )  # checks number of elements that aren't negative infinity
 
 
 def test_dimensions_positive_case():
     logits = torch.randn(
-        1, 5, 5)  # assumed example for logits with more than 2 dimensions
+        1, 5, 5
+    )  # assumed example for logits with more than 2 dimensions
     top_k(logits, 0.9)
 
 
@@ -44,6 +46,6 @@ def test_top_k_large_values():
 
 def test_top_k_empty_input():
     with pytest.raises(
-            Exception
+        Exception
     ):  # assuming that you would want to handle this case with an exception
         top_k(torch.tensor([]), 0.8)

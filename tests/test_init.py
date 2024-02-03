@@ -20,5 +20,6 @@ def test_imports():
         if not hasattr(zeta, module):
             missing_modules.append(module)
 
-    assert (not missing_modules
-           ), f"Modules {', '.join(missing_modules)} not found in zeta package"
+    assert (
+        not missing_modules
+    ), f"Modules {', '.join(missing_modules)} not found in zeta package"

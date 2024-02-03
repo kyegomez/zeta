@@ -30,28 +30,9 @@ def test_key_not_found():
 @pytest.mark.parametrize(
     "dict_values,keys,expected",
     [
-        ({
-            "a": 1,
-            "b": 2,
-            "c": 3
-        }, ["b", "c"], {
-            "b": 2,
-            "c": 3
-        }),
-        ({
-            1: "a",
-            2: "b",
-            3: "c"
-        }, [1, 2], {
-            1: "a",
-            2: "b"
-        }),
-        ({
-            "x": "y",
-            "foo": "bar"
-        }, ["foo"], {
-            "foo": "bar"
-        }),
+        ({"a": 1, "b": 2, "c": 3}, ["b", "c"], {"b": 2, "c": 3}),
+        ({1: "a", 2: "b", 3: "c"}, [1, 2], {1: "a", 2: "b"}),
+        ({"x": "y", "foo": "bar"}, ["foo"], {"foo": "bar"}),
     ],
 )
 def test_various_inputs(dict_values, keys, expected):

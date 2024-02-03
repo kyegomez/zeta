@@ -1,7 +1,8 @@
 import torch
 import pytest
 from zeta.nn.modules.visual_expert import (
-    VisualExpert,)  # Import the VisualExpert class from your module
+    VisualExpert,
+)  # Import the VisualExpert class from your module
 
 
 # Fixture for creating a sample instance of VisualExpert
@@ -49,10 +50,12 @@ def test_visual_expert_layers(visual_expert_instance):
 
 # Test attention and feedforward
 def test_visual_expert_attention_and_feedforward(visual_expert_instance):
-    assert isinstance(visual_expert_instance.attention,
-                      torch.nn.modules.MultiheadAttention)
-    assert isinstance(visual_expert_instance.feedforward,
-                      torch.nn.modules.Linear)
+    assert isinstance(
+        visual_expert_instance.attention, torch.nn.modules.MultiheadAttention
+    )
+    assert isinstance(
+        visual_expert_instance.feedforward, torch.nn.modules.Linear
+    )
 
 
 # Test the call method with zero-sized input

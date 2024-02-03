@@ -19,8 +19,9 @@ def test_parallel_transformer_block_forward():
 
 
 # Parameterized Testing
-@pytest.mark.parametrize("dim, dim_head, heads, ff_mult", [(128, 16, 4, 6),
-                                                           (256, 32, 8, 3)])
+@pytest.mark.parametrize(
+    "dim, dim_head, heads, ff_mult", [(128, 16, 4, 6), (256, 32, 8, 3)]
+)
 def test_parallel_transformer_block_param(dim, dim_head, heads, ff_mult):
     p = ParallelTransformerBlock(dim, dim_head, heads, ff_mult)
     assert isinstance(p, ParallelTransformerBlock)
@@ -54,7 +55,8 @@ def test_mask_functionality(parallel_transformer_block):
 
 def test_rotary_embedding_functionality(parallel_transformer_block):
     pos_emb_output = parallel_transformer_block.get_rotary_embedding(
-        10, torch.device("cpu"))
+        10, torch.device("cpu")
+    )
     assert pos_emb_output.shape == (10, 8)
 
 

@@ -26,7 +26,8 @@ def test_rearrange_many(pattern):
 def test_repeat_many(pattern):
     repeats = [2, 3]
     output = list(
-        repeat_many([input_data, input_data], pattern=pattern, repeats=repeats))
+        repeat_many([input_data, input_data], pattern=pattern, repeats=repeats)
+    )
     for tensor in output:
         assert tensor.shape == (3 * repeats[0], 4 * repeats[1], 5, 6)
 
@@ -35,8 +36,8 @@ def test_repeat_many(pattern):
 @pytest.mark.parametrize("pattern", ["b h w c", "c b h w"])
 def test_reduce_many(pattern):
     output = list(
-        reduce_many([input_data, input_data], pattern=pattern,
-                    reduction="mean"))
+        reduce_many([input_data, input_data], pattern=pattern, reduction="mean")
+    )
     for tensor in output:
         assert tensor.shape == (1, 1, 1, 1)
 
@@ -61,18 +62,18 @@ def test_repeat_with_anon_dims(pattern, a_list):
 @pytest.mark.parametrize("pattern", ["...a b c"])
 @pytest.mark.parametrize("a_list", [(2, 3), (3, 4)])
 def test_reduce_with_anon_dims(pattern, a_list):
-    output = reduce_with_anon_dims(input_data,
-                                   pattern=pattern,
-                                   a=a_list,
-                                   reduction="mean")
+    output = reduce_with_anon_dims(
+        input_data, pattern=pattern, a=a_list, reduction="mean"
+    )
     assert output.shape == (1, 1, 1, 2, 3, 4, 5, 6)
 
 
 # Additional tests for rearrange_many function
 def test_rearrange_many_invalid_pattern():
     with pytest.raises(ValueError):
-        list(rearrange_many([input_data, input_data],
-                            pattern="invalid_pattern"))
+        list(
+            rearrange_many([input_data, input_data], pattern="invalid_pattern")
+        )
 
 
 def test_rearrange_many_with_multiple_patterns():
@@ -90,21 +91,23 @@ def test_repeat_many_invalid_pattern():
                 [input_data, input_data],
                 pattern="invalid_pattern",
                 repeats=[2, 2],
-            ))
+            )
+        )
 
 
 def test_repeat_many_invalid_repeats():
     with pytest.raises(ValueError):
         list(
-            repeat_many([input_data, input_data],
-                        pattern="b h w c",
-                        repeats=[2]))
+            repeat_many(
+                [input_data, input_data], pattern="b h w c", repeats=[2]
+            )
+        )
 
 
 def test_repeat_many_with_single_repeat():
     output = list(
-        repeat_many([input_data, input_data], pattern="b h w c", repeats=[2,
-                                                                          1]))
+        repeat_many([input_data, input_data], pattern="b h w c", repeats=[2, 1])
+    )
     for tensor in output:
         assert tensor.shape == (6, 4, 5, 6)
 
@@ -117,7 +120,8 @@ def test_reduce_many_invalid_pattern():
                 [input_data, input_data],
                 pattern="invalid_pattern",
                 reduction="mean",
-            ))
+            )
+        )
 
 
 def test_reduce_many_invalid_reduction():
@@ -127,14 +131,16 @@ def test_reduce_many_invalid_reduction():
                 [input_data, input_data],
                 pattern="b h w c",
                 reduction="invalid_reduction",
-            ))
+            )
+        )
 
 
 def test_reduce_many_with_sum_reduction():
     output = list(
-        reduce_many([input_data, input_data],
-                    pattern="b h w c",
-                    reduction="sum"))
+        reduce_many(
+            [input_data, input_data], pattern="b h w c", reduction="sum"
+        )
+    )
     for tensor in output:
         assert tensor.shape == (1, 1, 1, 1)
 
@@ -147,9 +153,9 @@ def test_rearrange_with_anon_dims_invalid_dim_list():
 
 def test_rearrange_with_anon_dims_invalid_pattern():
     with pytest.raises(ValueError):
-        rearrange_with_anon_dims(input_data,
-                                 pattern="invalid_pattern",
-                                 a=[(1, 2), (2, 3)])
+        rearrange_with_anon_dims(
+            input_data, pattern="invalid_pattern", a=[(1, 2), (2, 3)]
+        )
 
 
 # Additional tests for repeat_with_anon_dims function
@@ -160,9 +166,9 @@ def test_repeat_with_anon_dims_invalid_dim_list():
 
 def test_repeat_with_anon_dims_invalid_pattern():
     with pytest.raises(ValueError):
-        repeat_with_anon_dims(input_data,
-                              pattern="invalid_pattern",
-                              a=[(2, 3), (3, 4)])
+        repeat_with_anon_dims(
+            input_data, pattern="invalid_pattern", a=[(2, 3), (3, 4)]
+        )
 
 
 # Additional tests for reduce_with_anon_dims function
@@ -173,6 +179,6 @@ def test_reduce_with_anon_dims_invalid_dim_list():
 
 def test_reduce_with_anon_dims_invalid_pattern():
     with pytest.raises(ValueError):
-        reduce_with_anon_dims(input_data,
-                              pattern="invalid_pattern",
-                              a=[(2, 3), (3, 4)])
+        reduce_with_anon_dims(
+            input_data, pattern="invalid_pattern", a=[(2, 3), (3, 4)]
+        )

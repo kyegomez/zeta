@@ -20,7 +20,6 @@ def sample_dict():
 
 
 def test_all_keys_grouped_right(sample_dict):
-
     def cond(x):
         return x in ["x", "y"]
 

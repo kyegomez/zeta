@@ -54,7 +54,8 @@ def test_dynamic_position_bias_device():
     bias = DynamicPositionBias(dim=dim, heads=heads)
 
     assert bias.device == torch.device(
-        "cuda" if torch.cuda.is_available() else "cpu")
+        "cuda" if torch.cuda.is_available() else "cpu"
+    )
 
 
 # Test case for checking if bias values are consistent for different instances of DynamicPositionBias

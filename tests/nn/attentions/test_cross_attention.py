@@ -52,7 +52,8 @@ def test_cross_attention_forward_with_cosine_similarity(cross_attention):
 
 
 def test_cross_attention_forward_with_cosine_similarity_and_mask(
-    cross_attention,):
+    cross_attention,
+):
     # Prepare the test input
     x = torch.rand(1, 10, 512)
     context = torch.rand(1, 5, 256)

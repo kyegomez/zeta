@@ -36,6 +36,9 @@ def test_average_model_merger_merge_models_weights():
     for param_tensor in merged_model.state_dict():
         assert torch.allclose(
             merged_model.state_dict()[param_tensor],
-            (model1.state_dict()[param_tensor] +
-             model2.state_dict()[param_tensor]) / 2,
+            (
+                model1.state_dict()[param_tensor]
+                + model2.state_dict()[param_tensor]
+            )
+            / 2,
         )

@@ -8,8 +8,9 @@ from zeta.utils import gumbel_noise
 def test_gumbel_noise():
     tensor = torch.tensor([1.0, 2.0, 3.0])
     result = gumbel_noise(tensor)
-    assert isinstance(result,
-                      torch.Tensor), "Output should be of type torch.Tensor"
+    assert isinstance(
+        result, torch.Tensor
+    ), "Output should be of type torch.Tensor"
 
 
 # Test valid return values
@@ -22,9 +23,8 @@ def test_values():
     # However, we don't expect to reach these limits in practice. Here we check that the
     # values are within a less extreme range.
     assert bool(
-        ((result > -100) &
-         (result
-          < 100)).all()), "Gumbel noise should fall within expected value range"
+        ((result > -100) & (result < 100)).all()
+    ), "Gumbel noise should fall within expected value range"
 
 
 # Test invalid inputs
@@ -45,11 +45,13 @@ def test_tensor_requirement():
     [
         torch.tensor([1.0, 2.0, 3.0]),  # 1-D Tensor
         torch.tensor([[1, 2], [3, 4]]),  # 2-D Tensor
-        torch.tensor([[[1, 2], [3, 4]], [[5, 6], [7, 8]]
-                     ]),  # Higher Dimension Tensor
+        torch.tensor(
+            [[[1, 2], [3, 4]], [[5, 6], [7, 8]]]
+        ),  # Higher Dimension Tensor
     ],
 )
 def test_gumbel_noise_dim(input_tensor):
     result = gumbel_noise(input_tensor)
-    assert (result.shape == input_tensor.shape
-           ), "Output tensor should have same dimensions as input"
+    assert (
+        result.shape == input_tensor.shape
+    ), "Output tensor should have same dimensions as input"

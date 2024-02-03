@@ -6,7 +6,6 @@ from zeta.utils.save_load_wrapper import save_load
 
 @save_load()
 class DummyModule(Module):
-
     def __init__(self, x):
         super().__init__()
         self.x = torch.nn.Parameter(torch.tensor(x))
@@ -57,10 +56,8 @@ def test_save_load_init_and_load_nonexistent(tmp_path):
 
 
 def test_save_load_partial_load(tmp_path):
-
     @save_load(partial_load=True)
     class PartialModule(Module):
-
         def __init__(self, x, y):
             super().__init__()
             self.x = torch.nn.Parameter(torch.tensor(x))

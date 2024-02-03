@@ -36,17 +36,17 @@ def test_image():
         (180, 1, True),
     ],
 )
-def test_video_tensor_to_gif_valid_params(duration, loop, optimize, tensor,
-                                          test_image):
+def test_video_tensor_to_gif_valid_params(
+    duration, loop, optimize, tensor, test_image
+):
     path = "/test/path"
 
     with patch("torchvision.transforms.ToPILImage") as mocked_transform:
         mocked_transform.return_value = MagicMock(return_value=test_image)
 
-        images = video_tensor_to_gift(tensor,
-                                      duration=duration,
-                                      loop=loop,
-                                      optimize=optimize)
+        images = video_tensor_to_gift(
+            tensor, duration=duration, loop=loop, optimize=optimize
+        )
 
         mocked_transform.assert_called()
         test_image.save.assert_called_with(

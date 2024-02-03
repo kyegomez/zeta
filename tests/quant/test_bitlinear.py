@@ -33,5 +33,5 @@ def test_absmax_quantize_different_bits(bits):
     assert torch.allclose(dequant, x, atol=1e-2)
 
     # Check that the quantized values are within the expected range
-    assert quant.min() >= -(2**(bits - 1))
-    assert quant.max() <= 2**(bits - 1) - 1
+    assert quant.min() >= -(2 ** (bits - 1))
+    assert quant.max() <= 2 ** (bits - 1) - 1

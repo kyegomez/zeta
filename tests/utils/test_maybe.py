@@ -13,7 +13,6 @@ def exists(item):
 
 # Test 1: Basic function call with existing argument
 def test_maybe_with_existing_arg():
-
     @maybe
     def function_to_test(x):
         return mock_func(x)
@@ -23,7 +22,6 @@ def test_maybe_with_existing_arg():
 
 # Test 2: Function call with non-existing argument
 def test_maybe_with_non_existing_arg():
-
     @maybe
     def function_to_test(x):
         return mock_func(x)
@@ -33,7 +31,6 @@ def test_maybe_with_non_existing_arg():
 
 # Test 3: Function call with multiple arguments
 def test_maybe_with_multiple_args():
-
     @maybe
     def function_to_test(x, y, z):
         return mock_func(x) + y + z
@@ -43,7 +40,6 @@ def test_maybe_with_multiple_args():
 
 # Test 4: Function call with keyword arguments
 def test_maybe_with_keyword_args():
-
     @maybe
     def function_to_test(x, y=1, z=1):
         return mock_func(x) + y + z
@@ -56,7 +52,6 @@ def test_maybe_with_keyword_args():
 
 @pytest.mark.parametrize("input,output", [(5, 50), (None, None), (0, 0)])
 def test_maybe_parameterized(input, output):
-
     @maybe
     def function_to_test(x):
         return mock_func(x)
@@ -68,7 +63,6 @@ def test_maybe_parameterized(input, output):
 
 
 def test_maybe_exception_handling():
-
     @maybe
     def function_to_test(x):
         return x / 0

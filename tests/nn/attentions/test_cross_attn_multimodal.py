@@ -40,10 +40,9 @@ def test_multi_modal_cross_attention_conditional_ln():
 
 # Test case for configuring post-attention normalization
 def test_multi_modal_cross_attention_post_attn_norm():
-    cross_attention = MultiModalCrossAttention(1024,
-                                               8,
-                                               1024,
-                                               post_attn_norm=True)
+    cross_attention = MultiModalCrossAttention(
+        1024, 8, 1024, post_attn_norm=True
+    )
 
     # Create random input tensors
     x = torch.randn(1, 32, 1024)
@@ -58,10 +57,9 @@ def test_multi_modal_cross_attention_post_attn_norm():
 
 # Test case for specifying an attention strategy (average)
 def test_multi_modal_cross_attention_attention_strategy_average():
-    cross_attention = MultiModalCrossAttention(1024,
-                                               8,
-                                               1024,
-                                               attention_strategy="average")
+    cross_attention = MultiModalCrossAttention(
+        1024, 8, 1024, attention_strategy="average"
+    )
 
     # Create random input tensors
     x = torch.randn(1, 32, 1024)
@@ -76,10 +74,9 @@ def test_multi_modal_cross_attention_attention_strategy_average():
 
 # Test case for specifying an attention strategy (concatenate)
 def test_multi_modal_cross_attention_attention_strategy_concatenate():
-    cross_attention = MultiModalCrossAttention(1024,
-                                               8,
-                                               1024,
-                                               attention_strategy="concatenate")
+    cross_attention = MultiModalCrossAttention(
+        1024, 8, 1024, attention_strategy="concatenate"
+    )
 
     # Create random input tensors
     x = torch.randn(1, 32, 1024)
@@ -173,10 +170,9 @@ def test_multimodal_cross_attention_post_attn_norm():
     dim = 1024
     heads = 8
     context_dim = 1024
-    attn = MultiModalCrossAttention(dim,
-                                    heads,
-                                    context_dim,
-                                    post_attn_norm=True)
+    attn = MultiModalCrossAttention(
+        dim, heads, context_dim, post_attn_norm=True
+    )
 
     x = torch.randn(1, 32, 1024)
     context = torch.randn(1, 32, 1024)
@@ -193,10 +189,9 @@ def test_multimodal_cross_attention_average_strategy():
     dim = 1024
     heads = 8
     context_dim = 1024
-    attn = MultiModalCrossAttention(dim,
-                                    heads,
-                                    context_dim,
-                                    attention_strategy="average")
+    attn = MultiModalCrossAttention(
+        dim, heads, context_dim, attention_strategy="average"
+    )
 
     x = torch.randn(1, 32, 1024)
     context = torch.randn(1, 32, 1024)
@@ -270,10 +265,9 @@ def test_multimodal_cross_attention_strategy_average():
     dim = 1024
     heads = 8
     context_dim = 1024
-    attn = MultiModalCrossAttention(dim,
-                                    heads,
-                                    context_dim,
-                                    attention_strategy="average")
+    attn = MultiModalCrossAttention(
+        dim, heads, context_dim, attention_strategy="average"
+    )
 
     # Create random input tensors
     x = torch.randn(1, 32, dim)
@@ -291,10 +285,9 @@ def test_multimodal_cross_attention_strategy_concatenate():
     dim = 1024
     heads = 8
     context_dim = 1024
-    attn = MultiModalCrossAttention(dim,
-                                    heads,
-                                    context_dim,
-                                    attention_strategy="concatenate")
+    attn = MultiModalCrossAttention(
+        dim, heads, context_dim, attention_strategy="concatenate"
+    )
 
     # Create random input tensors
     x = torch.randn(1, 32, dim)
@@ -315,10 +308,9 @@ def create_mask(batch_size, seq_len):
 
 # Test case for configuring conditional layer normalization (qk)
 def test_multi_modal_cross_attention_qk():
-    attention = MultiModalCrossAttention(dim=1024,
-                                         heads=8,
-                                         context_dim=1024,
-                                         qk=True)
+    attention = MultiModalCrossAttention(
+        dim=1024, heads=8, context_dim=1024, qk=True
+    )
 
     # Create random input tensors
     x = torch.randn(1, 32, 1024)
@@ -333,10 +325,9 @@ def test_multi_modal_cross_attention_qk():
 
 # Test case for configuring the attention strategy as "average"
 def test_multi_modal_cross_attention_average_strategy():
-    attention = MultiModalCrossAttention(dim=1024,
-                                         heads=8,
-                                         context_dim=1024,
-                                         attention_strategy="average")
+    attention = MultiModalCrossAttention(
+        dim=1024, heads=8, context_dim=1024, attention_strategy="average"
+    )
 
     # Create random input tensors
     x = torch.randn(1, 32, 1024)
@@ -351,10 +342,9 @@ def test_multi_modal_cross_attention_average_strategy():
 
 # Test case for configuring the attention mask
 def test_multi_modal_cross_attention_mask():
-    attention = MultiModalCrossAttention(dim=1024,
-                                         heads=8,
-                                         context_dim=1024,
-                                         mask=create_mask(1, 32))
+    attention = MultiModalCrossAttention(
+        dim=1024, heads=8, context_dim=1024, mask=create_mask(1, 32)
+    )
 
     # Create random input tensors
     x = torch.randn(1, 32, 1024)
