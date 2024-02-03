@@ -29,8 +29,9 @@ def test_print_main_without_dist(message):
         (False, 0, "This is the test message!\n"),
     ],
 )
-def test_print_main_with_dist(mock_is_available, mock_get_rank, available, rank,
-                              expected, message, capsys):
+def test_print_main_with_dist(
+    mock_is_available, mock_get_rank, available, rank, expected, message, capsys
+):
     mock_is_available.return_value = available
     mock_get_rank.return_value = rank
     print_main(message)

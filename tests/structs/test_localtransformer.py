@@ -49,10 +49,9 @@ def test_forward(transformer):
 
 def test_generate(transformer):
     prime = torch.rand(10, 100)
-    output = transformer.generate(prime,
-                                  seq_len=50,
-                                  temperature=0.9,
-                                  filter_thres=0.8)
+    output = transformer.generate(
+        prime, seq_len=50, temperature=0.9, filter_thres=0.8
+    )
     assert output.shape == torch.Size([10, 150])
 
 
@@ -71,10 +70,8 @@ def test_gradient(transformer):
 
 def test_mocking_used_libraries(mocker):
     mock = mocker.patch("torch.nn.Embedding", return_value="Mocked_Embedding")
-    transformer = LocalTransformer(num_tokens=5000,
-                                   max_seq_len=200,
-                                   dim=128,
-                                   depth=10,
-                                   causal=True)
+    transformer = LocalTransformer(
+        num_tokens=5000, max_seq_len=200, dim=128, depth=10, causal=True
+    )
     transformer.token_emb = mock
     assert transformer.token_emb() == "Mocked_Embedding"

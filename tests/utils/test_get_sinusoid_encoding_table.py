@@ -38,15 +38,17 @@ def test_sinusoid_table_parameters(n_position, d_hid):
 def test_sinusoid_table_values():
     table = get_sinusoid_encoding_table(5, 4)
     base = np.array(
-        [[pos / np.power(10000, 2 * (hid_j // 2) / 4)
-          for hid_j in range(4)]
-         for pos in range(5)])
+        [
+            [pos / np.power(10000, 2 * (hid_j // 2) / 4) for hid_j in range(4)]
+            for pos in range(5)
+        ]
+    )
     base[:, 0::2] = np.sin(base[:, 0::2])
     base[:, 1::2] = np.cos(base[:, 1::2])
     expected = torch.FloatTensor(base).unsqueeze(0)
     assert torch.allclose(
-        table, expected,
-        atol=1e-6)  # Allow for minor floating point differences
+        table, expected, atol=1e-6
+    )  # Allow for minor floating point differences
 
 
 def test_sinusoid_table_return_type():

@@ -16,8 +16,9 @@ def test_forward(dense_block):
 
     assert output.shape == (32, 15)  # Check output shape
     assert torch.allclose(output[:, :10], x)  # Check if input is preserved
-    assert torch.allclose(output[:, 10:],
-                          dense_block.submodule(x))  # Check submodule output
+    assert torch.allclose(
+        output[:, 10:], dense_block.submodule(x)
+    )  # Check submodule output
 
 
 def test_initialization(dense_block):
@@ -27,7 +28,9 @@ def test_initialization(dense_block):
 
 
 def test_docstrings():
-    assert (DenseBlock.__init__.__doc__
-            is not None)  # Check if __init__ has a docstring
-    assert (DenseBlock.forward.__doc__
-            is not None)  # Check if forward has a docstring
+    assert (
+        DenseBlock.__init__.__doc__ is not None
+    )  # Check if __init__ has a docstring
+    assert (
+        DenseBlock.forward.__doc__ is not None
+    )  # Check if forward has a docstring

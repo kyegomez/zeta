@@ -2,7 +2,8 @@ import pytest
 import torch
 from torch import nn
 from zeta.nn.modules.expert import (
-    Experts,)  # Import the Experts class from your module
+    Experts,
+)  # Import the Experts class from your module
 
 
 # Define fixtures
@@ -70,7 +71,8 @@ def test_experts_parameterized(batch_size, seq_len, dim, experts):
 # Test if the LeakyReLU activation function is used
 def test_experts_activation_function_used(experts_model):
     assert any(
-        isinstance(module, nn.LeakyReLU) for module in experts_model.modules())
+        isinstance(module, nn.LeakyReLU) for module in experts_model.modules()
+    )
 
 
 # Test if the expert weights are learnable parameters

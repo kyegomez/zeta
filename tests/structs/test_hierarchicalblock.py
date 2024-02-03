@@ -39,8 +39,9 @@ def test_HierarchicalBlock_raises():
         (0, 0, 0, 0, 1, 0, 0),
     ],
 )
-def test_HierarchicalBlock_dim(dim, dim_head, heads, window_size,
-                               compress_factor, stride, ff_mult):
+def test_HierarchicalBlock_dim(
+    dim, dim_head, heads, window_size, compress_factor, stride, ff_mult
+):
     # Test if correct exceptions are raised when dimensions are zero or negative
     try:
         HierarchicalBlock(
@@ -52,5 +53,12 @@ def test_HierarchicalBlock_dim(dim, dim_head, heads, window_size,
             stride,
         )
     except ValueError:
-        assert (dim <= 0 or dim_head <= 0 or heads <= 0 or window_size < 0 or
-                compress_factor <= 0 or stride <= 0 or ff_mult <= 0)
+        assert (
+            dim <= 0
+            or dim_head <= 0
+            or heads <= 0
+            or window_size < 0
+            or compress_factor <= 0
+            or stride <= 0
+            or ff_mult <= 0
+        )

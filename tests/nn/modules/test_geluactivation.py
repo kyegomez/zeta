@@ -26,9 +26,9 @@ def test_gelu_activation_forward_method(input, expected_output):
 def test_gelu_activation_with_pytorch_gelu():
     gelu = GELUActivation(use_gelu_python=False)
     input = torch.tensor([1.0])
-    assert torch.allclose(gelu.forward(input),
-                          torch.nn.functional.gelu(input),
-                          atol=1e-6)
+    assert torch.allclose(
+        gelu.forward(input), torch.nn.functional.gelu(input), atol=1e-6
+    )
 
 
 # Edge cases

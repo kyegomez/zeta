@@ -4,7 +4,6 @@ import unittest
 
 
 class TestMultiheadAttention(unittest.TestCase):
-
     def setUp(self):
         self.args = {
             "xpos_rel_pos": True,
@@ -13,8 +12,9 @@ class TestMultiheadAttention(unittest.TestCase):
         }
         self.embed_dim = 64
         self.num_heads = 4
-        self.multihead_attn = MultiheadAttention(self.args, self.embed_dim,
-                                                 self.num_heads)
+        self.multihead_attn = MultiheadAttention(
+            self.args, self.embed_dim, self.num_heads
+        )
 
     def test_forward_shape(self):
         query = torch.rand(16, 20, self.embed_dim)
@@ -29,15 +29,16 @@ class TestMultiheadAttention(unittest.TestCase):
         key = torch.rand(16, 20, self.embed_dim)
         value = torch.rand(16, 20, self.embed_dim)
         incremental_state = {
-            "prev_key":
-                torch.rand(16, self.num_heads, 10,
-                           self.embed_dim // self.num_heads),
-            "prev_value":
-                torch.rand(16, self.num_heads, 10,
-                           self.embed_dim // self.num_heads),
+            "prev_key": torch.rand(
+                16, self.num_heads, 10, self.embed_dim // self.num_heads
+            ),
+            "prev_value": torch.rand(
+                16, self.num_heads, 10, self.embed_dim // self.num_heads
+            ),
         }
         attn, attn_weights = self.multihead_attn(
-            query, key, value, incremental_state=incremental_state)
+            query, key, value, incremental_state=incremental_state
+        )
         self.assertEqual(attn.shape, (16, 20, self.embed_dim))
         self.assertEqual(attn_weights.shape, (self.num_heads, 16, 20, 30))
 
@@ -46,10 +47,9 @@ class TestMultiheadAttention(unittest.TestCase):
         key = torch.rand(16, 20, self.embed_dim)
         value = torch.rand(16, 20, self.embed_dim)
         attn_mask = torch.ones(20, 20)
-        attn, attn_weights = self.multihead_attn(query,
-                                                 key,
-                                                 value,
-                                                 attn_mask=attn_mask)
+        attn, attn_weights = self.multihead_attn(
+            query, key, value, attn_mask=attn_mask
+        )
         self.assertEqual(attn.shape, (16, 20, self.embed_dim))
         self.assertEqual(attn_weights.shape, (self.num_heads, 16, 20, 20))
 
@@ -59,7 +59,8 @@ class TestMultiheadAttention(unittest.TestCase):
         value = torch.rand(16, 20, self.embed_dim)
         key_padding_mask = torch.ones(16, 20)
         attn, attn_weights = self.multihead_attn(
-            query, key, value, key_padding_mask=key_padding_mask)
+            query, key, value, key_padding_mask=key_padding_mask
+        )
         self.assertEqual(attn.shape, (16, 20, self.embed_dim))
         self.assertEqual(attn_weights.shape, (self.num_heads, 16, 20, 20))
 
@@ -68,10 +69,9 @@ class TestMultiheadAttention(unittest.TestCase):
         key = torch.rand(16, 20, self.embed_dim)
         value = torch.rand(16, 20, self.embed_dim)
         rel_pos = torch.rand(16, self.num_heads, 20, 20)
-        attn, attn_weights = self.multihead_attn(query,
-                                                 key,
-                                                 value,
-                                                 rel_pos=rel_pos)
+        attn, attn_weights = self.multihead_attn(
+            query, key, value, rel_pos=rel_pos
+        )
         self.assertEqual(attn.shape, (16, 20, self.embed_dim))
         self.assertEqual(attn_weights.shape, (self.num_heads, 16, 20, 20))
 
@@ -79,10 +79,9 @@ class TestMultiheadAttention(unittest.TestCase):
         query = torch.rand(16, 20, self.embed_dim)
         key = torch.rand(16, 20, self.embed_dim)
         value = torch.rand(16, 20, self.embed_dim)
-        attn, attn_weights = self.multihead_attn(query,
-                                                 key,
-                                                 value,
-                                                 is_first_step=True)
+        attn, attn_weights = self.multihead_attn(
+            query, key, value, is_first_step=True
+        )
         self.assertEqual(attn.shape, (16, 20, self.embed_dim))
         self.assertEqual(attn_weights.shape, (self.num_heads, 16, 20, 20))
 
@@ -90,10 +89,9 @@ class TestMultiheadAttention(unittest.TestCase):
         query = torch.rand(16, 20, self.embed_dim)
         key = torch.rand(16, 20, self.embed_dim)
         value = torch.rand(16, 20, self.embed_dim)
-        attn, attn_weights = self.multihead_attn(query,
-                                                 key,
-                                                 value,
-                                                 is_first_step=False)
+        attn, attn_weights = self.multihead_attn(
+            query, key, value, is_first_step=False
+        )
         self.assertEqual(attn.shape, (16, 20, self.embed_dim))
         self.assertEqual(attn_weights.shape, (self.num_heads, 16, 20, 20))
 

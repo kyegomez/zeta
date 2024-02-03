@@ -4,7 +4,6 @@ from torch.nn import Module
 
 
 class TestModule(Module):
-
     def __init__(self, num):
         super(TestModule, self).__init__()
         self.num = num
@@ -16,9 +15,7 @@ def path(tmp_path):
 
 
 class TestSaveLoad:
-
     def test_save_load_class_decorator(self):
-
         @save_load()
         class TestModuleDecorated(TestModule):
             pass
@@ -28,7 +25,6 @@ class TestSaveLoad:
         assert hasattr(TestModuleDecorated, "init_and_load")
 
     def test_save_method(self, path):
-
         @save_load()
         class TestModuleDecorated(TestModule):
             pass
@@ -38,7 +34,6 @@ class TestSaveLoad:
         assert path.exists()
 
     def test_load_method(self, path):
-
         @save_load()
         class TestModuleDecorated(TestModule):
             pass
@@ -52,7 +47,6 @@ class TestSaveLoad:
 
     @pytest.mark.parametrize("overwrite", [False, True])
     def test_save_overwrite(self, path, overwrite):
-
         @save_load()
         class TestModuleDecorated(TestModule):
             pass

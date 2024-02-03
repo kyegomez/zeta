@@ -33,8 +33,8 @@ def test_forward_pass_negative(quick_gelu_activation):
 
 
 @pytest.mark.parametrize(
-    "input_tensor",
-    [torch.tensor([2.0]), torch.tensor([-2.0])])
+    "input_tensor", [torch.tensor([2.0]), torch.tensor([-2.0])]
+)
 def test_forward_pass_greater_than_one(quick_gelu_activation, input_tensor):
     output_tensor = quick_gelu_activation.forward(input_tensor)
     assert abs(output_tensor.item()) > abs(input_tensor.item())

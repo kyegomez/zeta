@@ -21,7 +21,8 @@ def test_zetacloud_basic(mock_logger, mock_skyapi):
         workdir=".",
     )
     mock_logger.info.assert_called_with(
-        "Task: {} has been created".format(mock_task))
+        "Task: {} has been created".format(mock_task)
+    )
     mock_task.set_resources.assert_called_once()
     mock_skyapi.launch.assert_called_once_with(mock_task, "[ZetaTrainingRun]")
 
@@ -42,7 +43,8 @@ def test_zetacloud_with_stop(mock_logger, mock_skyapi):
     # Assert
     mock_skyapi.stop.assert_called_once_with("[ZetaTrainingRun]")
     mock_logger.info.assert_called_with(
-        "Cluster: [ZetaTrainingRun] has been stopped")
+        "Cluster: [ZetaTrainingRun] has been stopped"
+    )
 
 
 @patch("zeta.cloud.main.skyapi")
@@ -58,7 +60,8 @@ def test_zetacloud_with_down(mock_logger, mock_skyapi):
     # Assert
     mock_skyapi.down.assert_called_once_with("[ZetaTrainingRun]")
     mock_logger.info.assert_called_with(
-        "Cluster: [ZetaTrainingRun] has been deleted")
+        "Cluster: [ZetaTrainingRun] has been deleted"
+    )
 
 
 @patch("zeta.cloud.main.skyapi")
@@ -73,9 +76,11 @@ def test_zetacloud_with_status_report(mock_logger, mock_skyapi):
 
     # Assert
     mock_skyapi.status.assert_called_once_with(
-        cluster_names=["[ZetaTrainingRun]"])
+        cluster_names=["[ZetaTrainingRun]"]
+    )
     mock_logger.info.assert_called_with(
-        "Cluster: [ZetaTrainingRun] has been reported on")
+        "Cluster: [ZetaTrainingRun] has been reported on"
+    )
 
 
 @patch("zeta.cloud.main.skyapi")

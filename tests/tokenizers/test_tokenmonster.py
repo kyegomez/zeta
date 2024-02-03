@@ -11,7 +11,8 @@ def test_token_monster_initialization():
 def test_token_monster_set_local_directory():
     tokenizer = TokenMonster("englishcode-32000-consistent-v1")
     tokenizer.set_local_directory(
-        "/path/to/your/directory")  # replace with your actual directory
+        "/path/to/your/directory"
+    )  # replace with your actual directory
 
     # There's no direct way to assert the effect of this method as it doesn't return anything
     # and it doesn't change any accessible state of the TokenMonster object.

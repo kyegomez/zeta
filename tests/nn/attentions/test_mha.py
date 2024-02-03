@@ -24,9 +24,9 @@ def test_multiheadattention_forward():
     assert attn_weights.shape == (8, 1, 10, 10)
 
 
-@pytest.mark.parametrize("query_len, key_len, value_len", [(0, 10, 10),
-                                                           (10, 0, 10),
-                                                           (10, 10, 0)])
+@pytest.mark.parametrize(
+    "query_len, key_len, value_len", [(0, 10, 10), (10, 0, 10), (10, 10, 0)]
+)
 def test_multiheadattention_forward_edge_cases(query_len, key_len, value_len):
     args = {"layernorm_eps": 1e-5, "xpos_rel_pos": False}
     model = MultiheadAttention(args, embed_dim=512, num_heads=8)

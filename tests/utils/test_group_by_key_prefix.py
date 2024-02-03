@@ -14,10 +14,12 @@ def test_group_by_key_prefix():
 
     assert len(dict1) == 2, "Length of 1st dictionary matches prefix count"
     assert len(dict2) == 2, "Length of 2nd dictionary matches non-prefix count"
-    assert all(key.startswith(prefix)
-               for key in dict1.keys()), "Prefix keys are in 1st dictionary"
-    assert all(not key.startswith(prefix)
-               for key in dict2.keys()), "Non-prefix keys are in 2nd dictionary"
+    assert all(
+        key.startswith(prefix) for key in dict1.keys()
+    ), "Prefix keys are in 1st dictionary"
+    assert all(
+        not key.startswith(prefix) for key in dict2.keys()
+    ), "Non-prefix keys are in 2nd dictionary"
 
 
 def test_group_by_key_prefix_empty_dict():
@@ -31,27 +33,9 @@ def test_group_by_key_prefix_empty_dict():
 @pytest.mark.parametrize(
     "prefix, d, result",
     [
-        ("a", {
-            "aaa": 1,
-            "abc": 2
-        }, ({
-            "aaa": 1,
-            "abc": 2
-        }, {})),
-        ("b", {
-            "aaa": 1,
-            "abc": 2
-        }, ({}, {
-            "aaa": 1,
-            "abc": 2
-        })),
-        ("", {
-            "aaa": 1,
-            "abc": 2
-        }, ({
-            "aaa": 1,
-            "abc": 2
-        }, {})),
+        ("a", {"aaa": 1, "abc": 2}, ({"aaa": 1, "abc": 2}, {})),
+        ("b", {"aaa": 1, "abc": 2}, ({}, {"aaa": 1, "abc": 2})),
+        ("", {"aaa": 1, "abc": 2}, ({"aaa": 1, "abc": 2}, {})),
     ],
 )
 def test_group_by_key_prefix_parametrized(prefix, d, result):

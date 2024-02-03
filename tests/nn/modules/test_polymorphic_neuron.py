@@ -30,9 +30,9 @@ def test_forward_pass(sample_neuron):
 # Parameterized test for different activation functions
 @pytest.mark.parametrize("activation", [F.relu, F.tanh, F.sigmoid])
 def test_different_activation_functions(activation):
-    neuron = PolymorphicNeuronLayer(in_features=10,
-                                    out_features=5,
-                                    activation_functions=[activation])
+    neuron = PolymorphicNeuronLayer(
+        in_features=10, out_features=5, activation_functions=[activation]
+    )
     input_tensor = torch.randn(1, 10)
     output = neuron(input_tensor)
     assert output.shape == (1, 5)
@@ -47,9 +47,9 @@ def test_zero_features():
 # Test for a case where the activation functions list is empty
 def test_empty_activation_functions():
     with pytest.raises(ValueError):
-        PolymorphicNeuronLayer(in_features=10,
-                               out_features=5,
-                               activation_functions=[])
+        PolymorphicNeuronLayer(
+            in_features=10, out_features=5, activation_functions=[]
+        )
 
 
 # Test for a case where in_features and out_features are negative
@@ -68,9 +68,9 @@ def test_input_tensor_shape_mismatch(sample_neuron):
 # Test for a case where activation functions are not callable
 def test_invalid_activation_functions():
     with pytest.raises(ValueError):
-        PolymorphicNeuronLayer(in_features=10,
-                               out_features=5,
-                               activation_functions=[1, 2, 3])
+        PolymorphicNeuronLayer(
+            in_features=10, out_features=5, activation_functions=[1, 2, 3]
+        )
 
 
 # Test for a case where the forward pass is called without initializing weights and bias

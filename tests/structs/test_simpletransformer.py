@@ -20,8 +20,9 @@ def test_forward_output_shape():
     assert y.shape == torch.Size([2, 1024, 20_000])
 
 
-@pytest.mark.parametrize("x_arg", [(32.2), (["str1", "str2"]),
-                                   (512, 6, "20000")])
+@pytest.mark.parametrize(
+    "x_arg", [(32.2), (["str1", "str2"]), (512, 6, "20000")]
+)
 def test_invalid_forward_input_raises_error(x_arg):
     """Test forward method raises ValueError with invalid input."""
     stm = SimpleTransformer(512, 6, 20_000)

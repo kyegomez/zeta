@@ -129,9 +129,11 @@ def test_setup_cache_max_seq_len_greater_than_max():
     for layer in layers:
         assert isinstance(layer.attention.kw_cache, KVCache)
         assert layer.attention.kw_cache.k_cache.shape == torch.Size(
-            [max_batch_size, heads, max_seq_len + 10, head_dim])
+            [max_batch_size, heads, max_seq_len + 10, head_dim]
+        )
         assert layer.attention.kw_cache.v_cache.shape == torch.Size(
-            [max_batch_size, heads, max_seq_len + 10, head_dim])
+            [max_batch_size, heads, max_seq_len + 10, head_dim]
+        )
 
 
 def test_setup_cache_max_batch_size_greater_than_max():
@@ -157,6 +159,8 @@ def test_setup_cache_max_batch_size_greater_than_max():
     for layer in layers:
         assert isinstance(layer.attention.kw_cache, KVCache)
         assert layer.attention.kw_cache.k_cache.shape == torch.Size(
-            [max_batch_size + 10, heads, max_seq_len, head_dim])
+            [max_batch_size + 10, heads, max_seq_len, head_dim]
+        )
         assert layer.attention.kw_cache.v_cache.shape == torch.Size(
-            [max_batch_size + 10, heads, max_seq_len, head_dim])
+            [max_batch_size + 10, heads, max_seq_len, head_dim]
+        )

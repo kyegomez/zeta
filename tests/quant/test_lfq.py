@@ -18,11 +18,14 @@ def test_lfg_init():
     assert lfg.entropy_loss_weight == 0.1
     assert lfg.codebook_scale == 1.0
     assert lfg.commitment_loss_weight == 0.25
-    assert torch.all(lfg.mask == 2**torch.arange(3, -1, -1))
+    assert torch.all(lfg.mask == 2 ** torch.arange(3, -1, -1))
     assert lfg.zero == 0.0
     assert torch.all(
-        lfg.codebook == lfg.bits_to_codes(((torch.arange(16)[..., None].int() &
-                                            lfg.mask) != 0).float()))
+        lfg.codebook
+        == lfg.bits_to_codes(
+            ((torch.arange(16)[..., None].int() & lfg.mask) != 0).float()
+        )
+    )
 
 
 def test_lfg_init_custom_params():
@@ -46,10 +49,13 @@ def test_lfg_init_custom_params():
     assert lfg.entropy_loss_weight == 0.2
     assert lfg.codebook_scale == 2.0
     assert lfg.commitment_loss_weight == 0.3
-    assert torch.all(lfg.mask == 2**torch.arange(4, -1, -1))
+    assert torch.all(lfg.mask == 2 ** torch.arange(4, -1, -1))
     assert torch.all(
-        lfg.codebook == lfg.bits_to_codes(((torch.arange(32)[..., None].int() &
-                                            lfg.mask) != 0).float()))
+        lfg.codebook
+        == lfg.bits_to_codes(
+            ((torch.arange(32)[..., None].int() & lfg.mask) != 0).float()
+        )
+    )
 
 
 def test_lfq_forward():

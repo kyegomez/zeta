@@ -4,7 +4,6 @@ from zeta.utils.cuda_memory_wrapper import track_cuda_memory_usage
 
 
 def test_track_cuda_memory_usage_no_cuda():
-
     @track_cuda_memory_usage
     def test_func():
         return "Hello, World!"
@@ -12,10 +11,10 @@ def test_track_cuda_memory_usage_no_cuda():
     assert test_func() == "Hello, World!"
 
 
-@pytest.mark.skipif(not torch.cuda.is_available(),
-                    reason="CUDA is not available")
+@pytest.mark.skipif(
+    not torch.cuda.is_available(), reason="CUDA is not available"
+)
 def test_track_cuda_memory_usage_with_cuda():
-
     @track_cuda_memory_usage
     def test_func():
         return torch.tensor([1, 2, 3]).cuda()
@@ -23,10 +22,10 @@ def test_track_cuda_memory_usage_with_cuda():
     assert torch.equal(test_func(), torch.tensor([1, 2, 3]).cuda())
 
 
-@pytest.mark.skipif(not torch.cuda.is_available(),
-                    reason="CUDA is not available")
+@pytest.mark.skipif(
+    not torch.cuda.is_available(), reason="CUDA is not available"
+)
 def test_track_cuda_memory_usage_with_cuda_memory_allocation():
-
     @track_cuda_memory_usage
     def test_func():
         a = torch.tensor([1, 2, 3]).cuda()
@@ -36,10 +35,10 @@ def test_track_cuda_memory_usage_with_cuda_memory_allocation():
     assert torch.equal(test_func(), torch.tensor([5, 7, 9]).cuda())
 
 
-@pytest.mark.skipif(not torch.cuda.is_available(),
-                    reason="CUDA is not available")
+@pytest.mark.skipif(
+    not torch.cuda.is_available(), reason="CUDA is not available"
+)
 def test_track_cuda_memory_usage_with_cuda_memory_release():
-
     @track_cuda_memory_usage
     def test_func():
         a = torch.tensor([1, 2, 3]).cuda()
@@ -51,10 +50,10 @@ def test_track_cuda_memory_usage_with_cuda_memory_release():
     assert test_func() is None
 
 
-@pytest.mark.skipif(not torch.cuda.is_available(),
-                    reason="CUDA is not available")
+@pytest.mark.skipif(
+    not torch.cuda.is_available(), reason="CUDA is not available"
+)
 def test_track_cuda_memory_usage_with_exception():
-
     @track_cuda_memory_usage
     def test_func():
         a = torch.tensor([1, 2, 3]).cuda()

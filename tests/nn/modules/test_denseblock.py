@@ -19,7 +19,8 @@ def test_DenseBlock_forward():
     x = torch.randn(1, 1, 24, 24)
     output = dense_block(x)
     assert output.shape == torch.Size(
-        [1, 21, 20, 20]), "Forward function not working properly."
+        [1, 21, 20, 20]
+    ), "Forward function not working properly."
 
 
 @pytest.mark.parametrize("invalid_submodule", [None, 5, "invalid", []])

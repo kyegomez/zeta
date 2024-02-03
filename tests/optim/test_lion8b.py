@@ -46,7 +46,7 @@ def test_step_with_closure():
     optimizer = DecoupledLionW8Bit(params)
 
     def closure():
-        return torch.sum(params[0]**2 + params[1]**2)
+        return torch.sum(params[0] ** 2 + params[1] ** 2)
 
     loss = optimizer.step(closure)
 
@@ -67,7 +67,7 @@ def test_step_param_with_grad():
     optimizer = DecoupledLionW8Bit(params)
 
     def closure():
-        return torch.sum(params[0]**2 + params[1]**2)
+        return torch.sum(params[0] ** 2 + params[1] ** 2)
 
     closure().backward()
     optimizer.step_param(params[0], optimizer.param_groups[0])
@@ -80,7 +80,7 @@ def test_step_param_not_cuda():
     optimizer = DecoupledLionW8Bit(params, quantize=True)
 
     def closure():
-        return torch.sum(params[0]**2 + params[1]**2)
+        return torch.sum(params[0] ** 2 + params[1] ** 2)
 
     closure().backward()
 
@@ -107,7 +107,7 @@ def test_step_with_closure():
     optimizer = DecoupledLionW8Bit(params)
 
     def closure():
-        return torch.sum(params[0]**2 + params[1]**2)
+        return torch.sum(params[0] ** 2 + params[1] ** 2)
 
     loss = optimizer.step(closure)
 
@@ -128,7 +128,7 @@ def test_step_param_with_grad():
     optimizer = DecoupledLionW8Bit(params)
 
     def closure():
-        return torch.sum(params[0]**2 + params[1]**2)
+        return torch.sum(params[0] ** 2 + params[1] ** 2)
 
     closure().backward()
     optimizer.step_param(params[0], optimizer.param_groups[0])
@@ -141,7 +141,7 @@ def test_step_param_not_cuda():
     optimizer = DecoupledLionW8Bit(params, quantize=True)
 
     def closure():
-        return torch.sum(params[0]**2 + params[1]**2)
+        return torch.sum(params[0] ** 2 + params[1] ** 2)
 
     closure().backward()
 

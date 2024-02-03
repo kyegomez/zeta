@@ -36,8 +36,8 @@ def test_agent_self_attention_forward_with_agent_tokens():
     agent_self_attn = AgentSelfAttention(dim=64, num_agent_tokens=16)
     x = torch.randn(2, 64)
     agent_tokens = torch.randn(2, 8, 16, 64)
-    output, agent_gathered_tokens = agent_self_attn(x,
-                                                    agent_tokens=agent_tokens,
-                                                    return_agent_tokens=True)
+    output, agent_gathered_tokens = agent_self_attn(
+        x, agent_tokens=agent_tokens, return_agent_tokens=True
+    )
     assert output.shape == x.shape
     assert agent_gathered_tokens.shape == agent_tokens.shape
