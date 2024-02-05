@@ -7,7 +7,7 @@ from zeta.nn.attention.xc_attention import XCAttention
 # Fixture to create an instance of the XCAttention class
 @pytest.fixture
 def xc_attention_model():
-    model = XCAttention(dim=256, cond_dim=64, heads=8)
+    model = XCAttention(dim=256, cond_dim=64, heads=8, dropout=0.1)
     return model
 
 
