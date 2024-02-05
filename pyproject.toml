@@ -17,7 +17,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
-torch = "2.1.2"
+torch = "2.2.0"
 timm = "0.9.12"
 torchdiffeq = "0.2.3"
 pytest = "7.4.2"
