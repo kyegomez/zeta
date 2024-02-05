@@ -1,4 +1,4 @@
-"""Zeta Halo"""
+"""Zeta Attention init file"""
 from zeta.nn.attention.attend import Attend, Intermediates
 from zeta.nn.attention.cross_attn_images import MultiModalCrossAttention
 from zeta.nn.attention.flash_attention import FlashAttention

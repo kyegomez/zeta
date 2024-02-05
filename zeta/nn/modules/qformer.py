@@ -1,10 +1,18 @@
+""" QFormer module for processing text and image inputs. """
+
 from einops import rearrange, reduce
 from torch import Tensor, nn
 
+<<<<<<< HEAD
 from zeta.nn.attention.multiquery_attention import (
     MultiQueryAttention,
 )
 from zeta.nn.modules.simple_feedforward import SimpleFeedForward
+=======
+from zeta.nn.attention.multiquery_attention import MultiQueryAttention
+from zeta.nn.modules import SimpleFeedForward
+
+>>>>>>> 2e50e6fbb49a66ed3ef6cf19426fbbd191ca61aa
 from zeta.nn.attention.cross_attention import CrossAttention
 
 
