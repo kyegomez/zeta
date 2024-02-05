@@ -19,14 +19,14 @@ def test_agent_self_attention_init():
 
 def test_agent_self_attention_forward():
     agent_self_attn = AgentSelfAttention(dim=64, num_agent_tokens=16)
-    x = torch.randn(2, 64)
+    x = torch.randn(2, 64, 1, 1, 1)
     output = agent_self_attn(x)
     assert output.shape == x.shape
 
 
 def test_agent_self_attention_forward_with_mask():
     agent_self_attn = AgentSelfAttention(dim=64, num_agent_tokens=16)
-    x = torch.randn(2, 64)
+    x = torch.randn(2, 64, 1, 1, 1)
     mask = torch.ones(2, 64).bool()
     output = agent_self_attn(x, mask=mask)
     assert output.shape == x.shape
@@ -34,7 +34,7 @@ def test_agent_self_attention_forward_with_mask():
 
 def test_agent_self_attention_forward_with_agent_tokens():
     agent_self_attn = AgentSelfAttention(dim=64, num_agent_tokens=16)
-    x = torch.randn(2, 64)
+    x = torch.randn(2, 64, 1, 1, 1)
     agent_tokens = torch.randn(2, 8, 16, 64)
     output, agent_gathered_tokens = agent_self_attn(
         x, agent_tokens=agent_tokens, return_agent_tokens=True
