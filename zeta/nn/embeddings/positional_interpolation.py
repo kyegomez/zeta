@@ -4,40 +4,19 @@ from torch import nn
 
 class PositionInterpolationEmbeddings(nn.Module):
     """
-    PositionInterpolation
-    Overview
-    ========
-    Positional embeddings that interpolate between sinusoidal and learned embeddings.
+    PositionalEmbedding module that uses interpolation to generate positional embeddings.
 
-    Parameters
-    ==========
-    dim: int
-        Dimension of the input embedding.
-    max_positions: int
-        Maximum number of positions to embed.
-    base: int
-        Base of the sinusoidal embedding.
-    device: torch.device
-        Device to store the embeddings on.
+    Args:
+        dim (int, optional): Dimension of the model. Defaults to None.
+        max_positions (int, optional): Maximum length of the input sequence. Defaults to 2048.
+        base (int, optional): Base value. Defaults to 10000.
+        device ([type], optional): Device to use. Defaults to None.
 
-    Attributes
-    ==========
-    inv_freq: torch.Tensor
-        Cached inverse frequencies.
-    max_seq_len_cached: int
-        Maximum sequence length cached.
-    scale: float
-        Scale of the sinusoidal embedding.
-    cos_cached: torch.Tensor
-        Cached cosine values.
-    sin_cached: torch.Tensor
-        Cached sine values.
-
-    Methods
-    =======
-    forward(x, seq_len=None)
-        Forward pass of the PositionInterpolationEmbeddings.
-
+    Example:
+        >>> positional_embedding = PositionInterpolationEmbeddings(512, 1000)
+        >>> x = torch.randn(32, 100, 512)
+        >>> positions = torch.arange(100)
+        >>> embedded_tensor = positional_embedding(x, positions)
 
     """
 

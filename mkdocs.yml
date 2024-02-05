@@ -87,7 +87,7 @@ nav:
               - VisionEmbedding: "zeta/nn/embeddings/vis_emb.md"
               - SinusoidalEmbeddings: "zeta/nn/embeddings/sinusoidal.md"
               - PatchEmbeddings: "zeta/nn/embeddings/patch_embeddings.md"
-              - PositionInterpolationEmbeddings: "zeta/nn/pi.md"
+              - PositionInterpolationEmbeddings: "zeta/nn/embeddings/positional_interpolation.md"
           - zeta.nn.modules:
               - custom_mlp: "zeta/nn/modules/custom_mlp.md"
               - mbconv: "zeta/nn/modules/mbconv.md"

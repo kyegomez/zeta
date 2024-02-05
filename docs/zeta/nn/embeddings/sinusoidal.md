@@ -148,8 +148,8 @@ freqs, scale = positional_embedding(sequence)
 This example demonstrates how to use the `rotate_half` function:
 
 ```python
-from zeta import rotate_half
 import torch
+from zeta.nn import rotate_half
 
 # Create an input tensor
 x = torch.randn(2, 3, 4)
@@ -163,8 +163,9 @@ rotated_x = rotate_half(x)
 This example demonstrates how to apply rotary positional embeddings using the `apply_rotary_pos_emb` function:
 
 ```python
-from zeta import apply_rotary_pos_emb
 import torch
+from zeta.nn import rotate_half
+
 
 # Create query and key tensors
 q = torch.randn(2, 3, 4)
