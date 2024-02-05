@@ -1,3 +1,5 @@
+""" Test cases for the Attend module. """
+
 import torch
 from zeta.nn.attention.attend import Attend
 
@@ -119,6 +121,21 @@ def test_attend_flash_attention():
 
     # Check if flash attention configuration is correct
     assert out.shape == (1, 8, 32, 64)
+
+
+# Test case for configuring flash attention
+def test_flash_attention():
+    import torch
+    from zeta.nn import FlashAttention
+
+    q = torch.randn(2, 4, 6, 8)
+    k = torch.randn(2, 4, 10, 8)
+    v = torch.randn(2, 4, 10, 8)
+
+    attention = FlashAttention(causal=False, dropout=0.1, flash=True)
+    output = attention(q, k, v)
+
+    assert output.shape == (2, 4, 6, 8)
 
 
 # Test case for gradient checking using torch.autograd.gradcheck

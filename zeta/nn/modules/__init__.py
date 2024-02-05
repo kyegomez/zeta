@@ -1,3 +1,4 @@
+""" init file for nn modules """
 from zeta.nn.modules.adaptive_conv import AdaptiveConv3DMod
 from zeta.nn.modules.adaptive_layernorm import AdaptiveLayerNorm
 from zeta.nn.modules.cnn_text import CNNNew
@@ -175,7 +176,7 @@ from zeta.nn.modules.cross_modal_reparametization import (
 )
 from zeta.nn.modules.qformer import QFormer
 from zeta.nn.modules.poly_expert_fusion_network import MLPProjectionFusion
-
+from zeta.nn.modules.norm_fractorals import NormalizationFractral
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -353,4 +354,5 @@ __all__ = [
     "reparameterize_aux_into_target_model",
     "QFormer",
     "MLPProjectionFusion",
+    "NormalizationFractral",
 ]
