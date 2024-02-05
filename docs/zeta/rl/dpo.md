@@ -57,8 +57,8 @@ policy_model = PolicyModel(input_dim, output_dim)
 dpo_model = DPO(model=policy_model, beta=0.1)
 
 # Sample preferred and unpreferred sequences
-preferred_seq = torch.randint(0, output_dim, (3, input_dim))
-unpreferred_seq = torch.randint(0, output_dim, (3, input_dim))
+preferred_seq = torch.randn(1, 10, 10)
+unpreferred_seq = torch.randn(1, 10, 10)
 
 # Compute loss
 loss = dpo_model(preferred_seq, unpreferred_seq)

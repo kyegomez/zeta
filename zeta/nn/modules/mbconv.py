@@ -22,25 +22,31 @@ class DropSample(nn.Module):
 
 
 class SqueezeExcitation(nn.Module):
+    """
+    Squeeze-and-Excitation module for channel-wise feature recalibration.
+
+    Args:
+        dim (int): Number of input channels.
+        shrinkage_rate (float, optional): Shrinkage rate for the hidden dimension. Defaults to 0.25.
+    """
+
     def __init__(self, dim, shrinkage_rate=0.25):
         super().__init__()
         hidden_dim = int(dim * shrinkage_rate)
 
         self.gate = nn.Sequential(
-            # reduce("b c h w -> b c", "mean"),
             nn.Linear(dim, hidden_dim, bias=False),
             nn.SiLU(),
             nn.Linear(hidden_dim, dim, bias=False),
             nn.Sigmoid(),
-            # rearrange("b c -> b c 11"),
         )
 
     def forward(self, x):
-        # return x + self.gate(x)
-        x = reduce(x, "b c h w -> b c", "mean")
-        x = self.gate(x)
-        x = rearrange(x, "b c -> b c 11")
-        return x + x
+        b, c, h, w = x.shape
+        y = reduce(x, "b c h w -> b c", "mean")
+        y = self.gate(y)
+        y = rearrange(y, "b c -> b c () ()")
+        return x * y.expand_as(x)
 
 
 class MBConvResidual(nn.Module):
