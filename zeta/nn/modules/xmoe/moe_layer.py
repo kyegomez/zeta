@@ -219,9 +219,15 @@ class MOELayer(Base):
             reshaped_input_padding_mask = padded_input_padding_mask
 
         if has_tutel:
-            l_aux, self.metadata, C, E, indices_, locations_, gates_ = (
-                self.gate(reshaped_input, reshaped_input_padding_mask)
-            )
+            (
+                l_aux,
+                self.metadata,
+                C,
+                E,
+                indices_,
+                locations_,
+                gates_,
+            ) = self.gate(reshaped_input, reshaped_input_padding_mask)
             S, M = reshaped_input.size(0), reshaped_input.size(1)
 
             if not hasattr(self, "_tutel_dispatcher"):
