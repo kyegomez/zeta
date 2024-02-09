@@ -4,7 +4,6 @@ from torch import nn
 
 try:
     import torch.distributed.nn
-    from torch import distributed as dist
 
     has_distributed = True
 except ImportError:
@@ -257,9 +256,10 @@ class SigLipLoss(nn.Module):
                             logit_bias,
                             negative_only=True,
                         )
-                    text_features_to_left, text_features_to_right = (
-                        text_features_recv
-                    )
+                    (
+                        text_features_to_left,
+                        text_features_to_right,
+                    ) = text_features_recv
 
                 if remainder:
                     text_features_recv = neighbour_exchange_with_grad(
