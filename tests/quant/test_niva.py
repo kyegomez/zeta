@@ -154,18 +154,18 @@ def test_niva_output_exists():
 
 def test_niva_output_loadable():
     model = QFTSPEmbedding(100, 100)
-    model.load_state_dict(torch.load("model_quantized.pt"))
+    model.load_state_dict(torch.load("model_quantized.pt", weights_only=True))
 
 
 def test_niva_output_correct_type():
     model = QFTSPEmbedding(100, 100)
-    model.load_state_dict(torch.load("model_quantized.pt"))
+    model.load_state_dict(torch.load("model_quantized.pt", weights_only=True))
     assert isinstance(model, nn.Module)
 
 
 def test_niva_output_quantized():
     model = QFTSPEmbedding(100, 100)
-    model.load_state_dict(torch.load("model_quantized.pt"))
+    model.load_state_dict(torch.load("model_quantized.pt", weights_only=True))
     assert any(
         hasattr(module, "qconfig") and module.qconfig
         for module in model.modules()

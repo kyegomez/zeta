@@ -75,4 +75,4 @@ class DynamicModule(nn.Module):
         torch.save(self.state_dict(), path)
 
     def load_state(self, path):
-        self.load_state_dict(torch.load(path))
+        self.load_state_dict(torch.load(path, weights_only=True))

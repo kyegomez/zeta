@@ -112,7 +112,7 @@ class RewardModel(nn.Module):
         """Load model"""
         path = Path(path)
         assert path.exists()
-        self.load_state_dict(torch.load(path))
+        self.load_state_dict(torch.load(path, weights_only=True))
 
     def finetune_parameters(self):
         """Finetune parameters"""
