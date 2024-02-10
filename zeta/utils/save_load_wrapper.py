@@ -67,7 +67,7 @@ def save_load(
         def _load(self, path, strict=True):
             path = Path(path)
             assert path.exists()
-            pkg = torch.load(str(path), map_location="cpu")
+            pkg = torch.load(str(path), map_location="cpu", weights_only=True)
 
             if (
                 exists(version)
@@ -90,7 +90,7 @@ def save_load(
         def _init_and_load_from(cls, path, strict=True):
             path = Path(path)
             assert path.exists()
-            pkg = torch.load(str(path), map_location="cpu")
+            pkg = torch.load(str(path), map_location="cpu", weights_only=True)
             assert (
                 "config" in pkg
             ), "model configs were not found in this saved checkpoint"

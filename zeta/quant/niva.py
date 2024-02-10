@@ -64,7 +64,7 @@ def niva(
         raise ValueError("dtype must be either torch.qint8 or torch.quint8")
 
     # Load the model
-    model.load_state_dict(torch.load(model_path))
+    model.load_state_dict(torch.load(model_path, weights_only=True))
 
     # Ensure model is in eval model
     model.eval()

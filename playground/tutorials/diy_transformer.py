@@ -96,7 +96,7 @@ class Neo(nn.Module):
     def load(self, path):
         path = Path(path)
         assert path.exists()
-        self.load_state_dict(torch.load(str(path)))
+        self.load_state_dict(torch.load(str(path), weights_only=True))
 
     @torch.no_grad()
     @eval_decorator

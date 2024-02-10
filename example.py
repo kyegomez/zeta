@@ -2,8 +2,6 @@
 This script demonstrates the usage of the FlashAttentionmodule from zeta.nn as an example.
 """
 
-# noqa: E501
-
 import torch
 from zeta.nn import FlashAttention
 
