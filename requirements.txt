@@ -11,6 +11,7 @@ accelerate
 tensorflow
 datasets==2.16.1
 jax
+torchfix
 jaxlib
 torchdiffeq==0.2.3
 sentencepiece==0.1.99

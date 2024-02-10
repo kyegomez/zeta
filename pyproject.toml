@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zetascale"
-version = "2.0.8"
+version = "2.0.9"
 description = "Transformers at zeta scales"
 authors = ["Zeta Team <kye@apac.ai>"]
 license = "MIT"
@@ -21,6 +21,7 @@ torch = "2.2.0"
 timm = "0.9.12"
 torchdiffeq = "0.2.3"
 pytest = "7.4.2"
+torchfix = "*"
 einops = "0.7.0"
 tensorflow = "*"
 bitsandbytes = "0.42.0"

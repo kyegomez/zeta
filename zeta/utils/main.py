@@ -436,7 +436,9 @@ class ResnetBlock(nn.Module):
 
 def load_model(path):
     with open(path, "rb") as f:
-        return torch.load(f, map_location=torch.device("cpu"), weights_only=True)
+        return torch.load(
+            f, map_location=torch.device("cpu"), weights_only=True
+        )
 
 
 CHANNELS_TO_MODE = {1: "L", 3: "RGB", 4: "RGBA"}
