@@ -170,9 +170,9 @@ class MOELayer(Base):
                 device=input.device,
             )
             if input_padding_mask is not None:
-                padded_input_padding_mask[: input_shape[0], :] = (
-                    input_padding_mask
-                )
+                padded_input_padding_mask[
+                    : input_shape[0], :
+                ] = input_padding_mask
             else:
                 padded_input_padding_mask[: input_shape[0], :] = False
             input_padding_mask = padded_input_padding_mask
@@ -211,17 +211,23 @@ class MOELayer(Base):
                 (expected_dim,), dtype=torch.bool, device=padded_input.device
             )
             if reshaped_input_padding_mask is not None:
-                padded_input_padding_mask[: reshaped_input_shape[0]] = (
-                    reshaped_input_padding_mask
-                )
+                padded_input_padding_mask[
+                    : reshaped_input_shape[0]
+                ] = reshaped_input_padding_mask
             else:
                 padded_input_padding_mask[: reshaped_input_shape[0]] = False
             reshaped_input_padding_mask = padded_input_padding_mask
 
         if has_tutel:
-            l_aux, self.metadata, C, E, indices_, locations_, gates_ = (
-                self.gate(reshaped_input, reshaped_input_padding_mask)
-            )
+            (
+                l_aux,
+                self.metadata,
+                C,
+                E,
+                indices_,
+                locations_,
+                gates_,
+            ) = self.gate(reshaped_input, reshaped_input_padding_mask)
             S, M = reshaped_input.size(0), reshaped_input.size(1)
 
             if not hasattr(self, "_tutel_dispatcher"):
