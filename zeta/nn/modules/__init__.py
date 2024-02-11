@@ -177,7 +177,7 @@ from zeta.nn.modules.cross_modal_reparametization import (
 from zeta.nn.modules.qformer import QFormer
 from zeta.nn.modules.poly_expert_fusion_network import MLPProjectionFusion
 from zeta.nn.modules.norm_fractorals import NormalizationFractral
-
+from zeta.nn.modules.img_or_video_to_time import image_or_video_to_time
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
 # from zeta.nn.modules.scaled_sinusoidal import ScaledSinuosidalEmbedding
@@ -355,4 +355,5 @@ __all__ = [
     "QFormer",
     "MLPProjectionFusion",
     "NormalizationFractral",
+    "image_or_video_to_time",
 ]

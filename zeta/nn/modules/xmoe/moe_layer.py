@@ -170,9 +170,9 @@ class MOELayer(Base):
                 device=input.device,
             )
             if input_padding_mask is not None:
-                padded_input_padding_mask[
-                    : input_shape[0], :
-                ] = input_padding_mask
+                padded_input_padding_mask[: input_shape[0], :] = (
+                    input_padding_mask
+                )
             else:
                 padded_input_padding_mask[: input_shape[0], :] = False
             input_padding_mask = padded_input_padding_mask
@@ -211,9 +211,9 @@ class MOELayer(Base):
                 (expected_dim,), dtype=torch.bool, device=padded_input.device
             )
             if reshaped_input_padding_mask is not None:
-                padded_input_padding_mask[
-                    : reshaped_input_shape[0]
-                ] = reshaped_input_padding_mask
+                padded_input_padding_mask[: reshaped_input_shape[0]] = (
+                    reshaped_input_padding_mask
+                )
             else:
                 padded_input_padding_mask[: reshaped_input_shape[0]] = False
             reshaped_input_padding_mask = padded_input_padding_mask
