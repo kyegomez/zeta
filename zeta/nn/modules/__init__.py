@@ -178,6 +178,16 @@ from zeta.nn.modules.qformer import QFormer
 from zeta.nn.modules.poly_expert_fusion_network import MLPProjectionFusion
 from zeta.nn.modules.norm_fractorals import NormalizationFractral
 from zeta.nn.modules.img_or_video_to_time import image_or_video_to_time
+from zeta.nn.modules.video_diffusion_modules import (
+    TemporalDownsample,
+    TemporalUpsample,
+    ConvolutionInflationBlock,
+    AttentionBasedInflationBlock,
+)
+from zeta.nn.modules.freeze_layers import (
+    set_module_requires_grad,
+    freeze_all_layers,
+)
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -357,4 +367,10 @@ __all__ = [
     "MLPProjectionFusion",
     "NormalizationFractral",
     "image_or_video_to_time",
+    "TemporalDownsample",
+    "TemporalUpsample",
+    "ConvolutionInflationBlock",
+    "AttentionBasedInflationBlock",
+    "freeze_all_layers",
+    "set_module_requires_grad",
 ]
