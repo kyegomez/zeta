@@ -1451,13 +1451,13 @@ dev = ["Sphinx (>=5.1.1)", "black (==23.9.1)", "build (>=0.10.0)", "coverage (>=
 
 [[package]]
 name = "lion-pytorch"
-version = "0.0.7"
+version = "0.1.2"
 description = "Lion Optimizer - Pytorch"
 optional = false
 python-versions = "*"
 files = [
-    {file = "lion-pytorch-0.0.7.tar.gz", hash = "sha256:5104edc81cd76042803b4a5dedb143387d8bfcaf9496eb90acbad4032e32c383"},
-    {file = "lion_pytorch-0.0.7-py3-none-any.whl", hash = "sha256:5f91c9d24b9c120f2ca77d2f7a6ba3ca05d22029bc1372619e40ee436a943a93"},
+    {file = "lion-pytorch-0.1.2.tar.gz", hash = "sha256:2d4200f0441cc3f5bd5707f4d14efdb9489e75d1213eb46228ada127133e2c4e"},
+    {file = "lion_pytorch-0.1.2-py3-none-any.whl", hash = "sha256:2e43b2e559aa0cb84f459a68cf311d4e11e677472501432efce22d6dc73d3b55"},
 ]
 
 [package.dependencies]
@@ -4459,4 +4459,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "62b36fdbd22f27eecc492c64afc1121ed816890a54e2c511cea6a52b6952b674"
+content-hash = "52761ace2724fd5a1f8bfe1327472cec79ebd3df3e8bf4904b44fabe9944cd0c"
