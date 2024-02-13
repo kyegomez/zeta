@@ -6,7 +6,6 @@ from typing import Optional
 import torch
 import torch.nn.functional as F
 from einops import rearrange, repeat
-from packaging import version
 from torch import Tensor, einsum, nn
 
 # constants
@@ -144,12 +143,6 @@ class Attend(nn.Module):
         # flash attention
 
         self.flash = flash
-        assert not (
-            flash and version.parse(torch.__version__) < version.parse("2.0.0")
-        ), (
-            "in order to use flash attention, you must be using pytorch 2.0 or"
-            " above"
-        )
 
         # determine efficient attention configs for cuda and cpu
 

@@ -14,7 +14,6 @@ from typing import Callable, List, Optional, Tuple
 import torch
 import torch.nn.functional as F
 from einops import pack, rearrange, reduce, repeat, unpack
-from packaging import version
 from torch import Tensor, einsum, nn
 from zeta.quant.bitlinear import BitLinear
 
@@ -153,13 +152,6 @@ class Attend(nn.Module):
         # flash attention
 
         self.flash = flash
-        assert not (
-            flash and version.parse(torch.__version__) < version.parse("2.0.0")
-        ), (
-            "in order to use flash attention, you must be using pytorch 2.0 or"
-            " above"
-        )
-
         self.sdp_kwargs = sdp_kwargs
 
     def flash_attn(self, q, k, v, mask=None, attn_bias=None):

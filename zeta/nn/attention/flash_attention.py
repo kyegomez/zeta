@@ -5,7 +5,7 @@ from functools import wraps
 import torch
 import torch.nn.functional as F
 from einops import rearrange
-from packaging import version
+
 from torch import Tensor, einsum, nn
 
 from zeta.nn.attention.base import BaseAttention
@@ -96,13 +96,6 @@ class FlashAttention(BaseAttention):
 
         self.causal = causal
         self.flash = flash
-        assert not (
-            flash and version.parse(torch.__version__) < version.parse("2.0.0")
-        ), (
-            "in order to use flash attention, you must be using pytorch 2.0 or"
-            " above"
-        )
-
         # determine efficient attention configs for cuda and cpu
 
         self.cpu_config = EfficientAttentionConfig(True, True, True)
