@@ -52,6 +52,7 @@ numexpr = "*"
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+
 [tool.poetry.group.lint.dependencies]
 ruff = ">=0.0.249,<0.2.2"
 types-toml = "^0.10.8.1"
@@ -60,6 +61,7 @@ types-pytz = ">=2023.3,<2025.0"
 black = "^23.1.0"
 types-chardet = "^5.0.4.6"
 mypy-protobuf = "^3.0.0"
+pytest = "7.4.2"
 
 
 [tool.autopep8]
