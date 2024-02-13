@@ -1,4 +1,3 @@
-""" init file for nn modules """
 from zeta.nn.modules.adaptive_conv import AdaptiveConv3DMod
 from zeta.nn.modules.adaptive_layernorm import AdaptiveLayerNorm
 from zeta.nn.modules.cnn_text import CNNNew
@@ -188,6 +187,15 @@ from zeta.nn.modules.freeze_layers import (
     set_module_requires_grad,
     freeze_all_layers,
 )
+from zeta.nn.modules.multi_input_multi_output import (
+    MultiModalEmbedding,
+    MultiInputMultiModalConcatenation,
+    SplitMultiOutput,
+    OutputHead,
+    DynamicOutputDecoder,
+    DynamicInputChannels,
+    OutputDecoders,
+)
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -373,4 +381,11 @@ __all__ = [
     "AttentionBasedInflationBlock",
     "freeze_all_layers",
     "set_module_requires_grad",
+    "MultiModalEmbedding",
+    "MultiInputMultiModalConcatenation",
+    "SplitMultiOutput",
+    "OutputHead",
+    "DynamicOutputDecoder",
+    "DynamicInputChannels",
+    "OutputDecoders",
 ]
