@@ -36,6 +36,7 @@ from zeta.utils.main import (
     cast_if_src_dtype,
     get_sinusoid_encoding_table,
     interpolate_pos_encoding_2d,
+    seek_all_images,
 )
 
 from zeta.utils.enforce_types import enforce_types
