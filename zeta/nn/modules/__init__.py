@@ -196,6 +196,11 @@ from zeta.nn.modules.multi_input_multi_output import (
     DynamicInputChannels,
     OutputDecoders,
 )
+from zeta.nn.modules.g_shard_moe import (
+    Top1Gate,
+    Top2Gate,
+    GShardMoELayer,
+)
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -388,4 +393,7 @@ __all__ = [
     "DynamicOutputDecoder",
     "DynamicInputChannels",
     "OutputDecoders",
+    "Top1Gate",
+    "Top2Gate",
+    "GShardMoELayer",
 ]
