@@ -36,6 +36,7 @@ from zeta.utils.main import (
     cast_if_src_dtype,
     get_sinusoid_encoding_table,
     interpolate_pos_encoding_2d,
+    seek_all_images,
 )
 
 from zeta.utils.enforce_types import enforce_types
@@ -93,4 +94,5 @@ __all__ = [
     "append_nvcc_threads",
     "check_cuda",
     "VerboseExecution",
+    "seek_all_images"
 ]

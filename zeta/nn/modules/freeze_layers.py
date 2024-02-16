@@ -1,6 +1,5 @@
 from torch.nn import Module
 
-
 def set_module_requires_grad(
     module: Module,
     requires_grad: bool,
