@@ -16,7 +16,10 @@ Once PyTorch is installed, you can include `zeta.ops` functions directly in your
 
 ```python
 import torch
-from zeta.ops import multi_dim_cat  # Assuming zeta.ops is correctly installed and accessible
+
+from zeta.ops import (  # Assuming zeta.ops is correctly installed and accessible
+    multi_dim_cat,
+)
 ```
 
 ## Structure & Architecture
@@ -59,6 +62,7 @@ This example demonstrates a basic usage of `multi_dim_cat` where tensors are con
 
 ```python
 import torch
+
 from zeta.ops import multi_dim_cat
 
 # Assume we have a list of 3 tensors we wish to concatenate along the 1st dimension
@@ -67,7 +71,7 @@ num_splits = [3]
 
 # Concatenate tensors
 merged_tensor = multi_dim_cat(tensor_splits, num_splits)
-print(merged_tensor.shape) # Expected output: torch.Size([2, 9])
+print(merged_tensor.shape)  # Expected output: torch.Size([2, 9])
 ```
 
 ### Example 2: Concatenating Across Multiple Dimensions
@@ -76,6 +80,7 @@ This example shows how one might concatenate tensor slices across two dimensions
 
 ```python
 import torch
+
 from zeta.ops import multi_dim_cat
 
 # Creating a list of 4 tensors with 2 splits across each of two dimensions
@@ -84,7 +89,7 @@ num_splits = [2, 2]
 
 # Concatenate tensors across two dimensions
 merged_tensor = multi_dim_cat(tensor_splits, num_splits)
-print(merged_tensor.shape) # Expected output: torch.Size([4, 4])
+print(merged_tensor.shape)  # Expected output: torch.Size([4, 4])
 ```
 
 ### Example 3: Reassembling a 3D Tensor from Splits
@@ -93,6 +98,7 @@ This example illustrates concatenating splits to reassemble a higher-dimensional
 
 ```python
 import torch
+
 from zeta.ops import multi_dim_cat
 
 # Imagine we have split a 3D tensor into 8 blocks (2 x 2 x 2)
@@ -101,7 +107,7 @@ num_splits = [2, 2, 2]
 
 # Concatenate slices to form the original 3D tensor
 merged_tensor = multi_dim_cat(tensor_splits, num_splits)
-print(merged_tensor.shape) # Expected output: torch.Size([2, 2, 2])
+print(merged_tensor.shape)  # Expected output: torch.Size([2, 2, 2])
 ```
 
 ## Tips and Tricks

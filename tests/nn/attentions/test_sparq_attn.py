@@ -1,5 +1,6 @@
-import torch
 import pytest
+import torch
+
 from zeta.nn.modules.sparq_attn import SparQAttention
 
 

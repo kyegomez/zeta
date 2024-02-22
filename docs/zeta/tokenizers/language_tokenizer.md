@@ -9,14 +9,10 @@ Language tokenization is a crucial step in natural language processing tasks. Th
 
 ```python
 class LanguageTokenizerGPTX:
-    def __init__(self):
-        ...
-    def tokenize_texts(self, texts: str) -> torch.Tensor:
-        ...
-    def decode(self, texts: torch.Tensor) -> str:
-        ...
-    def __len__(self) -> int:
-        ...
+    def __init__(self): ...
+    def tokenize_texts(self, texts: str) -> torch.Tensor: ...
+    def decode(self, texts: torch.Tensor) -> str: ...
+    def __len__(self) -> int: ...
 ```
 
 ### Parameters:
@@ -52,8 +48,9 @@ Provides the total number of tokens in the tokenizer's vocabulary.
 ## Usage Examples:
 
 ```python
-from zeta import LanguageTokenizerGPTX
 import torch
+
+from zeta import LanguageTokenizerGPTX
 
 # Initialize the tokenizer
 tokenizer = LanguageTokenizerGPTX()

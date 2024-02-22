@@ -1,6 +1,7 @@
 import torch
-from zeta.structs.auto_regressive_wrapper import AutoregressiveWrapper
 from torch import nn
+
+from zeta.structs.auto_regressive_wrapper import AutoregressiveWrapper
 
 
 def test_autoregressive_wrapper_initialization():

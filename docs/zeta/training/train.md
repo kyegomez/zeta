@@ -71,7 +71,7 @@ Here are the primary steps:
 ```python
 from zeta import Trainer
 
-model = ... # Your model definition here
+model = ...  # Your model definition here
 Trainer(
     gradient_accumulate_every=2,
     batch_size=32,
@@ -79,7 +79,7 @@ Trainer(
     model=model,
     learning_rate=0.001,
     seed=42,
-    output_dir='./models/'
+    output_dir="./models/",
 )
 ```
 
@@ -88,7 +88,7 @@ Trainer(
 ```python
 from zeta import Trainer
 
-model = ... # Your model definition here
+model = ...  # Your model definition here
 Trainer(
     gradient_accumulate_every=2,
     batch_size=32,
@@ -96,8 +96,8 @@ Trainer(
     model=model,
     learning_rate=0.001,
     seed=42,
-    resume_from_checkpoint='./models/checkpoint.pt',
-    output_dir='./models/'
+    resume_from_checkpoint="./models/checkpoint.pt",
+    output_dir="./models/",
 )
 ```
 
@@ -106,7 +106,7 @@ Trainer(
 ```python
 from zeta import Trainer
 
-model = ... # Your model definition here
+model = ...  # Your model definition here
 Trainer(
     gradient_accumulate_every=2,
     batch_size=32,
@@ -116,7 +116,7 @@ Trainer(
     use_activation_checkpointing=True,
     learning_rate=0.001,
     seed=42,
-    output_dir='./models/'
+    output_dir="./models/",
 )
 ```
 

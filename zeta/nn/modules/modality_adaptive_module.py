@@ -1,6 +1,7 @@
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
+
 from zeta.nn.attention import FlashAttention
 
 
@@ -30,7 +31,7 @@ class ModalityAdaptiveModule(nn.Module):
     """
 
     def __init__(self, dim: int, heads: int, dropout: float = 0.1):
-        super(ModalityAdaptiveModule, self).__init__()
+        super().__init__()
         self.dim = dim
         self.heads = heads
         self.dropout = dropout

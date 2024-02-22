@@ -1,5 +1,5 @@
 import torch
-from torch import nn, einsum
+from torch import einsum, nn
 
 
 def exists(val):

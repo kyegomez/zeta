@@ -1,7 +1,8 @@
+import pytest
 import torch
 import torch.nn as nn
-import pytest
 from torch.autograd import gradcheck
+
 from zeta.nn.attention.cross_attn_images import MultiModalCrossAttention
 
 

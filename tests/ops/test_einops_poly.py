@@ -1,12 +1,13 @@
 import pytest
 import torch
+
 from zeta.ops.einops_poly import (
     rearrange_many,
-    repeat_many,
-    reduce_many,
     rearrange_with_anon_dims,
-    repeat_with_anon_dims,
+    reduce_many,
     reduce_with_anon_dims,
+    repeat_many,
+    repeat_with_anon_dims,
 )
 
 # Example input data

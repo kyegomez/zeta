@@ -63,6 +63,7 @@ The `MultiModalAdapterDenseNetwork` class works by stacking multiple layers of n
 ```python
 import torch
 from torch import nn
+
 from zeta.nn import MultiModalAdapterDenseNetwork
 
 # Create an instance of MultiModalAdapterDenseNetwork
@@ -89,12 +90,15 @@ In this example, we create an instance of `MultiModalAdapterDenseNetwork`, pass 
 ```python
 import torch
 from torch import nn
+
 from zeta.nn import MultiModalAdapterDenseNetwork
+
 
 # Define a custom activation function
 class CustomActivation(nn.Module):
     def forward(self, x):
         return x * 2
+
 
 # Create an instance of MultiModalAdapterDenseNetwork with the custom activation
 mm_adapter = MultiModalAdapterDenseNetwork(
@@ -118,13 +122,14 @@ In this example, we create a custom activation function and use it when creating
 ```python
 import torch
 from torch import nn
+
 from zeta.nn import MultiModalAdapterDenseNetwork
 
 # Create an instance of MultiModalAdapterDenseNetwork with custom depth and hidden dimension
 mm_adapter = MultiModalAdapterDenseNetwork(
     dim=512,
     hidden_dim=2048,  # Increased hidden dimension
-    depth=5,           # Increased depth
+    depth=5,  # Increased depth
 )
 
 # Generate a random input tensor

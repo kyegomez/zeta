@@ -1,7 +1,7 @@
 import torch
-from torch import nn
+from einops import pack, rearrange, unpack
 from einops.layers.torch import Rearrange
-from einops import rearrange, pack, unpack
+from torch import nn
 
 from zeta.utils.main import default
 

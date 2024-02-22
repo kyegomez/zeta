@@ -39,8 +39,8 @@ Here is an example usage of the GELUActivation class. The example demonstrates i
 
 ```python
 import torch
-import math
-from torch import nn, Tensor
+from torch import Tensor, nn
+
 from zeta.nn import GELUActivation
 
 # Initialize a GELU activation function

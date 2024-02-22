@@ -1,7 +1,9 @@
-import pytest
-from zeta.utils import print_num_params
-from torch import nn
 from unittest.mock import patch
+
+import pytest
+from torch import nn
+
+from zeta.utils import print_num_params
 
 
 @pytest.fixture

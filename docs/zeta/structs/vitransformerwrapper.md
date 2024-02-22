@@ -52,7 +52,7 @@ Here are three usage examples:
 ### Example 1: Basic Usage
 
 ```python
-from zeta.structs import ViTransformerWrapper, Encoder
+from zeta.structs import Encoder, ViTransformerWrapper
 
 # create a Transformer encoder instance
 encoder = Encoder(dim=128, depth=12)
@@ -72,13 +72,15 @@ In this example, we first create an instance of a Transformer encoder with a dim
 ### Example 2: Training Loop
 
 ```python
-from zeta.structs import ViTransformerWrapper, Encoder
+from zeta.structs import Encoder, ViTransformerWrapper
 
 # create a Transformer encoder instance
 encoder = Encoder(dim=128, depth=12)
 
 # define the wrapper with the encoder and the number of classes
-model = ViTransformerWrapper(image_size=224, patch_size=16, attn_layers=encoder, num_classes=10)
+model = ViTransformerWrapper(
+    image_size=224, patch_size=16, attn_layers=encoder, num_classes=10
+)
 
 # define a loss function
 criterion = nn.CrossEntropyLoss()
@@ -107,7 +109,7 @@ for i in range(100):
     optimizer.step()
 
     # print statistics
-    print('loss: {:.4f}'.format(loss.item()))
+    print(f"loss: {loss.item():.4f}")
 ```
 
 This example shows a basic training loop for the `ViTransformerWrapper`. In this training loop, we use a cross entropy loss and Adam as the optimizer. The loop goes for 100 iterations, in each iteration it firstly zeroes the gradients, conducts forward pass to compute the model's output, then computes the loss based on the output and the ground truth, backpropagates the gradients and finally updates the model's parameters according to the Adam optimizer. The loss is printed out at every iteration.
@@ -115,7 +117,7 @@ This example shows a basic training loop for the `ViTransformerWrapper`. In this
 ### Example 3: Embeddings
 
 ```python
-from zeta.structs import ViTransformerWrapper, Encoder
+from zeta.structs import Encoder, ViTransformerWrapper
 
 # create a Transformer encoder instance
 encoder = Encoder(dim=128, depth=12)

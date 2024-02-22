@@ -1,5 +1,5 @@
-from torch import nn, Tensor
 from einops import rearrange, reduce
+from torch import Tensor, nn
 
 
 def video_to_text(x: Tensor, seqlen: int, dim: int, norm: bool = True):

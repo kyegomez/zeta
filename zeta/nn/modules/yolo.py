@@ -66,8 +66,8 @@ def yolo(input, num_classes, num_anchors, anchors, stride_h, stride_w):
         raw_predictions[1].sigmoid() + grid_h
     ) * stride_h  # center y
     predicted_bboxes[2:4] = (
-        raw_predictions[2:4].exp()
-    ) * anchor_sizes  # bbox width and height
+        raw_predictions[2:4].exp() * anchor_sizes
+    )  # bbox width and height
     predicted_bboxes[4] = raw_predictions[4].sigmoid()  # confidence
     predicted_bboxes[5:] = raw_predictions[5:].sigmoid()  # class predictions
     # merging all predicted bboxes for each image

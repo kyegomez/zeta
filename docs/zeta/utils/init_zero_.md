@@ -42,7 +42,8 @@ Before we proceed, let us first import the required modules and dependencies.
 ```python
 import torch
 from torch import nn
-from zeta.utils import init_zero_, exists
+
+from zeta.utils import exists, init_zero_
 ```
 
 **Example 1: Initializing a Single Linear Layer**
@@ -64,16 +65,12 @@ In this example, you can observe that after applying `init_zero_()`, all the wei
 
 ```python
 # Create a simple neural network
-model = nn.Sequential(
-    nn.Linear(10, 5),
-    nn.ReLU(),
-    nn.Linear(5, 1)
-)
+model = nn.Sequential(nn.Linear(10, 5), nn.ReLU(), nn.Linear(5, 1))
 
 # Loop through each layer in the model
 for layer in model:
     # Check if the layer has a weight, i.e., is a nn.Linear() layer
-    if exists(layer, 'weight'):
+    if exists(layer, "weight"):
         init_zero_(layer)
 
 # Check weights of first layer

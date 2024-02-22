@@ -38,7 +38,7 @@ class BasicBlock(nn.Module):
         *args,
         **kwargs,
     ):
-        super(BasicBlock, self).__init__()
+        super().__init__()
         self.conv1 = nn.Conv2d(
             in_channels,
             out_channels,
@@ -120,7 +120,7 @@ class ResNet(nn.Module):
         *args,
         **kwargs,
     ):
-        super(ResNet, self).__init__()
+        super().__init__()
         self.in_channels = 64
 
         self.conv1 = nn.Conv2d(

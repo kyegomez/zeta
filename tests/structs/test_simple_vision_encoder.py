@@ -1,4 +1,5 @@
 import torch
+
 from zeta.structs.simple_vision_encoder import VisionEncoder
 
 

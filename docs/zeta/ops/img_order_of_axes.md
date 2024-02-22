@@ -28,6 +28,7 @@ Visualizing a batch of images side by side:
 ```python
 import torch
 from einops import rearrange
+
 from zeta.ops import img_order_of_axes
 
 # Create a dummy batch of images with shape (b, h, w, c)
@@ -48,6 +49,7 @@ Comparing image pairs before and after processing:
 ```python
 import torch
 from einops import rearrange
+
 from zeta.ops import img_order_of_axes
 
 # Create a dummy batch of original images and processed images
@@ -71,6 +73,7 @@ Preparing a batch of images for a single forward pass in a convolutional neural 
 ```python
 import torch
 from einops import rearrange
+
 from zeta.ops import img_order_of_axes
 
 # Assuming `model` is a pre-defined CNN that expects input of shape (h, w, c)

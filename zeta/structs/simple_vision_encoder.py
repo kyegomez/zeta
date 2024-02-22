@@ -1,16 +1,17 @@
+from typing import Tuple
+
 import torch
+from huggingface_hub import snapshot_download
 from PIL import Image
+from torch import nn
 from torchvision.transforms.v2 import (
     Compose,
-    Resize,
     InterpolationMode,
-    ToImage,
-    ToDtype,
     Normalize,
+    Resize,
+    ToDtype,
+    ToImage,
 )
-from typing import Tuple
-from torch import nn
-from huggingface_hub import snapshot_download
 
 
 class VisionEncoder(nn.Module):

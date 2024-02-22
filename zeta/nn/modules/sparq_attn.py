@@ -1,6 +1,5 @@
 import torch
-from torch import nn
-from torch import abs, softmax, sqrt, tensor, topk
+from torch import abs, nn, softmax, sqrt, tensor, topk
 
 
 class SparQAttention(nn.Module):

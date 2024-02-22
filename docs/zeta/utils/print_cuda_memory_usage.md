@@ -12,7 +12,9 @@ This is a Python context manager function designed for tracking and reporting CU
 
 ```python
 from contextlib import contextmanager
+
 import torch
+
 
 @contextmanager
 def print_cuda_memory_usage():
@@ -42,7 +44,7 @@ Here are some examples on how `print_cuda_memory_usage` can be used:
 ## Example 1: Basic Usage
 
 ```python
-x = torch.randn((10000, 10000), device='cuda')
+x = torch.randn((10000, 10000), device="cuda")
 
 with print_cuda_memory_usage():
     y = x @ x.t()  # Large matrix multiplication
@@ -53,7 +55,7 @@ In this example, a large tensor `x` is allocated on the GPU, and then a large ma
 ## Example 2: Exception Handling
 
 ```python
-x = torch.randn((10000, 10000), device='cuda')
+x = torch.randn((10000, 10000), device="cuda")
 
 try:
     with print_cuda_memory_usage():
@@ -68,7 +70,7 @@ In this example, an exception is raised inside the `print_cuda_memory_usage` con
 ## Example 3: Nesting Usage
 
 ```python
-x = torch.randn((10000, 10000), device='cuda')
+x = torch.randn((10000, 10000), device="cuda")
 
 with print_cuda_memory_usage():
     y = x @ x.t()  # Large matrix multiplication

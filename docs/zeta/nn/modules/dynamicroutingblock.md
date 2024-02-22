@@ -54,13 +54,15 @@ Firstly, define your two sub-blocks and routing module:
 sb1 = nn.Linear(5, 3)
 sb2 = nn.Linear(5, 3)
 
+
 class RoutingModule(nn.Module):
     def __init__(self):
         super().__init__()
         self.weights = nn.Parameter(torch.randn(5))
-    
+
     def forward(self, x):
         return torch.sigmoid(x @ self.weights)
+
 
 routing_module = RoutingModule()
 ```

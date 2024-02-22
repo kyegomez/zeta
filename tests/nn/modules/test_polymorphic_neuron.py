@@ -2,6 +2,7 @@ import pytest
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
 from zeta.nn.modules.polymorphic_neuron import PolymorphicNeuronLayer
 
 
@@ -93,4 +94,5 @@ def test_all_activation_functions_used(sample_neuron):
 def test_output_range(sample_neuron):
     input_tensor = torch.randn(1, 10)
     output = sample_neuron(input_tensor)
-    assert torch.all(output >= -1.0) and torch.all(output <= 1.0)
+    assert torch.all(output >= -1.0)
+    assert torch.all(output <= 1.0)

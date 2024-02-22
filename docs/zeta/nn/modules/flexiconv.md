@@ -16,10 +16,13 @@ FlexiConv is an experimental and flexible convolutional layer that adapts to the
 ## Example
 
 ```python
-import torch 
+import torch
+
 from zeta.nn import FlexiConv
 
-flexi_conv = FlexiConv(in_channels=3, out_channels=64, kernel_size=3, stride=1, padding=1)
+flexi_conv = FlexiConv(
+    in_channels=3, out_channels=64, kernel_size=3, stride=1, padding=1
+)
 input_tensor = torch.randn(1, 3, 224, 224)  # Example input batch
 output = flexi_conv(input_tensor)
 output.shape
@@ -37,10 +40,13 @@ The `FlexiConv` layer can be instantiated by passing the required arguments and 
 
 Example 1:
 ```python
-import torch 
+import torch
+
 from zeta.nn import FlexiConv
 
-flexi_conv = FlexiConv(in_channels=3, out_channels=64, kernel_size=3, stride=1, padding=1)
+flexi_conv = FlexiConv(
+    in_channels=3, out_channels=64, kernel_size=3, stride=1, padding=1
+)
 input_tensor = torch.randn(1, 3, 224, 224)
 output = flexi_conv(input_tensor)
 output.shape
@@ -48,11 +54,13 @@ output.shape
 
 Example 2:
 ```python
-import torch 
+import torch
+
 from zeta.nn import FlexiConv
 
-
-flexi_conv = FlexiConv(in_channels=3, out_channels=64, kernel_size=3, stride=(2,2), padding=1)
+flexi_conv = FlexiConv(
+    in_channels=3, out_channels=64, kernel_size=3, stride=(2, 2), padding=1
+)
 input_tensor = torch.randn(1, 3, 224, 224)
 output = flexi_conv(input_tensor)
 output.shape
@@ -60,11 +68,13 @@ output.shape
 
 Example 3:
 ```python
-import torch 
+import torch
+
 from zeta.nn import FlexiConv
 
-
-flexi_conv = FlexiConv(in_channels=3, out_channels=64, kernel_size=(3,3), stride=(1,2), padding=1)
+flexi_conv = FlexiConv(
+    in_channels=3, out_channels=64, kernel_size=(3, 3), stride=(1, 2), padding=1
+)
 input_tensor = torch.randn(1, 3, 224, 224)
 output = flexi_conv(input_tensor)
 output.shape

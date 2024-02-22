@@ -18,6 +18,7 @@ Args:
 Examples:
 ```python
 import torch
+
 from zeta.nn import MixtureOfExperts
 
 x = torch.randn(2, 4, 6)

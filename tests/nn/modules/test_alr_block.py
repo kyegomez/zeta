@@ -1,7 +1,8 @@
+import pytest
 import torch
 import torch.nn as nn
-import pytest
-from zeta.nn.modules.alr_block import FeedForward, ALRBlock
+
+from zeta.nn.modules.alr_block import ALRBlock, FeedForward
 
 
 # Create fixtures

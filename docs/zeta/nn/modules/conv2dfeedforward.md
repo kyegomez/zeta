@@ -6,6 +6,7 @@ The `Conv2DFeedforward` is a `torch.nn` module part of the `zeta.nn` library, de
 Import Example:
 ```python
 import torch
+
 from zeta.nn import Conv2DFeedforward
 ```
 

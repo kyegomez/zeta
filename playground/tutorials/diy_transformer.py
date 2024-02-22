@@ -15,6 +15,7 @@ with extreme reliability.
 
 Let's build an LLM like LLAMA and PALM called Neo
 """
+
 from pathlib import Path
 
 import torch
@@ -22,11 +23,7 @@ import torch.nn.functional as F
 from einops import pack, unpack
 from torch import nn
 
-from zeta.nn import (
-    LayerNorm,
-    Residual,
-    TransformerBlock,
-)
+from zeta.nn import LayerNorm, Residual, TransformerBlock
 from zeta.utils import exists
 from zeta.utils.main import eval_decorator, gumnel_sample, top_k
 
@@ -49,7 +46,7 @@ class Neo(nn.Module):
         lora_r=8,
         rotary_xpos_scale_base=512,
         flash_attn=False,
-        finetune_scopes=tuple(),
+        finetune_scopes=(),
         cross_entropy_ignore_index=0,
     ):
         super().__init__()

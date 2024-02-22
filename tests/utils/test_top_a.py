@@ -1,5 +1,6 @@
 import pytest
 import torch
+
 from zeta.utils import top_a
 
 # logits map from [-1, 1] to [-inf, inf]

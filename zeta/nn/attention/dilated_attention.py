@@ -83,7 +83,7 @@ class DilatedAttention(BaseAttention):
         use_xpos: bool = False,
         use_rel_pos_bias: bool = False,
     ):
-        super(DilatedAttention, self).__init__()
+        super().__init__()
         self.d_model = d_model
         self.num_heads = num_heads
 
@@ -189,7 +189,7 @@ class MultiheadDilatedAttention(nn.Module):
         layer_norm: bool = True,
         layer_norm_eps: float = 1e-5,
         gamma_init: float = 1.0,
-        device: Optional[Union[torch.device, str]] = None,
+        device: Union[torch.device, str, None] = None,
         dtype: Optional[torch.dtype] = None,
     ):
         super().__init__()

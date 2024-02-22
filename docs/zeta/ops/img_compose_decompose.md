@@ -41,6 +41,7 @@ The `img_compose_decompose` function works by decomposing each image in the batc
 
 ```python
 import torch
+
 from zeta.ops import img_compose_decompose
 
 # Assume x has a shape of (4, 100, 100, 3), representing 4 images of 100x100 pixels with 3 color channels
@@ -59,10 +60,11 @@ print(result.shape)  # should output torch.Size([200, 200, 3])
 from torch.utils.data import DataLoader
 from torchvision.datasets import CIFAR10
 from torchvision.transforms import ToTensor
+
 from zeta.ops import img_compose_decompose
 
 # Load CIFAR10 images
-cifar10_dataset = CIFAR10('.', train=True, download=True, transform=ToTensor())
+cifar10_dataset = CIFAR10(".", train=True, download=True, transform=ToTensor())
 cifar10_loader = DataLoader(cifar10_dataset, batch_size=8, shuffle=True)
 
 # Iterate over the data loader
@@ -78,12 +80,13 @@ for batch, (images, labels) in enumerate(cifar10_loader):
 
 ```python
 import matplotlib.pyplot as plt
-from PIL import Image
 import numpy as np
+from PIL import Image
+
 from zeta.ops import img_compose_decompose
 
 # Load an image
-image = Image.open('sample_image.jpg')
+image = Image.open("sample_image.jpg")
 image_np = np.array(image)
 
 # Add batch and channel dimensions to the image
@@ -95,11 +98,11 @@ composed_image = img_compose_decompose(image_batch)
 # Show the original and the composed images
 plt.subplot(1, 2, 1)
 plt.imshow(image)
-plt.title('Original Image')
+plt.title("Original Image")
 
 plt.subplot(1, 2, 2)
 plt.imshow(composed_image[0])
-plt.title('Composed Image')
+plt.title("Composed Image")
 
 plt.show()
 ```

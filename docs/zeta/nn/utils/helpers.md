@@ -61,9 +61,11 @@ The provided module comprises utility functions and classes to streamline specif
     ```python
     from zeta import once
 
+
     @once
     def greet():
         print("Hello, World!")
+
 
     greet()  # prints "Hello, World!"
     greet()  # Does nothing on the second call
@@ -73,7 +75,9 @@ The provided module comprises utility functions and classes to streamline specif
 
     ```python
     import torch.nn as nn
+
     from zeta import eval_decorator
+
 
     class SimpleModel(nn.Module):
         def __init__(self):
@@ -84,6 +88,7 @@ The provided module comprises utility functions and classes to streamline specif
         def predict(self, x):
             return self.layer(x)
 
+
     model = SimpleModel()
     input_tensor = torch.randn(1, 10)
     output = model.predict(input_tensor)  # Automatically switches to eval mode and back
@@ -93,12 +98,12 @@ The provided module comprises utility functions and classes to streamline specif
 
     ```python
     from zeta import group_by_key_prefix
-    
+
     sample_dict = {
         "user_name": "John",
         "user_age": 25,
         "order_id": 12345,
-        "order_date": "2023-01-01"
+        "order_date": "2023-01-01",
     }
 
     user_data, order_data = group_by_key_prefix("user_", sample_dict)

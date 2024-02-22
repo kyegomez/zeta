@@ -45,7 +45,7 @@ PositionalEmbedding(
     max_norm=None,
     norm_type=2.0,
     scale_grad_by_freq=False,
-    sparse=False
+    sparse=False,
 )
 ```
 
@@ -84,8 +84,9 @@ Let's explore some usage examples of the `PositionalEmbedding` class to understa
 ### Basic Usage <a name="basic-usage"></a>
 
 ```python
-from zeta.nn  import PositionalEmbedding
 import torch
+
+from zeta.nn import PositionalEmbedding
 
 # Create a PositionalEmbedding instance
 positional_embedding = PositionalEmbedding(num_embeddings=100, embedding_dim=128)
@@ -100,15 +101,13 @@ embeddings = positional_embedding(positions)
 You can customize the positional embeddings by specifying additional parameters such as `max_norm` and `scale_grad_by_freq`.
 
 ```python
-from zeta.nn import PositionalEmbedding
 import torch
+
+from zeta.nn import PositionalEmbedding
 
 # Create a PositionalEmbedding instance with customization
 positional_embedding = PositionalEmbedding(
-    num_embeddings=100,
-    embedding_dim=128,
-    max_norm=1.0,
-    scale_grad_by_freq=True
+    num_embeddings=100, embedding_dim=128, max_norm=1.0, scale_grad_by_freq=True
 )
 
 # Generate positional embeddings for a sequence of length 10
@@ -121,8 +120,9 @@ embeddings = positional_embedding(positions)
 You can also provide your own positions when generating positional embeddings.
 
 ```python
-from zeta.nn  import PositionalEmbedding
 import torch
+
+from zeta.nn import PositionalEmbedding
 
 # Create a PositionalEmbedding instance
 positional_embedding = PositionalEmbedding(num_embeddings=100, embedding_dim=128)

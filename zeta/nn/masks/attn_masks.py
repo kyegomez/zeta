@@ -469,6 +469,7 @@ class BlockDiagonalMask(AttentionBias):
     .. code-block:: python
 
         import torch
+
         from zeta import MultiheadAttention
 
         K = 16

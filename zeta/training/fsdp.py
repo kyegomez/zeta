@@ -2,12 +2,11 @@ from functools import partial
 
 import torch
 from torch.distributed.fsdp import (
+    BackwardPrefetch,
     FullyShardedDataParallel,
     MixedPrecision,
-    BackwardPrefetch,
     ShardingStrategy,
 )
-
 from torch.distributed.fsdp.wrap import transformer_auto_wrap_policy
 
 

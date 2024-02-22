@@ -1,6 +1,7 @@
-from torch import nn
 from typing import List
+
 import torch.nn.functional as F
+from torch import nn
 
 
 class MLPProjectionFusion(nn.Module):

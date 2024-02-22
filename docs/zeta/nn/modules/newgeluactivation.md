@@ -60,10 +60,9 @@ At first, you need to import necessary packages and modules.
 
 ```python
 import torch
-import math
-from torch import Tensor
-from torch import nn
-from zeta.nn import NewGELUActivation 
+from torch import Tensor, nn
+
+from zeta.nn import NewGELUActivation
 ```
 
 ## Usage Example 1:
@@ -86,7 +85,7 @@ Integrating NewGELUActivation within a neural network model.
 ```python
 class NeuralNetwork(nn.Module):
     def __init__(self):
-        super(NeuralNetwork, self).__init__()
+        super().__init__()
         self.fc1 = nn.Linear(784, 256)
         self.new_gelu = NewGELUActivation()
 
@@ -94,6 +93,7 @@ class NeuralNetwork(nn.Module):
         x = self.fc1(x)
         x = self.new_gelu(x)
         return x
+
 
 model = NeuralNetwork()  # Creating an instance of our model
 ```
@@ -112,6 +112,7 @@ class CNN(nn.Module):
     def forward(self, x):
         x = self.new_gelu(self.conv1(x))
         return x
+
 
 model = CNN()  # Creating an instance of our model
 ```

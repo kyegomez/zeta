@@ -94,7 +94,8 @@ Here are some usage examples for each method:
 
 ```python
 import torch
-from zeta.ops import *
+
+from zeta.ops import selu_softmax, standard_softmax
 
 # Sample tensor
 tensor = torch.tensor([2.0, 1.0, 0.1])

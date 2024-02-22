@@ -89,6 +89,7 @@ First example demonstrates how to instantiate the AutoregressiveWrapper over an 
 ```python
 import torch
 import torch.nn as nn
+
 from zeta.structs import AutoregressiveWrapper
 
 net = nn.Linear(10, 10)
@@ -102,7 +103,7 @@ print(logits.shape)
 The second example demonstrates the usage of generate method to generate a sequence with the model.
 
 ```python
-start_tokens = torch.tensor([1,2,3])
+start_tokens = torch.tensor([1, 2, 3])
 generated_sequence = net.generate(start_tokens, seq_len=10)
 ```
 This generated_sequence represents the next 10 steps in the sequence (based on the first 3 steps provided as start_tokens).
@@ -111,7 +112,9 @@ The third example shows generating multiple solutions and selecting the best one
 
 ```python
 solutions = net.generate_n_solutions(start_tokens, n=5, seqlen=10)
-best_solution = net.evaluate_and_select_best_solution(solutions, reward_model=lambda x: -x.sum())
+best_solution = net.evaluate_and_select_best_solution(
+    solutions, reward_model=lambda x: -x.sum()
+)
 ```
 In the example above, the reward model simply returns the negative sum of the sequence, and the solution with lowest sum is selected as the best solution.
 

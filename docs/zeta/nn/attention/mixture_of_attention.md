@@ -59,11 +59,14 @@ class MixtureOfAttention(nn.Module):
 **1. Basic usage with default parameters:**
 
 ```python
-from zeta.nn import MixtureOfAttention
 import torch
 
+from zeta.nn import MixtureOfAttention
+
 dim = 512
-model = MixtureOfAttention(dim, num_routed_queries=100, num_routed_key_values=100, num_experts=4)
+model = MixtureOfAttention(
+    dim, num_routed_queries=100, num_routed_key_values=100, num_experts=4
+)
 x = torch.rand(16, 50, dim)
 output = model(x)
 ```
@@ -71,11 +74,19 @@ output = model(x)
 **2. Using local attention:**
 
 ```python
-from zeta.nn import MixtureOfAttention
 import torch
 
+from zeta.nn import MixtureOfAttention
+
 dim = 512
-model = MixtureOfAttention(dim, num_routed_queries=100, num_routed_key_values=100, num_experts=4, local_attn=True, local_attn_window_size=5)
+model = MixtureOfAttention(
+    dim,
+    num_routed_queries=100,
+    num_routed_key_values=100,
+    num_experts=4,
+    local_attn=True,
+    local_attn_window_size=5,
+)
 x = torch.rand(16, 50, dim)
 output = model(x)
 ```
@@ -83,11 +94,19 @@ output = model(x)
 **3. Using pre-normalization and dropout:**
 
 ```python
-from zeta.nn import MixtureOfAttention
 import torch
 
+from zeta.nn import MixtureOfAttention
+
 dim = 512
-model = MixtureOfAttention(dim, num_routed_queries=100, num_routed_key_values=100, num_experts=4, prenorm=True, dropout=0.1)
+model = MixtureOfAttention(
+    dim,
+    num_routed_queries=100,
+    num_routed_key_values=100,
+    num_experts=4,
+    prenorm=True,
+    dropout=0.1,
+)
 x = torch.rand(16, 50, dim)
 output = model(x)
 ```

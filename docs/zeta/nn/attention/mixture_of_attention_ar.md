@@ -26,14 +26,13 @@ class MixtureOfAutoregressiveAttention(nn.Module):
         num_experts: int = 2,
         dim_head: int = 64,
         heads: int = 8,
-        dropout: float = 0.,
+        dropout: float = 0.0,
         use_triton: bool = False,
         flash_attn: bool = True,
         prenorm: bool = True,
         average_routed: bool = False,
-        **kwargs
-    ):
-        ...
+        **kwargs,
+    ): ...
 ```
 
 ### Parameters:
@@ -62,9 +61,8 @@ def forward(
     x: torch.Tensor,
     rotary_emb: Optional[torch.Tensor] = None,
     num_routed_queries: Optional[int] = None,
-    num_routed_key_values: Optional[int] = None
-) -> torch.Tensor:
-    ...
+    num_routed_key_values: Optional[int] = None,
+) -> torch.Tensor: ...
 ```
 
 - `x` (torch.Tensor): Input tensor of shape `(batch_size, sequence_length, dim)`.
@@ -79,7 +77,9 @@ def forward(
 ```python
 from zeta.nn import MixtureOfAutoregressiveAttention
 
-attention_layer = MixtureOfAutoregressiveAttention(dim=512, num_routed_queries=5, num_routed_key_values=5, local_attn_window_size=32)
+attention_layer = MixtureOfAutoregressiveAttention(
+    dim=512, num_routed_queries=5, num_routed_key_values=5, local_attn_window_size=32
+)
 x = torch.randn(10, 60, 512)
 out = attention_layer(x)
 ```

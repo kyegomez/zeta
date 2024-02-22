@@ -19,7 +19,7 @@ class CustomMLP(nn.Module):
     """
 
     def __init__(self, layer_sizes, activation="relu", dropout=0.0):
-        super(CustomMLP, self).__init__()
+        super().__init__()
 
         # Validate input parameters
         if not isinstance(layer_sizes, list) or len(layer_sizes) < 2:

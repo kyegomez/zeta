@@ -1,7 +1,8 @@
-import torch
-from torch import nn
-import torch.nn.functional as F
 import math
+
+import torch
+import torch.nn.functional as F
+from torch import nn
 
 
 def absmax_quantize(x, bits=8):
@@ -44,7 +45,7 @@ class BitLinear(nn.Module):
     """
 
     def __init__(self, in_features, out_features, groups=1):
-        super(BitLinear, self).__init__()
+        super().__init__()
         self.in_features = in_features
         self.out_features = out_features
         self.groups = groups

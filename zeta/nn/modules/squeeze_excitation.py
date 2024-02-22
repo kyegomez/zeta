@@ -33,7 +33,7 @@ class SqueezeExcitation(nn.Module):
     """
 
     def __init__(self, in_planes, reduced_dim):
-        super(SqueezeExcitation, self).__init__()
+        super().__init__()
         self.se = nn.Sequential(
             nn.AdaptiveAvgPool2d(1),
             nn.Conv2d(in_planes, reduced_dim, 1),

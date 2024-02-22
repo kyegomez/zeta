@@ -50,6 +50,7 @@ This example demonstrates the basic application of `selu_softmax` to a random-ge
 ```python
 import torch
 import torch.nn.functional as F
+
 from zeta.ops import selu_softmax
 ```
 
@@ -83,12 +84,13 @@ import torch.nn.functional as F
 ```python
 class SimpleNeuralNet(nn.Module):
     def __init__(self):
-        super(SimpleNeuralNet, self).__init__()
+        super().__init__()
         self.fc1 = nn.Linear(10, 5)
 
     def forward(self, x):
         x = self.fc1(x)
         return selu_softmax(x)
+
 
 # Define the selu_softmax function (as before, placed somewhere accessible to the class)
 
@@ -113,8 +115,8 @@ Lastly, we integrate `selu_softmax` in an image classification network to classi
 import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
-from torchvision.datasets import CIFAR10
 from torch.utils.data import DataLoader
+from torchvision.datasets import CIFAR10
 ```
 
 #### Full Code Example
@@ -130,9 +132,10 @@ class ImageClassifier(nn.Module):
         # ...
         return selu_softmax(x)
 
+
 # Load dataset
 transform = transforms.Compose([transforms.ToTensor()])
-trainset = CIFAR10(root='./data', train=True, download=True, transform=transform)
+trainset = CIFAR10(root="./data", train=True, download=True, transform=transform)
 trainloader = DataLoader(trainset, batch_size=32, shuffle=True, num_workers=2)
 
 # Define model and loss function, etc.

@@ -61,6 +61,7 @@ In dynamic quantization, you specify the layers to be quantized, and the quantiz
 
 ```python
 import torch
+
 from zeta import niva
 
 # Load a pre-trained model
@@ -73,7 +74,7 @@ niva(
     output_path="quantized_model.pt",
     quant_type="dynamic",
     quantize_layers=[nn.Linear, nn.Conv2d],
-    dtype=torch.qint8
+    dtype=torch.qint8,
 )
 ```
 
@@ -83,6 +84,7 @@ Static quantization quantizes the entire model before inference. Here's an examp
 
 ```python
 import torch
+
 from zeta import niva
 
 # Load a pre-trained model
@@ -94,7 +96,7 @@ niva(
     model_path="path_to_pretrained_model_weights.pt",
     output_path="quantized_model.pt",
     quant_type="static",
-    dtype=torch.qint8
+    dtype=torch.qint8,
 )
 ```
 

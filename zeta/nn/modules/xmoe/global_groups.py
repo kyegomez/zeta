@@ -42,7 +42,7 @@ def get_all2all_group(moe_expert_count):
             # more experts than world size
             if world_size <= moe_expert_count:
                 assert moe_expert_count % world_size == 0
-                all2all_groups = [[i for i in range(world_size)]]
+                all2all_groups = [list(range(world_size))]
 
             # larger world than num experts
             else:

@@ -42,7 +42,7 @@ class PolymorphicActivation(nn.Module):
         initial_alpha : float (optional)
             The initial value of the alpha parameter. Defaults to 0.5.
         """
-        super(PolymorphicActivation, self).__init__()
+        super().__init__()
         if not isinstance(initial_alpha, float):
             raise TypeError("initial_alpha must be a float.")
         self.alpha = nn.Parameter(torch.tensor([initial_alpha]))

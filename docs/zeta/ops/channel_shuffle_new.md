@@ -35,8 +35,8 @@ This basic usage example demonstrates how to use `channel_shuffle_new` for a sin
 ```python
 import torch
 from einops import rearrange
-from zeta.ops import channel_shuffle_new
 
+from zeta.ops import channel_shuffle_new
 
 # Create a sample tensor to represent a single RGB image (batch size = 1)
 x = torch.randn(1, 3, 64, 64)  # Shape (b=1, c=3, h=64, w=64)
@@ -54,6 +54,7 @@ In this example, we shuffle the channels of a batch of images with 4 channels ea
 ```python
 import torch
 from einops import rearrange
+
 from zeta.ops import channel_shuffle_new
 
 # Create a sample tensor to represent a batch of images with 4 channels each
@@ -71,8 +72,8 @@ For a more complex scenario, we shuffle the channels of a large batch of images 
 ```python
 import torch
 from einops import rearrange
-from zeta.ops import channel_shuffle_new
 
+from zeta.ops import channel_shuffle_new
 
 # Create a sample tensor to represent a large batch of high-channel images
 x = torch.randn(50, 32, 128, 128)  # Shape (b=50, c=32, h=128, w=128)

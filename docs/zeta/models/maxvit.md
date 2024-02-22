@@ -59,9 +59,11 @@ Returns the output of the multi-layer transformer, which could either be the cla
 ```python
 from zeta.models import MaxVit
 
-model = MaxVit(num_classes=10, dim=512, depth=(3,2), dim_head=64, channels=3)
+model = MaxVit(num_classes=10, dim=512, depth=(3, 2), dim_head=64, channels=3)
 
-x = torch.randn(1, 3, 224, 224)  # suppose we have an random tensor representing an image
+x = torch.randn(
+    1, 3, 224, 224
+)  # suppose we have an random tensor representing an image
 
 out = model(x)  # forward pass
 

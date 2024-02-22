@@ -43,6 +43,7 @@ When `norm_exp_softmax` is called, it expects a tensor as input and an optional 
 
 ```python
 import torch
+
 from zeta.ops import norm_exp_softmax
 
 # Input tensor
@@ -58,6 +59,7 @@ print(softmax_probs)  # Output will be a probability distribution tensor
 
 ```python
 import torch
+
 from zeta.ops import norm_exp_softmax
 
 # Input tensor
@@ -67,13 +69,16 @@ x = torch.tensor([1.0, 2.0, 3.0])
 scale_factor = 0.5
 softmax_probs_scaled = norm_exp_softmax(x, scale=scale_factor)
 
-print(softmax_probs_scaled)  # Output will be a softly scaled probability distribution tensor
+print(
+    softmax_probs_scaled
+)  # Output will be a softly scaled probability distribution tensor
 ```
 
 ### Advanced Usage Example
 
 ```python
 import torch
+
 from zeta.ops import norm_exp_softmax
 
 # Input tensor with batch dimension

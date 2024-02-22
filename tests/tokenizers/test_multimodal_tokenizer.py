@@ -1,5 +1,6 @@
-from PIL import Image
 import torch
+from PIL import Image
+
 from zeta.tokenizers.multi_modal_tokenizer import MultiModalTokenizer
 
 

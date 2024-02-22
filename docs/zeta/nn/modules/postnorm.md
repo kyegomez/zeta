@@ -21,21 +21,24 @@ The `PostNorm` class performs a post-normalization on an input tensor using the 
 
 ```python
 from torch import nn
+
 from zeta.nn import PostNorm
+
 
 # Define a simple model
 class SimpleModel(nn.Module):
     def __init__(self, input_dim, hidden_dim, output_dim):
-        super(SimpleModel, self).__init__()
-        
+        super().__init__()
+
         self.hidden_layer = nn.Linear(input_dim, hidden_dim)
         self.postnorm_layer = PostNorm(hidden_dim, nn.Linear(hidden_dim, output_dim))
-        
+
     def forward(self, x):
         x = self.hidden_layer(x)
         output = self.postnorm_layer(x)
-        
+
         return output
+
 
 # Usage:
 input_dim, hidden_dim, output_dim = 10, 20, 2
@@ -51,20 +54,23 @@ print(f"Input Shape: {inputs.shape}\nOutput Shape: {outputs.shape}")
 ```python
 import torch
 from torch import nn
+
 from zeta.nn import PostNorm
+
 
 # Define a model architecture for image data
 class ImageModel(nn.Module):
     def __init__(self, input_dim, hidden_dim, output_dim):
-        super(ImageModel, self).__init__()
+        super().__init__()
         self.fc1 = nn.Linear(input_dim, hidden_dim)
         self.fc2 = nn.Linear(hidden_dim, output_dim)
         self.postnorm = PostNorm(output_dim, nn.ReLU())
-        
+
     def forward(self, x):
         x = self.fc1(x)
         x = self.fc2(x)
         return self.postnorm(x)
+
 
 # Usage:
 input_dim, hidden_dim, output_dim = 784, 256, 10  # Applicable for MNIST data

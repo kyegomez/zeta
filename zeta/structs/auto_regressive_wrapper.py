@@ -3,14 +3,14 @@ import torch.nn.functional as F
 from einops import pack, rearrange, unpack
 from torch import nn
 
-from zeta.utils.main import (  # noqa: E402
+from zeta.utils.main import once  # noqa: F401
+from zeta.utils.main import (
     eval_decorator,
     exists,
-    once,  # noqa: F401
     top_a,
     top_k,
     top_p,
-)
+)  # noqa: E402
 
 
 # Utils
@@ -352,4 +352,3 @@ class AutoregressiveWrapper(nn.Module):
 
     def grade_solution(self, solution):
         """Grade a solution."""
-        pass

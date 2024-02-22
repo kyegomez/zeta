@@ -11,6 +11,7 @@ Below is an example of how to use the `Parallel` class. The example demonstrates
 ```python
 import torch
 from torch import nn
+
 from zeta.nn import Parallel
 
 # Define two Linear modules

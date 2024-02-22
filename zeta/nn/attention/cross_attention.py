@@ -1,10 +1,10 @@
 import math
 
 import torch
-from torch.nn import LayerNorm
 import torch.nn.functional as F
 from einops import rearrange, repeat
 from torch import einsum, nn
+from torch.nn import LayerNorm
 
 from zeta.utils.main import default, exists, l2norm
 

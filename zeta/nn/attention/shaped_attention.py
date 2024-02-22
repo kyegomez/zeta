@@ -16,7 +16,7 @@ class ShapedAttention(nn.Module):
     """
 
     def __init__(self, dim, heads, dropout=0.1):
-        super(ShapedAttention, self).__init__()
+        super().__init__()
         self.heads = heads
         self.scale = (dim // heads) ** -0.5
 

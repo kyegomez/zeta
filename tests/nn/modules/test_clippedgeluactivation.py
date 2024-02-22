@@ -1,9 +1,11 @@
 # ClippedGELUActivation
 
-import pytest
 from unittest.mock import Mock, patch
+
+import pytest
 import torch
 from torch import Tensor
+
 from zeta.nn import ClippedGELUActivation
 
 

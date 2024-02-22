@@ -35,7 +35,7 @@ class GradientEquilibrum(Optimizer):
             tol=tol,
             weight_decay=weight_decay,
         )
-        super(GradientEquilibrum, self).__init__(params, defaults)
+        super().__init__(params, defaults)
 
     def step(self, closure=None):
         """

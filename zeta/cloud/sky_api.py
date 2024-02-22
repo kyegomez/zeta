@@ -1,4 +1,5 @@
-""" sky_api module """
+"""sky_api module"""
+
 """ This module provides a simplified interface for launching, executing, 
 stopping, starting, and tearing down clusters. """
 
@@ -99,7 +100,7 @@ class SkyInterface:
             _type_: _description_
         """
         if cluster_name not in self.clusters:
-            raise ValueError("Cluster {} does not exist".format(cluster_name))
+            raise ValueError(f"Cluster {cluster_name} does not exist")
         try:
             return sky.exec(
                 task=task,

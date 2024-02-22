@@ -62,10 +62,13 @@ This method performs the forward pass of the `LocalMHA` module.
 
 ```python
 from torch import tensor
+
 from zeta import LocalMHA
 
 # Sample data
-x = tensor([[...], [...], ...])  # Example input tensor with shape [batch_size, sequence_length, dim]
+x = tensor(
+    [[...], [...], ...]
+)  # Example input tensor with shape [batch_size, sequence_length, dim]
 
 # Initialize the LocalMHA module
 local_mha = LocalMHA(dim=512, window_size=5)

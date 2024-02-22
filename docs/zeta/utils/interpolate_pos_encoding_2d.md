@@ -22,9 +22,7 @@ def interpolate_pos_encoding_2d(target_spatial_size, pos_embed):
     if N == target_spatial_size:
         return pos_embed
     dim = pos_embed.shape[-1]
-    pos_embed, updated = cast_if_src_dtype(
-        pos_embed, torch.bfloat16, torch.float32
-    )
+    pos_embed, updated = cast_if_src_dtype(pos_embed, torch.bfloat16, torch.float32)
     pos_embed = nn.functional.interpolate(
         pos_embed.reshape(1, int(math.sqrt(N)), int(math.sqrt(N)), dim).permute(
             0, 3, 1, 2
@@ -33,9 +31,7 @@ def interpolate_pos_encoding_2d(target_spatial_size, pos_embed):
         mode="bicubic",
     )
     if updated:
-        pos_embed, _ = cast_if_src_dtype(
-            pos_embed, torch.float32, torch.bfloat16
-        )
+        pos_embed, _ = cast_if_src_dtype(pos_embed, torch.float32, torch.bfloat16)
     pos_embed = pos_embed.permute(0, 2, 3, 1).view(1, -1, dim)
     return pos_embed
 ```
@@ -47,21 +43,22 @@ Here is an example of how to use this function in a general scenario:
 Example 1:
 ```python
 import torch
-import math
 from torch import nn
+
 
 def cast_if_src_dtype(src, src_dtype, target_dtype):
     if src.dtype == src_dtype:
         return src.to(target_dtype), True
     return src, False
 
+
 # Creating a random positional encoding
 pos_embed = torch.randn(1, 16, 64)  # 2-dimensional, size=(1,16,64)
 
 # Interpolating the positional encoding to a larger spatial size
 new_pos_embed = interpolate_pos_encoding_2d(32, pos_embed)
-print('Old size:', pos_embed.shape) 
-print('New size:', new_pos_embed.shape)
+print("Old size:", pos_embed.shape)
+print("New size:", new_pos_embed.shape)
 ```
 In this example, an artificial positional encoding of size 1x16x64 is being interpolated to have 32 spatial size, resulting in a new size of 1x1024x64.
 

@@ -19,8 +19,7 @@ def matrix_inverse_root(
     tolerance: float = 1e-6,
     is_diagonal: Union[Tensor, bool] = False,
     retry_double_precision: bool = True,
-) -> Tensor:
-    ...
+) -> Tensor: ...
 ```
 
 ### Parameters
@@ -43,7 +42,8 @@ def matrix_inverse_root(
 
 ```python
 import torch
-from zeta.ops import matrix_inverse_root, RootInvMethod
+
+from zeta.ops import RootInvMethod, matrix_inverse_root
 
 # Example symmetric positive definite matrix
 A = torch.tensor([[4.0, 0.0], [0.0, 9.0]])
@@ -57,6 +57,7 @@ print(X)
 
 ```python
 import torch
+
 from zeta.ops import matrix_inverse_root
 
 # Diagonal matrix definition.
@@ -72,13 +73,16 @@ print(X)
 
 ```python
 import torch
-from zeta.ops import matrix_inverse_root, RootInvMethod
+
+from zeta.ops import RootInvMethod, matrix_inverse_root
 
 # Symmetric positive definite matrix.
 A = torch.tensor([[10.0, 4.0], [4.0, 6.0]])
 
 # Using Newton's iteration with a custom tolerance and max iterations.
-X = matrix_inverse_root(A, root=2, root_inv_method=RootInvMethod.NEWTON, tolerance=1e-8, max_iterations=5000)
+X = matrix_inverse_root(
+    A, root=2, root_inv_method=RootInvMethod.NEWTON, tolerance=1e-8, max_iterations=5000
+)
 print(X)
 ```
 

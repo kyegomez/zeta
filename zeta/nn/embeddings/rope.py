@@ -1,8 +1,8 @@
 # from paper:: https://arxiv.org/pdf/2308.10882.pdf
 
 import torch
-from torch import nn
 from einops import rearrange
+from torch import nn
 
 
 def exists(val):

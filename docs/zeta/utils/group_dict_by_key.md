@@ -24,7 +24,7 @@ def group_dict_by_key(cond, d):
     Returns:
         tuple: Two dictionaries split based on the condition.
     """
-    return_val = [dict(), dict()]
+    return_val = [{}, {}]
     for key in d.keys():
         match = bool(cond(key))
         ind = int(not match)
@@ -59,16 +59,16 @@ Consider having a dictionary of student marks and the goal is to group the stude
 
 ```python
 students_marks = {
-        "John": 85,
-        "Peter": 60,
-        "Tracy": 72,
-        "Paul": 50,
-        "Angela": 67,
-        "Robert": 40
+    "John": 85,
+    "Peter": 60,
+    "Tracy": 72,
+    "Paul": 50,
+    "Angela": 67,
+    "Robert": 40,
 }
 
 # define the condition function to check if marks >= 60
-cond = lambda marks : marks >= 60
+cond = lambda marks: marks >= 60
 
 pass_students, fail_students = group_dict_by_key(cond, students_marks)
 ```
@@ -77,16 +77,13 @@ The two dictionaries returned from `group_dict_by_key` would be:
 
 ```python
 pass_students = {
-        "John": 85,
-        "Peter": 60,
-        "Tracy": 72,
-        "Angela": 67,
+    "John": 85,
+    "Peter": 60,
+    "Tracy": 72,
+    "Angela": 67,
 }
 
-fail_students = {
-        "Paul": 50,
-        "Robert": 40
-}
+fail_students = {"Paul": 50, "Robert": 40}
 ```
 
 #### Example 2:
@@ -105,7 +102,7 @@ items_prices = {
 }
 
 # define the condition function to check if price > 20
-cond = lambda price : price > 20
+cond = lambda price: price > 20
 
 pricey, affordable = group_dict_by_key(cond, items_prices)
 ```

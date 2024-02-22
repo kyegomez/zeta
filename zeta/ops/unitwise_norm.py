@@ -15,7 +15,7 @@ def unitwise_norm(x):
 
 
     """
-    if (len(torch.squeeze(x).shape)) <= 1:
+    if len(torch.squeeze(x).shape) <= 1:
         pass
     elif len(x.shape) in [2, 3]:
         pass

@@ -1,6 +1,7 @@
 import pytest
 import torch
 from torch.autograd import gradcheck
+
 from zeta.nn.attention.local_attention_mha import LocalMHA
 
 # Create an instance of LocalMHA for testing

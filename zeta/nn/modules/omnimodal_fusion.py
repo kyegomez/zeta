@@ -22,7 +22,7 @@ class OmniModalFusion(nn.Module):
         self,
         fusion_dim: int,
     ):
-        super(OmniModalFusion, self).__init__()
+        super().__init__()
         self.fusion_dim = fusion_dim
         self.modality_encoders = (
             nn.ModuleList()

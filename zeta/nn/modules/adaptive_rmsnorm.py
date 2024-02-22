@@ -1,6 +1,6 @@
-from torch import nn, Tensor
-from beartype import beartype
 import torch.nn.functional as F
+from beartype import beartype
+from torch import Tensor, nn
 
 
 def exists(val):

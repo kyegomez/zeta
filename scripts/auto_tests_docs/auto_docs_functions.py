@@ -4,10 +4,9 @@ import sys
 import threading
 
 from dotenv import load_dotenv
+from swarms import OpenAIChat
 
 from scripts.auto_tests_docs.docs import DOCUMENTATION_WRITER_SOP
-from swarms import OpenAIChat
-from zeta.ops import *
 
 load_dotenv()
 

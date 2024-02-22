@@ -51,6 +51,7 @@ Here is an example of how to use the `SparseAttention` class:
 
 ```python
 import torch
+
 from zeta.nn.attention import SparseAttention
 
 # Define parameters

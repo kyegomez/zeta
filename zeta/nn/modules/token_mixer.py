@@ -1,5 +1,5 @@
-from torch import nn
 from einops.layers.torch import EinMix as Mix
+from torch import nn
 
 
 def TokenMixer(

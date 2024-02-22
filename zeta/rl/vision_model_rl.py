@@ -1,5 +1,5 @@
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 class ResidualBlock(nn.Module):
@@ -13,7 +13,7 @@ class ResidualBlock(nn.Module):
     """
 
     def __init__(self, in_channels, out_channels, stride=1):
-        super(ResidualBlock, self).__init__()
+        super().__init__()
         self.conv1 = nn.Conv2d(
             in_channels, out_channels, kernel_size=3, stride=stride, padding=1
         )
@@ -61,7 +61,7 @@ class VisionRewardModel(nn.Module):
     """
 
     def __init__(self):
-        super(VisionRewardModel, self).__init__()
+        super().__init__()
 
         # Image Feature Extractor
         self.layer1 = ResidualBlock(3, 64)

@@ -56,7 +56,8 @@ This method redirects attribute access to the internal model to allow direct acc
 
 ```python
 import torch.nn as nn
-from zeta.training import ParallelWrapper  
+
+from zeta.training import ParallelWrapper
 
 # Define a model
 model = nn.Linear(512, 512)
@@ -74,7 +75,8 @@ output = model(input)
 
 ```python
 import torch.nn as nn
-from zeta.training import ParallelWrapper  
+
+from zeta.training import ParallelWrapper
 
 # Define a model
 model = nn.Linear(512, 512)
@@ -92,7 +94,8 @@ output = model(input)
 
 ```python
 import torch.nn as nn
-from zeta.training import ParallelWrapper  
+
+from zeta.training import ParallelWrapper
 
 # Define a model
 model = nn.Linear(512, 512)

@@ -13,9 +13,7 @@ The ClippedGELUActivation class inherits from the `nn.Module` in PyTorch.
 class ClippedGELUActivation(nn.Module):
     def __init__(self, min: float, max: float):
         if min > max:
-            raise ValueError(
-            f"min should be < max (got min: {min}, max: {max})"
-        )
+            raise ValueError(f"min should be < max (got min: {min}, max: {max})")
 
         super().__init__()
         self.min = min
@@ -46,15 +44,16 @@ In the code below, we initialize the ClippedGELUActivation module with a min and
 
 ```python
 import torch
-from torch import nn, Tensor
+from torch import Tensor, nn
 from torch.nn.functional import gelu
+
 from zeta.nn import ClippedGELUActivation
 
 # Initialize the class
 clipped_gelu = ClippedGELUActivation(min=-3.0, max=3.0)
 
 # Create a tensor
-x = torch.randn(3,3)
+x = torch.randn(3, 3)
 
 # Pass the tensor through the module
 output = clipped_gelu(x)

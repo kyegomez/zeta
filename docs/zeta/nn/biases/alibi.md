@@ -57,8 +57,9 @@ Where:
 
 ### Example 1: Initialize and compute bias
 ```python
-from zeta import AlibiPositionalBias
 import torch
+
+from zeta import AlibiPositionalBias
 
 bias_module = AlibiPositionalBias(heads=4, total_heads=8)
 bias = bias_module(10, 10)

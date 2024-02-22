@@ -66,7 +66,9 @@ from torch.nn import Transformer
 
 # Sample usage
 module = SimpleTransformer(512, 6, 20000)
-x = torch.LongTensor(2, 1024).random_(0, 20000) # creating a 2x1024 matrix of random Longs from 0 to 20000
+x = torch.LongTensor(2, 1024).random_(
+    0, 20000
+)  # creating a 2x1024 matrix of random Longs from 0 to 20000
 y = module(x)
 print(y.shape)
 ```

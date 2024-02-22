@@ -11,6 +11,7 @@ Once you have the dependencies installed, you can import the module in your Pyth
 ```python
 import torch
 from torch import nn
+
 from zeta.ops import MixtureOfSoftmaxes
 ```
 
@@ -50,8 +51,8 @@ Here's a simple example of how to use the `MixtureOfSoftmaxes` module to handle 
 ```python
 import torch
 from torch import nn
-from zeta.ops import MixtureOfSoftmaxes
 
+from zeta.ops import MixtureOfSoftmaxes
 
 # Initialize the module
 mos = MixtureOfSoftmaxes(num_mixtures=3, input_size=128, num_classes=10)
@@ -74,10 +75,13 @@ In more complex scenarios, the MoS module can be applied to tasks where traditio
 ```python
 import torch
 from torch import nn
+
 from zeta.ops import MixtureOfSoftmaxes
 
 # Initialize the module
-mos = MixtureOfSoftmaxes(num_mixtures=5, input_size=128, num_classes=10000)  # Large vocabulary size
+mos = MixtureOfSoftmaxes(
+    num_mixtures=5, input_size=128, num_classes=10000
+)  # Large vocabulary size
 
 # Generate input data (word embeddings)
 x = torch.randn(32, 128)

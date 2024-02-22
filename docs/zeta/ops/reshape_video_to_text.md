@@ -41,6 +41,7 @@ In this example, we will create a random video tensor and reshape it using `resh
 ```python
 import torch
 from einops import rearrange
+
 from zeta.ops import reshape_video_to_text
 
 # Create a random video tensor of shape (Batch, Channels, Time, Height, Width)
@@ -65,12 +66,13 @@ Here is an example of how one might integrate `reshape_video_to_text` within a n
 
 ```python
 import torch.nn as nn
+
 from zeta.ops import reshape_video_to_text
 
 
 class VideoTextModel(nn.Module):
     def __init__(self):
-        super(VideoTextModel, self).__init__()
+        super().__init__()
         # Define other layers and operations for the model
 
     def forward(self, video_x, text_x):
@@ -79,6 +81,7 @@ class VideoTextModel(nn.Module):
         # the reshaped video tensor with the text tensor
         # ...
         return output
+
 
 # Instantiate the model
 model = VideoTextModel()
@@ -97,6 +100,7 @@ The `reshape_video_to_text` function can also be used as part of the data prepro
 
 ```python
 from torchvision.transforms import Compose
+
 from zeta.ops import reshape_video_to_text
 
 
@@ -105,11 +109,14 @@ class ReshapeVideoToTextTransform:
         reshaped_video = reshape_video_to_text(video_tensor)
         return reshaped_video
 
+
 # Define a transformation pipeline for video tensors
-video_transforms = Compose([
-    # ... other video transforms (resizing, normalization, etc.) if necessary
-    ReshapeVideoToTextTransform(),
-])
+video_transforms = Compose(
+    [
+        # ... other video transforms (resizing, normalization, etc.) if necessary
+        ReshapeVideoToTextTransform(),
+    ]
+)
 
 # Apply the transforms to a video tensor
 video_tensor = torch.rand(2, 3, 4, 5, 5)

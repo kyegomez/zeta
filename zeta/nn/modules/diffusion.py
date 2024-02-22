@@ -21,7 +21,7 @@ class Diffuser(nn.Module):
             alpha_start (float): Starting value of alpha for the schedule.
             alpha_end (float): Ending value of alpha for the schedule.
         """
-        super(Diffuser, self).__init__()
+        super().__init__()
         self.num_timesteps = num_timesteps
 
         # Create a schedule for alpha values

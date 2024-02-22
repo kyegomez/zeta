@@ -15,7 +15,7 @@ class ConvBNReLU(nn.Sequential):
 
     def __init__(self, in_planes, out_planes, kernel_size, stride=1, groups=1):
         padding = (kernel_size - 1) // 2
-        super(ConvBNReLU, self).__init__(
+        super().__init__(
             nn.Conv2d(
                 in_planes,
                 out_planes,

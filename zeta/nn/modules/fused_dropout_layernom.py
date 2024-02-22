@@ -28,7 +28,7 @@ class FusedDropoutLayerNorm(nn.Module):
         *args,
         **kwargs,
     ):
-        super(FusedDropoutLayerNorm, self).__init__()
+        super().__init__()
 
         # Dropout initialization
         self.dropout = nn.Dropout(dropout)

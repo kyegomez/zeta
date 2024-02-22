@@ -126,8 +126,9 @@ Let's explore some usage examples of the `XPOS` class and related functions to u
 ### Using the `XPOS` Class <a name="using-the-xpos-class"></a>
 
 ```python
-from zeta.nn import XPOS
 import torch
+
+from zeta.nn import XPOS
 
 # Create an XPOS instance
 xpos = XPOS(head_dim=256, scale_base=512)
@@ -140,8 +141,14 @@ output = xpos(input_tensor, offset=0, downscale=False)
 ### Using the Functions <a name="using-the-functions"></a>
 
 ```python
-from zeta.nn import fixed_pos_embedding, rotate_every_two, duplicate_interleave, apply_rotary_pos_emb
 import torch
+
+from zeta.nn import (
+    apply_rotary_pos_emb,
+    duplicate_interleave,
+    fixed_pos_embedding,
+    rotate_every_two,
+)
 
 # Generate fixed positional embeddings
 input_tensor = torch.rand(32, 512)  # Example input tensor

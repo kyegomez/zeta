@@ -1,5 +1,6 @@
 import pytest
 import torch
+
 from zeta.nn.embeddings.qfsp_embeddings import QFTSPEmbedding
 
 

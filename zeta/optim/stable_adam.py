@@ -17,7 +17,7 @@ class StableAdamWUnfused(torch.optim.Optimizer):
         defaults = dict(
             lr=lr, weight_decay=weight_decay, beta1=beta1, beta2=beta2
         )
-        super(StableAdamWUnfused, self).__init__(params, defaults)
+        super().__init__(params, defaults)
 
         self.eps = eps
         self.d = clip_thresh
@@ -34,7 +34,7 @@ class StableAdamWUnfused(torch.optim.Optimizer):
         print("Using StableAdamWUnfused-v1")
 
     def __setstate__(self, state):
-        super(StableAdamWUnfused, self).__setstate__(state)
+        super().__setstate__(state)
 
     def step(self, closure=None):
         if closure is not None:

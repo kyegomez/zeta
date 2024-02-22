@@ -1,6 +1,7 @@
 import copy
-from torch import nn
 from typing import List
+
+from torch import nn
 
 
 class AverageModelMerger:

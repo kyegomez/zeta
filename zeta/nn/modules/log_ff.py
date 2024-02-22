@@ -1,8 +1,8 @@
-from typing import Optional
-import torch
-
-from torch import nn
 import math
+from typing import Optional
+
+import torch
+from torch import nn
 
 
 def compute_entropy_safe(
@@ -367,9 +367,9 @@ class LogFF(nn.Module):
                 platform_entropies = compute_entropy_safe(
                     boundary_effect, not_boundary_effect
                 )  # (batch_size, n_nodes)
-                entropies[:, platform:next_platform] = (
-                    platform_entropies  # (batch_size, n_nodes)
-                )
+                entropies[
+                    :, platform:next_platform
+                ] = platform_entropies  # (batch_size, n_nodes)
 
             if hard_decisions:
                 boundary_effect = torch.round(

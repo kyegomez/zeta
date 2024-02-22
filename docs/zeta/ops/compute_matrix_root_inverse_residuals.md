@@ -49,6 +49,7 @@ Here we will show some code written in the same markdown file as an example to s
 
 ```python
 import torch
+
 from zeta.ops import compute_matrix_root_inverse_residuals
 
 # Sample 3x3 matrix
@@ -57,11 +58,7 @@ X_hat = torch.rand((3, 3), dtype=torch.float64)
 
 # Compute the residuals
 abs_error, rel_error, residual = compute_matrix_root_inverse_residuals(
-    A,
-    X_hat,
-    root=2,
-    epsilon=1e-6,
-    exponent_multiplier=1.0
+    A, X_hat, root=2, epsilon=1e-6, exponent_multiplier=1.0
 )
 print("Absolute Error:", abs_error)
 print("Relative Error:", rel_error)

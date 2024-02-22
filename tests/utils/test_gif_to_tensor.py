@@ -1,7 +1,8 @@
+import PIL
 import pytest
 import torch
 from PIL import Image
-import PIL
+
 from zeta.utils import gif_to_tensor
 
 

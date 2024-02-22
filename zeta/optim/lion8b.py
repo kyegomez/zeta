@@ -67,19 +67,13 @@ class DecoupledLionW8Bit(torch.optim.Optimizer):
         _fused: bool = True,  # XXX this flag is mostly for testing...
     ):
         if lr < 0.0:
-            raise ValueError("Invalid learning rate: {}".format(lr))
+            raise ValueError(f"Invalid learning rate: {lr}")
         if not 0.0 <= betas[0] <= 1.0:
-            raise ValueError(
-                "Invalid beta parameter at index 0: {}".format(betas[0])
-            )
+            raise ValueError(f"Invalid beta parameter at index 0: {betas[0]}")
         if not 0.0 <= betas[1] <= 1.0:
-            raise ValueError(
-                "Invalid beta parameter at index 1: {}".format(betas[1])
-            )
+            raise ValueError(f"Invalid beta parameter at index 1: {betas[1]}")
         if not 0.0 <= weight_decay:
-            raise ValueError(
-                "Invalid weight_decay value: {}".format(weight_decay)
-            )
+            raise ValueError(f"Invalid weight_decay value: {weight_decay}")
 
         if not torch.cuda.is_available():
             needs_cuda = " requires a CUDA device."

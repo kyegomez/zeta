@@ -73,8 +73,9 @@ Let's explore how to use the `MBConv` function effectively in various scenarios.
 Here's how to use the `MBConv` function to create an inverted residual block:
 
 ```python
-from zeta.nn import MBConv
 import torch
+
+from zeta.nn import MBConv
 
 # Create an inverted residual block with 64 input channels, 128 output channels, and downsampling
 mbconv_block = MBConv(64, 128, downsample=True)

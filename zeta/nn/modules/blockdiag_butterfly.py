@@ -6,8 +6,7 @@ import torch
 import torch.nn.functional as F
 from einops import rearrange
 from torch import nn
-from torch.nn import functional as F
-from torch.nn import init
+from torch.nn import functional as F, init
 
 
 def blockdiag_butterfly_multiply_reference(x, w1_bfly, w2_bfly, version=2):
@@ -55,7 +54,6 @@ def blockdiag_butterfly_multiply_reference(x, w1_bfly, w2_bfly, version=2):
 
 
 class BlockdiagButterflyMultiply(torch.autograd.Function):
-
     """This is a faster implementation, with careful memory copies for the fastest
     bmm performance.
     The backward pass is also written manually with careful memory copies.
@@ -180,7 +178,6 @@ def blockdiag_multiply_reference(x, weight):
 
 
 class BlockdiagMultiply(torch.autograd.Function):
-
     """This is a faster implementation, with careful memory copies for the fastest
     bmm performance.
     The backward pass is also written manually with careful memory copies.

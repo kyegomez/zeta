@@ -34,7 +34,7 @@ def multi_dim_split(
 ### Example 1: Basic Splitting
 ```python
 import torch
-from typing import List
+
 from zeta.ops import multi_dim_split
 
 # Create a simple 3D tensor
@@ -54,7 +54,7 @@ for i, split_tensor in enumerate(split_tensors):
 ### Example 2: Splitting Along Specific Dimensions
 ```python
 import torch
-from typing import List
+
 from zeta.ops import multi_dim_split
 
 # Create a 2D tensor
@@ -74,7 +74,7 @@ for i, split_tensor in enumerate(split_tensors):
 ### Example 3: Splitting a High-Dimensional Tensor
 ```python
 import torch
-from typing import List
+
 from zeta.ops import multi_dim_split
 
 # Create a 4D tensor

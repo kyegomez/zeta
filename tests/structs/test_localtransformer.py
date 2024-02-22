@@ -1,9 +1,10 @@
-from torch import nn
 import pytest
 import torch
-from zeta.structs import LocalTransformer
+from torch import nn
 from torch.autograd import gradcheck
+
 from zeta.nn import DynamicPositionBias
+from zeta.structs import LocalTransformer
 
 
 @pytest.fixture

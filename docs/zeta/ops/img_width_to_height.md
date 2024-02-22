@@ -47,6 +47,7 @@ The `rearrange` method from the `einops` library uses a string-based mini-langua
 ```python
 import torch
 from einops import rearrange
+
 from zeta.ops import img_width_to_height
 
 # Initialize a dummy 4D tensor representing two RGB images (batch size: 2, width: 4, height: 3, channels: 3)
@@ -73,7 +74,7 @@ plt.show()
 # Display transformed image tensors
 transformed_shape = transformed_images.shape
 for i in range(transformed_shape[1] // transformed_shape[0]):
-    img_tensor = transformed_images[:, i:i+transformed_shape[0], :]
+    img_tensor = transformed_images[:, i : i + transformed_shape[0], :]
     plt.imshow(img_tensor.permute(1, 0, 2))
     plt.title(f"Transformed Image {i+1}")
     plt.show()
@@ -84,9 +85,10 @@ for i in range(transformed_shape[1] // transformed_shape[0]):
 ```python
 import torch.nn as nn
 
+
 class CustomConvLayer(nn.Module):
     def __init__(self):
-        super(CustomConvLayer, self).__init__()
+        super().__init__()
         self.conv = nn.Conv2d(1, 16, kernel_size=(3, 3))
 
     def forward(self, x):
@@ -95,6 +97,7 @@ class CustomConvLayer(nn.Module):
         x = x.unsqueeze(1)  # Add a channel dimension
         output = self.conv(x)
         return output
+
 
 # Initialize model and dummy input
 model = CustomConvLayer()

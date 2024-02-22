@@ -5,8 +5,8 @@ from math import ceil
 import einops
 import numpy as np
 import torch
-import torch.nn.functional as F
 import torch.nn as nn
+import torch.nn.functional as F
 from accelerate import Accelerator
 from einops import rearrange
 from PIL import Image
@@ -217,7 +217,7 @@ def pick_and_pop(keys, d):
     Returns:
         dict: A dictionary with the specified keys and their values.
     """
-    values = list(map(lambda key: d.pop(key), keys))
+    values = list(map(d.pop, keys))
     return dict(zip(keys, values))
 
 
@@ -232,7 +232,7 @@ def group_dict_by_key(cond, d):
     Returns:
         tuple: Two dictionaries split based on the condition.
     """
-    return_val = [dict(), dict()]
+    return_val = [{}, {}]
     for key in d.keys():
         match = bool(cond(key))
         ind = int(not match)
@@ -342,7 +342,7 @@ def gumnel_sample(t, temperature=1.0, dim=-1):
 
 class ContrastiveTopK(nn.Module):
     def __init__(self, alpha, k):
-        super(ContrastiveTopK, self).__init__()
+        super().__init__()
         self.alpha = alpha
         self.k = k
 

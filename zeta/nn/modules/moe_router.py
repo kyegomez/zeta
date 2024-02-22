@@ -1,6 +1,7 @@
 import torch
-from torch import nn, Tensor
 import torch.nn.functional as F
+from torch import Tensor, nn
+
 from zeta.ops.sparsemax import sparsemax
 
 

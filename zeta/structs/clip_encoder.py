@@ -1,10 +1,8 @@
-from transformers import CLIPImageProcessor
-
 import os
+
 import torch
 import torch.nn as nn
-
-from transformers import CLIPVisionModel, CLIPVisionConfig
+from transformers import CLIPImageProcessor, CLIPVisionConfig, CLIPVisionModel
 
 
 class CLIPVisionTower(nn.Module):

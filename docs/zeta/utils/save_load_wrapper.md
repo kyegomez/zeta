@@ -72,13 +72,16 @@ Here's a basic example of using the `save_load` decorator to save and load a PyT
 ```python
 import torch
 from torch.nn import Module
+
 from zeta.utils import save_load
+
 
 @save_load()
 class MyModel(Module):
     def __init__(self):
-        super(MyModel, self).__init__()
+        super().__init__()
         self.fc = torch.nn.Linear(10, 5)
+
 
 # Create an instance of MyModel
 my_model = MyModel()
@@ -97,18 +100,21 @@ You can define custom method and hook names when using the `save_load` decorator
 ```python
 import torch
 from torch.nn import Module
+
 from zeta.utils import save_load
+
 
 @save_load(
     save_method_name="custom_save",
     load_method_name="custom_load",
     pre_save_hook=my_pre_save_hook,
-    post_load_hook=my_post_load_hook
+    post_load_hook=my_post_load_hook,
 )
 class CustomModel(Module):
     def __init__(self):
-        super(CustomModel, self).__init__()
+        super().__init__()
         self.fc = torch.nn.Linear(10, 5)
+
 
 # Create an instance of CustomModel
 custom_model = CustomModel()
@@ -125,13 +131,16 @@ Enable partial loading to update only specific parts of the model checkpoint:
 ```python
 import torch
 from torch.nn import Module
+
 from zeta.utils import save_load
+
 
 @save_load(partial_load=True)
 class PartialModel(Module):
     def __init__(self):
-        super(PartialModel, self).__init__()
+        super().__init__()
         self.fc = torch.nn.Linear(10, 5)
+
 
 # Create an instance of PartialModel
 partial_model = PartialModel()
@@ -150,13 +159,16 @@ Handle version compatibility when loading saved checkpoints:
 ```python
 import torch
 from torch.nn import Module
+
 from zeta.utils import save_load
+
 
 @save_load(version="1.0")
 class VersionedModel(Module):
     def __init__(self):
-        super(VersionedModel, self).__init__()
+        super().__init__()
         self.fc = torch.nn.Linear(10, 5)
+
 
 # Create an instance of VersionedModel
 versioned_model = VersionedModel()

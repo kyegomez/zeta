@@ -94,10 +94,10 @@ class Pulsar(nn.Module):
 
         Given an input `x`, the Pulsar activation, `P(x)`, can be represented as:
 
-        \[ P(x) = x \times \sin(\alpha x + \beta) \]
+        \\[ P(x) = x \times \\sin(\alpha x + \beta) \\]
 
         Where:
-        - \( \alpha \) and \( \beta \) are parameters that control the oscillation frequency and phase. They can be learned during training or set as hyperparameters.
+        - \\( \alpha \\) and \\( \beta \\) are parameters that control the oscillation frequency and phase. They can be learned during training or set as hyperparameters.
 
         ---
 
@@ -170,7 +170,7 @@ class Pulsar(nn.Module):
 
 class PulsarNew(nn.Module):
     def __init__(self, alpha=0.01, beta=0.5):
-        super(PulsarNew, self).__init__()
+        super().__init__()
         self.alpha = alpha
         self.beta = beta
 

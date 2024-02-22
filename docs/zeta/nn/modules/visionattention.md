@@ -30,6 +30,7 @@ The `VisionAttention` module can be seamlessly integrated into various neural ne
 ```python
 import torch
 from torch import nn
+
 from zeta.nn import VisionAttention
 
 # Create a sample input tensor
@@ -49,6 +50,7 @@ print(out)
 ```python
 import torch
 from torch import nn
+
 from zeta.nn import VisionAttention
 
 
@@ -63,6 +65,7 @@ class CustomModel(nn.Module):
         x = self.encoder(x)
         x = self.decoder(x)
         return x
+
 
 # Create an instance of the custom model
 custom_model = CustomModel()

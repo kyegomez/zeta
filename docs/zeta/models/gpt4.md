@@ -55,6 +55,7 @@ Here's how you can use the GPT4 class:
 ```python
 import torch
 from torch import nn
+
 from zeta.models import GPT4
 
 # Initialize with default parameters

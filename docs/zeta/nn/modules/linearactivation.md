@@ -9,7 +9,9 @@ The source code is as follows:
 ```python
 import torch.nn as nn
 from torch import Tensor
+
 from zeta.nn import LinearActivation
+
 
 class LinearActivation(nn.Module):
     """
@@ -38,8 +40,9 @@ This method executes the forward pass, in other words, it makes a forward pass f
 ## Usage Example 1
 ```python
 import torch
-from torch import Tensor
 import torch.nn as nn
+from torch import Tensor
+
 from zeta.nn import LinearActivation
 
 linear_activation = LinearActivation()
@@ -57,10 +60,10 @@ In this example, the `LinearActivation` class is instantiated first followed by 
 
 ```python
 import torch
-from torch import Tensor
 import torch.nn as nn
-from zeta.nn import LinearActivation
+from torch import Tensor
 
+from zeta.nn import LinearActivation
 
 # create an instance of the class LinearActivation
 linear_activation = LinearActivation()
@@ -79,10 +82,10 @@ In the second example, we create an input tensor of ones of size 10. When this t
 
 ```python
 import torch
-from torch import Tensor
 import torch.nn as nn
-from zeta.nn import LinearActivation
+from torch import Tensor
 
+from zeta.nn import LinearActivation
 
 linear_activation = LinearActivation()
 

@@ -7,7 +7,9 @@ Example Usage:
 ```python
 import torch.nn as nn
 import torch.nn.functional as F
+
 from zeta.nn import DepthWiseConv2d
+
 
 class Model(nn.Module):
     def __init__(self):
@@ -31,9 +33,7 @@ Attributes:
 Source Code:
 ```python
 class DepthWiseConv2d(nn.Module):
-    def __init__(
-        self, dim_in, dim_out, kernel_size, padding, stride, bias=True
-    ):
+    def __init__(self, dim_in, dim_out, kernel_size, padding, stride, bias=True):
         super().__init__()
         self.net = nn.Sequential(
             nn.Conv2d(

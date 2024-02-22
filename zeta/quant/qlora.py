@@ -1,3 +1,4 @@
+import math
 from typing import Tuple
 
 import torch
@@ -5,7 +6,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from scipy.stats import norm
 from tqdm import tqdm
-import math
 
 bnb_available = False
 
@@ -456,7 +456,7 @@ class NF4TensorDebug:
         # since we are using uint8 we will decode 2 entries per byte
         nkf = self.get_nf4()
         original_weight = torch.empty(
-            2 * (self.norm_float_weight.numel()), dtype=torch.bfloat16
+            2 * self.norm_float_weight.numel(), dtype=torch.bfloat16
         )
         # Scalers is a proxy for num_blocks
         for i in range(len(self.scalers)):
@@ -624,10 +624,10 @@ class QloraLinear(nn.Module):
     Attributes:
         weight: the learnable weights of the module of shape
             (out_features, in_features). The values are initialized from
-            :math:`\mathcal{U}(-\sqrt{k}, \sqrt{k})`, where :math:`k = \frac{1}{\text{in_features}}`
+            :math:`\\mathcal{U}(-\\sqrt{k}, \\sqrt{k})`, where :math:`k = \frac{1}{\text{in_features}}`
         lora_A: the learnable weights of the QLoRA A term of shape
             (r, in_features). The values are initialized from
-            :math:`\mathcal{U}(-\sqrt{k}, \sqrt{k})`, where :math:`k = \frac{1}{\text{in_features}}`
+            :math:`\\mathcal{U}(-\\sqrt{k}, \\sqrt{k})`, where :math:`k = \frac{1}{\text{in_features}}`
         lora_B: the learnable weights of the QLoRA B term of shape
             (out_features, r). The values are initialized to zero
         scaling: the scaling factor for the QLoRA term

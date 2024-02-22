@@ -62,8 +62,9 @@ The usage of `FeedbackBlock` is essentially to encapsulate a module in a network
 ```python
 import torch
 import torch.nn as nn
+
 from zeta.nn import FeedbackBlock
-   
+
 
 # Define a simple linear network
 class SimpleNet(nn.Module):
@@ -74,21 +75,22 @@ class SimpleNet(nn.Module):
     def forward(self, x):
         return self.fc(x)
 
+
 # Instantiate the simple network
 simple_net = SimpleNet()
-   
+
 # Wrapping the simple network with a FeedbackBlock
 feedback_net = FeedbackBlock(simple_net)
 
 # Usage in a training loop:
-x = torch.rand((64, 10)) # Assume an input tensor for batch of 64.
+x = torch.rand((64, 10))  # Assume an input tensor for batch of 64.
 
 # Initialize feedback
 feedback = None
 
-for _ in range(100): # 100 steps
+for _ in range(100):  # 100 steps
     y = feedback_net(x, feedback)
-    feedback = y.detach() # Detach() to avoid backpropagating gradients through time
+    feedback = y.detach()  # Detach() to avoid backpropagating gradients through time
     # ... Rest of training loop here
 ```
 

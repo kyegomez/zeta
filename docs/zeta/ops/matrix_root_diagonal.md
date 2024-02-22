@@ -42,6 +42,7 @@ The internal workflow checks the dimensionality of the input tensor `A`. It rais
 
 ```python
 import torch
+
 from zeta.ops import matrix_root_diagonal
 
 # Create a diagonal tensor
@@ -57,6 +58,7 @@ print(root_matrix)
 
 ```python
 import torch
+
 from zeta.ops import matrix_root_diagonal
 
 # Create a diagonal matrix
@@ -72,6 +74,7 @@ print(root_matrix)
 
 ```python
 import torch
+
 from zeta.ops import matrix_root_diagonal
 
 # Create a diagonal tensor

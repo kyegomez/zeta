@@ -30,6 +30,7 @@ The `fast_softmax` function can be used like a regular softmax function. However
 
 ```python
 import torch
+
 from zeta.ops import fast_softmax
 
 # Suppose we have an input tensor of logits
@@ -45,6 +46,7 @@ print(probabilities)
 
 ```python
 import torch
+
 from zeta.ops import fast_softmax
 
 # When dealing with large numbers
@@ -61,6 +63,7 @@ print(probabilities)
 
 ```python
 import torch
+
 from zeta.ops import fast_softmax
 
 # Batch of logits

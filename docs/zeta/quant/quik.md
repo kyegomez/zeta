@@ -97,7 +97,9 @@ To dequantize data, use the `dequantize` method of the QUIK layer. This method r
 
 ```python
 # Dequantize the quantized data
-dequantized_data = quik.dequantize(quantized_data, zero_point, scale_factor, scale_weight)
+dequantized_data = quik.dequantize(
+    quantized_data, zero_point, scale_factor, scale_weight
+)
 ```
 
 ### 4.4. Forward Pass <a name="forward-pass"></a>
@@ -121,6 +123,7 @@ In this example, we'll initialize the QUIK layer.
 
 ```python
 import torch
+
 from zeta.quant import QUIK
 
 # Initialize the QUIK module
@@ -145,7 +148,9 @@ In this example, we'll dequantize the quantized data.
 
 ```python
 # Dequantize the quantized data
-dequantized_data = quik.dequantize(quantized_data, zero_point, scale_factor, scale_weight)
+dequantized_data = quik.dequantize(
+    quantized_data, zero_point, scale_factor, scale_weight
+)
 ```
 
 ### 5.4. Example 4: Forward Pass <a name="example-4-forward-pass"></a>

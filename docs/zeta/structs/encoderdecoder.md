@@ -31,6 +31,8 @@ class EncoderDecoder(nn.Module):
         encoder (Encoder): The encoder module.
         decoder (Decoder): The decoder module.
     """
+
+
 ...
 ```
 
@@ -99,12 +101,11 @@ This method executes the forward pass of the module.
 ```python
 # Imports
 import torch
-from zeta.structs import Encoder, Decoder, EncoderDecoder
+
+from zeta.structs import Decoder, Encoder, EncoderDecoder
 
 # Arguments
-args = argparse.Namespace(
-    share_all_embeddings=True
-)
+args = argparse.Namespace(share_all_embeddings=True)
 src_tokens = torch.tensor([1, 2, 3])
 prev_output_tokens = torch.tensor([0, 1, 2])
 
@@ -113,7 +114,6 @@ enc_dec = EncoderDecoder(args)
 
 # Forward Pass
 decoder_out = enc_dec(src_tokens, prev_output_tokens)
-
 ```
 This returns the output of the decoder module. 
 

@@ -34,7 +34,6 @@ def test_optimizer_step_with_zero_gradient():
     loss = loss_fn(model(torch.tensor([[0.0, 0.0]]), torch.tensor([[0.0]])))
     loss.backward()
     optimizer.step()
-    assert True  # No exceptions were raised
 
 
 # Test optimizer step function with a non-zero gradient
@@ -45,7 +44,6 @@ def test_optimizer_step_with_non_zero_gradient():
     loss = loss_fn(model(torch.tensor([[1.0, 1.0]]), torch.tensor([[1.0]])))
     loss.backward()
     optimizer.step()
-    assert True  # No exceptions were raised
 
 
 # Test optimizer step function with weight decay
@@ -56,7 +54,6 @@ def test_optimizer_step_with_weight_decay():
     loss = loss_fn(model(torch.tensor([[1.0, 1.0]]), torch.tensor([[1.0]])))
     loss.backward()
     optimizer.step()
-    assert True  # No exceptions were raised
 
 
 # Test optimizer clip_grad_value function
@@ -68,7 +65,6 @@ def test_optimizer_clip_grad_value():
     loss.backward()
     optimizer.clip_grad_value(0.1)
     optimizer.step()
-    assert True  # No exceptions were raised
 
 
 # Test optimizer add_weight_decay function
@@ -122,7 +118,6 @@ def test_optimizer_with_custom_lr_and_weight_decay():
 def test_optimizer_with_custom_clip_threshold():
     model, loss_fn = create_model_and_loss()
     GradientEquilibrum(model.parameters(), clip_thresh=0.5)
-    assert True  # No exceptions were raised
 
 
 # Test optimizer with custom parameters and custom learning rate
@@ -198,7 +193,6 @@ def test_optimizer_step_with_custom_lr():
     loss = loss_fn(model(torch.tensor([[1.0, 1.0]]), torch.tensor([[1.0]])))
     loss.backward()
     optimizer.step(lr=0.01)  # Custom learning rate for this step
-    assert True  # No exceptions were raised
 
 
 # Test optimizer step function with a very small learning rate
@@ -209,7 +203,6 @@ def test_optimizer_step_with_small_lr():
     loss = loss_fn(model(torch.tensor([[1.0, 1.0]]), torch.tensor([[1.0]])))
     loss.backward()
     optimizer.step(lr=1e-6)  # Very small learning rate for this step
-    assert True  # No exceptions were raised
 
 
 # Test optimizer step function with a custom clip threshold
@@ -220,7 +213,6 @@ def test_optimizer_step_with_custom_clip_threshold():
     loss = loss_fn(model(torch.tensor([[1.0, 1.0]]), torch.tensor([[1.0]])))
     loss.backward()
     optimizer.step()
-    assert True  # No exceptions were raised
 
 
 # Test optimizer step function with weight decay and custom learning rate
@@ -231,7 +223,6 @@ def test_optimizer_step_with_weight_decay_and_custom_lr():
     loss = loss_fn(model(torch.tensor([[1.0, 1.0]]), torch.tensor([[1.0]])))
     loss.backward()
     optimizer.step(lr=0.01)  # Custom learning rate for this step
-    assert True  # No exceptions were raised
 
 
 # Test optimizer step function with custom gradient values
@@ -299,7 +290,7 @@ def test_optimizer_step_with_custom_gradient_values_and_weight_decay():
 # Define a sample model and data
 class SampleModel(nn.Module):
     def __init__(self):
-        super(SampleModel, self).__init__()
+        super().__init__()
         self.fc = nn.Linear(10, 10)
 
     def forward(self, x):

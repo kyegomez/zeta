@@ -1,8 +1,8 @@
 # Using LLAMA tokenizer
 import os
-import requests
 from logging import getLogger
 
+import requests
 from sentencepiece import SentencePieceProcessor
 
 logger = getLogger()

@@ -1,8 +1,9 @@
 import pytest
 import torch
-from zeta.nn.modules.simple_feedforward import (
+
+from zeta.nn.modules.simple_feedforward import (  # Adjust import as per your project structure
     SimpleFeedForward,
-)  # Adjust import as per your project structure
+)
 
 
 # Fixture for creating a SimpleFeedForward model

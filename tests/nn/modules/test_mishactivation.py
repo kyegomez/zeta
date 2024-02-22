@@ -1,9 +1,10 @@
 # MishActivation
 
 import torch
-from zeta.nn import MishActivation
-from torch import nn
 from packaging import version
+from torch import nn
+
+from zeta.nn import MishActivation
 
 
 def test_MishActivation_init():

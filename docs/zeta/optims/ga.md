@@ -114,9 +114,7 @@ import torch
 
 # Define a model with a complex gradient landscape
 model = torch.nn.Sequential(
-    torch.nn.Linear(1, 10),
-    torch.nn.ReLU(),
-    torch.nn.Linear(10, 1)
+    torch.nn.Linear(1, 10), torch.nn.ReLU(), torch.nn.Linear(10, 1)
 )
 
 # Objective function for maximizing model output
@@ -261,9 +259,7 @@ import torch
 
 # Define a model with a complex gradient landscape
 model = torch.nn.Sequential(
-    torch.nn.Linear(1, 10),
-    torch.nn.ReLU(),
-    torch.nn.Linear(10, 1)
+    torch.nn.Linear(1, 10), torch.nn.ReLU(), torch.nn.Linear(10, 1)
 )
 
 # Objective function for maximizing model output
@@ -294,9 +290,7 @@ import torch
 
 # Define a model with a complex gradient landscape
 model = torch.nn.Sequential(
-    torch.nn.Linear(1, 10),
-    torch.nn.ReLU(),
-    torch.nn.Linear(10, 1)
+    torch.nn.Linear(1, 10), torch.nn.ReLU(), torch.nn.Linear(10, 1)
 )
 
 # Objective function for maximizing model output
@@ -307,8 +301,8 @@ optimizer = GradientAscent(
     model.parameters(),
     lr=0.01,
     clip_value=1.0,
-    lr_decay=0.95,      # Learning rate decay
-    warmup_steps=50,    # Warmup for the first 50 steps
+    lr_decay=0.95,  # Learning rate decay
+    warmup_steps=50,  # Warmup for the first 50 steps
 )
 
 # Perform gradient ascent for 100 steps

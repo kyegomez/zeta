@@ -13,14 +13,13 @@ In various deep learning tasks, it is common to extract tokens (representative f
 ```python
 class TokenLearner(nn.Module):
     def __init__(
-            self,
-            *,
-            dim: int = None,
-            ff_mult: int = 2,
-            num_output_tokens: int = 8,
-            num_layers: int = 2
-    ):
-        ...
+        self,
+        *,
+        dim: int = None,
+        ff_mult: int = 2,
+        num_output_tokens: int = 8,
+        num_layers: int = 2,
+    ): ...
 ```
 
 ### Parameters:
@@ -44,8 +43,7 @@ The forward method of the `TokenLearner` class takes an input tensor `x` and per
 ### Method:
 
 ```python
-def forward(self, x):
-    ...
+def forward(self, x): ...
 ```
 
 ### Parameters:
@@ -61,8 +59,9 @@ def forward(self, x):
 ### Example 1: Basic Usage
 
 ```python
-from zeta import TokenLearner
 import torch
+
+from zeta import TokenLearner
 
 # Initialize the TokenLearner
 token_learner = TokenLearner(dim=64)
@@ -81,8 +80,9 @@ In this example, a `TokenLearner` is initialized with an input dimension of 64. 
 ### Example 2: Custom Parameters
 
 ```python
-from zeta import TokenLearner
 import torch
+
+from zeta import TokenLearner
 
 # Initialize the TokenLearner with custom parameters
 token_learner = TokenLearner(dim=128, ff_mult=4, num_output_tokens=16)
@@ -102,9 +102,10 @@ In this example, a `TokenLearner` is initialized with custom parameters. A rando
 ### Example 3: Integration with Other PyTorch Modules
 
 ```python
-from zeta import TokenLearner
 import torch
 import torch.nn as nn
+
+from zeta import TokenLearner
 
 # Initialize the TokenLearner
 token_learner = TokenLearner(dim=64)
@@ -113,11 +114,7 @@ token_learner = TokenLearner(dim=64)
 x = torch.randn(1, 64, 32, 32)
 
 # Define a simple model
-model = nn.Sequential(
-    token_learner,
-    nn.Flatten(),
-    nn.Linear(64*8, 10)
-)
+model = nn.Sequential(token_learner, nn.Flatten(), nn.Linear(64 * 8, 10))
 
 # Forward pass
 output = model(x)

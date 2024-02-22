@@ -1,4 +1,5 @@
-""" Vision utilities for image preprocessing, etc. """
+"""Vision utilities for image preprocessing, etc."""
+
 # noqa: E501
 
 import base64
@@ -9,7 +10,6 @@ from typing import TYPE_CHECKING, Dict, Iterable, List, Optional, Tuple, Union
 import numpy as np
 import requests
 from packaging import version
-
 from transformers.utils import (
     ExplicitEnum,
     is_jax_tensor,
@@ -145,7 +145,7 @@ def to_numpy_array(img) -> np.ndarray:
 
 def infer_channel_dimension_format(
     image: np.ndarray,
-    num_channels: Optional[Union[int, Tuple[int, ...]]] = None,
+    num_channels: Union[int, Tuple[int, ...], None] = None,
 ) -> ChannelDimension:
     """
     Infers the channel dimension format of `image`.
@@ -182,7 +182,7 @@ def infer_channel_dimension_format(
 
 def get_channel_dimension_axis(
     image: np.ndarray,
-    input_data_format: Optional[Union[ChannelDimension, str]] = None,
+    input_data_format: Union[ChannelDimension, str, None] = None,
 ) -> int:
     """
     Returns the channel dimension axis of the image.
@@ -232,7 +232,7 @@ def get_image_size(
 
 
 def is_valid_annotation_coco_detection(
-    annotation: Dict[str, Union[List, Tuple]]
+    annotation: Dict[str, Union[List, Tuple]],
 ) -> bool:
     if (
         isinstance(annotation, dict)
@@ -250,7 +250,7 @@ def is_valid_annotation_coco_detection(
 
 
 def is_valid_annotation_coco_panoptic(
-    annotation: Dict[str, Union[List, Tuple]]
+    annotation: Dict[str, Union[List, Tuple]],
 ) -> bool:
     if (
         isinstance(annotation, dict)
@@ -269,13 +269,13 @@ def is_valid_annotation_coco_panoptic(
 
 
 def valid_coco_detection_annotations(
-    annotations: Iterable[Dict[str, Union[List, Tuple]]]
+    annotations: Iterable[Dict[str, Union[List, Tuple]]],
 ) -> bool:
     return all(is_valid_annotation_coco_detection(ann) for ann in annotations)
 
 
 def valid_coco_panoptic_annotations(
-    annotations: Iterable[Dict[str, Union[List, Tuple]]]
+    annotations: Iterable[Dict[str, Union[List, Tuple]]],
 ) -> bool:
     return all(is_valid_annotation_coco_panoptic(ann) for ann in annotations)
 

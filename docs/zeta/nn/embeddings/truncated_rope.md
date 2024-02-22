@@ -39,8 +39,9 @@ Once the `theta_star` tensor is created, it is multiplied element-wise by the `f
 ### Usage Example:
 
 ```python
-from zeta.nn.embeddings.truncated_rope import TruncatedRotaryEmbedding
 import torch
+
+from zeta.nn.embeddings.truncated_rope import TruncatedRotaryEmbedding
 
 # Define the parameters
 dim = 64
@@ -48,7 +49,7 @@ a = 0.1
 b = 0.9
 rho = 0.5
 seq_len = 100
-device = torch.device('cuda')
+device = torch.device("cuda")
 
 # Create the TruncatedRotaryEmbedding module
 trunc_rotary_emb = TruncatedRotaryEmbedding(dim, a, b, rho)

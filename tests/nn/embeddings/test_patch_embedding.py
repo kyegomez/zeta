@@ -1,6 +1,7 @@
 import torch
-from torch import nn
 from einops.layers.torch import Rearrange
+from torch import nn
+
 from zeta.nn.embeddings.patch_embedding import PatchEmbeddings
 
 

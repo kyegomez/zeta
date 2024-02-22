@@ -1,9 +1,10 @@
 # tests/test_unet.py
 import pytest
 import torch
-from zeta.nn.modules.unet import (
+
+from zeta.nn.modules.unet import (  # Adjust this import according to your project structure
     Unet,
-)  # Adjust this import according to your project structure
+)
 
 
 # Preparation of fixtures

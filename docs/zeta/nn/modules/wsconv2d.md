@@ -59,6 +59,7 @@ The `forward` method convolves the input tensor `x` with standardized weights.
 Example Usage:
 ```python
 import torch
+
 from zeta.nn import WSConv2d
 
 # Instantiate a WSConv2d layer

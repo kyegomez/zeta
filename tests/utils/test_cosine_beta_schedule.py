@@ -1,5 +1,6 @@
-import torch
 import pytest
+import torch
+
 from zeta.utils import cosine_beta_schedule
 
 
@@ -18,7 +19,8 @@ def test_cosine_beta_schedule_values_range():
     """Ensure all values are in the range [0, 0.9999]"""
     for timesteps in range(100):
         betas = cosine_beta_schedule(timesteps)
-        assert (betas >= 0).all() and (betas <= 0.9999).all()
+        assert (betas >= 0).all()
+        assert (betas <= 0.9999).all()
 
 
 def test_cosine_beta_schedule_values_decreasing():

@@ -1,5 +1,5 @@
 import torch
-from torch import nn, Tensor
+from torch import Tensor, nn
 
 
 class VLayerNorm(nn.Module):

@@ -1,9 +1,8 @@
 import torch
-from torch.nn import Module
-from torch import nn, einsum
-
 from einops import rearrange, repeat
 from einops.layers.torch import Rearrange
+from torch import einsum, nn
+from torch.nn import Module
 
 # functions
 

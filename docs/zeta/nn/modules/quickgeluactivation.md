@@ -27,8 +27,8 @@ The class has a single method named forward.
 This function is responsible for applying the GELU approximation to the input tensor.
 
 ```python
-    def forward(self, input: Tensor) -> Tensor:
-        return input * torch.sigmoid(1.702 * input)
+def forward(self, input: Tensor) -> Tensor:
+    return input * torch.sigmoid(1.702 * input)
 ```
 
 **Parameters:**
@@ -52,6 +52,7 @@ Below is a simple example showing how to use QuickGELUActivation to apply a GELU
 ```python
 import torch
 from torch import nn
+
 from zeta.nn import QuickGELUActivation
 
 # create an instance of QuickGELUActivation

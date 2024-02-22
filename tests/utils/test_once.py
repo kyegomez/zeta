@@ -1,6 +1,8 @@
 # Import the necessary modules
-import pytest
 from unittest.mock import Mock
+
+import pytest
+
 from zeta.utils import once
 
 

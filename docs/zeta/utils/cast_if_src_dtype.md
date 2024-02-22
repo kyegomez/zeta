@@ -38,6 +38,7 @@ Below are some examples of how the function could be used:
 ## Example 1
 ```python
 import torch
+
 from zeta.utils import cast_if_src_dtype
 
 # Given: a float tensor
@@ -46,13 +47,14 @@ tensor = torch.tensor([1.0, 2.0, 3.0])
 # We want to convert it to integer type tensor if its data type is float32
 tensor, updated = cast_if_src_dtype(tensor, torch.float32, torch.int32)
 
-print(tensor) # tensor([1, 2, 3], dtype=torch.int32)
-print(updated) # True
+print(tensor)  # tensor([1, 2, 3], dtype=torch.int32)
+print(updated)  # True
 ```
 
 ## Example 2
 ```python
 import torch
+
 from zeta.utils import cast_if_src_dtype
 
 # Given: an integer tensor
@@ -61,13 +63,14 @@ tensor = torch.tensor([1, 2, 3])
 # We want to convert it to float type tensor if its data type is int32
 tensor, updated = cast_if_src_dtype(tensor, torch.int32, torch.float32)
 
-print(tensor) # tensor([1.0, 2.0, 3.0])
-print(updated) # True
+print(tensor)  # tensor([1.0, 2.0, 3.0])
+print(updated)  # True
 ```
 
 ## Example 3
 ```python
 import torch
+
 from zeta.utils import cast_if_src_dtype
 
 # Given: an integer tensor
@@ -76,8 +79,8 @@ tensor = torch.tensor([1, 2, 3])
 # If the data type is not equal to the source data type, the tensor will remain the same
 tensor, updated = cast_if_src_dtype(tensor, torch.float32, torch.int32)
 
-print(tensor) # tensor([1, 2, 3])
-print(updated) # False
+print(tensor)  # tensor([1, 2, 3])
+print(updated)  # False
 ```
 # Resources and References
 For more information on tensor operations and data types in PyTorch, refer to the official PyTorch documentation:

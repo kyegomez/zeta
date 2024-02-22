@@ -26,7 +26,7 @@ class TextSceneAttentionFusion(nn.Module):
     """
 
     def __init__(self, text_features: int, scene_features: int):
-        super(TextSceneAttentionFusion, self).__init__()
+        super().__init__()
 
         # A linear layer for calculating attention scores
         self.attention = nn.Linear(text_features + scene_features, 1)

@@ -27,7 +27,7 @@ class DynamicModule(nn.Module):
         Args:
             forward_method (callable, optional): Custom forward method. If None, default behavior is used.
         """
-    
+
     def add(self, name, module):
         """
         Add a module to the container.
@@ -44,7 +44,7 @@ class DynamicModule(nn.Module):
         Args:
             name (str): The name of the module to remove.
         """
-    
+
     def forward(self, x):
         """
         Forward pass through the modules.
@@ -55,7 +55,7 @@ class DynamicModule(nn.Module):
         Returns:
             Tensor: The output tensor.
         """
-    
+
     def save_state(self, path):
         """
         Save the state of the module to a file.
@@ -63,7 +63,7 @@ class DynamicModule(nn.Module):
         Args:
             path (str): The file path to save the module state.
         """
-    
+
     def load_state(self, path):
         """
         Load the state of the module from a file.
@@ -85,23 +85,25 @@ The `DynamicModule` is a subclass of `nn.Module` that uses an `nn.ModuleDict` to
 import torch
 from torch import nn
 
+
 # Define a custom forward method
 def custom_forward(module_dict, x):
-    return module_dict['linear'](x)
+    return module_dict["linear"](x)
+
 
 # Create a DynamicModule with a custom forward method
 dynamic_module = DynamicModule(forward_method=custom_forward)
 
 # Add linear and relu modules
-dynamic_module.add('linear', nn.Linear(10, 10))
-dynamic_module.add('relu', nn.ReLU())
+dynamic_module.add("linear", nn.Linear(10, 10))
+dynamic_module.add("relu", nn.ReLU())
 
 # Pass data through the dynamic architecture
 input_data = torch.randn(1, 10)
 output = dynamic_module(input_data)
 
 # Remove the 'relu' module
-dynamic_module.remove('relu')
+dynamic_module.remove("relu")
 ```
 
 ### Example 2: Conditional Network
@@ -114,11 +116,11 @@ use_dropout = True
 dynamic_module = DynamicModule()
 
 # Add a linear module
-dynamic_module.add('linear', nn.Linear(10, 10))
+dynamic_module.add("linear", nn.Linear(10, 10))
 
 # Add a dropout module conditionally
 if use_dropout:
-    dynamic_module.add('dropout', nn.Dropout(0.5))
+    dynamic_module.add("dropout", nn.Dropout(0.5))
 
 # Pass data through the dynamic network
 input_data = torch.randn(1, 10)
@@ -132,16 +134,16 @@ output = dynamic_module(input_data)
 dynamic_module = DynamicModule()
 
 # Add different modules for experimentation
-dynamic_module.add('conv1', nn.Conv2d(3, 32, kernel_size=3, padding=1))
-dynamic_module.add('conv2', nn.Conv2d(32, 64, kernel_size=3, padding=1))
-dynamic_module.add('maxpool', nn.MaxPool2d(kernel_size=2, stride=2))
-dynamic_module.add('linear', nn.Linear(64 * 16 * 16, 10))
+dynamic_module.add("conv1", nn.Conv2d(3, 32, kernel_size=3, padding=1))
+dynamic_module.add("conv2", nn.Conv2d(32, 64, kernel_size=3, padding=1))
+dynamic_module.add("maxpool", nn.MaxPool2d(kernel_size=2, stride=2))
+dynamic_module.add("linear", nn.Linear(64 * 16 * 16, 10))
 
 # Save the module state
-dynamic_module.save_state('experiment.pth')
+dynamic_module.save_state("experiment.pth")
 
 # Load the module state for further experimentation
-dynamic_module.load_state('experiment.pth')
+dynamic_module.load_state("experiment.pth")
 ```
 
 ## Mathematical Representation

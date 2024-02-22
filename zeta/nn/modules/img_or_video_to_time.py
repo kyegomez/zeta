@@ -1,5 +1,6 @@
-from einops import rearrange, pack, unpack
 from functools import wraps
+
+from einops import pack, rearrange, unpack
 
 
 def exists(val):

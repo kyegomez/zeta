@@ -6,6 +6,7 @@ Implementatin of the sparse attention of the transformer
 
 
 """
+
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -160,7 +161,7 @@ class SparseAttention(nn.Module):
     """
 
     def __init__(self, heads, attn_mode, local_attn_ctx=None, blocksize=32):
-        super(SparseAttention, self).__init__()
+        super().__init__()
         self.heads = heads
         self.attn_mode = attn_mode
         self.local_attn_ctx = local_attn_ctx

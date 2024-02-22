@@ -18,7 +18,7 @@ class MishActivation(nn.Module):
     """
     A pytorch implementation of mish activation function.
     """
-    
+
     def __init__(self):
         super().__init__()
         if version.parse(torch.__version__) < version.parse("1.9.0"):
@@ -70,9 +70,10 @@ This module requires PyTorch and Python 3.6 or above.
 ### Example 1: Importing the module and Applying the Mish Activation function
 
 ```python
-from torch import nn, Tensor
-from torch.nn import functional as F
 from packaging import version
+from torch import Tensor, nn
+from torch.nn import functional as F
+
 from zeta.nn import MishActivation
 
 input_tensor = Tensor([[-0.6, 0.7], [1.2, -0.7]])
@@ -85,27 +86,26 @@ The Mish Activation function can also be applied in Neural Network layers using 
 
 ```python
 import torch
-from torch import nn, Tensor
-from torch.nn import functional as F
 from packaging import version
+from torch import Tensor, nn
+from torch.nn import functional as F
+
 from zeta.nn import MishActivation
 
 
 class NeuralNetwork(nn.Module):
     def __init__(self):
-        super(NeuralNetwork, self).__init__()
+        super().__init__()
         self.flatten = nn.Flatten()
         self.layer = nn.Sequential(
-            nn.Linear(26, 256),
-            MishActivation(),
-            nn.Linear(256, 10),
-            MishActivation()
+            nn.Linear(26, 256), MishActivation(), nn.Linear(256, 10), MishActivation()
         )
 
     def forward(self, x):
         x = self.flatten(x)
         logits = self.layer(x)
         return logits
+
 
 model = NeuralNetwork()
 # Following lines shows how to use the model, given the input tensor, `X`.

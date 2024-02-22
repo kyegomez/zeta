@@ -1,7 +1,8 @@
 import pytest
 import torch
-from zeta.nn.modules.res_net import ResNet
 from torch.nn import Conv2d
+
+from zeta.nn.modules.res_net import ResNet
 
 
 def test_resnet_init():

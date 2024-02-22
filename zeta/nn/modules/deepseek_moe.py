@@ -1,6 +1,7 @@
 import torch
-from torch import nn, Tensor
 import torch.nn.functional as F
+from torch import Tensor, nn
+
 from zeta.nn.modules.feedforward import FeedForward as Expert
 
 
@@ -16,7 +17,7 @@ class DeepSeekMoE(nn.Module):
         *args,
         **kwargs,
     ):
-        super(DeepSeekMoE, self).__init__()
+        super().__init__()
         self.dim = dim
         self.num_experts = num_experts
         self.ff_dim = ff_dim

@@ -1,12 +1,11 @@
+import bitsandbytes
 import torch
-from zeta import DecoderConfig, Decoder
-from zeta.utils.embedding import PositionalEmbedding
-
-from transformers import CLIPProcessor, CLIPModel, AutoTokenizer
-
 from flamingo_pytorch import PerceiverResampler
 from torch.nn import Module
-import bitsandbytes
+from transformers import AutoTokenizer, CLIPModel, CLIPProcessor
+
+from zeta import Decoder, DecoderConfig
+from zeta.utils.embedding import PositionalEmbedding
 
 
 class KosmosTokenizer:

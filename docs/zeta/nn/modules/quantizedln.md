@@ -24,7 +24,7 @@ class QuantizedLN(nn.Module):
         element_wise_affine (bool, optional): Whether to include learnable affine parameters. Defaults to True.
   """
     ...
-  
+
   def forward(self, x: Tensor):
   """
   Forward pass of the QuantizedLN module.
@@ -64,8 +64,9 @@ Below are three examples of how to use the `QuantizedLN` module.
 
 ```python
 import torch
-from torch import nn, Tensor
+from torch import Tensor, nn
 from torch.nn.parameter import Parameter
+
 from zeta.nn.modules import QuantizedLN
 
 # Define input tensor
@@ -82,19 +83,21 @@ Define a custom network that uses have the `QuantizedLN` module:
 
 ```python
 import torch.nn as nn
+
 from zeta.nn.modules import QuantizedLN
 
 
 class CustomNetwork(nn.Module):
     def __init__(self):
-        super(CustomNetwork, self).__init__()
+        super().__init__()
         self.layer1 = nn.Linear(128, 256)
         self.ln = QuantizedLN(256)
-        
+
     def forward(self, x):
         x = self.layer1(x)
         x = self.ln(x)
         return x
+
 
 # Define input tensor
 x = torch.randn(128, 10)
@@ -112,23 +115,25 @@ The `QuantizedLN` module in a multi-layer setup:
 
 ```python
 import torch.nn as nn
+
 from zeta.nn.modules import QuantizedLN
 
 
 class DeepNetwork(nn.Module):
     def __init__(self):
-        super(DeepNetwork, self).__init__()
+        super().__init__()
         self.layer1 = nn.Linear(128, 256)
         self.ln1 = QuantizedLN(256)
         self.layer2 = nn.Linear(256, 512)
         self.ln2 = QuantizedLN(512)
-        
+
     def forward(self, x):
         x = self.layer1(x)
         x = self.ln1(x)
         x = self.layer2(x)
         x = self.ln2(x)
         return x
+
 
 # Define input tensor
 x = torch.randn(128, 10)

@@ -35,7 +35,7 @@ class ConvBNReLU(nn.Sequential):
 
     def __init__(self, in_planes, out_planes, kernel_size, stride=1, groups=1):
         padding = (kernel_size - 1) // 2
-        super(ConvBNReLU, self).__init__(
+        super().__init__(
             nn.Conv2d(
                 in_planes,
                 out_planes,
@@ -82,7 +82,7 @@ class SqueezeExcitation(nn.Module):
     """
 
     def __init__(self, in_planes, reduced_dim):
-        super(SqueezeExcitation, self).__init__()
+        super().__init__()
         self.se = nn.Sequential(
             nn.AdaptiveAvgPool2d(1),
             nn.Conv2d(in_planes, reduced_dim, 1),
@@ -117,7 +117,7 @@ class MBConv(nn.Module):
             kernel_size (int): Kernel size for the depthwise convolution.
             reduction_ratio (int, optional): Reduction ratio for the Squeeze-and-Excitation module. Defaults to 4.
         """
-        super(MBConv, self).__init__()
+        super().__init__()
         self.stride = stride
         self.use_residual = in_planes == out_planes and stride == 1
         assert stride in [1, 2]
@@ -195,7 +195,7 @@ class EfficientNet(nn.Module):
     """
 
     def __init__(self, width_mult=1.0):
-        super(EfficientNet, self).__init__()
+        super().__init__()
         # scale dimensions
         input_channel = _round_filters(32, width_mult)
         last_channel = _round_filters(1280, width_mult)

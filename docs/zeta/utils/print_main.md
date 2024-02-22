@@ -24,6 +24,7 @@ When dealing with distributed settings, it's quite common to observe duplicate c
 This function would typically be used within a project that utilises PyTorch's distributed utilities for parallel and distributed computation. So let's begin with the necessary imports:
 ```python
 from torch import distributed as dist
+
 import zeta.utils
 ```
 
@@ -62,7 +63,8 @@ Remember to ensure your distributed environment is properly initialized before u
 # main function
 def main():
     # distributing tasks between processes.
-    print_main("This message is from main process only.")   
+    print_main("This message is from main process only.")
+
 
 if __name__ == "__main__":
     main()

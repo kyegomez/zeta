@@ -1,5 +1,5 @@
 import torch
-from torch import nn, Tensor
+from torch import Tensor, nn
 
 
 class Laser(nn.Module):
@@ -35,7 +35,7 @@ class Laser(nn.Module):
         Args:
             rank_fraction (float): Fraction of the maximum rank to preserve in the approximation.
         """
-        super(Laser, self).__init__()
+        super().__init__()
         assert 0 <= rank_fraction < 1, "rank_fraction must be between 0 and 1."
         self.rank_fraction = rank_fraction
 

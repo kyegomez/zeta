@@ -1,18 +1,18 @@
 import math
+from typing import Optional, Tuple
+
 import torch
 import torch.nn.functional as F
+from colt5_attention import CoordinateDescentRouter
+from einops import rearrange, reduce, repeat
 from torch import Tensor, nn
 
-from typing import Tuple, Optional
-from einops import rearrange, repeat, reduce
 from zeta.models.vit import exists
-from zeta.structs.transformer import RMSNorm, apply_rotary_pos_emb
-
 from zeta.nn.attention.attend import Attend
 from zeta.nn.attention.local_attention_mha import LocalMHA
+from zeta.nn.modules.rms_norm import RMSNorm
+from zeta.nn.embeddings.rope import apply_rotary_pos_emb
 from zeta.utils.main import default, pad_to_multiple
-
-from colt5_attention import CoordinateDescentRouter
 
 
 class Attention(nn.Module):

@@ -1,7 +1,7 @@
-from torch import nn, einsum
-from einops import rearrange, pack, unpack
 import torch.nn.functional as F
+from einops import pack, rearrange, unpack
 from einops.layers.torch import Rearrange
+from torch import einsum, nn
 
 
 def exists(val):

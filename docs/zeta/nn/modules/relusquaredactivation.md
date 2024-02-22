@@ -43,10 +43,11 @@ It applies the `ReLU` activation function on the input tensor and then squares t
 # Importing the essential libraries
 import torch
 import torch.nn as nn
+
 from zeta.nn import ReLUSquaredActivation
 
 # Creating random torch tensor for input
-input_tensor = torch.randn((2,2))
+input_tensor = torch.randn((2, 2))
 
 # Creating an instance of module
 relu_squared_activation = ReLUSquaredActivation()

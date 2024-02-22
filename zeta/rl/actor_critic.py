@@ -27,7 +27,7 @@ class ActorCritic(nn.Module):
     """
 
     def __init__(self, num_inputs, num_outputs, hidden_size):
-        super(ActorCritic, self).__init__()
+        super().__init__()
         self.critic = nn.Sequential(
             nn.Linear(num_inputs, hidden_size),
             nn.ReLU(),

@@ -1,8 +1,9 @@
 import torch
+
 from zeta.nn.modules._activations import (
-    MishActivation,
-    LinearActivation,
     LaplaceActivation,
+    LinearActivation,
+    MishActivation,
     ReLUSquaredActivation,
 )
 

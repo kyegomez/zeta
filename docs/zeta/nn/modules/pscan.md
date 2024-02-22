@@ -20,6 +20,7 @@ The parallel scan operation uses an iterative approach to efficiently compute th
 ### Code Snippet for Usage
 ```python
 import torch
+
 from zeta.nn import PScan
 
 # Create input tensors

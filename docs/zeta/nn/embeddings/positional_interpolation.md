@@ -17,8 +17,10 @@ PositionalEmbedding module that uses interpolation to generate positional embedd
 ### Examples
 
 ```python
-from zeta.nn import PositionInterpolationEmbeddings
 import torch
+
+from zeta.nn import PositionInterpolationEmbeddings
+
 positional_embedding = PositionInterpolationEmbeddings(512, 1000)
 x = torch.randn(32, 100, 512)
 positions = torch.arange(100)

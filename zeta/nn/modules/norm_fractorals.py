@@ -23,7 +23,7 @@ class NormalizationFractral(nn.Module):
     def __init__(
         self, dim: int, eps=1e-8, fi: int = 4, *args, **kwargs  # Fractal index
     ):
-        super(NormalizationFractral, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.eps = eps
         self.fi = fi
 

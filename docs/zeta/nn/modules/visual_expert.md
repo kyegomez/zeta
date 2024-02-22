@@ -32,11 +32,9 @@ class VisualExpert:
         hidden_dim: int,
         dropout: float,
         heads: int,
-    ):
-        ...
-    
-    def __call__(self, x: torch.Tensor):
-        ...
+    ): ...
+
+    def __call__(self, x: torch.Tensor): ...
 ```
 
 ### Parameters <a name="parameters"></a>
@@ -86,6 +84,7 @@ The Visual Expert module works by aligning image features with different attenti
 
 ```python
 import torch
+
 from zeta.nn import VisualExpert
 
 # Create a Visual Expert module

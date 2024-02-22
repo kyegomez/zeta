@@ -18,6 +18,7 @@ The `NFNStem` module represents the leaf node of the Neural Filter Network (NFN)
 #### Usage Examples:
 ```python
 import torch
+
 from zeta.nn import NFNStem
 
 # Create a random tensor with the shape of (1, 3, 224, 224)
@@ -34,15 +35,14 @@ print(out.shape)
 ```python
 # Creating a custom NFNStem
 nfn_stem = NFNStem(
-    in_channels=[5, 10, 15, 20],
-    out_channels=[10, 20, 30, 40],
-    activation=nn.ReLU()
+    in_channels=[5, 10, 15, 20], out_channels=[10, 20, 30, 40], activation=nn.ReLU()
 )
 feature_map = nfn_stem(input_data)
 print(feature_map.shape)
 ```
 ```python
 import torch
+
 from zeta.nn import NFNStem
 
 # Utilization of NFNStem with custom parameters

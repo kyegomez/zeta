@@ -108,7 +108,7 @@ weight_decays = [0.0001, 0.001, 0.01]
 for lr in learning_rates:
     for wd in weight_decays:
         optimizer = StableAdamWUnfused(model.parameters(), lr=lr, weight_decay=wd)
-        
+
         # Training and evaluation code here
 ```
 

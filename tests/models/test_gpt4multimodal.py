@@ -1,7 +1,9 @@
-import torch
-import pytest
-from zeta.models import GPT4MultiModal
 from unittest.mock import patch
+
+import pytest
+import torch
+
+from zeta.models import GPT4MultiModal
 
 
 def test_GPT4MultiModal_initialization():

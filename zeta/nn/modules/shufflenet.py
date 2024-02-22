@@ -1,7 +1,7 @@
 import torch
-from torch import nn
-from einops.layers.torch import Rearrange
 import torch.nn.functional as F
+from einops.layers.torch import Rearrange
+from torch import nn
 
 
 class ShuffleNet(nn.Module):

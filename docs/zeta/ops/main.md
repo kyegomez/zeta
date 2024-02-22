@@ -260,7 +260,8 @@ In this example, we will compute the matrix inverse root of a symmetric positive
 
 ```python
 import torch
-from zeta import matrix_inverse_root, RootInvMethod
+
+from zeta import RootInvMethod, matrix_inverse_root
 
 A = torch.tensor([[4.0, 2.0], [2.0, 3.0]])
 root = 2
@@ -268,7 +269,13 @@ epsilon = 1e-6
 exponent_multiplier = 1.0
 method = RootInvMethod.EIGEN
 
-X = matrix_inverse_root(A, root, epsilon=epsilon, exponent_multiplier=exponent_multiplier, root_inv_method=method)
+X = matrix_inverse_root(
+    A,
+    root,
+    epsilon=epsilon,
+    exponent_multiplier=exponent_multiplier,
+    root_inv_method=method,
+)
 print(X)
 ```
 #### 5.2 Example 2: Matrix Root Diagonal
@@ -277,6 +284,7 @@ In this example, we will compute the matrix inverse root for a diagonal matrix b
 
 ```python
 import torch
+
 from zeta import matrix_root_diagonal
 
 A = torch.tensor([4.0, 9.0])
@@ -284,7 +292,9 @@ root = 2
 epsilon = 1e-6
 exponent_multiplier = 1.0
 
-X = matrix_root_diagonal(A, root, epsilon=epsilon, exponent_multiplier=exponent_multiplier)
+X = matrix_root_diagonal(
+    A, root, epsilon=epsilon, exponent_multiplier=exponent_multiplier
+)
 print(X)
 ```
 
@@ -294,7 +304,8 @@ In this example, we will compute the matrix inverse root using the coupled inver
 
 ```python
 import torch
-from zeta import matrix_inverse_root, RootInvMethod
+
+from zeta import RootInvMethod, matrix_inverse_root
 
 A = torch.tensor([[4.0, 2.0], [2.0, 3.0]])
 root = 2
@@ -302,7 +313,13 @@ epsilon = 1e-6
 exponent_multiplier = 1.0
 method = RootInvMethod.NEWTON
 
-X = matrix_inverse_root(A, root, epsilon=epsilon, exponent_multiplier=exponent_multiplier, root_inv_method=method)
+X = matrix_inverse_root(
+    A,
+    root,
+    epsilon=epsilon,
+    exponent_multiplier=exponent_multiplier,
+    root_inv_method=method,
+)
 print(X)
 ```
 

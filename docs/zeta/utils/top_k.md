@@ -33,8 +33,11 @@ Now, let's go through a few examples of how you can use the `top_k` function.
 In the most basic usage, you would pass a tensor of logits and receive a filtered tensor.
 
 ```python
-import torch
 from math import ceil
+
+import torch
+
+
 def top_k(logits, thres=0.9):
     k = ceil((1 - thres) * logits.shape[-1])
     val, ind = torch.topk(logits, k)
@@ -42,9 +45,10 @@ def top_k(logits, thres=0.9):
     probs.scatter_(1, ind, val)
     return probs
 
+
 logits = torch.tensor([0.1, 0.4, 0.3, 0.2, 0.5])
 probs = top_k(logits)
-print(probs) 
+print(probs)
 ```
 
 ### Example 2: Changing the Threshold
@@ -52,8 +56,11 @@ print(probs)
 The threshold value can be adjusted according to your requirements. A higher threshold may result in values being included that would otherwise be excluded.
 
 ```python
-import torch
 from math import ceil
+
+import torch
+
+
 def top_k(logits, thres=0.8):
     k = ceil((1 - thres) * logits.shape[-1])
     val, ind = torch.topk(logits, k)
@@ -61,9 +68,10 @@ def top_k(logits, thres=0.8):
     probs.scatter_(1, ind, val)
     return probs
 
+
 logits = torch.tensor([0.1, 0.4, 0.3, 0.2, 0.5])
 probs = top_k(logits)
-print(probs) 
+print(probs)
 ```
 
 ### Example 3: Using a Different Tensor
@@ -71,8 +79,11 @@ print(probs)
 The input tensor can be changed as needed. The only requirement is that the tensor should be a 1D tensor.
 
 ```python
-import torch
 from math import ceil
+
+import torch
+
+
 def top_k(logits, thres=0.9):
     k = ceil((1 - thres) * logits.shape[-1])
     val, ind = torch.topk(logits, k)
@@ -80,9 +91,10 @@ def top_k(logits, thres=0.9):
     probs.scatter_(1, ind, val)
     return probs
 
+
 logits = torch.tensor([0.1, 0.4, 0.7, 0.2, 0.5])
 probs = top_k(logits)
-print(probs) 
+print(probs)
 ```
 
 ## Additional Information and Tips:

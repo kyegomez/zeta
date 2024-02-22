@@ -68,7 +68,7 @@ nn.Module: A new model with exactly the same structure.
 ### Example 1
 ```python
 import torch.nn as nn
-from typing import List
+
 from zeta.nn.modules import AverageModelMerger
 
 # Define models
@@ -89,7 +89,7 @@ print(merged_model)
 ### Example 2
 ```python
 import torch.nn as nn
-from typing import List
+
 from zeta.nn.modules import AverageModelMerger
 
 # Define models
@@ -110,7 +110,7 @@ print(merged_model)
 ### Example 3
 ```python
 import torch.nn as nn
-from typing import List
+
 from zeta.nn.modules import AverageModelMerger
 
 # Define models

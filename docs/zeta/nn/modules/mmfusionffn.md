@@ -28,6 +28,7 @@ The method performs the following operations:
 ```python
 import torch
 from torch import nn
+
 from zeta.nn import MMFusionFFN
 
 # Define the input and hidden dimensions
@@ -40,7 +41,9 @@ dropout = 0.1
 ffn = MMFusionFFN(input_dim, hidden_dim, output_dim, dropout)
 
 # Example 1 - Forward pass with random input data
-input_data = torch.randn(5, 32, input_dim)  # Random input data of shape (5, 32, input_dim)
+input_data = torch.randn(
+    5, 32, input_dim
+)  # Random input data of shape (5, 32, input_dim)
 output = ffn(input_data)
 print(output.shape)  # Output tensor shape
 
@@ -48,7 +51,9 @@ print(output.shape)  # Output tensor shape
 ffn_default_dropout = MMFusionFFN(input_dim, hidden_dim, output_dim)
 
 # Example 3 - Forward pass with another input data
-input_data2 = torch.randn(8, 16, input_dim)  # Random input data of shape (8, 16, input_dim)
+input_data2 = torch.randn(
+    8, 16, input_dim
+)  # Random input data of shape (8, 16, input_dim)
 output2 = ffn_default_dropout(input_data2)
 print(output2.shape)  # Output tensor shape
 ```

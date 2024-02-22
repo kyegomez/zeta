@@ -3,7 +3,8 @@ This is a playground for the Transformer model.
 """
 
 import torch
-from zeta.nn import Transformer, Decoder
+
+from zeta.nn import Decoder, Transformer
 
 logits = torch.randint(0, 256, (1, 1024))
 

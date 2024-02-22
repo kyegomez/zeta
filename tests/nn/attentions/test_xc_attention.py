@@ -1,6 +1,7 @@
-""" Test cases for the XCAttention class. """
-import torch
+"""Test cases for the XCAttention class."""
+
 import pytest
+import torch
 from torch import nn
 
 from zeta.nn.attention.xc_attention import XCAttention

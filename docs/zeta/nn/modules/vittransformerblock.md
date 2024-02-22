@@ -29,8 +29,12 @@ feedforward_dim = 512
 expansion_factor = 3
 dropout_rate = 0.1
 
-transformer_block = VitTransformerBlock(input_dim, num_heads, dim_head, feedforward_dim, expansion_factor, dropout_rate)
-input_tensor = torch.randn(1, 3, 256 , 512)  # Batch size of 5, sequence length of 256, input dimension of 256
+transformer_block = VitTransformerBlock(
+    input_dim, num_heads, dim_head, feedforward_dim, expansion_factor, dropout_rate
+)
+input_tensor = torch.randn(
+    1, 3, 256, 512
+)  # Batch size of 5, sequence length of 256, input dimension of 256
 output = transformer_block(input_tensor)
 
 # Usage example 2:
@@ -40,10 +44,13 @@ dim_head = 64
 feedforward_dim = 512
 expansion_factor = 3
 dropout_rate = 0.1
-transformer_block = VitTransformerBlock(input_dim, num_heads, dim_head, feedforward_dim, expansion_factor, dropout_rate)
-input_tensor = torch.randn(1, 4, 64, 256)  # Batch size of 4, sequence length of 64 input dimension of 256
+transformer_block = VitTransformerBlock(
+    input_dim, num_heads, dim_head, feedforward_dim, expansion_factor, dropout_rate
+)
+input_tensor = torch.randn(
+    1, 4, 64, 256
+)  # Batch size of 4, sequence length of 64 input dimension of 256
 output = transformer_block(input_tensor)
-
 ```
 
 The VitTransformerBlock class represents a self-contained instance of a transformer block module used in the Vision Transformer architecture. The block has been designed and implemented to perform various operations such as self-attention and feed-forward network processing efficiently and effectively. It takes into account all the relevant design considerations and parameters required for its successful operation.

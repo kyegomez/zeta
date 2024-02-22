@@ -24,11 +24,11 @@ class FilmConditioning(nn.Module):
 Functionality and Usage:
 The `__init__` method initializes the module and its attributes. Two linear layers are defined for additive and multiplicative projections of conditioning. The `forward` method applies affine transformations to the input tensor based on the conditioning tensor.
 ```python
-  def forward(self, conv_filters: torch.Tensor, conditioning: torch.Tensor):
-      projected_cond_add = self._projection_add(conditioning)
-      projected_cond_mult = self._projection_mult(conditioning)
-      # Modifying the result is based on the conditioning tensor
-      return result
+def forward(self, conv_filters: torch.Tensor, conditioning: torch.Tensor):
+    projected_cond_add = self._projection_add(conditioning)
+    projected_cond_mult = self._projection_mult(conditioning)
+    # Modifying the result is based on the conditioning tensor
+    return result
 ```
 
 Usage Examples:
@@ -37,6 +37,7 @@ Usage Example 1: Applying Film Conditioning
 ```python
 import torch
 import torch.nn as nn
+
 from zeta.nn import FilmConditioning
 
 # Define input tensors
@@ -55,6 +56,7 @@ Usage Example 2: Applying Film Conditioning for another example
 ```python
 import torch
 import torch.nn as nn
+
 from zeta.nn import FilmConditioning
 
 # Define input tensors
@@ -73,8 +75,8 @@ Usage Example 3: Usage Example
 ```python
 import torch
 import torch.nn as nn
-from zeta.nn import FilmConditioning
 
+from zeta.nn import FilmConditioning
 
 # Define input tensors
 conv_filters = torch.randn(8, 2, 50, 50)

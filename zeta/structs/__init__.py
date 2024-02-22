@@ -6,13 +6,12 @@ from zeta.structs.hierarchical_transformer import (
     HierarchicalTransformer,
 )
 from zeta.structs.local_transformer import LocalTransformer
-
-# from zeta.structs.mag_vit import VideoTokenizer
 from zeta.structs.multi_modal_projector import build_vision_projector
 from zeta.structs.simple_transformer import (
     ParallelTransformerBlock,
     SimpleTransformer,
 )
+from zeta.structs.simple_vision_encoder import VisionEncoder
 from zeta.structs.transformer import (
     Decoder,
     Encoder,
@@ -20,7 +19,6 @@ from zeta.structs.transformer import (
     ViTransformerWrapper,
 )
 from zeta.structs.transformer_block import TransformerBlock
-from zeta.structs.simple_vision_encoder import VisionEncoder
 
 __all__ = [
     "AutoregressiveWrapper",

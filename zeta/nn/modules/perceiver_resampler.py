@@ -1,6 +1,7 @@
 import torch
-from torch import nn, einsum
 from einops import rearrange, repeat
+from torch import einsum, nn
+
 from zeta.ops.einops_poly import rearrange_many
 
 

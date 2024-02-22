@@ -17,7 +17,7 @@ class SkipConnection(nn.Module):
     """
 
     def __init__(self):
-        super(SkipConnection, self).__init__()
+        super().__init__()
 
     def forward(self, tensor1, tensor2):
         """

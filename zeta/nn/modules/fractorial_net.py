@@ -9,7 +9,7 @@ class FractalBlock(nn.Module):
         :param out_channels: Number of output channels.
         :param depth: Depth of the fractal block.
         """
-        super(FractalBlock, self).__init__()
+        super().__init__()
         self.depth = depth
 
         # Base case for recursion
@@ -48,7 +48,7 @@ class FractalNetwork(nn.Module):
         :param num_blocks: Number of fractal blocks in the network.
         :param block_depth: Depth of each fractal block.
         """
-        super(FractalNetwork, self).__init__()
+        super().__init__()
         self.blocks = nn.ModuleList(
             [
                 FractalBlock(

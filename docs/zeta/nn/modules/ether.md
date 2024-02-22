@@ -64,9 +64,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
 class Ether(nn.Module):
     def __init__(self, alpha=1.0):
-        super(Ether, self).__init__()
+        super().__init__()
         self.alpha = alpha
 
     def forward(self, y_pred, y_true):

@@ -11,6 +11,7 @@ The main attribute for `LASER` is `rank_fraction` which denotes the fraction of 
 ```python
 import torch
 from torch import nn
+
 from zeta.nn import LASER
 
 # Dimension of the weight matrix
@@ -23,7 +24,7 @@ W_2d = torch.randn(weight_dim, weight_dim)
 W_3d = torch.randn(10, weight_dim, weight_dim)
 
 # Fraction of the rank to preserve
-rank_fraction = 0.9  
+rank_fraction = 0.9
 
 # Create the LASER module
 laser = LASER(rank_fraction)
@@ -33,8 +34,12 @@ W_2d_low_rank = laser(W_2d)
 W_3d_low_rank = laser(W_3d)
 
 # Output the shape of the approximated matrices
-print(W_2d_low_rank.shape)  # The shape of the approximated 2D matrix will be the same as the original matrix
-print(W_3d_low_rank.shape)  # The shape of the approximated matrices will be the same as the original 3D tensor
+print(
+    W_2d_low_rank.shape
+)  # The shape of the approximated 2D matrix will be the same as the original matrix
+print(
+    W_3d_low_rank.shape
+)  # The shape of the approximated matrices will be the same as the original 3D tensor
 ```
 
 **Additional Tips:**

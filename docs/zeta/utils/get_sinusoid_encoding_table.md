@@ -35,6 +35,7 @@ Here's an example of how this function can be used:
 import numpy as np
 import torch
 
+
 def get_sinusoid_encoding_table(n_position, d_hid):
     def get_position_angle_vec(position):
         return [
@@ -49,6 +50,7 @@ def get_sinusoid_encoding_table(n_position, d_hid):
     sinusoid_table[:, 1::2] = np.cos(sinusoid_table[:, 1::2])  # dim 2i+1
 
     return torch.FloatTensor(sinusoid_table).unsqueeze(0)
+
 
 n_position = 10
 d_hid = 64

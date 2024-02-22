@@ -1,4 +1,5 @@
 import torch
+
 from zeta.models import GPT4MultiModal
 
 image = torch.randint(1, 3, 256, 256)

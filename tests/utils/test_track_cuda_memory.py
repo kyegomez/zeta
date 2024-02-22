@@ -1,5 +1,6 @@
 import pytest
 import torch
+
 from zeta.utils.cuda_memory_wrapper import track_cuda_memory_usage
 
 

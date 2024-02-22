@@ -1,8 +1,10 @@
 # GELUActivation
 
 import math
+
 import pytest
 import torch
+
 from zeta.nn import GELUActivation
 
 

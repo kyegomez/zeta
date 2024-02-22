@@ -22,7 +22,7 @@ def img_transpose(x: torch.Tensor) -> torch.Tensor:
     Returns:
     - torch.Tensor: The image tensor with transposed dimensions.
     ```
-    
+
 ## Functional Explanation
 
 The `img_transpose` function is built to be straightforward and easy to use. It leverages the `rearrange` function, which is a part of the `einops` library, to perform dimension rearrangement efficiently. This transformation is often necessary before displaying images using visualization libraries or for further image processing tasks that require the channel dimension at the end.
@@ -55,9 +55,10 @@ plt.show()
 **Example 2: Preparing Tensor for Tensorflow**
 
 ```python
-import torch
-from zeta.ops import img_transpose
 import tensorflow as tf
+import torch
+
+from zeta.ops import img_transpose
 
 # Create a dummy image tensor in (B, C, H, W) format
 batch_size, channels, height, width = 4, 3, 224, 224
@@ -76,21 +77,26 @@ tf_images = tf.convert_to_tensor(tf_ready_images.numpy())
 
 ```python
 import torch
-from torchvision import transforms
-from zeta.ops import img_transpose
 from PIL import Image
+from torchvision import transforms
+
+from zeta.ops import img_transpose
 
 # Load an image using PIL
-image_path = 'path_to_your_image.jpg'
+image_path = "path_to_your_image.jpg"
 pil_image = Image.open(image_path)
 
 # Define a torchvision transform to convert the image to tensor
-transform = transforms.Compose([
-    transforms.ToTensor(),  # Converts the image to (C, H, W) format
-])
+transform = transforms.Compose(
+    [
+        transforms.ToTensor(),  # Converts the image to (C, H, W) format
+    ]
+)
 
 # Apply the transform
-torch_image = transform(pil_image).unsqueeze(0)  # Unsqueeze to add the batch dimension (B, C, H, W)
+torch_image = transform(pil_image).unsqueeze(
+    0
+)  # Unsqueeze to add the batch dimension (B, C, H, W)
 
 # Transpose the image tensor to (B, H, W, C) using img_transpose
 ready_image = img_transpose(torch_image)

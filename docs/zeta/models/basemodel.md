@@ -2,7 +2,7 @@
 
 ```python
 from abc import ABC
-    
+
 
 class BaseModel(ABC):
     def __init__(self, *args, **kwargs):
@@ -52,7 +52,7 @@ As `BaseModel` is abstract, we cannot directly use it. Instead, we can extend it
 class MyModel(BaseModel):
     def __init__(self, number_of_layers):
         self.number_of_layers = number_of_layers
-        super(MyModel, self).__init__()
+        super().__init__()
 
     def forward(self):
         # Implement your forward pass here

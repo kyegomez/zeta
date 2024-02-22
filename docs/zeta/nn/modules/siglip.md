@@ -62,7 +62,9 @@ To use the `SigLipLoss` module, you first need to initialize it. You can provide
 from zeta.nn.modules import SigLipLoss
 
 # Initialize SigLipLoss module
-loss = SigLipLoss(cache_labels=False, rank=0, world_size=1, bidir=True, use_horovod=False)
+loss = SigLipLoss(
+    cache_labels=False, rank=0, world_size=1, bidir=True, use_horovod=False
+)
 ```
 
 ### 4.2. Calculating Loss <a name="calculating-loss"></a>

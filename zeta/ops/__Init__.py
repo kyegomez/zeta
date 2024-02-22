@@ -1,9 +1,16 @@
-from zeta.ops.einops_from_to import EinopsToAndFrom
-from zeta.ops.einops_poly import (
-    rearrange_many,
-    reduce_many,
-    repeat_many,
+from zeta.ops.absmax import absmax
+from zeta.ops.dilated_attn_ops import (
+    Allgather,
+    all_gather_func,
+    get_data_parallel_group,
+    get_data_parallel_rank,
+    get_data_parallel_world_size,
+    get_rank,
+    get_world_size,
+    padding_to_multiple_of,
 )
+from zeta.ops.einops_from_to import EinopsToAndFrom
+from zeta.ops.einops_poly import rearrange_many, reduce_many, repeat_many
 from zeta.ops.main import (
     _matrix_inverse_root_newton,
     _matrix_root_eigen,
@@ -25,12 +32,14 @@ from zeta.ops.main import (
     squeeze_2d_new,
     unsqueeze_2d_new,
 )
+from zeta.ops.misc_act import VPGELU, VPReLU
 from zeta.ops.mm_rearranges import (
     reshape_audio_to_text,
     reshape_img_to_text,
     reshape_text_to_img,
     reshape_video_to_text,
 )
+from zeta.ops.mm_softmax import mm_softmax
 from zeta.ops.softmax import (
     fast_softmax,
     gumbelmax,
@@ -44,23 +53,6 @@ from zeta.ops.softmax import (
     temp_softmax,
 )
 from zeta.ops.unitwise_norm import unitwise_norm
-from zeta.ops.dilated_attn_ops import (
-    padding_to_multiple_of,
-    get_data_parallel_group,
-    get_rank,
-    get_world_size,
-    get_data_parallel_rank,
-    get_data_parallel_world_size,
-    Allgather,
-    all_gather_func,
-)
-
-from zeta.ops.absmax import absmax
-from zeta.ops.misc_act import (
-    VPGELU,
-    VPReLU,
-)
-from zeta.ops.mm_softmax import mm_softmax
 
 __all__ = [
     "EinopsToAndFrom",

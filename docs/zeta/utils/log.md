@@ -35,6 +35,7 @@ Here is a simple example usage of `zeta.utils.log`:
 
 ```python
 import torch
+
 import zeta.utils as zutils
 
 t = torch.tensor([0.0, 0.1, 1.0, 10.0])
@@ -58,6 +59,7 @@ Here is another example of how adjusting `eps` can affect your results:
 
 ```python
 import torch
+
 import zeta.utils as zutils
 
 t = torch.tensor([0.0, 0.1, 1.0, 10.0])

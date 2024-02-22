@@ -1,6 +1,8 @@
-from torch import nn, Tensor
-from zeta.nn.modules.ws_conv2d import WSConv2d
 from typing import List
+
+from torch import Tensor, nn
+
+from zeta.nn.modules.ws_conv2d import WSConv2d
 
 
 class NFNStem(nn.Module):
@@ -30,7 +32,7 @@ class NFNStem(nn.Module):
         stride: List[int] = [2, 1, 1, 2],
         activation: nn.Module = nn.GELU(),
     ):
-        super(NFNStem, self).__init__()
+        super().__init__()
         self.in_channels = in_channels
         self.out_channels = out_channels
         self.activation = activation

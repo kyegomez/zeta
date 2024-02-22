@@ -49,6 +49,7 @@ Here's the step-by-step process of how the operation works:
 ```python
 import torch
 from einops import rearrange
+
 from zeta.ops import squeeze_2d_new
 
 # Assuming zeta.ops has been correctly set up, which includes the function squeeze_2d_new.
@@ -68,6 +69,7 @@ print("Squeezed tensor:\n", output_tensor)
 ```python
 import torch
 from einops import rearrange
+
 from zeta.ops import squeeze_2d_new
 
 # Assume the same setup as above.
@@ -86,15 +88,20 @@ print("Squeezed tensor with factor=4:\n", output_tensor)
 import torch
 import torch.nn as nn
 from einops import rearrange
+
 from zeta.ops import squeeze_2d_new
 
 # Assume the same setup as above.
 
 # Create a tensor with random data
-input_tensor = torch.randn(10, 16, 64, 64)  # 10 samples, 16 channels, 64x64 spatial size
+input_tensor = torch.randn(
+    10, 16, 64, 64
+)  # 10 samples, 16 channels, 64x64 spatial size
 
 # Define a convolutional layer to process the squeezed tensor
-conv_layer = nn.Conv2d(in_channels=16*4*4, out_channels=32, kernel_size=1)  # Adjust in_channels based on the squeezing factor
+conv_layer = nn.Conv2d(
+    in_channels=16 * 4 * 4, out_channels=32, kernel_size=1
+)  # Adjust in_channels based on the squeezing factor
 
 # Use the squeeze_2d_new function to squeeze input tensor
 squeezed_tensor = squeeze_2d_new(input_tensor, factor=4)

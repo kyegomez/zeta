@@ -311,7 +311,8 @@ class NaViT(nn.Module):
             image_ids = torch.empty((0,), device=device, dtype=torch.long)
 
             for image_id, image in enumerate(images):
-                assert image.ndim == 3 and image.shape[0] == c
+                assert image.ndim == 3
+                assert image.shape[0] == c
                 image_dims = image.shape[-2:]
                 assert all([divisible_by(dim, p) for dim in image_dims]), (
                     f"height and width {image_dims} of images must be divisible"

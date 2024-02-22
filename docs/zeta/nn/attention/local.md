@@ -15,8 +15,7 @@ Key terms:
 ## Class Definition
 
 ```python
-class LocalAttention(nn.Module):
-    ...
+class LocalAttention(nn.Module): ...
 ```
 
 ### Parameters
@@ -84,9 +83,10 @@ The `LocalAttention` module is designed to efficiently compute attention values 
 ### Usage Example:
 
 ```python
-from zeta import LocalAttention
-import torch.nn as nn
 import torch
+import torch.nn as nn
+
+from zeta import LocalAttention
 
 q = torch.randn(1, 100, 32)
 k = torch.randn(1, 100, 32)

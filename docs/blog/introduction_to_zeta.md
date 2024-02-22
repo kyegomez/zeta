@@ -132,6 +132,7 @@ To demonstrate the power of Zeta, let's take a closer look at its `FlashAttentio
 
 ```python
 import torch
+
 from zeta.nn.attention import FlashAttention
 
 q = torch.randn(2, 4, 6, 8)
@@ -141,7 +142,7 @@ v = torch.randn(2, 4, 10, 8)
 attention = FlashAttention(causal=False, dropout=0.1, flash=True)
 output = attention(q, k, v)
 
-print(output.shape) 
+print(output.shape)
 ```
 
 The `FlashAttention` module empowers your models with cutting-edge attention mechanisms effortlessly.
@@ -180,13 +181,7 @@ Zeta's `FeedForward` module simplifies feedforward operations in neural networks
 ```python
 from zeta.nn import FeedForward
 
-model = FeedForward(
-  256, 
-  512, 
-  glu=True, 
-  post_act_ln=True, 
-  dropout=0.2
-)
+model = FeedForward(256, 512, glu=True, post_act_ln=True, dropout=0.2)
 
 x = torch.randn(1, 256)
 
@@ -201,15 +196,18 @@ Zeta's `BitLinear` module combines linear transformation with quantization and d
 ```python
 import torch
 from torch import nn
+
 import zeta.quant as qt
+
 
 class MyModel(nn.Module):
     def __init__(self):
-        super(MyModel, self).__init__()
+        super().__init__()
         self.linear = qt.BitLinear(10, 20)
 
     def forward(self, x):
         return self.linear(x)
+
 
 model = MyModel()
 
@@ -226,12 +224,13 @@ Zeta's `PalmE` is a multi-modal transformer architecture that opens new possibil
 
 ```python
 import torch
+
 from zeta.structs import (
-  AutoregressiveWrapper,
-  Decoder,
-  Encoder,
-  Transformer,
-  ViTransformerWrapper,
+    AutoregressiveWrapper,
+    Decoder,
+    Encoder,
+    Transformer,
+    ViTransformerWrapper,
 )
 
 # Usage with random inputs
@@ -249,7 +248,8 @@ Zeta's `Unet` brings the power of convolutional neural networks for image segmen
 
 ```python
 import torch
-from zeta.nn import Unet  
+
+from zeta.nn import Unet
 
 model = Unet(n_channels=1, n_classes=2)
 
@@ -266,16 +266,17 @@ print(f"Output shape: {y.shape}")
 Zeta's `VisionEmbedding` class transforms images into patch embeddings for transformer-based models:
 
 ```python
-from zeta.nn import VisionEmbedding
 import torch
 
+from zeta.nn import VisionEmbedding
+
 vision_embedding = VisionEmbedding(
-  img_size=224,
-  patch_size=16,
-  in_chans=3,
-  embed_dim=768,
-  contain_mask_token=True,
-  prepend_cls_token=True,
+    img_size=224,
+    patch_size=16,
+    in_chans=3,
+    embed_dim=768,
+    contain_mask_token=True,
+    prepend_cls_token=True,
 )
 
 input_image = torch.rand(1, 3, 224, 224)

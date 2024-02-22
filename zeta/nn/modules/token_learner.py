@@ -1,7 +1,7 @@
 # from lucirains rt-1
 
+from einops import pack, rearrange, reduce, repeat, unpack
 from torch import nn
-from einops import pack, unpack, repeat, reduce, rearrange
 
 
 # helpers

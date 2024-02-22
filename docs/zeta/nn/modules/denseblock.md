@@ -60,6 +60,7 @@ In this example, the `DenseBlock` will include a Linear layer as submodule.
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
+
 from zeta.nn import DenseBlock
 
 # Defining submodule
@@ -83,10 +84,11 @@ In this example, a 2-layer neural network using Dense Blocks is shown. The first
 ```python
 import torch.nn.functional as F
 
+
 # Defining a custom model
 class Net(nn.Module):
     def __init__(self):
-        super(Net, self).__init__()
+        super().__init__()
         self.layer1 = DenseBlock(nn.Linear(10, 5))
         self.layer2 = nn.Linear(15, 1)
 
@@ -94,6 +96,7 @@ class Net(nn.Module):
         x = F.relu(self.layer1(x))
         x = self.layer2(x)
         return x
+
 
 # Initializing the model
 net = Net()
@@ -113,6 +116,7 @@ Lastly, this example shows how to use DenseBlock inside a Convolutional Neural N
 ```python
 import torch
 import torch.nn as nn
+
 from zeta.nn import DenseBlock
 
 cnn = nn.Sequential(

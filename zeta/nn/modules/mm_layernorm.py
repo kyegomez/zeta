@@ -1,6 +1,7 @@
-import torch
-from torch import nn, Tensor
 from typing import List
+
+import torch
+from torch import Tensor, nn
 
 
 class MMLayerNorm(nn.Module):
@@ -22,7 +23,7 @@ class MMLayerNorm(nn.Module):
             >>> output = mm_ln([modality1, modality2])
             >>> output.shape
         """
-        super(MMLayerNorm, self).__init__()
+        super().__init__()
         self.num_modalities = num_modalities
         self.dim = dim
         self.epsilon = epsilon

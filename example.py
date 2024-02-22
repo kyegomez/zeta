@@ -3,6 +3,7 @@ This script demonstrates the usage of the FlashAttentionmodule from zeta.nn as a
 """
 
 import torch
+
 from zeta.nn import FlashAttention
 
 q = torch.randn(2, 4, 6, 8)

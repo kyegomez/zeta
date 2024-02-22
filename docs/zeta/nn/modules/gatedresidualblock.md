@@ -36,6 +36,7 @@ A simple usage of `GatedResidualBlock` is demonstrated below.
 ```python
 import torch
 import torch.nn as nn
+
 from zeta.nn import GatedResidualBlock
 
 # Define the sub-blocks

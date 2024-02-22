@@ -1,7 +1,8 @@
 import pytest
 import torch
-from zeta.nn.modules.token_learner import TokenLearner
 from torch import nn
+
+from zeta.nn.modules.token_learner import TokenLearner
 
 
 def test_tokenlearner_initialization():

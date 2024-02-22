@@ -30,9 +30,8 @@ Class torch.nn.FusedDropoutLayerNorm(dim, dropout=0.1, eps=1e-5, elementwise_aff
 Dim: 512
 
 ```python
-
-from torch import nn
 import torch
+from torch import nn
 
 x = torch.randn(1, 512)
 model = nn.FusedDropoutLayerNorm(512)

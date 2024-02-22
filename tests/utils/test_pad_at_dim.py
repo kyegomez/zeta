@@ -1,6 +1,7 @@
-import torch
-from zeta.utils import pad_at_dim
 import pytest
+import torch
+
+from zeta.utils import pad_at_dim
 
 
 def test_pad_at_dim():
@@ -47,7 +48,8 @@ def test_pad_with_value():
 def test_different_pad_sizes(pad):
     tensor = torch.tensor([1, 2, 3, 4])
     padded_tensor = pad_at_dim(tensor, pad)
-    assert padded_tensor[0] == 0 and padded_tensor[-1] == 0
+    assert padded_tensor[0] == 0
+    assert padded_tensor[-1] == 0
 
 
 @pytest.mark.parametrize("dim", [-1, 0, 1, 2, 3])

@@ -1,6 +1,11 @@
 from torch import nn
+import torch.nn.functional as F
+from zeta.nn.modules.glu import GLU
 
-from zeta.structs.transformer import GLU, ReluSquared
+
+class ReluSquared(nn.Module):
+    def forward(self, x):
+        return F.relu(x) ** 2
 
 
 def exists(val):

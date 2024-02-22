@@ -1,7 +1,8 @@
 # LinearActivation
 
-import torch
 import pytest
+import torch
+
 from zeta.nn import LinearActivation
 
 
@@ -10,7 +11,7 @@ def test_LinearActivation_init():
 
 
 @pytest.mark.parametrize(
-    "input_tensor", [(torch.tensor([1, 2, 3])), (torch.tensor([-1, 0, 1]))]
+    "input_tensor", [torch.tensor([1, 2, 3]), torch.tensor([-1, 0, 1])]
 )
 def test_LinearActivation_forward(input_tensor):
     """Test if the forward method of LinearActivation class returns the same input tensor."""

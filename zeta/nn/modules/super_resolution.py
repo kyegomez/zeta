@@ -1,5 +1,5 @@
-from torch import nn
 from einops.layers.torch import Rearrange
+from torch import nn
 
 
 class SuperResolutionNet(nn.Module):
@@ -18,7 +18,7 @@ class SuperResolutionNet(nn.Module):
         self,
         upscale_factor=2,
     ):
-        super(SuperResolutionNet, self).__init__()
+        super().__init__()
 
         self.net = nn.Sequential(
             nn.Conv2d(1, 64, kernel_size=5, padding=2),

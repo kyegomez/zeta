@@ -51,6 +51,7 @@ The class design for `DualPathBlock` is very straightforward. It is initialized 
 # Import the necessary libraries
 import torch
 import torch.nn as nn
+
 from zeta.nn import DualPathBlock
 
 # Define two simple submodule

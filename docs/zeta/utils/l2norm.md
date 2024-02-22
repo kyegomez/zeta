@@ -36,10 +36,10 @@ This function first rearranges the tensor `t` into the specified number of `grou
 ### Example 1:
 ```python
 # Ignore import errors, they are part of the example code
-from torch import randn
 from einops import rearrange
+from torch import randn
 
-t = randn(2, 2, 3)  
+t = randn(2, 2, 3)
 result = l2norm(t, groups=2)
 ```
 
@@ -48,10 +48,10 @@ In this example, we generate a random tensor `t` with dimensions (2,2,3) using t
 ### Example 2:
 ```python
 # Ignore import errors, they are part of the example code
-from torch import randn
 from einops import rearrange
+from torch import randn
 
-t = randn(3, 3, 3) 
+t = randn(3, 3, 3)
 result = l2norm(t, groups=1)
 ```
 
@@ -60,10 +60,10 @@ In this example, we generate a random tensor `t` with dimensions (3,3,3) using t
 ### Example 3:
 ```python
 # Ignore import errors, they are part of the example code
-from torch import randn
 from einops import rearrange
+from torch import randn
 
-t = randn(4, 4, 2) 
+t = randn(4, 4, 2)
 result = l2norm(t, groups=4)
 ```
 

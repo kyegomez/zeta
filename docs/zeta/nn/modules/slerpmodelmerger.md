@@ -13,7 +13,7 @@ Here is the class definition:
 class SLERPModelMerger(nn.Module):
     @enforce_types
     def __init__(self, model1: nn.Module, model2: nn.Module, t: float = 0.5):
-    
+
     def merge(self) -> nn.Module:
 
     @staticmethod
@@ -42,6 +42,7 @@ The following code shows how to use the SLERPModelMerger class to merge two PyTo
 
 ```python
 import torch.nn as nn
+
 from zeta.nn import SLERPModelMerger
 
 model1 = nn.Linear(10, 10)

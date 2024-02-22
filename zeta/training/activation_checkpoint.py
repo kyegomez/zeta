@@ -1,10 +1,9 @@
+import functools
+import typing
 from functools import partial
 
 import torch
 from accelerate import Accelerator
-import typing
-import functools
-
 from torch.distributed.algorithms._checkpoint.checkpoint_wrapper import (
     CheckpointImpl,
     checkpoint_wrapper,

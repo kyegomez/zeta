@@ -58,9 +58,10 @@ In this basic example, we create an instance of the `PytorchGELUTanh` class and 
 ```python
 # Import necessary libraries
 import torch
-from torch import nn, Tensor
 from packaging import version
+from torch import Tensor, nn
 from torch.nn.functional import gelu
+
 from zeta.nn import PytorchGELUTanh
 
 # Create an instance of the PytorchGELUTanh class.
@@ -70,8 +71,8 @@ gelutanh = PytorchGELUTanh()
 x = torch.randn(3)
 
 # Print the tensor before and after applying the GeLU Tanh activation function.
-print('Before: ', x)
-print('After: ', gelutanh.forward(x))
+print("Before: ", x)
+print("After: ", gelutanh.forward(x))
 ```
 
 ### Example 2: Application to Deep Learning
@@ -81,24 +82,26 @@ The `PytorchGELUTanh` class can be used in place of traditional activation funct
 ```python
 # Import necessary libraries
 import torch
-from torch import nn, Tensor
+from torch import Tensor, nn
 from torch.nn.functional import gelu
+
 from zeta.nn import PytorchGELUTanh
 
 
 # Define a feed-forward neural network with 2 layers and the PytorchGELUTanh activation function
 class FeedForwardNN(nn.Module):
     def __init__(self):
-        super(FeedForwardNN, self).__init__()
+        super().__init__()
         self.fc1 = nn.Linear(10, 20)  # 10 input neurons, 20 output neurons
         self.gelu = PytorchGELUTanh()  # Our custom activation function
-        self.fc2 = nn.Linear(20, 1)   # Final layer
+        self.fc2 = nn.Linear(20, 1)  # Final layer
 
     def forward(self, x):
         x = self.fc1(x)
         x = self.gelu(x)  # Apply the PytorchGELUTanh activation
         x = self.fc2(x)
         return x
+
 
 # Instantiate the model
 model = FeedForwardNN()

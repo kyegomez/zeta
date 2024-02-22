@@ -20,13 +20,7 @@ The `Lora` class is defined as follows:
 
 ```python
 class Lora(nn.Module):
-    def __init__(
-        self,
-        dim,
-        dim_out,
-        r=8,
-        alpha=None
-    ):
+    def __init__(self, dim, dim_out, r=8, alpha=None):
         super().__init__()
         self.scale = alpha / r
 
@@ -36,7 +30,7 @@ class Lora(nn.Module):
     @property
     def weight(self):
         return (self.A @ self.B) * self.scale
-    
+
     def forward(self, x):
         return x @ self.weight
 ```
@@ -87,10 +81,11 @@ Below are three examples of how to use the `Lora` class.
 
 ```python
 import torch
+
 from zeta import Lora
 
 # Define the input data
-x = torch.randn(32, 128) # batch size of 32, and 128 features
+x = torch.randn(32, 128)  # batch size of 32, and 128 features
 
 # Define the Lora module
 lora = Lora(dim=128, dim_out=64)
@@ -103,10 +98,11 @@ y = lora(x)
 
 ```python
 import torch
+
 from zeta import Lora
 
 # Define the input data
-x = torch.randn(32, 128) # batch size of 32, and 128 features
+x = torch.randn(32, 128)  # batch size of 32, and 128 features
 
 # Define the Lora module with specified rank and scale factor
 lora = Lora(dim=128, dim_out=64, r=16, alpha=0.1)
@@ -120,7 +116,9 @@ y = lora(x)
 ```python
 import torch
 from torch import nn
+
 from zeta import Lora
+
 
 # Define a simple neural network with a Lora layer
 class Net(nn.Module):
@@ -128,14 +126,15 @@ class Net(nn.Module):
         super().__init__()
         self.lora = Lora(dim=128, dim_out=64)
         self.fc = nn.Linear(64, 10)
-    
+
     def forward(self, x):
         x = self.lora(x)
         x = self.fc(x)
         return x
 
+
 # Define the input data
-x = torch.randn(32, 128) # batch size of 32, and 128 features
+x = torch.randn(32, 128)  # batch size of 32, and 128 features
 
 # Define the model
 model = Net()

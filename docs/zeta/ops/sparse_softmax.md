@@ -32,6 +32,7 @@ Below we provide detailed examples illustrating how to use the `sparse_softmax` 
 
 ```python
 import torch
+
 from zeta.ops import sparse_softmax
 
 # Define an input tensor
@@ -49,10 +50,13 @@ In this basic example, an input tensor is defined with six elements. The `sparse
 
 ```python
 import torch
+
 from zeta.ops import sparse_softmax
 
 # Define a batched input tensor
-batched_input = torch.tensor([[2.0, -0.5], [1.5, -1.0], [0.1, 2.5], [-1.0, 3.0]], dtype=torch.float32)
+batched_input = torch.tensor(
+    [[2.0, -0.5], [1.5, -1.0], [0.1, 2.5], [-1.0, 3.0]], dtype=torch.float32
+)
 
 # Apply sparse softmax to each sample in the batch with k = 2
 batched_output = torch.stack([sparse_softmax(sample, k=2) for sample in batched_input])
@@ -67,11 +71,13 @@ In the second example, a batch of input tensors is defined. Each sample in the b
 ```python
 import torch
 import torch.nn as nn
+
 from zeta.ops import sparse_softmax
+
 
 class SparseAttention(nn.Module):
     def __init__(self, k):
-        super(SparseAttention, self).__init__()
+        super().__init__()
         self.k = k
 
     def forward(self, queries, keys, values):
@@ -79,15 +85,18 @@ class SparseAttention(nn.Module):
         attention_scores = torch.bmm(queries, keys.transpose(1, 2))
 
         # Apply the sparse softmax to the attention scores
-        sparse_attention_probs = torch.stack([sparse_softmax(sample, k=self.k) for sample in attention_scores])
+        sparse_attention_probs = torch.stack(
+            [sparse_softmax(sample, k=self.k) for sample in attention_scores]
+        )
 
         # Use the attention probabilities to weight the values
         weighted_values = torch.bmm(sparse_attention_probs, values)
 
         return weighted_values
 
+
 # Example input tensors for the attention mechanism
-queries = torch.randn(2, 3, 5) # (batch_size, seq_length, model_dim)
+queries = torch.randn(2, 3, 5)  # (batch_size, seq_length, model_dim)
 keys = torch.randn(2, 3, 5)
 values = torch.randn(2, 3, 5)
 

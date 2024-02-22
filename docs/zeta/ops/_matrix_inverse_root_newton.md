@@ -22,8 +22,7 @@ def _matrix_inverse_root_newton(
     epsilon: float = 0.0,
     max_iterations: int = 1000,
     tolerance: float = 1e-6,
-) -> Tuple[Tensor, Tensor, NewtonConvergenceFlag, int, Tensor]:
-    ...
+) -> Tuple[Tensor, Tensor, NewtonConvergenceFlag, int, Tensor]: ...
 ```
 
 ### Parameters and Returns
@@ -52,6 +51,7 @@ def _matrix_inverse_root_newton(
 
 ```python
 import torch
+
 from zeta.ops import _matrix_inverse_root_newton
 
 # Defining the input matrix A
@@ -66,6 +66,7 @@ A_root, M, flag, iters, err = _matrix_inverse_root_newton(A, root=2)
 
 ```python
 import torch
+
 from zeta.ops import _matrix_inverse_root_newton
 
 # Defining the input matrix A
@@ -73,14 +74,17 @@ A = torch.randn(5, 5)
 A = A @ A.T  # Making A symmetric positive-definite
 
 # Computing the inverse square root with custom tolerance and max_iterations
-A_root, M, flag, iters, err = _matrix_inverse_root_newton(A, root=2, epsilon=0.001, max_iterations=500, tolerance=1e-8)
+A_root, M, flag, iters, err = _matrix_inverse_root_newton(
+    A, root=2, epsilon=0.001, max_iterations=500, tolerance=1e-8
+)
 ```
 
 #### Example 3: Handling Outputs and Convergence
 
 ```python
 import torch
-from zeta.ops import _matrix_inverse_root_newton, NewtonConvergenceFlag
+
+from zeta.ops import NewtonConvergenceFlag, _matrix_inverse_root_newton
 
 # Defining the input matrix A
 A = torch.randn(4, 4)

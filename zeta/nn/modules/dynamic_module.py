@@ -21,7 +21,7 @@ class DynamicModule(nn.Module):
         self,
         forward_method=None,
     ):
-        super(DynamicModule, self).__init__()
+        super().__init__()
         self.module_dict = nn.ModuleDict()
         self.forward_method = forward_method
 

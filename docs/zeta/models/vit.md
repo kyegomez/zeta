@@ -37,25 +37,33 @@ This method defines the feedforward computations of the ViT, starting from the d
 Here, we demonstrate how to use the ViT class.
 
 ```python
-import torch
-from torchvision import transforms
 import matplotlib.pyplot as plt
+import torch
 from PIL import Image
+from torchvision import transforms
+
 from zeta.models import Encoder, ViT
 
 # Load an image and apply some pre-processing
 img = Image.open("path_to_your_image.jpg")
-transform = transforms.Compose([
-    transforms.Resize((224, 224)),  # Resize image to 224x224
-    transforms.ToTensor()
-])
+transform = transforms.Compose(
+    [transforms.Resize((224, 224)), transforms.ToTensor()]  # Resize image to 224x224
+)
 img_tensor = transform(img).unsqueeze(0)
 
 # Define an Encoder with attention layers
 encoder = Encoder(dim=512, depth=12)
 
 # Instantiate a ViT model
-vit_model = ViT(image_size=224, patch_size=16, attn_layers=encoder, channels=3, num_classes=1000, post_emb_norm=True, emb_dropout=0.1)
+vit_model = ViT(
+    image_size=224,
+    patch_size=16,
+    attn_layers=encoder,
+    channels=3,
+    num_classes=1000,
+    post_emb_norm=True,
+    emb_dropout=0.1,
+)
 
 # Generate outputs using the ViT model
 outputs = vit_model(img_tensor, return_embeddings=True)

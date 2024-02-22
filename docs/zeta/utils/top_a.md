@@ -27,11 +27,12 @@ This function returns a modified version of the input tensor, logits with respec
 import torch
 import torch.nn.functional as F
 
+
 def top_a(logits, min_p_pow=2.0, min_p_ratio=0.02):
-    #compute softmax probabilities
+    # compute softmax probabilities
     probs = F.softmax(logits, dim=-1)
-    
-    #set limit with respect to maximum probabily and min_p_pow and min_p_ratio
+
+    # set limit with respect to maximum probabily and min_p_pow and min_p_ratio
     limit = torch.pow(torch.max(probs), min_p_pow) * min_p_ratio
 
     # apply filter to modify the logits with respect to the limit
@@ -48,6 +49,7 @@ In this example, we'll compute the top_a function on a tensor of logits.
 
 ```python
 import torch
+
 from zeta.utils import top_a
 
 # Create a tensor of logits
@@ -66,6 +68,7 @@ In this example, we use user-defined minimum power `min_p_pow` and minimum ratio
 
 ```python
 import torch
+
 from zeta.utils import top_a
 
 # Create a tensor of logits
@@ -84,6 +87,7 @@ In this example, we see how changing the `min_p_pow` affects the output.
 
 ```python
 import torch
+
 from zeta.utils import top_a
 
 # Create a tensor of logits

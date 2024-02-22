@@ -112,8 +112,9 @@ def report_per_parameter_metrics(self, param: torch.Tensor, name: str, optimizer
 ## Usage Examples
 
 ```python
-from zeta import x
 import torch
+
+from zeta import x
 
 # Define model parameters
 params = torch.tensor([1.0, 2.0, 3.0], requires_grad=True)

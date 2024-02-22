@@ -56,7 +56,7 @@ class PatchEmbeddings(nn.Module):
         dim_out, 
         seq_len
     )
-    
+
     def forward(self, x)
 ```
 
@@ -80,6 +80,7 @@ Here's how to use the `PatchEmbeddings` class to embed image patches:
 
 ```python
 import torch
+
 from zeta.vision import PatchEmbeddings
 
 # Define the input image properties

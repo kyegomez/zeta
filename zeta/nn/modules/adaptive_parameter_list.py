@@ -19,7 +19,7 @@ class AdaptiveParameterList(nn.ParameterList):
     """
 
     def __init__(self, parameters=None):
-        super(AdaptiveParameterList, self).__init__(parameters)
+        super().__init__(parameters)
 
     def adapt(self, adaptation_functions):
         """

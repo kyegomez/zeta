@@ -1,11 +1,12 @@
 import pytest
-from zeta.utils import save_load
 from torch.nn import Module
+
+from zeta.utils import save_load
 
 
 class TestModule(Module):
     def __init__(self, num):
-        super(TestModule, self).__init__()
+        super().__init__()
         self.num = num
 
 

@@ -51,6 +51,7 @@ In this example, we'll calculate the square root of a 2x2 symmetric positive def
 
 ```python
 import torch
+
 from zeta.ops import _matrix_root_eigen
 
 # Define a 2x2 symmetric positive definite matrix
@@ -69,6 +70,7 @@ In this example, an `epsilon` perturbation is added for numerical stability, and
 
 ```python
 import torch
+
 from zeta.ops import _matrix_root_eigen
 
 # Define a 3x3 symmetric positive definite matrix
@@ -87,13 +89,16 @@ This example demonstrates a more robust usage where the calculation is attempted
 
 ```python
 import torch
+
 from zeta.ops import _matrix_root_eigen
 
 # Define a 3x3 symmetric positive semi-definite matrix with potential numerical issues
 A = torch.tensor([[1e-5, 0.0, 0.0], [0.0, 5.0, 4.0], [0.0, 4.0, 5.0]])
 
 # Calculate the square root, ensuring positive semi-definiteness and retrying in double precision if needed
-X, L, Q = _matrix_root_eigen(A, root=2, make_positive_semidefinite=True, retry_double_precision=True)
+X, L, Q = _matrix_root_eigen(
+    A, root=2, make_positive_semidefinite=True, retry_double_precision=True
+)
 
 print("Matrix A:\n", A)
 print("Square Root with Positive Semi-Definite Guarantee:\n", X)

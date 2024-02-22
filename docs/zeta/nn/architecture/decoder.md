@@ -5,7 +5,7 @@ Module/Class Name: Decoder
 ```python
 class Decoder(AttentionLayers):
     def __init__(self, **kwargs):
-        assert 'causal' not in kwargs, 'cannot set causality on decoder'
+        assert "causal" not in kwargs, "cannot set causality on decoder"
         super().__init__(causal=True, **kwargs)
 ```
 
@@ -20,7 +20,7 @@ The decoder employs multi-head self-attention mechanisms and feed-forward networ
 ```python
 class Decoder(AttentionLayers):
     def __init__(self, **kwargs):
-        assert 'causal' not in kwargs, 'cannot set causality on decoder'
+        assert "causal" not in kwargs, "cannot set causality on decoder"
         super().__init__(causal=True, **kwargs)
 ```
 
@@ -58,7 +58,7 @@ decoder = Decoder(
     causal=True,
     cross_attend=True,
     residual_attn=True,
-    layer_dropout=0.1
+    layer_dropout=0.1,
 )
 ```
 
@@ -67,7 +67,12 @@ decoder = Decoder(
 The forward pass of the decoder can be performed using the following code:
 
 ```python
-output = decoder(input_sequence, context=context_sequence, mask=mask_sequence, context_mask=context_mask_sequence)
+output = decoder(
+    input_sequence,
+    context=context_sequence,
+    mask=mask_sequence,
+    context_mask=context_mask_sequence,
+)
 ```
 
 Here, `input_sequence` represents the input sequence to the decoder, `context_sequence` represents the context sequence for cross-attention (if enabled), `mask_sequence` is an optional mask to ignore certain elements in the input, and `context_mask_sequence` is an optional mask for the context sequence.
@@ -77,7 +82,13 @@ Here, `input_sequence` represents the input sequence to the decoder, `context_se
 If desired, you can also obtain intermediate outputs at each layer using the `return_hiddens` parameter:
 
 ```python
-output, intermediates = decoder(input_sequence, context=context_sequence, mask=mask_sequence, context_mask=context_mask_sequence, return_hiddens=True)
+output, intermediates = decoder(
+    input_sequence,
+    context=context_sequence,
+    mask=mask_sequence,
+    context_mask=context_mask_sequence,
+    return_hiddens=True,
+)
 ```
 
 The `intermediates` object will contain information about intermediate hidden states and attention outputs for each layer.

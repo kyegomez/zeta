@@ -2,6 +2,7 @@
 # Licensed under The MIT License [see LICENSE for details]
 
 from torch import nn
+
 from zeta.nn.embeddings.base import BaseEmbedding
 
 # Other embedding

@@ -1,5 +1,6 @@
 import pytest
 import torch
+
 from zeta.quant.bitlinear import BitLinear, absmax_quantize
 
 

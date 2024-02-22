@@ -3,6 +3,7 @@ Flash Attention example code
 """
 
 import torch
+
 from zeta.nn.attention import FlashAttention
 
 q = torch.randn(2, 4, 6, 8)

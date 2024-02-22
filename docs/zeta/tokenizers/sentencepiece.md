@@ -12,8 +12,7 @@ The SentencePiece model is trained to find the best tokenization by dynamically 
 
 ```python
 class SentencePieceTokenizer:
-    def __init__(self, model_path: str):
-        ...
+    def __init__(self, model_path: str): ...
 ```
 
 ### Parameters:
@@ -36,8 +35,7 @@ class SentencePieceTokenizer:
 ### `encode`
 
 ```python
-def encode(self, s: str, bos: bool, eos: bool) -> List[int]:
-    ...
+def encode(self, s: str, bos: bool, eos: bool) -> List[int]: ...
 ```
 
 Encodes a string into a list of integer token IDs.
@@ -55,8 +53,7 @@ Encodes a string into a list of integer token IDs.
 ### `decode`
 
 ```python
-def decode(self, t: List[int]) -> str:
-    ...
+def decode(self, t: List[int]) -> str: ...
 ```
 
 Decodes a list of integer token IDs into a string.
@@ -72,8 +69,7 @@ Decodes a list of integer token IDs into a string.
 ### `encode_infilling`
 
 ```python
-def encode_infilling(self, s: str) -> List[int]:
-    ...
+def encode_infilling(self, s: str) -> List[int]: ...
 ```
 
 Encodes a string without an implicit leading space.
@@ -89,8 +85,7 @@ Encodes a string without an implicit leading space.
 ### `decode_infilling`
 
 ```python
-def decode_infilling(self, t: List[int]) -> str:
-    ...
+def decode_infilling(self, t: List[int]) -> str: ...
 ```
 
 Decodes a list of integer token IDs into a string without an implicit leading space.
@@ -110,7 +105,7 @@ Decodes a list of integer token IDs into a string without an implicit leading sp
 ```python
 from zeta import SentencePieceTokenizer
 
-tokenizer = SentencePieceTokenizer(model_path='path/to/your/model.model')
+tokenizer = SentencePieceTokenizer(model_path="path/to/your/model.model")
 text = "Hello, world!"
 tokens = tokenizer.encode(text, bos=True, eos=True)
 print(tokens)
@@ -126,7 +121,7 @@ print(decoded_text)
 ```python
 from zeta import SentencePieceTokenizer
 
-tokenizer = SentencePieceTokenizer(model_path='path/to/your/model.model')
+tokenizer = SentencePieceTokenizer(model_path="path/to/your/model.model")
 text = "Hello, world!"
 tokens = tokenizer.encode_infilling(text)
 print(tokens)
@@ -142,7 +137,7 @@ print(decoded_text)
 ```python
 from zeta import SentencePieceTokenizer
 
-tokenizer = SentencePieceTokenizer(model_path='path/to/your/model.model')
+tokenizer = SentencePieceTokenizer(model_path="path/to/your/model.model")
 tokens = [2, 284, 16, 250, 13, 849, 4, 3]
 decoded_text = tokenizer.decode(tokens)
 print(decoded_text)

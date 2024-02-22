@@ -60,15 +60,17 @@ In summary, `eval_decorator` is a decorator - a tool in Python for wrapping func
 import torch
 import torch.nn as nn
 
+
 class Net(nn.Module):
     def __init__(self):
-        super(Net, self).__init__()
+        super().__init__()
         self.conv1 = nn.Conv2d(1, 10, kernel_size=5)
-        
+
     @eval_decorator
     def forward(self, x):
         x = self.conv1(x)
         return x
+
 
 model = Net()
 print(model.training)  # True - The model is initially in training mode
@@ -83,18 +85,19 @@ Applying the decorator to a different method:
 ```python
 class Net(nn.Module):
     def __init__(self):
-        super(Net, self).__init__()
+        super().__init__()
         self.conv1 = nn.Conv2d(1, 10, kernel_size=5)
-        
+
     def forward(self, x):
         x = self.conv1(x)
         return x
-    
+
     @eval_decorator
     def predict(self, x):
         # This method uses the model in evaluation mode
         with torch.no_grad():
             return self.forward(x)
+
 
 model = Net()
 print(model.training)  # True
@@ -109,17 +112,18 @@ Usage in a more complex module:
 ```python
 class Classifier(nn.Module):
     def __init__(self):
-        super(Classifier, self).__init__()
+        super().__init__()
         self.features = nn.Sequential(...)
 
         self.classifier = nn.Linear(...)
-        
+
     @eval_decorator
     def forward(self, x):
         x = self.features(x)
         x = x.view(x.size(0), -1)
         x = self.classifier(x)
         return x
+
 
 model = Classifier()
 output = model(torch.randn(5, 3, 32, 32))

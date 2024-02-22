@@ -1,6 +1,7 @@
-import torch
 import pytest
+import torch
 from torch.autograd import Variable
+
 from zeta.nn.modules import DynamicRoutingBlock
 
 # Optional if you want to use parametrization

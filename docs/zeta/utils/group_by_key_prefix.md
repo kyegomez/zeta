@@ -57,7 +57,7 @@ fruits = {
     "banana": 4,
     "blackberry": 3,
     "cherry": 7,
-    "apricot": 1
+    "apricot": 1,
 }
 
 prefix = "a"
@@ -86,11 +86,7 @@ If there are no keys in the dictionary that start with the specified prefix, the
 ```python
 import zeta.utils as zutils
 
-fruits = {
-    "banana": 4,
-    "blackberry": 3,
-    "cherry": 7
-}
+fruits = {"banana": 4, "blackberry": 3, "cherry": 7}
 
 prefix = "a"
 grouped_fruits = zutils.group_by_key_prefix(prefix, fruits)

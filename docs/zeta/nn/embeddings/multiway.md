@@ -60,43 +60,46 @@ def forward(self, x, **kwargs):
 
 **Example 1:** Basic Usage
 ```python
-from zeta import MultiwayEmbedding
 import torch.nn as nn
+
+from zeta import MultiwayEmbedding
 
 emb1 = nn.Embedding(10, 5)
 emb2 = nn.Embedding(10, 5)
 multiway_emb = MultiwayEmbedding([emb1, emb2])
 
-x = torch.LongTensor([[1,2,3],[4,5,6]])
+x = torch.LongTensor([[1, 2, 3], [4, 5, 6]])
 output = multiway_emb(x)
 print(output)
 ```
 
 **Example 2:** Setting a Split Position
 ```python
-from zeta import MultiwayEmbedding, set_split_position
 import torch.nn as nn
+
+from zeta import MultiwayEmbedding, set_split_position
 
 emb1 = nn.Embedding(10, 5)
 emb2 = nn.Embedding(10, 5)
 multiway_emb = MultiwayEmbedding([emb1, emb2])
 multiway_emb.apply(set_split_position(2))
 
-x = torch.LongTensor([[1,2,3],[4,5,6]])
+x = torch.LongTensor([[1, 2, 3], [4, 5, 6]])
 output = multiway_emb(x)
 print(output)
 ```
 
 **Example 3:** Working with Different Embedding Dimensions
 ```python
-from zeta import MultiwayEmbedding
 import torch.nn as nn
+
+from zeta import MultiwayEmbedding
 
 emb1 = nn.Embedding(10, 5)
 emb2 = nn.Embedding(10, 7)
 multiway_emb = MultiwayEmbedding([emb1, emb2], dim=2)
 
-x = torch.LongTensor([[1,2,3],[4,5,6]])
+x = torch.LongTensor([[1, 2, 3], [4, 5, 6]])
 output = multiway_emb(x)
 print(output)
 ```

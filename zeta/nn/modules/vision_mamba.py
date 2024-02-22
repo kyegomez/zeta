@@ -1,6 +1,7 @@
-from einops import rearrange
 import torch
+from einops import rearrange
 from torch import nn
+
 from zeta.nn.modules.ssm import SSM
 
 

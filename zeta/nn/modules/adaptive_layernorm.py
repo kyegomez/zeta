@@ -1,5 +1,5 @@
 import torch
-from torch import nn, Tensor
+from torch import Tensor, nn
 
 
 class AdaptiveLayerNorm(nn.Module):
@@ -24,7 +24,7 @@ class AdaptiveLayerNorm(nn.Module):
     """
 
     def __init__(self, num_features, eps=1e-5, *args, **kwargs):
-        super(AdaptiveLayerNorm, self).__init__()
+        super().__init__()
         self.num_features = num_features
         self.eps = eps
         self.gamma = nn.Parameter(torch.ones(num_features))

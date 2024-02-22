@@ -54,6 +54,7 @@ def forward(self, x: torch.Tensor) -> torch.Tensor:
 ```python
 import torch
 from torch import nn
+
 from zeta.nn import FusedDropoutLayerNorm
 
 # Initialize the module
@@ -74,11 +75,13 @@ print(output.shape)  # Expected: torch.Size([1, 512])
 ```python
 import torch
 import torch.nn as nn
+
 from zeta.nn import FusedDropoutLayerNorm
+
 
 class SampleModel(nn.Module):
     def __init__(self):
-        super(SampleModel, self).__init__()
+        super().__init__()
         self.linear = nn.Linear(512, 512)
         self.fused_dropout_layernorm = FusedDropoutLayerNorm(512)
 
@@ -86,6 +89,7 @@ class SampleModel(nn.Module):
         x = self.linear(x)
         x = self.fused_dropout_layernorm(x)
         return x
+
 
 # Example
 model = SampleModel()
@@ -98,6 +102,7 @@ print(output.shape)  # Expected: torch.Size([10, 512])
 
 ```python
 import torch
+
 from zeta.nn import FusedDropoutLayerNorm
 
 # Custom configuration
@@ -106,7 +111,9 @@ epsilon = 1e-6
 elementwise_affine = False
 
 # Initialize the module with custom configuration
-model = FusedDropoutLayerNorm(512, dropout=dropout_rate, eps=epsilon, elementwise_affine=elementwise_affine)
+model = FusedDropoutLayerNorm(
+    512, dropout=dropout_rate, eps=epsilon, elementwise_affine=elementwise_affine
+)
 
 # Sample input
 x = torch.randn(1, 512)

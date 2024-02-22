@@ -11,11 +11,10 @@ class RotaryEmbedding(nn.Module):
         dim,
         use_xpos=False,
         scale_base=512,
-        interpolation_factor=1.,
+        interpolation_factor=1.0,
         base=10000,
-        base_rescale_factor=1.,
-        ):
-        ...
+        base_rescale_factor=1.0,
+    ): ...
 ```
 
 ### Parameters
@@ -30,8 +29,7 @@ class RotaryEmbedding(nn.Module):
 ### Method: `forward`
 
 ```python
-def forward(self, seq_len, device):
-    ...
+def forward(self, seq_len, device): ...
 ```
 
 #### Parameters
@@ -57,16 +55,17 @@ The `freqs` and `scale` tensors are then concatenated along the last dimension a
 #### Example 1: Basic Usage
 
 ```python
-from zeta.nn import RotaryEmbedding
 import torch
 from torch import nn
+
+from zeta.nn import RotaryEmbedding
 
 # Initialize the RotaryEmbedding module
 rotary_embedding = RotaryEmbedding(dim=64, use_xpos=True)
 
 # Compute the embeddings for a sequence of length 10
 seq_len = 10
-device = torch.device('cuda')
+device = torch.device("cuda")
 freqs, scale = rotary_embedding(seq_len, device)
 
 print(freqs)
@@ -76,16 +75,17 @@ print(scale)
 #### Example 2: Using a Different Scale Base
 
 ```python
-from zeta.nn import RotaryEmbedding
 import torch
 from torch import nn
+
+from zeta.nn import RotaryEmbedding
 
 # Initialize the RotaryEmbedding module with a different scale base
 rotary_embedding = RotaryEmbedding(dim=64, use_xpos=True, scale_base=1024)
 
 # Compute the embeddings for a sequence of length 10
 seq_len = 10
-device = torch.device('cuda')
+device = torch.device("cuda")
 freqs, scale = rotary_embedding(seq_len, device)
 
 print(freqs)
@@ -95,16 +95,17 @@ print(scale)
 #### Example 3: Without Positional Information
 
 ```python
-from zeta.nn import RotaryEmbedding
 import torch
 from torch import nn
+
+from zeta.nn import RotaryEmbedding
 
 # Initialize the RotaryEmbedding module without positional information
 rotary_embedding = RotaryEmbedding(dim=64, use_xpos=False)
 
 # Compute the embeddings for a sequence of length 10
 seq_len = 10
-device = torch.device('cuda')
+device = torch.device("cuda")
 freqs, scale = rotary_embedding(seq_len, device)
 
 print(freqs)

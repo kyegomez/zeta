@@ -1,5 +1,6 @@
-import torch
 from typing import List, TypeVar
+
+import torch
 from einops import rearrange
 
 Tensor = TypeVar("Tensor", bound=torch.Tensor)

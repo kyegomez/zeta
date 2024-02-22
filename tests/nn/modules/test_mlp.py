@@ -1,7 +1,8 @@
 import pytest
 import torch
-from zeta.nn.modules.mlp import MLP
 from torch import nn
+
+from zeta.nn.modules.mlp import MLP
 
 
 def test_mlp_initialization():

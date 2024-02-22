@@ -1,4 +1,5 @@
 import torch
+
 from zeta.nn.modules.simple_resblock import SimpleResBlock
 
 
