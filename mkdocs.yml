@@ -272,9 +272,10 @@ nav:
             - DecoupledLionW: "zeta/training/optimizers/decoupled_lion.md"
             - SophiaG: "zeta/training/optimizers/sophia.md"
       - zeta.training:
-          - fsdp: "zeta/training/fsdp.md"
-          - ParallelWrapper: "zeta/training/parallel_wrapper.md"
-          - train: "zeta/training/train.md"
+          - Training:
+            - fsdp: "zeta/training/fsdp.md"
+            - ParallelWrapper: "zeta/training/parallel_wrapper.md"
+            - train: "zeta/training/train.md"
       - zeta.models:
           - Language and MultiModal:
             - vit: "zeta/models/vit.md"
@@ -301,11 +302,13 @@ nav:
             - encoder: "encoder.md"
             - encoderdecoder: "encoderdecoder.md"
       - zeta.quant:
-          - QUIK: "zeta/quant/quik.md"
-          - BitLinear: "zeta/quant/bitlinear.md"
-          - niva: "zeta/quant/niva.md"
+          - Quantization Algorithms:
+            - QUIK: "zeta/quant/quik.md"
+            - BitLinear: "zeta/quant/bitlinear.md"
+            - niva: "zeta/quant/niva.md"
       - zeta.rl:
-          - DPO: "zeta/rl/dpo.md"
+          - Reinforcement Learning:
+            - DPO: "zeta/rl/dpo.md"
   - Examples:
     - Overview: "examples/index.md"
     - PytorchCS: "examples/torch_cs.md"
