@@ -1,11 +1,10 @@
+import logging
 import math
 from collections import OrderedDict
 
 import torch
 from packaging import version
 from torch import Tensor, nn
-import logging
-
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)

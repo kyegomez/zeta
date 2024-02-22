@@ -51,6 +51,7 @@ Returns:
 ```python
 import torch.nn as nn
 import torch.nn.functional as F
+
 from zeta.nn import HighwayLayer
 
 
@@ -72,6 +73,7 @@ class HighwayLayer(nn.Module):
 
 ```python
 import torch
+
 from zeta.nn import HighwayLayer
 
 # Initialize HighwayLayer with dimension 50
@@ -88,7 +90,9 @@ print(output_tensor.shape)  # Expected shape (10, 50)
 
 ```python
 import torch
+
 from zeta.nn import HighwayLayer
+
 
 class MyModel(nn.Module):
     def __init__(self):
@@ -100,6 +104,7 @@ class MyModel(nn.Module):
         x = self.layer1(x)
         x = self.layer2(x)
         return x
+
 
 # Initialize model and input tensor
 model = MyModel()
@@ -124,6 +129,7 @@ class MyModel(nn.Module):
         x = self.layer1(x)
         x = self.layer2(x)
         return x
+
 
 # Initialize model and input tensor
 model = MyModel()

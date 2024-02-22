@@ -28,7 +28,9 @@ Let's take an example of creating a basic encoder for a Transformer model -
 
 ```python
 import torch.nn as nn
+
 from zeta.structs import AttentionLayers
+
 
 class MyEncoder(AttentionLayers):
     def __init__(self, d_model, nhead, num_layers):

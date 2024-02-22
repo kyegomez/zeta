@@ -58,11 +58,14 @@ Where \( d_k \) is the dimension of the key.
 ### Example 1: Basic Usage
 
 ```python
-from zeta.nn import MultiheadAttention
 import torch
 
+from zeta.nn import MultiheadAttention
+
 args = ...  # Some configuration
-attention = MultiheadAttention(args, embed_dim=512, num_heads=8, dropout=0.1, self_attention=True)
+attention = MultiheadAttention(
+    args, embed_dim=512, num_heads=8, dropout=0.1, self_attention=True
+)
 query = torch.rand((32, 10, 512))
 key = torch.rand((32, 10, 512))
 value = torch.rand((32, 10, 512))
@@ -73,11 +76,14 @@ attn, attn_weights = attention(query, key, value)
 ### Example 2: With Masking
 
 ```python
-from zeta.nn import MultiheadAttention
 import torch
 
+from zeta.nn import MultiheadAttention
+
 args = ...  # Some configuration
-attention = MultiheadAttention(args, embed_dim=512, num_heads=8, dropout=0.1, self_attention=True)
+attention = MultiheadAttention(
+    args, embed_dim=512, num_heads=8, dropout=0.1, self_attention=True
+)
 query = torch.rand((32, 10, 512))
 key = torch.rand((32, 10, 512))
 value = torch.rand((32, 10, 512))
@@ -89,11 +95,14 @@ attn, attn_weights = attention(query, key, value, attn_mask=attn_mask)
 ### Example 3: Encoder-Decoder Attention
 
 ```python
-from zeta.nn import MultiheadAttention
 import torch
 
+from zeta.nn import MultiheadAttention
+
 args = ...  # Some configuration
-attention = MultiheadAttention(args, embed_dim=512, num_heads=8, dropout=0.1, encoder_decoder_attention=True)
+attention = MultiheadAttention(
+    args, embed_dim=512, num_heads=8, dropout=0.1, encoder_decoder_attention=True
+)
 query = torch.rand((32, 10, 512))  # Decoder query
 key = torch.rand((32, 20, 512))  # Encoder key
 value = torch.rand((32, 20, 512))  # Encoder value

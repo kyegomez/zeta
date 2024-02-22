@@ -29,14 +29,10 @@ class ParallelTransformerBlock(nn.Module):
         self.scale = dim_head**-0.5
         self.rotary_emb = RotaryEmbedding(dim_head)
 
-        self.fused_attn_ff_proj = nn.Linear(
-            dim, sum(self.fused_dims), bias=False
-        )
+        self.fused_attn_ff_proj = nn.Linear(dim, sum(self.fused_dims), bias=False)
         self.attn_out = nn.Linear(attn_inner_dim, dim, bias=False)
 
-        self.ff_out = nn.Sequential(
-            SwiGLU(), nn.Linear(ff_inner_dim, dim, bias=False)
-        )
+        self.ff_out = nn.Sequential(SwiGLU(), nn.Linear(ff_inner_dim, dim, bias=False))
 
         self.register_buffer("mask", None, persistent=False)
         self.register_buffer("pos_emb", None, persistent=False)
@@ -94,8 +90,8 @@ model = ParallelTransformerBlock(dim)
 # Run input through model
 output = model(x)
 
-print('Input shape: ', x.shape)
-print('Output shape: ', output.shape)
+print("Input shape: ", x.shape)
+print("Output shape: ", output.shape)
 ```
 
 The default values for `dim_head`, `heads`, and `ff_mult` can be overridden as follows while instantiating the `ParallelTransformerBlock` class:

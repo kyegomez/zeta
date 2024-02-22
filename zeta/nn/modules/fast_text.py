@@ -1,5 +1,5 @@
-from torch import nn
 from einops.layers.torch import Rearrange, Reduce
+from torch import nn
 
 
 def FastTextNew(vocab_size, embedding_dim, output_dim):

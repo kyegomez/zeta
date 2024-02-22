@@ -1,7 +1,8 @@
+import logging
 import os
 import warnings
-import logging
 from unittest.mock import MagicMock, patch
+
 from zeta.utils import disable_warnings_and_logs
 
 

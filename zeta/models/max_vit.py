@@ -1,13 +1,13 @@
-from typing import Callable, Optional, Tuple, List
+from typing import Callable, List, Optional, Tuple
 
 from beartype import beartype
 from einops.layers.torch import Rearrange, Reduce
 from torch import nn
 
-from zeta.structs.transformer import FeedForward, Residual
 from zeta.nn.attention.attend import Attend
 from zeta.nn.modules.layernorm import LayerNorm
 from zeta.nn.modules.mbconv import MBConv
+from zeta.structs.transformer import FeedForward, Residual
 from zeta.utils.main import default, exists
 
 

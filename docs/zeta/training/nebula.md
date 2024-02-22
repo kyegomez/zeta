@@ -12,8 +12,7 @@ The `Nebula` class considers various characteristics of the data, such as whethe
 
 ```python
 class Nebula(LossFunction):
-    def __init__(self, domain_knowledge=None, user_input=None):
-        ...
+    def __init__(self, domain_knowledge=None, user_input=None): ...
 ```
 
 ### Parameters
@@ -38,8 +37,7 @@ The `Nebula` class is used to dynamically determine the most suitable loss funct
 ### Method: `determine_loss_function`
 
 ```python
-def determine_loss_function(self, y_pred, y_true):
-    ...
+def determine_loss_function(self, y_pred, y_true): ...
 ```
 
 This method determines the most suitable loss function based on the characteristics of `y_pred` and `y_true`.
@@ -52,8 +50,7 @@ This method determines the most suitable loss function based on the characterist
 ### Method: `__call__`
 
 ```python
-def __call__(self, y_pred, y_true):
-    ...
+def __call__(self, y_pred, y_true): ...
 ```
 
 This method computes the loss using the determined loss function.
@@ -72,8 +69,9 @@ This method computes the loss using the determined loss function.
 #### Example 1: Basic Usage
 
 ```python
-from zeta import Nebula
 import torch
+
+from zeta import Nebula
 
 # Initialize Nebula
 nebula = Nebula()
@@ -91,8 +89,9 @@ print(loss)
 #### Example 2: Providing Domain Knowledge
 
 ```python
-from zeta import Nebula
 import torch
+
+from zeta import Nebula
 
 # Initialize Nebula with domain knowledge
 nebula = Nebula(domain_knowledge="classification")
@@ -110,8 +109,9 @@ print(loss)
 #### Example 3: Providing User Input
 
 ```python
-from zeta import Nebula
 import torch
+
+from zeta import Nebula
 
 # Initialize Nebula with user input
 nebula = Nebula(user_input="regression")

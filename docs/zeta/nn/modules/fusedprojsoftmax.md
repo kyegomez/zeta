@@ -36,6 +36,7 @@ The `FusedProjSoftmax` module has two attributes:
 ```python
 import torch
 from torch import nn
+
 from zeta.nn import FusedProjSoftmax
 
 # Create an input tensor x
@@ -56,12 +57,14 @@ print(out.shape)
 ```python
 import torch
 from torch import nn
+
 from zeta.nn import FusedProjSoftmax
+
 
 # Define a custom neural network model
 class CustomModel(nn.Module):
     def __init__(self):
-        super(CustomModel, self).__init__()
+        super().__init__()
         self.projsoftmax = FusedProjSoftmax(5, 10)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -74,6 +77,7 @@ class CustomModel(nn.Module):
 ```python
 import torch
 from torch import nn
+
 from zeta.nn import FusedProjSoftmax
 
 # Create an input tensor x

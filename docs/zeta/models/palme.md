@@ -84,6 +84,7 @@ Here’s an example of how to instantiate the `PalmE` class with the default par
 
 ```python
 import torch
+
 from zeta.models import PalmE
 
 model = PalmE()
@@ -93,8 +94,8 @@ model = PalmE()
 In this example, we create random image batch and text batch data, and pass them through our `PalmE` model:
 
 ```python
-img = torch.rand(16, 3, 256, 256) # batch of 16 images
-text = torch.randint(0, 20000, (50, 16)) # batch of 50 token sequences for 16 samples
+img = torch.rand(16, 3, 256, 256)  # batch of 16 images
+text = torch.randint(0, 20000, (50, 16))  # batch of 50 token sequences for 16 samples
 
 model = PalmE()
 out = model(img, text)
@@ -105,11 +106,13 @@ out = model(img, text)
 Let's modify the model's configuration parameters at instantiation:
 
 ```python
-model = PalmE(encoder_dim=1024, 
-              encoder_depth=8, 
-              decoder_dim=1024,
-              decoder_depth=8,
-              attn_flash=False)
+model = PalmE(
+    encoder_dim=1024,
+    encoder_depth=8,
+    decoder_dim=1024,
+    decoder_depth=8,
+    attn_flash=False,
+)
 ```
 
 Here we modified the `encoder_dim`, `encoder_depth`, `decoder_dim`, `decoder_depth` and `attn_flash` parameters.

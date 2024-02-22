@@ -1,6 +1,8 @@
+from math import ceil
+
 import pytest
 import torch
-from math import ceil
+
 from zeta.utils import top_k
 
 

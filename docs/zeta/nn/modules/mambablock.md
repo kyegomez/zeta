@@ -31,6 +31,7 @@ The MambaBlock accepts a predefined set of parameters such as depth, state, expa
 
 ```python
 import torch
+
 from zeta.nn import MambaBlock
 
 # Initialize Mamba
@@ -43,7 +44,7 @@ x = torch.randn(1, 10, 64)
 y = block(x)
 
 print(y.shape)
-#torch.Size([1, 10, 64])
+# torch.Size([1, 10, 64])
 ```
 
 

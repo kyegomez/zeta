@@ -52,7 +52,7 @@ YarnEmbedding(
     beta_fast=32,
     beta_slow=1,
     finetuned=False,
-    device=None
+    device=None,
 )
 ```
 
@@ -163,8 +163,9 @@ Let's explore some usage examples of the `YarnEmbedding` class and related funct
 ### Using the `YarnEmbedding` Class <a name="using-the-yarnembedding-class"></a>
 
 ```python
-from zeta.nn import YarnEmbedding
 import torch
+
+from zeta.nn import YarnEmbedding
 
 # Create an instance of YarnEmbedding
 yarn_embedding = YarnEmbedding(dim=256, max_position_embeddings=2048)

@@ -12,7 +12,7 @@ class MLPBlock(nn.Module):
     """
 
     def __init__(self, dim: int, hidden_dim: int):
-        super(MLPBlock, self).__init__()
+        super().__init__()
         self.dim = dim
         self.hidden_dim = hidden_dim
         self.dense1 = nn.Linear(dim, hidden_dim)
@@ -42,7 +42,7 @@ class MixerBlock(nn.Module):
     """
 
     def __init__(self, mlp_dim: int, channels_dim: int):
-        super(MixerBlock, self).__init__()
+        super().__init__()
         self.norm1 = nn.LayerNorm(channels_dim)
         self.tokens_mlp = MLPBlock(mlp_dim, mlp_dim)
 
@@ -97,7 +97,7 @@ class MLPMixer(nn.Module):
         tokens_mlp_dim: int,
         channels_mlp_dim: int,
     ):
-        super(MLPMixer, self).__init__()
+        super().__init__()
         self.stem = nn.Conv2d(
             hidden_dim, hidden_dim, kernel_size=patch_size, stride=patch_size
         )

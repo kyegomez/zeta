@@ -1,14 +1,11 @@
-""" QFormer module for processing text and image inputs. """
+"""QFormer module for processing text and image inputs."""
 
 from einops import rearrange, reduce
 from torch import Tensor, nn
 
-from zeta.nn.attention.multiquery_attention import (
-    MultiQueryAttention,
-)
-from zeta.nn.modules.simple_feedforward import SimpleFeedForward
-
 from zeta.nn.attention.cross_attention import CrossAttention
+from zeta.nn.attention.multiquery_attention import MultiQueryAttention
+from zeta.nn.modules.simple_feedforward import SimpleFeedForward
 
 
 def img_to_text(x: Tensor, seqlen: int, dim: int, norm: bool = True):
@@ -80,7 +77,7 @@ class ImgBlock(nn.Module):
         *args,
         **kwargs,
     ):
-        super(ImgBlock, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.dim = dim
         self.depth = depth
         self.heads = heads

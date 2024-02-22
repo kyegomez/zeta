@@ -54,7 +54,7 @@ TransformerBlock(
     ff_dropout=0.0,
     use_xpos=True,
     xpos_scale_base=512,
-    flash_attn=False
+    flash_attn=False,
 )
 ```
 
@@ -130,9 +130,7 @@ lora_v = YourCustomModule()
 lora_o = YourCustomModule()
 
 transformer_block = TransformerBlock(
-    dim=512,
-    heads=8,
-    finetune_modules=(lora_q, lora_k, lora_v, lora_o)
+    dim=512, heads=8, finetune_modules=(lora_q, lora_k, lora_v, lora_o)
 )
 
 # Process input data

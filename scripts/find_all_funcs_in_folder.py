@@ -5,7 +5,7 @@ import os
 def find_imports_in_init(init_path):
     imported_funcs_classes = []
 
-    with open(init_path, "r") as f:
+    with open(init_path) as f:
         tree = ast.parse(f.read())
         for node in ast.walk(tree):
             if isinstance(node, ast.Import):
@@ -26,12 +26,10 @@ def find_all_funcs_in_folder(folder_path, init_path):
     for root, dirs, files in os.walk(folder_path):
         for file in files:
             if file.endswith(".py"):
-                with open(os.path.join(root, file), "r") as f:
+                with open(os.path.join(root, file)) as f:
                     tree = ast.parse(f.read())
                     for node in ast.walk(tree):
-                        if isinstance(node, ast.FunctionDef) or isinstance(
-                            node, ast.ClassDef
-                        ):
+                        if isinstance(node, (ast.FunctionDef, ast.ClassDef)):
                             name = node.name
                             funcs_classes.append(
                                 f"{root}/{file}: {type(node).__name__} {name}"

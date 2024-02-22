@@ -1,9 +1,10 @@
 # NewGELUActivation
 
-import torch
-from torch import nn, Tensor
 import math
+
 import pytest
+import torch
+from torch import Tensor, nn
 
 from zeta.nn import NewGELUActivation
 

@@ -1,5 +1,6 @@
 import pytest
 import torch
+
 from zeta.rl.vision_model_rl import ResidualBlock, VisionRewardModel
 
 

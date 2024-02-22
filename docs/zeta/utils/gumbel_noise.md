@@ -65,7 +65,7 @@ In this example, gumbel_noise_data2D is a 2D tensor of the same size as the inpu
 
 ```python
 # Define a 3D tensor
-tensor_3D = torch.rand((2,2,2))
+tensor_3D = torch.rand((2, 2, 2))
 
 # Generate Gumbel noise
 gumbel_noise_data3D = gumbel_noise(tensor_3D)

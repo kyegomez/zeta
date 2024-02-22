@@ -26,7 +26,6 @@ When to use `merge_small_dims`:
 #### Basic Example
 
 ```python
-from typing import List
 from zeta.ops import merge_small_dims
 
 # Original tensor shape
@@ -45,6 +44,7 @@ In the example above, the original shape of `[2, 3, 1, 5, 1]` contains small dim
 
 ```python
 import torch
+
 from zeta.ops import merge_small_dims
 
 # Define a tensor with a shape that includes small dimensions

@@ -41,11 +41,7 @@ The `SinusoidalEmbeddings` class generates sinusoidal positional embeddings. It 
 To create an instance of the `SinusoidalEmbeddings` class, you need to specify the following parameters:
 
 ```python
-SinusoidalEmbeddings(
-    dim,
-    scale_base=None,
-    use_xpos=False
-)
+SinusoidalEmbeddings(dim, scale_base=None, use_xpos=False)
 ```
 
 ### Parameters <a name="parameters"></a>
@@ -79,8 +75,9 @@ The `rotate_half` function is used to rotate input data by 180 degrees along the
 ### Usage Example <a name="using-the-rotate_half-function"></a>
 
 ```python
-from zeta import rotate_half
 import torch
+
+from zeta import rotate_half
 
 # Create an input tensor
 x = torch.randn(2, 3, 4)
@@ -108,8 +105,9 @@ The `apply_rotary_pos_emb` function applies rotary positional embeddings to inpu
 ### Usage Example <a name="using-the-apply_rotary_pos_emb-function"></a>
 
 ```python
-from zeta import apply_rotary_pos_emb
 import torch
+
+from zeta import apply_rotary_pos_emb
 
 # Create query and key tensors
 q = torch.randn(2, 3, 4)
@@ -130,8 +128,9 @@ Let's explore some usage examples of the `SinusoidalEmbeddings` class and associ
 ### Using the `SinusoidalEmbeddings` Class <a name="using-the-sinusoidalembeddings-class"></a>
 
 ```python
-from zeta import SinusoidalEmbeddings
 import torch
+
+from zeta import SinusoidalEmbeddings
 
 # Create an instance of SinusoidalEmbeddings
 positional_embedding = SinusoidalEmbeddings(dim=512, use_xpos=True, scale_base=1000)
@@ -149,6 +148,7 @@ This example demonstrates how to use the `rotate_half` function:
 
 ```python
 import torch
+
 from zeta.nn import rotate_half
 
 # Create an input tensor
@@ -164,8 +164,8 @@ This example demonstrates how to apply rotary positional embeddings using the `a
 
 ```python
 import torch
-from zeta.nn import rotate_half
 
+from zeta.nn import rotate_half
 
 # Create query and key tensors
 q = torch.randn(2, 3, 4)

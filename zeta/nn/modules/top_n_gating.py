@@ -2,15 +2,12 @@ from functools import partial
 from typing import Tuple, Union
 
 import torch
-from torch.nn import Module
-from torch import nn
 import torch.nn.functional as F
-
 from beartype import beartype
-
-from einops import rearrange, reduce
-
 from colt5_attention import topk as maybe_differentiable_topk
+from einops import rearrange, reduce
+from torch import nn
+from torch.nn import Module
 
 
 def cast_tuple(el, len=1):

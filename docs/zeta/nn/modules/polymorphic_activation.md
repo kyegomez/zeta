@@ -68,11 +68,14 @@ To create an instance of `PolymorphicNeuronLayer`, you need to specify the `in_f
 Example:
 
 ```python
-from zeta.nn import PolymorphicNeuronLayer
 import torch.nn.functional as F
 
+from zeta.nn import PolymorphicNeuronLayer
+
 # Create a Polymorphic Neuron Layer with 10 input features, 5 output neurons, and a list of activation functions
-neuron = PolymorphicNeuronLayer(in_features=10, out_features=5, activation_functions=[F.relu, F.tanh, F.sigmoid])
+neuron = PolymorphicNeuronLayer(
+    in_features=10, out_features=5, activation_functions=[F.relu, F.tanh, F.sigmoid]
+)
 ```
 
 ### Forward Pass <a name="forward-pass"></a>
@@ -103,11 +106,14 @@ You can customize the following aspects of the `PolymorphicNeuronLayer`:
 ### Example 1: Customizing and Forward Pass
 
 ```python
-from zeta.nn import PolymorphicNeuronLayer
 import torch.nn.functional as F
 
+from zeta.nn import PolymorphicNeuronLayer
+
 # Create a Polymorphic Neuron Layer with custom configuration
-neuron = PolymorphicNeuronLayer(in_features=15, out_features=8, activation_functions=[F.relu, F.tanh, F.sigmoid])
+neuron = PolymorphicNeuronLayer(
+    in_features=15, out_features=8, activation_functions=[F.relu, F.tanh, F.sigmoid]
+)
 
 # Input data (single sample with 15 features)
 input_data = torch.randn(1, 15)
@@ -121,15 +127,22 @@ output = neuron(input_data)
 ```python
 from zeta.nn import PolymorphicNeuronLayer
 
+
 # Define custom activation functions
 def custom_activation_1(x):
-    return x ** 2
+    return x**2
+
 
 def custom_activation_2(x):
     return torch.sin(x)
 
+
 # Create a Polymorphic Neuron Layer with custom activation functions
-neuron = PolymorphicNeuronLayer(in_features=5, out_features=3, activation_functions=[custom_activation_1, custom_activation_2])
+neuron = PolymorphicNeuronLayer(
+    in_features=5,
+    out_features=3,
+    activation_functions=[custom_activation_1, custom_activation_2],
+)
 
 # Input data (1 sample with 5 features)
 input_data = torch.randn(1, 5)
@@ -141,11 +154,14 @@ output = neuron(input_data)
 ### Example 3: Dynamic Activation Selection
 
 ```python
-from zeta.nn import PolymorphicNeuronLayer
 import torch.nn.functional as F
 
+from zeta.nn import PolymorphicNeuronLayer
+
 # Create a Polymorphic Neuron Layer with 5 input features, 3 output neurons, and standard activation functions
-neuron = PolymorphicNeuronLayer(in_features=5, out_features=3, activation_functions=[F.relu, F.tanh, F.sigmoid])
+neuron = PolymorphicNeuronLayer(
+    in_features=5, out_features=3, activation_functions=[F.relu, F.tanh, F.sigmoid]
+)
 
 # Input data (single sample with 5 features)
 input_data = torch.randn(1, 5)

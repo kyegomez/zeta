@@ -30,7 +30,7 @@ class PalmE(torch.nn.Module):
         attn_flash=True,
         qk_norm=True,
     ):
-        super(PalmE, self).__init__()
+        super().__init__()
 
         self.encoder = ViTransformerWrapper(
             image_size=image_size,

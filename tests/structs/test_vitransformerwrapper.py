@@ -1,7 +1,8 @@
 import pytest
 import torch
-from zeta.structs import ViTransformerWrapper, Encoder
 from torch.nn import Module
+
+from zeta.structs import Encoder, ViTransformerWrapper
 
 
 # 1. Test to check if default object of class is instance of torch.nn.Module

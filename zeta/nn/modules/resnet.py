@@ -1,6 +1,7 @@
-from torch import nn
-from einops.layers.torch import Rearrange, Reduce
 import math
+
+from einops.layers.torch import Rearrange, Reduce
+from torch import nn
 
 
 def make_layer(inplanes, planes, block, n_blocks, stride=1):
@@ -40,7 +41,7 @@ class ResNet(nn.Module):
     """
 
     def __init__(self, block, layers, num_classes=1000):
-        super(ResNet, self).__init__()
+        super().__init__()
 
         e = block.expansion
 

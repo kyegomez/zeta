@@ -29,7 +29,7 @@ class TextVideoAttentionFusion(nn.Module):
     """
 
     def __init__(self, text_features, video_features):
-        super(TextVideoAttentionFusion, self).__init__()
+        super().__init__()
 
         # A linear layer for calculating attention scores
         self.linear = nn.Linear(text_features + video_features, 1)

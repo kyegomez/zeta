@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
-from zeta.ops.laplace import laplace_solver, follow_gradient
+
+from zeta.ops.laplace import follow_gradient, laplace_solver
 
 # Define the mesh size and the start and end points
 mesh_size = 50

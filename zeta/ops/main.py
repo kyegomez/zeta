@@ -1,8 +1,9 @@
 import enum
 import logging
-from typing import Tuple, Union, List
-from einops import rearrange
+from typing import List, Tuple, Union
+
 import torch
+from einops import rearrange
 from torch import Tensor
 
 logger = logging.getLogger(__name__)

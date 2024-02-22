@@ -99,8 +99,9 @@ def tokenize(self, sample) -> Dict[str, torch.Tensor]:
 ### **Example 1: Tokenizing Texts**
 
 ```python
-from zeta import MultiModalTokenizer
 import torch
+
+from zeta import MultiModalTokenizer
 
 tokenizer = MultiModalTokenizer()
 texts = ["Hello World", "Zeta Library is great!"]
@@ -112,8 +113,9 @@ print(only_texts)
 ### **Example 2: Tokenizing Images**
 
 ```python
-from zeta import MultiModalTokenizer
 import torch
+
+from zeta import MultiModalTokenizer
 
 tokenizer = MultiModalTokenizer()
 images = torch.randn(2, 3, 224, 224)  # Assuming 2 random images of shape 3x224x224
@@ -124,13 +126,14 @@ print(tokenized_images)
 ### **Example 3: Tokenizing Multimodal Data**
 
 ```python
-from zeta import MultiModalTokenizer
 import torch
+
+from zeta import MultiModalTokenizer
 
 tokenizer = MultiModalTokenizer()
 sample = {
     "target_text": ["Hello World", "Zeta Library is great!"],
-    "image": torch.randn(2, 3, 224, 224)
+    "image": torch.randn(2, 3, 224, 224),
 }
 tokenized_data = tokenizer.tokenize(sample)
 print(tokenized_data)

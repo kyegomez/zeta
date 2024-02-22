@@ -3,6 +3,7 @@
 ```python
 # Usage example:
 import torch
+
 from zeta.nn import MMLayerNorm
 
 mm_ln = MMLayerNorm(num_modalities=2, dim=64)

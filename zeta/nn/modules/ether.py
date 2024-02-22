@@ -11,23 +11,23 @@ class Ether(nn.Module):
     **Algorithmic Pseudocode for MMOLF**:
 
     1. **Inputs**:
-        - \( y_{pred} \) (Predicted values from the model)
-        - \( y_{true} \) (True values or ground truth)
-        - \( \alpha \) (Weighting factor for inter-modal loss)
+        - \\( y_{pred} \\) (Predicted values from the model)
+        - \\( y_{true} \\) (True values or ground truth)
+        - \\( \alpha \\) (Weighting factor for inter-modal loss)
 
     2. Calculate the intra-modal loss based on a standard loss function (for instance, the Mean Squared Error in the case of regression tasks).
-        - \( \text{intra\_modal\_loss} = MSE(y_{pred}, y_{true}) \)
+        - \\( \text{intra\\_modal\\_loss} = MSE(y_{pred}, y_{true}) \\)
 
     3. Calculate the inter-modal discrepancy. This could be based on the variance or other discrepancy metrics between modalities.
         - **for** each modality **do**:
             - Calculate the mean and variance of the predictions for this modality
             - Compute the total variance from the mean of all modalities
-        - \( \text{inter\_modal\_loss} = \text{Sum of discrepancies between each modality's predictions and the overall mean} \)
+        - \\( \text{inter\\_modal\\_loss} = \text{Sum of discrepancies between each modality's predictions and the overall mean} \\)
 
-    4. Combine the intra-modal and inter-modal losses using the weight \( \alpha \).
-        - \( \text{loss} = \text{intra\_modal\_loss} + \alpha \times \text{inter\_modal\_loss} \)
+    4. Combine the intra-modal and inter-modal losses using the weight \\( \alpha \\).
+        - \\( \text{loss} = \text{intra\\_modal\\_loss} + \alpha \times \text{inter\\_modal\\_loss} \\)
 
-    5. **Return**: \( \text{loss} \)
+    5. **Return**: \\( \text{loss} \\)
 
     ---
 
@@ -40,9 +40,10 @@ class Ether(nn.Module):
     import torch.nn as nn
     import torch.nn.functional as F
 
+
     class MMOLF(nn.Module):
         def __init__(self, modalities, alpha=1.0):
-            super(MMOLF, self).__init__()
+            super().__init__()
             self.alpha = alpha
             self.modalities = modalities
 
@@ -57,9 +58,10 @@ class Ether(nn.Module):
 
             return intra_modal_loss + self.alpha * inter_modal_loss
 
+
     class ModAct(nn.Module):
         def __init__(self, beta=1.0):
-            super(ModAct, self).__init__()
+            super().__init__()
             self.beta = beta
 
         def forward(self, x):
@@ -172,7 +174,7 @@ class Ether(nn.Module):
 
     def __init__(self, modalities, alpha=1.0):
         """Ether init"""
-        super(Ether, self).__init__()
+        super().__init__()
         self.alpha = alpha
         self.modalities = modalities
 

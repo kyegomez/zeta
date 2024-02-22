@@ -1,6 +1,8 @@
 import copy
+
 import torch
-from torch import nn, Tensor
+from torch import Tensor, nn
+
 from zeta.utils.enforce_types import enforce_types
 
 

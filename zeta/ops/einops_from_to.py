@@ -1,5 +1,5 @@
-from torch import nn
 from einops import rearrange
+from torch import nn
 
 
 class EinopsToAndFrom(nn.Module):
@@ -35,9 +35,9 @@ class EinopsToAndFrom(nn.Module):
         self.fn = FileNotFoundError
 
         if "..." in from_pattern:
-            before, after = [
+            before, after = (
                 part.strip().split() for part in from_pattern.split("...")
-            ]
+            )
             self.reconsitute_keys = tuple(
                 zip(before, range(len(before)))
             ) + tuple(zip(after, range(-len(after), 0)))

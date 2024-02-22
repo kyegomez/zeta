@@ -71,6 +71,7 @@ Performs the attention computation using einstein notation.
 1. **Basic Usage**:
 ```python
 from zeta.nn import FlashAttention
+
 attn_module = FlashAttention()
 output = attn_module(query_tensor, key_tensor, value_tensor)
 ```
@@ -78,6 +79,7 @@ output = attn_module(query_tensor, key_tensor, value_tensor)
 2. **Using Flash Attention with Masking**:
 ```python
 from zeta.nn import FlashAttention
+
 attn_module = FlashAttention(flash=True)
 mask = attn_module.get_mask(query_length, key_length, device)
 output = attn_module(query_tensor, key_tensor, value_tensor, mask=mask)
@@ -86,6 +88,7 @@ output = attn_module(query_tensor, key_tensor, value_tensor, mask=mask)
 3. **Using Causal Flash Attention with Dropout**:
 ```python
 from zeta.nn import FlashAttention
+
 attn_module = FlashAttention(causal=True, dropout=0.1, flash=True)
 output = attn_module(query_tensor, key_tensor, value_tensor)
 ```

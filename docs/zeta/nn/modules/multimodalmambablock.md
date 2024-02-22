@@ -50,7 +50,7 @@ model = MultiModalMambaBlock(
     encoder_dim=64,
     encoder_depth=5,
     encoder_heads=4,
-    fusion_method="mlp"
+    fusion_method="mlp",
 )
 out = model(x, y)
 print(out.shape)

@@ -1,6 +1,7 @@
-import torch
-from torch import nn, Tensor
 from typing import List
+
+import torch
+from torch import Tensor, nn
 
 
 class BlockButterflyLinear(nn.Module):

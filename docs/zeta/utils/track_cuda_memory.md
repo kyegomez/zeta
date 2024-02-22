@@ -24,8 +24,9 @@ def my_cuda_function(x):
     # Some operations using PyTorch and CUDA
     return x * x
 
+
 # Example usage
-x = torch.randn(1000, 1000, device='cuda')
+x = torch.randn(1000, 1000, device="cuda")
 result = my_cuda_function(x)
 ```
 

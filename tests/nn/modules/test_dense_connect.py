@@ -1,6 +1,7 @@
+import pytest
 import torch
 import torch.nn as nn
-import pytest
+
 from zeta.nn.modules.dense_connect import DenseBlock
 
 

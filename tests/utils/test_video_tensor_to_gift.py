@@ -1,7 +1,9 @@
+from unittest.mock import MagicMock, patch
+
 import pytest
 import torch
-from unittest.mock import MagicMock, patch
 from PIL import Image
+
 from zeta.utils import video_tensor_to_gift
 
 

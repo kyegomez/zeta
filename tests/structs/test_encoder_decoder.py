@@ -1,6 +1,8 @@
-import torch
-from zeta.structs.encoder_decoder import EncoderDecoder
 from argparse import Namespace
+
+import torch
+
+from zeta.structs.encoder_decoder import EncoderDecoder
 
 
 def test_encoder_decoder_initialization():

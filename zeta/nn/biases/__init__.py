@@ -1,4 +1,3 @@
-from zeta.nn.biases.alibi import *
 from zeta.nn.biases.alibi import (
     AlibiPositionalBias,
     LearnedAlibiPositionalBias,

@@ -1,17 +1,18 @@
 import pytest
 from torchvision.transforms import (
+    CenterCrop,
     Compose,
     Normalize,
     RandomResizedCrop,
     Resize,
-    CenterCrop,
 )
+
 from zeta.nn.modules.transformations import (
-    image_transform,
-    _convert_to_rgb,
-    ToTensor,
-    ResizeMaxSize,
     F,
+    ResizeMaxSize,
+    ToTensor,
+    _convert_to_rgb,
+    image_transform,
 )
 
 

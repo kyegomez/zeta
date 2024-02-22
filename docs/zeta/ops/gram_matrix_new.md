@@ -24,10 +24,7 @@ def gram_matrix_new(y):
     """
 
     b, ch, h, w = y.shape
-    return torch.einsum(
-        "bchw,bdhw->bcd",
-        [y, y]
-    ) / (h * w)
+    return torch.einsum("bchw,bdhw->bcd", [y, y]) / (h * w)
 ```
 
 ## Explanation of the Functionality and Usage
@@ -42,6 +39,7 @@ Let's delve into three example usages of the `gram_matrix_new` function to under
 
 ```python
 import torch
+
 from zeta.ops import gram_matrix_new
 
 # Simulated feature maps from a convolutional layer
@@ -60,27 +58,31 @@ In this basic usage example, we generate random feature maps to simulate the out
 ```python
 import torch
 import torchvision.models as models
-from torchvision.transforms import functional as F
 from PIL import Image
+from torchvision.transforms import functional as F
+
 from zeta.ops import gram_matrix_new
 
 # Load a pre-trained VGG model
 vgg = models.vgg19(pretrained=True).features.eval()
 
 # Load content and style images and preprocess them
-content_img = Image.open('path/to/content/image.jpg')
-style_img = Image.open('path/to/style/image.jpg')
+content_img = Image.open("path/to/content/image.jpg")
+style_img = Image.open("path/to/style/image.jpg")
 
 # Preprocess images to match VGG input requirements
-transform = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-])
+transform = transforms.Compose(
+    [
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+    ]
+)
 content_tensor = transform(content_img).unsqueeze(0)
 style_tensor = transform(style_img).unsqueeze(0)
 
+
 # Extract features from a specific layer in VGG
-def get_features(image, model, layers=('conv_4',)):
+def get_features(image, model, layers=("conv_4",)):
     features = {}
     x = image
     for name, layer in model._modules.items():
@@ -89,13 +91,16 @@ def get_features(image, model, layers=('conv_4',)):
             features[name] = x
     return features
 
+
 content_features = get_features(content_tensor, vgg)
 style_features = get_features(style_tensor, vgg)
 
 # Compute Gram matrix for style features
-style_gram_matrix = {layer: gram_matrix_new(features) for (layer, features) in style_features.items()}
+style_gram_matrix = {
+    layer: gram_matrix_new(features) for (layer, features) in style_features.items()
+}
 
-print(style_gram_matrix['conv_4'].shape)  # Output expected: (1, C, C)
+print(style_gram_matrix["conv_4"].shape)  # Output expected: (1, C, C)
 ```
 
 In this example, we preprocess content and style images, extract their features using a VGG model, and then use the `gram_matrix_new` function to calculate the Gram matrix for the style image's features. This is a crucial step in a style transfer algorithm.
@@ -105,13 +110,16 @@ In this example, we preprocess content and style images, extract their features 
 ```python
 import torch
 import torch.optim as optim
-from zeta.ops import gram_matrix_new
 from torchvision.models import vgg19
+
+from zeta.ops import gram_matrix_new
 
 # Assume content_tensor, style_tensor, and their Gram matrices are already prepared as above
 
 # Define a transformation network and initialize with random weights
-transformation_net = YourTransformationNet()  # YourTransformationNet should be a PyTorch model that you have defined
+transformation_net = (
+    YourTransformationNet()
+)  # YourTransformationNet should be a PyTorch model that you have defined
 
 # Define a loss function and optimizer
 optimizer = optim.Adam(transformation_net.parameters(), lr=0.001)
@@ -121,13 +129,13 @@ mse_loss = torch.nn.MSELoss()
 for epoch in range(num_epochs):
     # Generate transformed image from the content image
     transformed_img = transformation_net(content_tensor)
-    
+
     # Extract features of the transformed image in the same way as for content and style images
     transformed_features = get_features(transformed_img, vgg)
-    transformed_gram_matrix = gram_matrix_new(transformed_features['conv_4'])
+    transformed_gram_matrix = gram_matrix_new(transformed_features["conv_4"])
 
     # Compute loss based on difference in Gram matrices
-    style_loss = mse_loss(transformed_gram_matrix, style_gram_matrix['conv_4'])
+    style_loss = mse_loss(transformed_gram_matrix, style_gram_matrix["conv_4"])
 
     # Backpropagation and optimization
     optimizer.zero_grad()

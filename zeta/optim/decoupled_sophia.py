@@ -96,21 +96,15 @@ class SophiaG(Optimizer):
         Initialize the optimizer.
         """
         if not 0.0 <= lr:
-            raise ValueError("Invalid learning rate: {}".format(lr))
+            raise ValueError(f"Invalid learning rate: {lr}")
         if not 0.0 <= betas[0] < 1.0:
-            raise ValueError(
-                "Invalid beta parameter at index 0: {}".format(betas[0])
-            )
+            raise ValueError(f"Invalid beta parameter at index 0: {betas[0]}")
         if not 0.0 <= betas[1] < 1.0:
-            raise ValueError(
-                "Invalid beta parameter at index 1: {}".format(betas[1])
-            )
+            raise ValueError(f"Invalid beta parameter at index 1: {betas[1]}")
         if not 0.0 <= rho:
-            raise ValueError("Invalid rho parameter at index 1: {}".format(rho))
+            raise ValueError(f"Invalid rho parameter at index 1: {rho}")
         if not 0.0 <= weight_decay:
-            raise ValueError(
-                "Invalid weight_decay value: {}".format(weight_decay)
-            )
+            raise ValueError(f"Invalid weight_decay value: {weight_decay}")
         defaults = dict(
             lr=lr,
             betas=betas,
@@ -120,7 +114,7 @@ class SophiaG(Optimizer):
             capturable=capturable,
             dynamic=dynamic,
         )
-        super(SophiaG, self).__init__(params, defaults)
+        super().__init__(params, defaults)
 
     def __setstate__(self, state):
         """
@@ -332,7 +326,9 @@ class SophiaG(Optimizer):
             step_t = state_steps[i]
 
             if capturable:
-                assert param.is_cuda and step_t.is_cuda and bs.is_cuda
+                assert param.is_cuda
+                assert step_t.is_cuda
+                assert bs.is_cuda
 
             if torch.is_complex(param):
                 grad = torch.view_as_real(grad)

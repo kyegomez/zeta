@@ -1,11 +1,7 @@
 import torch
 from torch import nn
 
-from zeta.nn.modules.simple_mamba import (
-    Mamba,
-    MambaBlock,
-    RMSNorm,
-)
+from zeta.nn.modules.simple_mamba import Mamba, MambaBlock, RMSNorm
 
 
 def test_mamba_class_init():

@@ -30,6 +30,7 @@ Imports and setup.
 ```python
 # Note: This assumes that einops is installed in your environment.
 import torch
+
 from zeta.ops import img_compose_bw
 ```
 
@@ -61,8 +62,10 @@ One common reason to use `img_compose_bw` is to prepare a batch of images for vi
 import matplotlib.pyplot as plt
 
 # Visualize the result
-plt.imshow(wide_image.squeeze(), cmap='gray')  # Remove the channel dimension for plotting
-plt.axis('off')  # Hide the axes
+plt.imshow(
+    wide_image.squeeze(), cmap="gray"
+)  # Remove the channel dimension for plotting
+plt.axis("off")  # Hide the axes
 plt.show()
 ```
 
@@ -71,17 +74,19 @@ plt.show()
 You might want to preprocess your image batch before passing it through a convolutional neural network (CNN).
 
 ```python
-
 class SimpleCNN(torch.nn.Module):
     def __init__(self):
-        super(SimpleCNN, self).__init__()
-        self.conv1 = torch.nn.Conv2d(in_channels=1, out_channels=4, kernel_size=3, stride=1, padding=1)
+        super().__init__()
+        self.conv1 = torch.nn.Conv2d(
+            in_channels=1, out_channels=4, kernel_size=3, stride=1, padding=1
+        )
         # More layers here...
 
     def forward(self, x):
         x = self.conv1(x)
         # More operations...
         return x
+
 
 # Instantiate the model
 model = SimpleCNN()

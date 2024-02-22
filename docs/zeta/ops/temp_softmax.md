@@ -48,6 +48,7 @@ The result is a tensor where the values are in the range of [0, 1] and sum up to
 ```python
 import torch
 import torch.nn.functional as F
+
 from zeta.ops import temp_softmax
 
 # An example to demonstrate the usage of temp_softmax
@@ -63,6 +64,7 @@ print(softmax_output)
 ```python
 import torch
 import torch.nn.functional as F
+
 from zeta.ops import temp_softmax
 
 # An example to demonstrate the effect of high temperature on temp_softmax
@@ -78,6 +80,7 @@ print(softmax_output_high_temp)
 ```python
 import torch
 import torch.nn.functional as F
+
 from zeta.ops import temp_softmax
 
 # An example to demonstrate the effect of low temperature on temp_softmax

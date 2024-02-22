@@ -42,6 +42,7 @@ Here are multiple usage examples of the SSM module importing it from the `zeta.n
 
 ```python
 import torch
+
 # Import SSM from zeta.nn
 from zeta.nn import SSM
 

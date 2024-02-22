@@ -37,10 +37,7 @@ The `RMSNorm` class implements the RMSNorm normalization technique. Let's dive i
 To create an instance of the `RMSNorm` class, you need to specify the following parameters:
 
 ```python
-RMSNorm(
-    dim,
-    groups=1
-)
+RMSNorm(dim, groups=1)
 ```
 
 ### Parameters <a name="parameters"></a>
@@ -70,14 +67,17 @@ Let's explore how to use the `RMSNorm` class effectively in various scenarios.
 Here's how to use the `RMSNorm` class to perform RMSNorm normalization on an input tensor:
 
 ```python
-from zeta.nn import RMSNorm
 import torch
+
+from zeta.nn import RMSNorm
 
 # Create an instance of RMSNorm
 rms_norm = RMSNorm(dim=512, groups=1)
 
 # Create an input tensor
-input_tensor = torch.randn(2, 512, 4, 4)  # Example input tensor with shape (batch_size, channels, height, width)
+input_tensor = torch.randn(
+    2, 512, 4, 4
+)  # Example input tensor with shape (batch_size, channels, height, width)
 
 # Apply RMSNorm normalization
 normalized_tensor = rms_norm(input_tensor)

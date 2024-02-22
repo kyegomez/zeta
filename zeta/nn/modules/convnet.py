@@ -1,6 +1,5 @@
-from torch import nn
-
 from einops.layers.torch import Rearrange
+from torch import nn
 
 
 class ConvNet(nn.Module):
@@ -14,7 +13,7 @@ class ConvNet(nn.Module):
     """
 
     def __init__(self):
-        super(ConvNet, self).__init__()
+        super().__init__()
 
         self.conv_net_new = nn.Sequential(
             nn.Conv2d(1, 10, kernel_size=5),

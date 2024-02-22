@@ -1,8 +1,9 @@
-import torch
 import pytest
-from zeta.nn.modules.visual_expert import (
+import torch
+
+from zeta.nn.modules.visual_expert import (  # Import the VisualExpert class from your module
     VisualExpert,
-)  # Import the VisualExpert class from your module
+)
 
 
 # Fixture for creating a sample instance of VisualExpert

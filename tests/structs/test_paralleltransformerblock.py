@@ -1,7 +1,8 @@
-import torch
 import pytest
-from zeta.structs import ParallelTransformerBlock
+import torch
 from torch.autograd import gradcheck
+
+from zeta.structs import ParallelTransformerBlock
 
 
 # Basic Testing

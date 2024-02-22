@@ -26,9 +26,10 @@ This example shows the basic usage of `img_decompose` to understand how the shap
 ```python
 import torch
 from einops import rearrange
+
 from zeta.ops import img_decompose
 
-# Create a dummy tensor representing a batch of 6 images, 
+# Create a dummy tensor representing a batch of 6 images,
 # each image having a height of 32 pixels, width of 32 pixels, and 3 color channels (RGB)
 batch_images = torch.randn(6, 32, 32, 3)
 
@@ -54,9 +55,10 @@ In this example, let's show that the `img_decompose` function does not alter the
 ```python
 import torch
 from einops import rearrange
+
 from zeta.ops import img_decompose
 
-# Create a dummy tensor representing a batch of 8 images, 
+# Create a dummy tensor representing a batch of 8 images,
 # each 64x64 pixels with 3 color channels (RGB)
 batch_images = torch.randn(8, 64, 64, 3)
 
@@ -64,7 +66,9 @@ batch_images = torch.randn(8, 64, 64, 3)
 decomposed_shape = img_decompose(batch_images)
 reconstructed_tensor = rearrange(batch_images, "(b1 b2) h w c -> b1 b2 h w c", b1=2)
 
-assert reconstructed_tensor.shape == decomposed_shape, "The tensor has not been reconstructed correctly"
+assert (
+    reconstructed_tensor.shape == decomposed_shape
+), "The tensor has not been reconstructed correctly"
 
 print("Original tensor and reconstructed tensor are of the same shape.")
 ```
@@ -84,31 +88,39 @@ Consider a scenario where we are working with a data pipeline where images come 
 import torch
 from einops import rearrange, repeat
 from torchvision import transforms
+
 from zeta.ops import img_decompose
+
 
 # Function from the zeta.ops library
 def img_decompose(x):
     return rearrange(x, "(b1 b2) h w c -> b1 b2 h w c", b1=2).shape
 
+
 # Data processing pipeline function
 def preprocess_and_decompose(batch_images):
-    preprocessing = transforms.Compose([
-        transforms.Resize((224, 224)),        # Resize each image to be 224x224
-        transforms.ToTensor(),                # Convert images to tensor format
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])  # Normalize for model
-    ])
-    
+    preprocessing = transforms.Compose(
+        [
+            transforms.Resize((224, 224)),  # Resize each image to be 224x224
+            transforms.ToTensor(),  # Convert images to tensor format
+            transforms.Normalize(
+                mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]
+            ),  # Normalize for model
+        ]
+    )
+
     # Assume batch_images is a list of PIL Images
     tensor_images = torch.stack([preprocessing(img) for img in batch_images])
 
     decomposed_shape = img_decompose(tensor_images)
     decomposed_tensor = rearrange(tensor_images, "(b1 b2) c h w -> b1 b2 c h w", b1=2)
-    
+
     # Now you have two separate batches, which you can process independently
     batch1 = decomposed_tensor[0]
     batch2 = decomposed_tensor[1]
-    
+
     return batch1, batch2
+
 
 # Mock a batch of 4 PIL images (code for creating these images is omitted for brevity)
 batch_images = ...

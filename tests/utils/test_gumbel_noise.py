@@ -1,5 +1,6 @@
 import pytest
 import torch
+
 from zeta.utils import gumbel_noise
 
 # Basic Tests

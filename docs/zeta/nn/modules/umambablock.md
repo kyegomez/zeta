@@ -24,10 +24,19 @@ class UMambaBlock(nn.Module):
         bias (bool): Whether to include bias in the linear layers. Default is False.
     """
 
-    def __init__(self, dim: int = None, depth: int = 5, d_state: int = 16, expand: int = 2, d_conv: int = 4, conv_bias: bool = True, bias: bool = False):
+    def __init__(
+        self,
+        dim: int = None,
+        depth: int = 5,
+        d_state: int = 16,
+        expand: int = 2,
+        d_conv: int = 4,
+        conv_bias: bool = True,
+        bias: bool = False,
+    ):
         # Class initialization and setup
         ...
-        
+
     def forward(self, x: Tensor):
         """
         B, C, H, W, D
@@ -43,6 +52,7 @@ The UMambaBlock class serves as a thorough representation of a 5d Mamba block. I
 ### Example 1:
 ```python
 import torch
+
 from zeta.nn import UMambaBlock
 
 # img:         B, C, H, W, D
@@ -59,6 +69,7 @@ print(y.shape)
 ### Example 2:
 ```python
 import torch
+
 from zeta.nn import UMambaBlock
 
 # img:         B, C, H, W, D
@@ -75,6 +86,7 @@ print(y.shape)
 ### Example 3:
 ```python
 import torch
+
 from zeta.nn import UMambaBlock
 
 # img:         B, C, H, W, D

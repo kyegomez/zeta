@@ -66,9 +66,10 @@ The core SophiaG function updates the parameters based on the gradient (`grad`),
 ### 1. Basic Usage:
 
 ```python
-from zeta import SophiaG
 import torch
 import torch.nn as nn
+
+from zeta import SophiaG
 
 model = nn.Linear(10, 1)
 optimizer = SophiaG(model.parameters(), lr=0.01)
@@ -77,8 +78,9 @@ optimizer = SophiaG(model.parameters(), lr=0.01)
 ### 2. Customizing Betas and Learning Rate:
 
 ```python
-from zeta import SophiaG
 import torch
+
+from zeta import SophiaG
 
 optimizer = SophiaG(model.parameters(), lr=0.001, betas=(0.9, 0.999))
 ```

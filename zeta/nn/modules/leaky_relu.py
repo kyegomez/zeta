@@ -46,4 +46,4 @@ class LeakyRELU(nn.Module):
             str: _description_
         """
         inplace_str = ", inplace=True" if self.inplace else ""
-        return "negative_slope={}{}".format(self.negative_slope, inplace_str)
+        return f"negative_slope={self.negative_slope}{inplace_str}"

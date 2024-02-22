@@ -24,24 +24,24 @@ This class inherits the PyTorch Module class and serves as a wrapper to both the
 The init function is where the Transformer and AutoregressiveWrapper objects are assigned to `self.Andromeda` and `self.decoder` respectively. 
 
 ```python
- def __init__(
-        self,
-        num_tokens=50432,
-        max_seq_len=8192,
-        dim=2560,
-        depth=32,
-        dim_head=128,
-        heads=24,
-        use_abs_pos_emb=False,
-        alibi_pos_bias=True,
-        alibi_num_heads=12,
-        rotary_xpos=True,
-        attn_flash=True,
-        attn_kv_heads=2,
-        qk_norm=True,
-        attn_qk_norm=True,
-        attn_qk_norm_dim_scale=True,
-    ):
+def __init__(
+       self,
+       num_tokens=50432,
+       max_seq_len=8192,
+       dim=2560,
+       depth=32,
+       dim_head=128,
+       heads=24,
+       use_abs_pos_emb=False,
+       alibi_pos_bias=True,
+       alibi_num_heads=12,
+       rotary_xpos=True,
+       attn_flash=True,
+       attn_kv_heads=2,
+       qk_norm=True,
+       attn_qk_norm=True,
+       attn_qk_norm_dim_scale=True,
+   ):
 ```
 
 The parameters and their defaults used in initialization are listed below

@@ -6,8 +6,7 @@ Deep Policy Optimization (DPO) is a PyTorch module designed for optimizing polic
 #### Class Definition
 ```python
 class DPO(nn.Module):
-    def __init__(self, model: nn.Module, *, beta: float = 0.1):
-        ...
+    def __init__(self, model: nn.Module, *, beta: float = 0.1): ...
 ```
 
 #### Arguments
@@ -38,16 +37,19 @@ A `torch.Tensor` representing the computed loss.
 ```python
 import torch
 from torch import nn
+
 from zeta.rl import DPO
+
 
 # Define a simple policy model
 class PolicyModel(nn.Module):
     def __init__(self, input_dim, output_dim):
-        super(PolicyModel, self).__init__()
+        super().__init__()
         self.fc = nn.Linear(input_dim, output_dim)
 
     def forward(self, x):
         return self.fc(x)
+
 
 input_dim = 10
 output_dim = 5

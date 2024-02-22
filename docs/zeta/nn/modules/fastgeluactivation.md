@@ -15,15 +15,14 @@ class FastGELUActivation(nn.Module):
     """
     Applies GELU approximation that is slower than QuickGELU but more accurate.
     """
+
     def forward(self, input: Tensor) -> Tensor:
         return (
             0.5
             * input
             * (
                 1.0
-                + torch.tanh(
-                    input * 0.7978845608 * (1.0 + 0.044715 * input * input)
-                )
+                + torch.tanh(input * 0.7978845608 * (1.0 + 0.044715 * input * input))
             )
         )
 ```       
@@ -49,14 +48,15 @@ In this example, we'll create a simple tensor and apply the `FastGELUActivation`
 
 ```python
 import torch
-from torch import nn, Tensor
+from torch import Tensor, nn
+
 from zeta import FastGELUActivation
 
 # Create an instance of FastGELUActivation
 activation = FastGELUActivation()
 
 # Create a tensor
-tensor = torch.randn((5,5), dtype=torch.float32)
+tensor = torch.randn((5, 5), dtype=torch.float32)
 
 # Apply FastGELUActivation
 result = activation.forward(tensor)
@@ -68,11 +68,13 @@ Assuming we're building a neural network that uses the `FastGELUActivation` as i
 
 ```python
 import torch.nn as nn
+
 from zeta import FastGELUActivation
+
 
 class NeuralNet(nn.Module):
     def __init__(self):
-        super(NeuralNet, self).__init__()
+        super().__init__()
         self.layer1 = nn.Linear(in_features=784, out_features=512)
         self.layer2 = nn.Linear(in_features=512, out_features=128)
         self.layer3 = nn.Linear(in_features=128, out_features=10)
@@ -85,6 +87,7 @@ class NeuralNet(nn.Module):
         x = self.activation(x)
         x = self.layer3(x)
         return x
+
 
 model = NeuralNet()
 ```

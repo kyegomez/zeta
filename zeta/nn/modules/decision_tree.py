@@ -41,7 +41,7 @@ class SimpleDecisionTree(nn.Module):
     def __init__(
         self, input_size: int, output_size: int, depth: int, heads: int
     ):
-        super(SimpleDecisionTree, self).__init__()
+        super().__init__()
         self.input_size = input_size
         self.output_size = output_size
         self.depth = depth

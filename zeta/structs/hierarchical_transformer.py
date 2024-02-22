@@ -10,10 +10,10 @@ from einops.layers.torch import Rearrange
 from torch import nn
 from vector_quantize_pytorch import RandomProjectionQuantizer
 
-from zeta.structs.transformer import rotate_half
 from zeta.nn.attention.attend import Attend
 from zeta.nn.attention.local_attention_mha import LocalMHA
 from zeta.nn.embeddings.rope import RotaryEmbedding
+from zeta.structs.transformer import rotate_half
 
 # constants
 mlist = nn.ModuleList
@@ -188,7 +188,8 @@ class Compress(nn.Module):
         prophet_num_predictions=None,
     ):
         super().__init__()
-        assert compress_factor > 0 and is_power_of_two(compress_factor)
+        assert compress_factor > 0
+        assert is_power_of_two(compress_factor)
 
         self.stride = stride
         self.no_compress = compress_factor == 1

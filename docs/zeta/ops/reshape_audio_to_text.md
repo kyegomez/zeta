@@ -19,6 +19,7 @@ The function `reshape_audio_to_text` utilizes the `rearrange` operation to resha
 from einops import rearrange
 from torch import Tensor
 
+
 def reshape_audio_to_text(x: Tensor) -> Tensor:
     """
     Reshapes the audio tensor to the same size as the text tensor.
@@ -52,6 +53,7 @@ def reshape_audio_to_text(x: Tensor) -> Tensor:
 ```python
 import torch
 from einops import rearrange
+
 from zeta.ops import reshape_audio_to_text
 
 # Create a dummy audio tensor of shape (Batch, Channel, Time)
@@ -71,17 +73,20 @@ Assuming we have a model that requires the audio tensor to be reshaped before pr
 ```python
 import torch
 from einops import rearrange
+
 from zeta.ops import reshape_audio_to_text
+
 
 class Model(torch.nn.Module):
     def __init__(self):
-        super(Model, self).__init__()
+        super().__init__()
         # Define model layers here
 
     def forward(self, audio, text):
         audio = reshape_audio_to_text(audio)
         # Perform further operations with audio and text
         # ...
+
 
 # Instantiate the model
 model = Model()
@@ -101,6 +106,7 @@ In some applications, we might need to perform operations that require the colla
 ```python
 import torch
 from einops import rearrange
+
 from zeta.ops import reshape_audio_to_text
 
 # Create dummy tensors for audio and text

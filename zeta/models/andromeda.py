@@ -2,10 +2,7 @@
 from torch.nn import Module
 
 from zeta.structs.auto_regressive_wrapper import AutoregressiveWrapper
-from zeta.structs.transformer import (
-    Decoder,
-    Transformer,
-)
+from zeta.structs.transformer import Decoder, Transformer
 
 
 class Andromeda(Module):

@@ -1,7 +1,8 @@
 import torch
-from torch import nn, Tensor
-from zeta.nn.modules.mbconv import MBConv
+from torch import Tensor, nn
+
 from zeta.nn.modules.film import Film
+from zeta.nn.modules.mbconv import MBConv
 
 
 class FiLMEfficientNetB3(nn.Module):

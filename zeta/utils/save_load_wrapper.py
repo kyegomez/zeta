@@ -1,8 +1,9 @@
 import pickle
 from pathlib import Path
+
 import torch
 from beartype import beartype
-from beartype.typing import Optional, Callable
+from beartype.typing import Callable, Optional
 from torch.nn import Module
 
 

@@ -59,27 +59,30 @@ Here is a basic usage example of the `save_load` decorator:
 
 ### Example 1:  Using default parameters on a PyTorch Model
 ```python
+from torch.nn import Linear, Module
+
 from zeta.utils import save_load
-from torch.nn import Module, Linear
+
 
 @save_load()
 class MyModel(Module):
 
     def __init__(self, input_dim, output_dim):
-        super(MyModel, self).__init__()
+        super().__init__()
         self.layer = Linear(input_dim, output_dim)
 
     def forward(self, x):
         return self.layer(x)
 
+
 # Initialize your model
 model = MyModel(32, 10)
 
 # Save your model
-model.save('model.pt')
+model.save("model.pt")
 
 # Load your model
-loaded_model = MyModel.load('model.pt')
+loaded_model = MyModel.load("model.pt")
 ```
 
 ### Example 2:  Using the `save_load` with non-default arguments

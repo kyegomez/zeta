@@ -19,7 +19,7 @@ class QFTSPEmbedding(nn.Module):
         collapse_mode: str = "weighted_sum",
         **kwargs,
     ):
-        super(QFTSPEmbedding, self).__init__()
+        super().__init__()
         self.dim = dim
         self.collapse_mode = collapse_mode
         self.base_embeddings = nn.Embedding(vocab_size, dim)

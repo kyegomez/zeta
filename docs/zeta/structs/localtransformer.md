@@ -68,6 +68,7 @@ The following example demonstrates how to initialize and use the `LocalTransform
 
 ```python
 import torch
+
 from zeta.structs import LocalTransformer
 
 # Define a LocalTransformer
@@ -78,7 +79,6 @@ sequence = torch.randint(0, 500, (1, 10))
 
 # Forward pass
 output = model(sequence)
-
 ```
 
 This will create a `LocalTransformer` model with a vocabulary of size 500, a maximum sequence length of 10, an embedding dimension of 32, and 2 transformer layers. It then performs a forward pass of the sequence through the model, outputting the transformed sequence.

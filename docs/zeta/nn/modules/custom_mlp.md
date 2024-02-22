@@ -69,7 +69,7 @@ Example:
 from zeta.nn import CustomMLP
 
 # Create an MLP with 3 layers: input (10), hidden (5), and output (2)
-mlp = CustomMLP(layer_sizes=[10, 5, 2], activation='relu', dropout=0.5)
+mlp = CustomMLP(layer_sizes=[10, 5, 2], activation="relu", dropout=0.5)
 ```
 
 ### Forward Pass <a name="forward-pass"></a>
@@ -103,13 +103,14 @@ You can customize the following aspects of the MLP:
 from zeta.nn import CustomMLP
 
 # Create an MLP with custom layer sizes, sigmoid activation, and dropout
-mlp = CustomMLP(layer_sizes=[20, 10, 5], activation='sigmoid', dropout=0.2)
+mlp = CustomMLP(layer_sizes=[20, 10, 5], activation="sigmoid", dropout=0.2)
 ```
 
 ### Example 2: Forward Pass
 
 ```python
 import torch
+
 from zeta.nn import CustomMLP
 
 # Define the layer sizes
@@ -131,10 +132,11 @@ print(output)
 
 ```python
 import torch
+
 from zeta.nn import CustomMLP
 
 # Create an MLP with custom configuration
-mlp = CustomMLP(layer_sizes=[15, 8, 3], activation='tanh', dropout=0.3)
+mlp = CustomMLP(layer_sizes=[15, 8, 3], activation="tanh", dropout=0.3)
 
 # Input data (single sample with 15 features)
 input_data = torch.randn(1, 15)

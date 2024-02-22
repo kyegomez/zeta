@@ -25,7 +25,7 @@ class MixtureOfSoftmaxes(nn.Module):
     """
 
     def __init__(self, num_mixtures, input_size, num_classes):
-        super(MixtureOfSoftmaxes, self).__init__()
+        super().__init__()
         self.num_mixtures = num_mixtures
         self.input_size = input_size
         self.num_classes = num_classes

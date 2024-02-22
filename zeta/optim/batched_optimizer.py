@@ -20,7 +20,7 @@ class BatchedOptimizer(Optimizer):
     """
 
     def __init__(self, params, defaults):
-        super(BatchedOptimizer, self).__init__(params, defaults)
+        super().__init__(params, defaults)
 
     @contextlib.contextmanager
     def batched_params(self, param_group, group_params_names):
@@ -77,7 +77,7 @@ class BatchedOptimizer(Optimizer):
         ]
         batches = [batches[batches_names_keys[idx]] for idx in sorted_idx]
 
-        stacked_params_dict = dict()
+        stacked_params_dict = {}
 
         # turn batches into a list, in deterministic order.
         # tuples will contain tuples of (stacked_param, state, stacked_params_names),
@@ -185,13 +185,13 @@ class ScaledAdam(BatchedOptimizer):
             clipping_update_period=clipping_update_period,
         )
 
-        super(ScaledAdam, self).__init__(params, defaults)
+        super().__init__(params, defaults)
         assert len(self.param_groups) == len(parameters_names)
         self.parameters_names = parameters_names
         self.show_dominant_parameters = show_dominant_parameters
 
     def __setstate__(self, state):
-        super(ScaledAdam, self).__setstate__(state)
+        super().__setstate__(state)
 
     @torch.no_grad()
     def step(self, closure=None):
@@ -641,7 +641,7 @@ class ScaledAdam(BatchedOptimizer):
         p.add_(delta)
 
 
-class LRScheduler(object):
+class LRScheduler:
     """
     Base-class for learning rate schedulers where the learning-rate depends on both the
     batch and the epoch.
@@ -650,9 +650,7 @@ class LRScheduler(object):
     def __init__(self, optimizer: Optimizer, verbose: bool = False):
         # Attach optimizer
         if not isinstance(optimizer, Optimizer):
-            raise TypeError(
-                "{} is not an Optimizer".format(type(optimizer).__name__)
-            )
+            raise TypeError(f"{type(optimizer).__name__} is not an Optimizer")
         self.optimizer = optimizer
         self.verbose = verbose
 
@@ -766,7 +764,7 @@ class Eden(LRScheduler):
         warmup_batches: Union[int, float] = 500.0,
         verbose: bool = False,
     ):
-        super(Eden, self).__init__(optimizer, verbose)
+        super().__init__(optimizer, verbose)
         self.lr_batches = lr_batches
         self.lr_epochs = lr_epochs
         self.warmup_batches = warmup_batches
@@ -859,23 +857,17 @@ class Eve(Optimizer):
         target_rms=0.1,
     ):
         if not 0.0 <= lr:
-            raise ValueError("Invalid learning rate: {}".format(lr))
+            raise ValueError(f"Invalid learning rate: {lr}")
         if not 0.0 <= eps:
-            raise ValueError("Invalid epsilon value: {}".format(eps))
+            raise ValueError(f"Invalid epsilon value: {eps}")
         if not 0.0 <= betas[0] < 1.0:
-            raise ValueError(
-                "Invalid beta parameter at index 0: {}".format(betas[0])
-            )
+            raise ValueError(f"Invalid beta parameter at index 0: {betas[0]}")
         if not 0.0 <= betas[1] < 1.0:
-            raise ValueError(
-                "Invalid beta parameter at index 1: {}".format(betas[1])
-            )
+            raise ValueError(f"Invalid beta parameter at index 1: {betas[1]}")
         if not 0 <= weight_decay <= 0.1:
-            raise ValueError(
-                "Invalid weight_decay value: {}".format(weight_decay)
-            )
+            raise ValueError(f"Invalid weight_decay value: {weight_decay}")
         if not 0 < target_rms <= 10.0:
-            raise ValueError("Invalid target_rms value: {}".format(target_rms))
+            raise ValueError(f"Invalid target_rms value: {target_rms}")
         defaults = dict(
             lr=lr,
             betas=betas,
@@ -883,10 +875,10 @@ class Eve(Optimizer):
             weight_decay=weight_decay,
             target_rms=target_rms,
         )
-        super(Eve, self).__init__(params, defaults)
+        super().__init__(params, defaults)
 
     def __setstate__(self, state):
-        super(Eve, self).__setstate__(state)
+        super().__setstate__(state)
 
     @torch.no_grad()
     def step(self, closure=None):

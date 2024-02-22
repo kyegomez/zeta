@@ -1,6 +1,6 @@
 import torch
-from torch import nn
 import torch.nn.functional as F
+from torch import nn
 
 
 def pad_at_dim(t, pad, dim=-1, value=0.0):

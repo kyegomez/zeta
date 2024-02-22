@@ -29,6 +29,7 @@ Creating a model empowered with the aforementioned breakthrough research feature
 
 ```python
 import torch
+
 from zeta.nn import FlashAttention
 
 q = torch.randn(2, 4, 6, 8)
@@ -38,8 +39,7 @@ v = torch.randn(2, 4, 10, 8)
 attention = FlashAttention(causal=False, dropout=0.1, flash=True)
 output = attention(q, k, v)
 
-print(output.shape) 
-
+print(output.shape)
 ```
 
 
@@ -48,12 +48,12 @@ print(output.shape)
 - Powers Transformer models
 ```python
 import torch
+
 from zeta.nn import SwiGLUStacked
 
 x = torch.randn(5, 10)
 swiglu = SwiGLUStacked(10, 20)
 swiglu(x).shape
-
 ```
 
 ### ```RelativePositionBias```
@@ -61,6 +61,7 @@ swiglu(x).shape
 ```python
 import torch
 from torch import nn
+
 from zeta.nn import RelativePositionBias
 
 # Initialize the RelativePositionBias module
@@ -68,6 +69,7 @@ rel_pos_bias = RelativePositionBias()
 
 # Example 1: Compute bias for a single batch
 bias_matrix = rel_pos_bias(1, 10, 10)
+
 
 # Example 2: Utilize in conjunction with an attention mechanism
 # NOTE: This is a mock example, and may not represent an actual attention mechanism's complete implementation.
@@ -81,9 +83,11 @@ class MockAttention(nn.Module):
         # Further computations with bias in the attention mechanism...
         return None  # Placeholder
 
-# Example 3: Modify default configurations
-custom_rel_pos_bias = RelativePositionBias(bidirectional=False, num_buckets=64, max_distance=256, num_heads=8)
 
+# Example 3: Modify default configurations
+custom_rel_pos_bias = RelativePositionBias(
+    bidirectional=False, num_buckets=64, max_distance=256, num_heads=8
+)
 ```
 
 ### `FeedForward`
@@ -91,15 +95,10 @@ The FeedForward module performs a feedforward operation on the input tensor x. I
 
 ```python
 import torch
+
 from zeta.nn import FeedForward
 
-model = FeedForward(
-  256, 
-  512, 
-  glu=True, 
-  post_act_ln=True, 
-  dropout=0.2
-)
+model = FeedForward(256, 512, glu=True, post_act_ln=True, dropout=0.2)
 
 x = torch.randn(1, 256)
 
@@ -112,15 +111,18 @@ print(output.shape)
 ```python
 import torch
 from torch import nn
+
 import zeta.quant as qt
+
 
 class MyModel(nn.Module):
     def __init__(self):
-        super(MyModel, self).__init__()
+        super().__init__()
         self.linear = qt.BitLinear(10, 20)
 
     def forward(self, x):
         return self.linear(x)
+
 
 # Initialize the model
 model = MyModel()
@@ -133,7 +135,6 @@ output = model(input)
 
 # Print the size of the output
 print(output.size())  # torch.Size([128, 20])
-
 ```
 
 ### `PalmE`
@@ -141,51 +142,52 @@ print(output.size())  # torch.Size([128, 20])
 
 ```python
 import torch
+
 from zeta.structs import (
-  AutoregressiveWrapper,
-  Decoder,
-  Encoder,
-  Transformer,
-  ViTransformerWrapper,
+    AutoregressiveWrapper,
+    Decoder,
+    Encoder,
+    Transformer,
+    ViTransformerWrapper,
 )
 
 
 class PalmE(torch.nn.Module):
     """
-    PalmE is a transformer architecture that uses a ViT encoder and a transformer decoder.
+        PalmE is a transformer architecture that uses a ViT encoder and a transformer decoder.
 
-    Args:
+        Args:
 
-        image_size (int): Size of the image.
-        patch_size (int): Size of the patch.
-        encoder_dim (int): Dimension of the encoder.
-        encoder_depth (int): Depth of the encoder.
-        encoder_heads (int): Number of heads in the encoder.
-        num_tokens (int): Number of tokens.
-        max_seq_len (int): Maximum sequence length.
-        decoder_dim (int): Dimension of the decoder.
-        decoder_depth (int): Depth of the decoder.
-        decoder_heads (int): Number of heads in the decoder.
-        alibi_num_heads (int): Number of heads in the alibi attention.
-        attn_kv_heads (int): Number of heads in the attention key-value projection.
-        use_abs_pos_emb (bool): Whether to use absolute positional embeddings.
-        cross_attend (bool): Whether to cross attend in the decoder.
-        alibi_pos_bias (bool): Whether to use positional bias in the alibi attention.
-        rotary_xpos (bool): Whether to use rotary positional embeddings.
-        attn_flash (bool): Whether to use attention flash.
-        qk_norm (bool): Whether to normalize the query and key in the attention layer.
+            image_size (int): Size of the image.
+            patch_size (int): Size of the patch.
+            encoder_dim (int): Dimension of the encoder.
+            encoder_depth (int): Depth of the encoder.
+            encoder_heads (int): Number of heads in the encoder.
+            num_tokens (int): Number of tokens.
+            max_seq_len (int): Maximum sequence length.
+            decoder_dim (int): Dimension of the decoder.
+            decoder_depth (int): Depth of the decoder.
+            decoder_heads (int): Number of heads in the decoder.
+            alibi_num_heads (int): Number of heads in the alibi attention.
+            attn_kv_heads (int): Number of heads in the attention key-value projection.
+            use_abs_pos_emb (bool): Whether to use absolute positional embeddings.
+            cross_attend (bool): Whether to cross attend in the decoder.
+            alibi_pos_bias (bool): Whether to use positional bias in the alibi attention.
+            rotary_xpos (bool): Whether to use rotary positional embeddings.
+            attn_flash (bool): Whether to use attention flash.
+            qk_norm (bool): Whether to normalize the query and key in the attention layer.
 
-    Returns:
+        Returns:
 
-            torch.Tensor: The output of the model.
+                torch.Tensor: The output of the model.
 
-    Usage:
+        Usage:
 
-img = torch.randn(1, 3, 256, 256)
-text = torch.randint(0, 20000, (1, 1024))
-model = PalmE()
-output = model(img, text)
-print(output)
+    img = torch.randn(1, 3, 256, 256)
+    text = torch.randint(0, 20000, (1, 1024))
+    model = PalmE()
+    output = model(img, text)
+    print(output)
 
     """
 
@@ -210,7 +212,7 @@ print(output)
         attn_flash=True,
         qk_norm=True,
     ):
-        super(PalmE, self).__init__()
+        super().__init__()
 
         # vit architecture
         self.encoder = ViTransformerWrapper(
@@ -252,6 +254,7 @@ print(output)
             print(f"Failed in forward method: {error}")
             raise
 
+
 # Usage with random inputs
 img = torch.randn(1, 3, 256, 256)
 text = torch.randint(0, 20000, (1, 1024))
@@ -260,8 +263,6 @@ text = torch.randint(0, 20000, (1, 1024))
 model = PalmE()
 output = model(img, text)
 print(output)
-
-
 ```
 
 
@@ -270,7 +271,8 @@ Unet is a famous convolutional neural network architecture originally used for b
 
 ```python
 import torch
-from zeta.nn import Unet  
+
+from zeta.nn import Unet
 
 # Initialize the U-Net model
 model = Unet(n_channels=1, n_classes=2)
@@ -284,8 +286,6 @@ y = model(x)
 # Output
 print(f"Input shape: {x.shape}")
 print(f"Output shape: {y.shape}")
-
-
 ```
 
 
@@ -294,16 +294,17 @@ The VisionEmbedding class is designed for converting images into patch embedding
 
 ```python
 import torch
+
 from zeta.nn import VisionEmbedding
 
 # Create an instance of VisionEmbedding
 vision_embedding = VisionEmbedding(
-  img_size=224,
-  patch_size=16,
-  in_chans=3,
-  embed_dim=768,
-  contain_mask_token=True,
-  prepend_cls_token=True,
+    img_size=224,
+    patch_size=16,
+    in_chans=3,
+    embed_dim=768,
+    contain_mask_token=True,
+    prepend_cls_token=True,
 )
 
 # Load an example image (3 channels, 224x224)
@@ -321,6 +322,7 @@ output = vision_embedding(input_image)
 
 ```python
 import torch
+
 from zeta import niva
 
 # Load a pre-trained model
@@ -333,9 +335,8 @@ niva(
     output_path="quantized_model.pt",
     quant_type="dynamic",
     quantize_layers=[nn.Linear, nn.Conv2d],
-    dtype=torch.qint8
+    dtype=torch.qint8,
 )
-
 ```
 
 
@@ -344,13 +345,13 @@ niva(
 
 ```python
 import torch
+
 from zeta.nn import FusedDenseGELUDense
 
 x = torch.randn(1, 512)
 model = FusedDenseGELUDense(512, 1024)
 out = model(x)
 out.shape
-
 ```
 
 
@@ -360,6 +361,7 @@ out.shape
 ```python
 import torch
 from torch import nn
+
 from zeta.nn import FusedDropoutLayerNorm
 
 # Initialize the module
@@ -373,7 +375,6 @@ output = model(x)
 
 # Check output shape
 print(output.shape)  # Expected: torch.Size([1, 512])
-
 ```
 
 
@@ -382,6 +383,7 @@ print(output.shape)  # Expected: torch.Size([1, 512])
 
 ```python
 import torch
+
 from zeta.nn import MambaBlock
 
 # Initialize Mamba
@@ -394,14 +396,14 @@ x = torch.randn(1, 10, 64)
 y = block(x)
 
 print(y.shape)
-#torch.Size([1, 10, 64])
-
+# torch.Size([1, 10, 64])
 ```
 
 ### `FiLM`
 
 ```python
 import torch
+
 from zeta.nn import Film
 
 # Initialize the Film layer
@@ -409,21 +411,24 @@ film_layer = Film(dim=128, hidden_dim=64, expanse_ratio=4)
 
 # Create some dummy data for conditions and hiddens
 conditions = torch.randn(10, 128)  # Batch size is 10, feature size is 128
-hiddens = torch.randn(10, 1, 128)  # Batch size is 10, sequence length is 1, feature size is 128
+hiddens = torch.randn(
+    10, 1, 128
+)  # Batch size is 10, sequence length is 1, feature size is 128
 
 # Pass the data through the Film layer
 modulated_features = film_layer(conditions, hiddens)
 
 # Print the shape of the output
 print(modulated_features.shape)  # Should be [10, 1, 128]
-
 ```
 
 ### `hyper_optimize`
 - A single wrapper for torch.fx, torch.script, torch.compile, dynamic quantization, mixed precision through torch.amp, with execution time metrics all in once place!
 ```python
 import torch
+
 from zeta.nn import hyper_optimize
+
 
 @hyper_optimize(
     torch_fx=False,
@@ -436,9 +441,9 @@ from zeta.nn import hyper_optimize
 def model(x):
     return x @ x
 
+
 out = model(torch.randn(1, 3, 32, 32))
 print(out)
-
 ```
 
 
@@ -446,16 +451,19 @@ print(out)
 ```python
 import torch
 from torch import nn
+
 from zeta.rl import DPO
+
 
 # Define a simple policy model
 class PolicyModel(nn.Module):
     def __init__(self, input_dim, output_dim):
-        super(PolicyModel, self).__init__()
+        super().__init__()
         self.fc = nn.Linear(input_dim, output_dim)
 
     def forward(self, x):
         return self.fc(x)
+
 
 input_dim = 10
 output_dim = 5

@@ -27,7 +27,7 @@ Where \( n \) is the negative of the relative position, and \( \max_{\text{exact
 class RelativePositionBias(nn.Module):
     """
     Compute relative position bias which can be utilized in attention mechanisms.
-    
+
     Parameters:
     - bidirectional (bool): If True, considers both forward and backward relative positions. Default: True.
     - num_buckets (int): Number of buckets to cluster relative position distances. Default: 32.
@@ -44,14 +44,16 @@ class RelativePositionBias(nn.Module):
 ## Usage Examples:
 
 ```python
-from zeta import RelativePositionBias
 import torch
+
+from zeta import RelativePositionBias
 
 # Initialize the RelativePositionBias module
 rel_pos_bias = RelativePositionBias()
 
 # Example 1: Compute bias for a single batch
 bias_matrix = rel_pos_bias(1, 10, 10)
+
 
 # Example 2: Utilize in conjunction with an attention mechanism
 # NOTE: This is a mock example, and may not represent an actual attention mechanism's complete implementation.
@@ -65,8 +67,11 @@ class MockAttention(nn.Module):
         # Further computations with bias in the attention mechanism...
         return None  # Placeholder
 
+
 # Example 3: Modify default configurations
-custom_rel_pos_bias = RelativePositionBias(bidirectional=False, num_buckets=64, max_distance=256, n_heads=8)
+custom_rel_pos_bias = RelativePositionBias(
+    bidirectional=False, num_buckets=64, max_distance=256, n_heads=8
+)
 ```
 
 ## Tips:

@@ -1,7 +1,6 @@
 import torch
-from torch import nn
-
 from einops import rearrange
+from torch import nn
 
 
 def exists(val):

@@ -1,6 +1,8 @@
-import pytest
-from zeta.utils import print_main
 from unittest.mock import patch
+
+import pytest
+
+from zeta.utils import print_main
 
 
 # Usage of Fixtures

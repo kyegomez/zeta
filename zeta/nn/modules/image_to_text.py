@@ -1,5 +1,5 @@
 from einops import rearrange, reduce
-from torch import nn, Tensor
+from torch import Tensor, nn
 
 
 def img_to_text(x: Tensor, seqlen: int, dim: int, norm: bool = True):

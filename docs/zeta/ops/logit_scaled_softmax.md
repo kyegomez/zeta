@@ -21,6 +21,7 @@ The `logit_scaled_softmax` function is a modified version of the standard softma
 ```python
 import torch.nn.functional as F
 
+
 def logit_scaled_softmax(x, scale=1.0):
     """
     Computes the scaled softmax of the input tensor.
@@ -28,7 +29,7 @@ def logit_scaled_softmax(x, scale=1.0):
     Args:
         x (Tensor): The input tensor containing logits.
         scale (float, optional): A scaling factor to apply to logits before the softmax. Default: 1.0
-    
+
     Returns:
         Tensor: A tensor containing the resulting scaled softmax probabilities.
     """
@@ -41,6 +42,7 @@ def logit_scaled_softmax(x, scale=1.0):
 
 ```python
 import torch
+
 from zeta.ops import logit_scaled_softmax
 
 # Create a tensor of logits
@@ -55,6 +57,7 @@ print(softmax_probs)
 
 ```python
 import torch
+
 from zeta.ops import logit_scaled_softmax
 
 # Create a tensor of logits
@@ -71,17 +74,20 @@ print(sharper_softmax_probs)
 ```python
 import torch
 import torch.nn as nn
+
 from zeta.ops import logit_scaled_softmax
+
 
 # Define a simple neural network with logit_scaled_softmax
 class SimpleNN(nn.Module):
     def __init__(self):
-        super(SimpleNN, self).__init__()
+        super().__init__()
         self.fc = nn.Linear(10, 3)
-    
+
     def forward(self, x, scale=1.0):
         logits = self.fc(x)
         return logit_scaled_softmax(logits, scale)
+
 
 # Create a random input tensor
 input_tensor = torch.randn(5, 10)

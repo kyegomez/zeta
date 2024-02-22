@@ -37,19 +37,21 @@ Let's look at three ways to use this function.
 In the first example, we simply use this decorator to add a new device property (named "my_cuda_device" here) to our model, which always stores the current device of our model.
 
 ```python
-from torch.nn import Module
 from torch import tensor
+from torch.nn import Module
+
 
 @module_device(device_property_name="my_cuda_device")
 class MyModel(Module):
-	def __init__(self, input_size, output_size):
-		super(MyModel, self).__init__()
-		self.fc1 = nn.Linear(input_size, output_size)
+    def __init__(self, input_size, output_size):
+        super().__init__()
+        self.fc1 = nn.Linear(input_size, output_size)
+
 
 MyModel_obj = MyModel(10, 10)
-MyModel_obj.to('cuda')
+MyModel_obj.to("cuda")
 
-print(MyModel_obj.my_cuda_device)  # Output: cuda:<device_no> 
+print(MyModel_obj.my_cuda_device)  # Output: cuda:<device_no>
 ```
 ### Example 2:
 
@@ -59,12 +61,14 @@ In the second example, we will define a function that will be executed whenever 
 def transfer_fn(self, device):
     print(f"Transferred to {device}")
 
+
 @module_device(on_device_transfer=transfer_fn)
 class SecondModel(Module):
     pass
 
+
 SecondModel_obj = SecondModel()
-SecondModel_obj.to('cuda')  # Output: Transferred to cuda:<device_no> 
+SecondModel_obj.to("cuda")  # Output: Transferred to cuda:<device_no>
 ```
 ### Example 3:
 
@@ -74,11 +78,13 @@ In the third example, we will use both the features discussed above together:
 def transfer_fn(self, device):
     print(f"Transferred to {device}")
 
+
 @module_device(device_property_name="my_device", on_device_transfer=transfer_fn)
 class ThirdModel(Module):
     pass
 
+
 ThirdModel_obj = ThirdModel()
-ThirdModel_obj.to('cuda')  # Output: Transferred to cuda:<device_no> 
-print(ThirdModel_obj.my_device)  # Output: cuda:<device_no> 
+ThirdModel_obj.to("cuda")  # Output: Transferred to cuda:<device_no>
+print(ThirdModel_obj.my_device)  # Output: cuda:<device_no>
 ```

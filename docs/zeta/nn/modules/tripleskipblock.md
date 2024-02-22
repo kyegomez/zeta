@@ -23,7 +23,7 @@ class TripleSkipBlock(nn.Module):
             submodule2 (nn.Module): The second submodule.
             submodule3 (nn.Module): The third submodule.
         """
-        super(TripleSkipBlock, self).__init__()
+        super().__init__()
         self.submodule1 = submodule1
         self.submodule2 = submodule2
         self.submodule3 = submodule3
@@ -86,6 +86,7 @@ Here's a simple example with three linear layers as the submodules:
 ```python
 import torch
 import torch.nn as nn
+
 from zeta.nn import TripleSkipBlock
 
 # Define input
@@ -108,6 +109,7 @@ output = tripleskip(input_tensor)
 ```python
 import torch
 import torch.nn as nn
+
 from zeta.nn import TripleSkipBlock
 
 # Define input (single image with three channels, 64x64 resolution)

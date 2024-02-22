@@ -30,7 +30,7 @@ class FusedDenseGELUDense(nn.Module):
         *args,
         **kwargs,
     ):
-        super(FusedDenseGELUDense, self).__init__()
+        super().__init__()
         self.dim = dim
         self.dim_out = dim_out
         self.bias = bias

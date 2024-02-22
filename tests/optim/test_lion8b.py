@@ -1,5 +1,6 @@
 import pytest
 import torch
+
 from zeta.optim.lion8b import DecoupledLionW8Bit
 
 

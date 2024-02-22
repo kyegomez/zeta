@@ -82,6 +82,7 @@ In this example, we'll demonstrate the basic usage of the `MultiModalCrossAttent
 import torch
 from einops import rearrange
 from torch import nn
+
 from zeta.nn import MultiModalCrossAttention
 
 # Create a MultiModalCrossAttention module
@@ -151,9 +152,7 @@ context = torch.randn(1, 32, context_dim)
 output = attn(query, context)
 
 # Print the shape of the output
-print(output
-
-.shape)
+print(output.shape)
 ```
 
 Output:

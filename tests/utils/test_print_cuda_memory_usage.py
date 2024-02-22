@@ -1,6 +1,8 @@
-import torch
-from zeta.utils import print_cuda_memory_usage
 from unittest.mock import patch
+
+import torch
+
+from zeta.utils import print_cuda_memory_usage
 
 
 def test_if_cuda_is_available():

@@ -37,13 +37,16 @@ def track_cuda_memory_usage(func):
 ## Usage examples
 
 ```python
-from zeta.utils import track_cuda_memory_usage
 import torch
+
+from zeta.utils import track_cuda_memory_usage
+
 
 # Define the function that you wish to track
 @track_cuda_memory_usage
 def create_empty_tensor(size):
     return torch.empty(size=(size, size)).cuda()
+
 
 create_empty_tensor(1000)
 ```
@@ -53,15 +56,17 @@ In this example, the decorator `@track_cuda_memory_usage` is used to track the C
 Here's an example tracking the memory usage while training a model, which could help in understanding and improving the efficiency of a training loop.
 
 ```python
-from zeta.utils import track_cuda_memory_usage
 import torch
-from torchvision.models import resnet18
-from torch.optim import SGD
 from torch.nn import CrossEntropyLoss
+from torch.optim import SGD
+from torchvision.models import resnet18
+
+from zeta.utils import track_cuda_memory_usage
 
 model = resnet18().cuda()
 
 optimizer = SGD(model.parameters(), lr=0.01)
+
 
 # Define a simple train loop
 @track_cuda_memory_usage
@@ -74,6 +79,7 @@ def simple_train_loop(dataloader, model, optimizer):
         loss.backward()
         optimizer.step()
         optimizer.zero_grad()
+
 
 simple_train_loop(your_dataloader, model, optimizer)
 ```

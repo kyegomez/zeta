@@ -1,5 +1,5 @@
-from torch import nn
 from einops import rearrange
+from torch import nn
 
 
 class RNNL(nn.Module):

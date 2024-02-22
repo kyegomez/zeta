@@ -27,8 +27,7 @@ class AccurateGELUActivation(nn.Module):
             * (
                 1
                 + torch.tanh(
-                    self.precomputed_constant
-                    * (input + 0.044715 * torch.pow(input, 3))
+                    self.precomputed_constant * (input + 0.044715 * torch.pow(input, 3))
                 )
             )
         )
@@ -47,16 +46,18 @@ Now, let's look at some examples of how to use this class.
 ### Example 1: Basic Usage
 ```python
 import torch
-from torch.nn import Module
-import math
 from torch import Tensor
+from torch.nn import Module
+
 from zeta import AccurateGELUActivation
-        
+
 # Create an instance of the class
 gelu_activation = AccurateGELUActivation()
 
 # Create a PyTorch tensor
-input = torch.tensor([[-1.0, -0.1, 0.1, 1.0], [0.5, -0.2, -2.1, 3.2]], dtype=torch.float32)
+input = torch.tensor(
+    [[-1.0, -0.1, 0.1, 1.0], [0.5, -0.2, -2.1, 3.2]], dtype=torch.float32
+)
 
 # Use the AccurateGELUActivation instance to activate the input
 output = gelu_activation(input)
@@ -70,14 +71,15 @@ The AccurateGELUActivation module can also be used as an activation layer in a P
 
 ```python
 import torch
-from torch.nn import Module, Linear
-import math
 from torch import Tensor
+from torch.nn import Linear, Module
+
 from zeta.nn import AccurateGELUActivation
+
 
 class Net(Module):
     def __init__(self):
-        super(Net, self).__init__()
+        super().__init__()
         self.fc1 = Linear(10, 5)
         self.fc2 = Linear(5, 2)
         self.activation = AccurateGELUActivation()
@@ -86,7 +88,8 @@ class Net(Module):
         x = self.fc1(x)
         x = self.activation(x)
         x = self.fc2(x)
-        return x     
+        return x
+
 
 # Create a model from the neural network class
 model = Net()

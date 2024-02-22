@@ -1,7 +1,9 @@
 import time
+
+import pytest
 import torch
 import torch.nn as nn
-import pytest
+
 from zeta.nn.modules.image_projector import ImagePatchCreatorProjector
 
 

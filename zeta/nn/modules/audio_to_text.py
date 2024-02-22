@@ -1,5 +1,5 @@
-from torch import nn, Tensor
 from einops import rearrange
+from torch import Tensor, nn
 
 
 def audio_to_text(x: Tensor, seqlen: int, dim: int, norm: bool = True):

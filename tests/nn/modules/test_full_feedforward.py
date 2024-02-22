@@ -1,5 +1,6 @@
 import pytest
 import torch
+
 from zeta.nn.modules.feedforward import FeedForward
 
 

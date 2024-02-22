@@ -1,4 +1,5 @@
-from torch import nn, Tensor
+from torch import Tensor, nn
+
 from zeta.quant.bitlinear import absmax_quantize
 
 
@@ -26,7 +27,7 @@ class QuantizedLN(nn.Module):
         print(output)
 
         """
-        super(QuantizedLN, self).__init__()
+        super().__init__()
         self.bits = bits
         self.ln = nn.LayerNorm(
             normalized_shape, eps=eps, elementwise_affine=element_wise_affine

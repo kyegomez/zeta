@@ -1,5 +1,6 @@
-from zeta.models import LLama2
 from unittest.mock import Mock, patch
+
+from zeta.models import LLama2
 
 
 def test_llama2_initialization():

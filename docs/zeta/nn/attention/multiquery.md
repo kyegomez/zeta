@@ -63,11 +63,12 @@ def forward(
 
 1. Basic Usage:
 ```python
-from zeta.nn import MultiQueryAttention
 import torch
 
+from zeta.nn import MultiQueryAttention
+
 # Initialize the attention module
-attention_layer = MultiQueryAttention(d_model=512, heads=8, attn_impl='torch')
+attention_layer = MultiQueryAttention(d_model=512, heads=8, attn_impl="torch")
 
 # Random input tensor
 x = torch.rand(16, 10, 512)  # Batch of 16, sequence length 10, embedding size 512
@@ -76,8 +77,13 @@ output, attn_weights, _ = attention_layer(x)
 
 2. Using Past Key and Value:
 ```python
-past_key_value = (torch.rand(16, 8, 10, 64), torch.rand(16, 8, 10, 64))  # Past key and value for 8 heads
-output, attn_weights, new_past_key_value = attention_layer(x, past_key_value=past_key_value)
+past_key_value = (
+    torch.rand(16, 8, 10, 64),
+    torch.rand(16, 8, 10, 64),
+)  # Past key and value for 8 heads
+output, attn_weights, new_past_key_value = attention_layer(
+    x, past_key_value=past_key_value
+)
 ```
 
 3. With Causal Masking and Weights:

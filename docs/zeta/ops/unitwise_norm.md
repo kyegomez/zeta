@@ -27,6 +27,7 @@ This example demonstrates the use of `unitwise_norm` on a one-dimensional tensor
 
 ```python
 import torch
+
 from zeta.ops import unitwise_norm
 
 # Create a one-dimensional tensor (vector)
@@ -43,6 +44,7 @@ Here, `unitwise_norm` is used to find the norm of a two-dimensional tensor, whic
 
 ```python
 import torch
+
 from zeta.ops import unitwise_norm
 
 # Create a two-dimensional tensor (matrix)
@@ -59,6 +61,7 @@ In this example, `unitwise_norm` is applied to a four-dimensional tensor, which 
 
 ```python
 import torch
+
 from zeta.ops import unitwise_norm
 
 # Create a four-dimensional tensor
@@ -98,7 +101,9 @@ def unitwise_norm(x):
         # Compute the norm for a 4-dimensional tensor (e.g., CNN weights)
         norm = torch.sqrt(torch.sum(x**2, dim=(1, 2, 3), keepdim=True)).clamp(min=1e-6)
     else:
-        raise ValueError(f"Got a parameter with len(shape) not in [1, 2, 3, 4] {x.shape}")
+        raise ValueError(
+            f"Got a parameter with len(shape) not in [1, 2, 3, 4] {x.shape}"
+        )
 
     return norm
 ```

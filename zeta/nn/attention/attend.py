@@ -81,6 +81,22 @@ def onnx_create_causal_mask(i, j, device):
 
 
 class Attend(nn.Module):
+    """
+    Attend module performs attention mechanism for neural networks.
+
+    Args:
+        dropout (float): Dropout probability. Default is 0.0.
+        causal (bool): Whether to use causal attention. Default is False.
+        heads (int): Number of attention heads. Default is None.
+        talking_heads (bool): Whether to use talking heads attention. Default is False.
+        sparse_topk (int): Number of top-k values to consider for sparse attention. Default is None.
+        scale (float): Scaling factor for attention scores. Default is None.
+        qk_norm (bool): Whether to normalize query-key dot products. Default is False.
+        flash (bool): Whether to use flash attention. Default is False.
+        add_zero_kv (bool): Whether to add a key/value token composed of zeros. Default is False.
+        onnxable (bool): Whether the module is ONNX compatible. Default is False.
+    """
+
     def __init__(
         self,
         *,
@@ -177,6 +193,21 @@ class Attend(nn.Module):
             self.cuda_config = EfficientAttentionConfig(False, True, True)
 
     def flash_attn(self, q, k, v, mask=None, attn_bias=None):
+        """
+        Perform flash attention.
+
+        Args:
+            q (torch.Tensor): Query tensor.
+            k (torch.Tensor): Key tensor.
+            v (torch.Tensor): Value tensor.
+            mask (torch.Tensor): Mask tensor. Default is None.
+            attn_bias (torch.Tensor): Attention bias tensor. Default is None.
+
+        Returns:
+            torch.Tensor: Output tensor.
+            Intermediates: Intermediate values during attention computation.
+        """
+
         batch, heads, q_len, _, k_len, is_cuda, device = (
             *q.shape,
             k.shape[-2],
@@ -266,11 +297,19 @@ class Attend(nn.Module):
 
     def forward(self, q, k, v, mask=None, attn_bias=None, prev_attn=None):
         """
-        einstein notation
-        b - batch
-        h - heads
-        n, i, j - sequence length (base sequence length, source, target)
-        d - feature dimension
+        Perform forward pass of the Attend module.
+
+        Args:
+            q (torch.Tensor): Query tensor.
+            k (torch.Tensor): Key tensor.
+            v (torch.Tensor): Value tensor.
+            mask (torch.Tensor): Mask tensor. Default is None.
+            attn_bias (torch.Tensor): Attention bias tensor. Default is None.
+            prev_attn (torch.Tensor): Previous attention tensor. Default is None.
+
+        Returns:
+            torch.Tensor: Output tensor.
+            Intermediates: Intermediate values during attention computation.
         """
 
         n, heads, kv_heads, device = (

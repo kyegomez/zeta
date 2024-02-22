@@ -71,7 +71,7 @@ model = NaViT(
     dim_head=64,
     dropout=0.1,
     emb_dropout=0.1,
-    token_dropout_prob=0.2  # Constant token dropout probability
+    token_dropout_prob=0.2,  # Constant token dropout probability
 )
 ```
 
@@ -108,7 +108,7 @@ feature_model = NaViT(
     dropout=0.1,
     emb_dropout=0.1,
     token_dropout_prob=0.2,
-    return_embeddings=True
+    return_embeddings=True,
 )
 
 # Forward pass to obtain feature embeddings

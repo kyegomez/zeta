@@ -4,9 +4,9 @@ import pytest
 import torch
 
 from zeta.nn.modules.kv_cache import (
+    KVCache,
     find_multiple,
     precompute_freq_cis,
-    KVCache,
     setup_cache,
 )
 

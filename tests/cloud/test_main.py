@@ -1,7 +1,9 @@
 """Test cases for the main module of the cloud package."""
 
-import pytest
 from unittest.mock import MagicMock, patch
+
+import pytest
+
 from zeta.cloud.main import zetacloud
 
 
@@ -22,9 +24,7 @@ def test_zetacloud_basic(mock_logger, mock_skyapi):
         run="python train.py",
         workdir=".",
     )
-    mock_logger.info.assert_called_with(
-        "Task: {} has been created".format(mock_task)
-    )
+    mock_logger.info.assert_called_with(f"Task: {mock_task} has been created")
     mock_task.set_resources.assert_called_once()
     mock_skyapi.launch.assert_called_once_with(mock_task, "[ZetaTrainingRun]")
 

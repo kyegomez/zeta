@@ -1,5 +1,6 @@
 import torch
 from torch import nn
+
 from zeta.nn.modules.feedforward import FeedForward
 
 
@@ -30,7 +31,7 @@ class MixtralExpert(nn.Module):
         *args,
         **kwargs,
     ):
-        super(MixtralExpert, self).__init__()
+        super().__init__()
         self.dim = dim
         self.dim_out = dim_out
         self.num_experts = num_experts

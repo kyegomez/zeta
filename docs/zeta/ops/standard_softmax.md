@@ -49,6 +49,7 @@ Below are three extended examples demonstrating different scenarios in which `st
 ```python
 import torch
 import torch.nn.functional as F
+
 from zeta.ops import standard_softmax
 
 # Example tensor holding scores for 3 different classes
@@ -66,13 +67,11 @@ print("Softmax Scores:", softmax_scores)
 ```python
 import torch
 import torch.nn.functional as F
+
 from zeta.ops import standard_softmax
 
-
 # Example batch of tensors where each sub-tensor is a score vector for an instance
-batch_scores = torch.tensor([[2.0, 1.5, 0.5],
-                            [1.0, 2.0, 3.0],
-                            [3.0, 2.0, 1.0]])
+batch_scores = torch.tensor([[2.0, 1.5, 0.5], [1.0, 2.0, 3.0], [3.0, 2.0, 1.0]])
 
 # Compute the softmax scores for the batch
 batch_softmax_scores = standard_softmax(batch_scores)
@@ -87,18 +86,22 @@ print("Batch Softmax Scores:", batch_softmax_scores)
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
+
 from zeta.ops import standard_softmax
 
 
 # Define a simple neural network model with an output layer including softmax
 class SimpleNeuralNet(nn.Module):
     def __init__(self):
-        super(SimpleNeuralNet, self).__init__()
-        self.linear = nn.Linear(10, 3)  # Maps from an input dimension of 10 to 3 classes
+        super().__init__()
+        self.linear = nn.Linear(
+            10, 3
+        )  # Maps from an input dimension of 10 to 3 classes
 
     def forward(self, x):
         x = self.linear(x)
         return standard_softmax(x)
+
 
 # Instantiate the neural network
 model = SimpleNeuralNet()

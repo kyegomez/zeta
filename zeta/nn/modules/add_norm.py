@@ -1,4 +1,4 @@
-from torch import nn, Tensor
+from torch import Tensor, nn
 
 
 def add_norm(x, dim: int, residual: Tensor):

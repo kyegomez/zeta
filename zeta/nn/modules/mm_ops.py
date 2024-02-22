@@ -1,5 +1,5 @@
-from torch import nn, Tensor
 from einops import rearrange, reduce
+from torch import Tensor, nn
 
 
 def threed_to_text(

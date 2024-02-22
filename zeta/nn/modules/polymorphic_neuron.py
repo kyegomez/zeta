@@ -76,6 +76,7 @@ Selecting the appropriate activation function for polymorphic neurons can be bas
 Each of these heuristics offers a different approach to dynamically selecting activation functions, potentially leading to more adaptive and effective neural network models. The choice of heuristic should be informed by the specific characteristics of the task and the nature of the input data.
 
 """
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -95,7 +96,7 @@ class PolymorphicNeuronLayer(nn.Module):
         >>> output = neuron(x)
         >>> output.shape
         """
-        super(PolymorphicNeuronLayer, self).__init__()
+        super().__init__()
         self.in_features = in_features
         self.out_features = out_features
         self.activation_functions = activation_functions

@@ -1,5 +1,5 @@
+from einops import pack, rearrange, unpack
 from torch import nn
-from einops import rearrange, pack, unpack
 
 # utils
 # helper

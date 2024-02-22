@@ -104,9 +104,9 @@ class Exo(nn.Module):
 
     The Exo activation function is defined as:
 
-    \[ Exo(x) = \sigma(\alpha x) \times x + (1 - \sigma(\alpha x)) \times \tanh(x) \]
+    \\[ Exo(x) = \\sigma(\alpha x) \times x + (1 - \\sigma(\alpha x)) \times \tanh(x) \\]
 
-    where \(\sigma\) represents the sigmoid function, and \(\alpha\) is a hyperparameter
+    where \\(\\sigma\\) represents the sigmoid function, and \\(\alpha\\) is a hyperparameter
     dictating the sensitivity of the gating mechanism.
 
     **Model Configuration**
@@ -130,7 +130,7 @@ class Exo(nn.Module):
 
     def __init__(self, alpha=1.0):
         """INIT function."""
-        super(Exo, self).__init__()
+        super().__init__()
 
     def forward(self, x):
         """Forward function."""

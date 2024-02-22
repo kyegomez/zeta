@@ -41,9 +41,9 @@ class Experts(nn.Module):
 
     def forward(self, x):
         """Forward pass."""
-        hidden1 = self.act(torch.einsum('end,edh->enh', x, self.w1))
-        hidden2 = self.act(torch.einsum('end,edh->enh', hidden1, self.w2))
-        out = torch.einsum('end,edh->enh', hidden2, self.w3)
+        hidden1 = self.act(torch.einsum("end,edh->enh", x, self.w1))
+        hidden2 = self.act(torch.einsum("end,edh->enh", hidden1, self.w2))
+        out = torch.einsum("end,edh->enh", hidden2, self.w3)
         return out
 ```
 
@@ -72,6 +72,7 @@ Here are three usage examples of the `Experts` module:
 ```python
 import torch
 from torch import nn
+
 from zeta.nn import Experts
 
 # Create input tensor
@@ -92,6 +93,7 @@ print(out.shape)  # Output: torch.Size([1, 3, 512])
 ```python
 import torch
 from torch import nn
+
 from zeta.nn import Experts
 
 # Create input tensor
@@ -112,6 +114,7 @@ print(out.shape)  # Output: torch.Size([2, 4, 256])
 ```python
 import torch
 from torch import nn
+
 from zeta.nn import Experts
 
 # Create input tensor
@@ -119,8 +122,8 @@ x = torch.randn(3, 5, 128)
 
 # Initialize the Experts module with 4 experts on GPU
 model = Experts(128, 4)
-model.to('cuda')  # Move the model to GPU
-x = x.to('cuda')  # Move the input tensor to GPU
+model.to("cuda")  # Move the model to GPU
+x = x.to("cuda")  # Move the input tensor to GPU
 
 # Forward pass
 out = model(x)

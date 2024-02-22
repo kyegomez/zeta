@@ -97,17 +97,12 @@ Let's explore how to use the `MLP` class effectively in various scenarios.
 Here's how to use the `MLP` class to create and apply an MLP neural network:
 
 ```python
-from zeta.nn import MLP
 import torch
 
+from zeta.nn import MLP
+
 # Create an instance of MLP
-mlp = MLP(
-    dim_in=256,
-    dim_out=10,
-    expansion_factor=4.0,
-    depth=3,
-    norm=True
-)
+mlp = MLP(dim_in=256, dim_out=10, expansion_factor=4.0, depth=3, norm=True)
 
 # Create an input tensor
 x = torch.randn(32, 256)

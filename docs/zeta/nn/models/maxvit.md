@@ -68,7 +68,7 @@ model = MaxVit(
     mbconv_expansion_rate=4,
     mbconv_shrinkage_rate=0.25,
     dropout=0.01,
-    channels=3
+    channels=3,
 )
 ```
 

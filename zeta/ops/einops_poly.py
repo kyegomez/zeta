@@ -1,5 +1,6 @@
 import re
 from functools import wraps
+
 from einops import rearrange, reduce, repeat
 
 
@@ -31,7 +32,7 @@ def _with_anon_dims(fn):
 
         dim_prefixes = tuple(map(get_anon_dim_name, matches))
 
-        update_kwargs_dict = dict()
+        update_kwargs_dict = {}
 
         for prefix in dim_prefixes:
             assert (

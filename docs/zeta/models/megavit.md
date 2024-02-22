@@ -62,8 +62,9 @@ Here is a basic usage example of the `MegaVit` class:
 
 ```python
 import torch
-from torch.nn import Module
 from numpy import random
+from torch.nn import Module
+
 from zeta.models import MegaVit
 
 # Define model hyperparameters
@@ -83,7 +84,9 @@ model_hparams = {
 model = MegaVit(**model_hparams)
 
 # Get random image
-img = torch.from_numpy(random.rand(1, 3, model_hparams["image_size"], model_hparams["image_size"])).float()
+img = torch.from_numpy(
+    random.rand(1, 3, model_hparams["image_size"], model_hparams["image_size"])
+).float()
 
 # Get model prediction
 preds = model(img)

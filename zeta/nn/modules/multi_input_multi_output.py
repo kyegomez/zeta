@@ -1,6 +1,7 @@
-import torch
-from torch import nn, Tensor
 from typing import List
+
+import torch
+from torch import Tensor, nn
 
 
 class MultiModalEmbedding(nn.Module):
@@ -23,7 +24,7 @@ class MultiModalEmbedding(nn.Module):
     """
 
     def __init__(self, video_dim, text_dim):
-        super(MultiModalEmbedding, self).__init__()
+        super().__init__()
         self.video_embedding = nn.Linear(video_dim, 512)
         self.text_embedding = nn.EmbeddingBag(text_dim, 512, sparse=True)
 
@@ -45,7 +46,7 @@ class MultiInputMultiModalConcatenation(nn.Module):
     """
 
     def __init__(self, dim: int, *args, **kwargs):
-        super(MultiInputMultiModalConcatenation, self).__init__()
+        super().__init__()
         self.dim = dim
 
     def forward(self, inputs: List[Tensor]):
@@ -86,7 +87,7 @@ class SplitMultiOutput(nn.Module):
         *args,
         **kwargs,
     ):
-        super(SplitMultiOutput, self).__init__()
+        super().__init__()
         self.dim = dim
         self.num_splits = num_splits
         self.output_dims = output_dims
@@ -115,7 +116,7 @@ class OutputHead(nn.Module):
             *args: Variable length argument list.
             **kwargs: Arbitrary keyword arguments.
         """
-        super(OutputHead, self).__init__()
+        super().__init__()
         self.dim = dim
         self.dim_range = dim_range
 
@@ -153,7 +154,7 @@ class DynamicOutputDecoder(nn.Module):
     """
 
     def __init__(self, input_dim, robot_count):
-        super(DynamicOutputDecoder, self).__init__()
+        super().__init__()
         self.decoders = nn.ModuleList(
             [nn.Linear(input_dim, input_dim) for _ in range(robot_count)]
         )
@@ -190,7 +191,7 @@ class DynamicInputChannels(nn.Module):
     """
 
     def __init__(self, num_robots, input_dim, output_dim):
-        super(DynamicInputChannels, self).__init__()
+        super().__init__()
         self.layers = nn.ModuleList(
             [nn.Linear(input_dim, output_dim) for _ in range(num_robots)]
         )
@@ -218,7 +219,7 @@ class OutputDecoders(nn.Module):
     """
 
     def __init__(self, num_robots, input_dim, output_dim):
-        super(OutputDecoders, self).__init__()
+        super().__init__()
         self.decoders = nn.ModuleList(
             [nn.Linear(input_dim, output_dim) for _ in range(num_robots)]
         )

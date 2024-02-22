@@ -53,6 +53,7 @@ To instantiate a QloraLinear layer:
 
 ```python
 import torch.nn as nn
+
 from zeta.quant.qlora import QloraLinear
 
 in_features = 20
@@ -82,7 +83,9 @@ If you want to introduce dropout to the QLoRA term:
 lora_alpha = 2
 lora_dropout = 0.5
 
-dropout_layer = QloraLinear(in_features, out_features, weight, r, lora_alpha, lora_dropout)
+dropout_layer = QloraLinear(
+    in_features, out_features, weight, r, lora_alpha, lora_dropout
+)
 output_with_dropout = dropout_layer(input_data)
 ```
 

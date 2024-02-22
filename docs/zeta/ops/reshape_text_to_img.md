@@ -7,6 +7,7 @@ The `reshape_text_to_img` function is a utility designed to match the dimensions
 ```python
 from einops import rearrange
 from torch import Tensor
+
 from zeta.ops import reshape_text_to_img
 ```
 
@@ -25,6 +26,7 @@ from zeta.ops import reshape_text_to_img
 ```python
 import torch
 from einops import rearrange
+
 from zeta.ops import reshape_text_to_img
 
 # Usage
@@ -43,12 +45,12 @@ print(image_tensor.shape)  # Should output torch.Size([2, 32, 4, 4])
 ```python
 import torch
 from torch.nn import functional as F
-from zeta.ops import reshape_text_to_img
 
+from zeta.ops import reshape_text_to_img
 
 # Let's say we have an image and a text tensor that we want to fuse
 image_tensor = torch.randn(2, 3, 32, 32)  # Image tensor with shape [2, 3, 32, 32]
-text_tensor = torch.randn(2, 1024, 3)     # Text tensor with shape [2, 1024, 3]
+text_tensor = torch.randn(2, 1024, 3)  # Text tensor with shape [2, 1024, 3]
 
 # Reshape the text tensor using the reshape_text_to_img function
 reshaped_text = reshape_text_to_img(text_tensor, 32, 32)
@@ -61,10 +63,10 @@ print(fused_tensor.shape)  # Should output torch.Size([2, 3, 32, 32])
 ### Example 3: Visualizing the Reshaped Text Tensor
 
 ```python
-import torch
 import matplotlib.pyplot as plt
-from zeta.ops import reshape_text_to_img
+import torch
 
+from zeta.ops import reshape_text_to_img
 
 # Create a text tensor with random data
 text_tensor = torch.randn(1, 64, 3)
@@ -74,7 +76,7 @@ reshaped_text = reshape_text_to_img(text_tensor, 8, 8)
 
 # Visualize the reshaped text as an image
 plt.imshow(reshaped_text.squeeze(0).permute(1, 2, 0).detach().numpy())
-plt.title('Reshaped Text Tensor Visualized as an Image')
+plt.title("Reshaped Text Tensor Visualized as an Image")
 plt.show()
 ```
 

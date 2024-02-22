@@ -1,7 +1,8 @@
 import pytest
 import torch
+
 from zeta.models import PalmE
-from zeta.structs import ViTransformerWrapper, AutoregressiveWrapper
+from zeta.structs import AutoregressiveWrapper, ViTransformerWrapper
 
 
 @pytest.fixture

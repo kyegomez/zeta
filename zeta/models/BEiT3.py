@@ -4,12 +4,8 @@
 import torch
 import torch.nn as nn
 
+from zeta.nn import PositionalEmbedding, TextEmbedding, VisionEmbedding
 from zeta.structs.encoder import Encoder
-from zeta.nn import (
-    PositionalEmbedding,
-    TextEmbedding,
-    VisionEmbedding,
-)
 from zeta.utils.module.multiway_network import MutliwayEmbedding
 
 

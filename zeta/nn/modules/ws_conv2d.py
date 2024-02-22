@@ -1,6 +1,6 @@
 import torch
-from torch import nn, Tensor
 import torch.nn.functional as F
+from torch import Tensor, nn
 
 
 class WSConv2d(nn.Conv2d):
@@ -35,7 +35,7 @@ class WSConv2d(nn.Conv2d):
         bias: bool = True,
         padding_mode: str = "zeros",
     ):
-        super(WSConv2d, self).__init__(
+        super().__init__(
             in_channels,
             out_channels,
             kernel_size,

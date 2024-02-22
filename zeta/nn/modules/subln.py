@@ -30,7 +30,7 @@ class SubLN(nn.Module):
     """
 
     def __init__(self, d_model, γ=1.0):
-        super(SubLN, self).__init__()
+        super().__init__()
 
         # Define necessary layers and operations
         self.LN1 = nn.LayerNorm(d_model)

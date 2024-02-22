@@ -71,6 +71,7 @@ Here's a basic example of using the `FusedDenseGELUDense` layer:
 
 ```python
 import torch
+
 from zeta.nn import FusedDenseGELUDense
 
 # Create an instance of FusedDenseGELUDense
@@ -112,6 +113,7 @@ You can enable quantization using the `bitsandbytes` library by providing a quan
 # pip install bitsandbytes
 
 import torch
+
 from zeta.nn import FusedDenseGELUDense
 
 # Create an instance of FusedDenseGELUDense with quantization

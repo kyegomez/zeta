@@ -47,10 +47,12 @@ The execution flow control is then returned to the code following the context bl
 **How to Use**
 ```python
 from pathlib import Path
-from zeta.utils import save_memory_snapshot
+
 import torch
 
-file_path = Path('my_folder')
+from zeta.utils import save_memory_snapshot
+
+file_path = Path("my_folder")
 
 # code to profile
 model = torch.nn.Linear(10, 10)
@@ -64,17 +66,19 @@ The provided file path 'my_folder' is where the snapshots will be saved. After t
 **Use Case 2**
 ```python
 from pathlib import Path
-from zeta.utils import save_memory_snapshot
+
 import torch
 
-file_path = Path('gpu_usage')
+from zeta.utils import save_memory_snapshot
+
+file_path = Path("gpu_usage")
 
 # code to profile
 model = torch.nn.Sequential(
-    torch.nn.Conv2d(1,20,5),
+    torch.nn.Conv2d(1, 20, 5),
     torch.nn.ReLU(),
-    torch.nn.Conv2d(20,64,5),
-    torch.nn.ReLU()
+    torch.nn.Conv2d(20, 64, 5),
+    torch.nn.ReLU(),
 )
 
 input_tensor = torch.randn(1, 1, 32, 32)
@@ -87,10 +91,12 @@ In this case, we are profiling a multi-layer Convolutional Neural Network (CNN).
 **Use Case 3**
 ```python
 from pathlib import Path
-from zeta.utils import save_memory_snapshot
+
 import torch
 
-file_path = Path('training_memory')
+from zeta.utils import save_memory_snapshot
+
+file_path = Path("training_memory")
 
 # establish a simple model
 model = torch.nn.Linear(20, 10)

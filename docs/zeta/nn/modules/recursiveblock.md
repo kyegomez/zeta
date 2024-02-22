@@ -12,6 +12,7 @@ Here is the code structure of the RecursiveBlock class:
 import torch
 from torch import nn
 
+
 class RecursiveBlock(nn.Module):
     def __init__(self, modules, iters, *args, **kwargs):
         super().__init__()
@@ -56,13 +57,11 @@ Utilizing two convolutional layers from Pytorch's nn library recursively
 ```python
 import torch
 from torch import nn
+
 from zeta import RecursiveBlock
 
 conv_module = nn.Sequential(
-    nn.Conv2d(1, 20, 5),
-    nn.ReLU(),
-    nn.Conv2d(20, 20, 5),
-    nn.ReLU()
+    nn.Conv2d(1, 20, 5), nn.ReLU(), nn.Conv2d(20, 20, 5), nn.ReLU()
 )
 
 block = RecursiveBlock(conv_module, iters=2)
@@ -78,9 +77,10 @@ Implementing the RecursiveBlock class with a simple, custom module
 class AddTen(nn.Module):
     def forward(self, x):
         return x + 10
- 
+
+
 block = RecursiveBlock(AddTen(), iters=3)
-output = block(torch.tensor(1.))  # output -> tensor(31.)
+output = block(torch.tensor(1.0))  # output -> tensor(31.)
 ```
 
 ### Example 3:
@@ -89,6 +89,7 @@ Using RecursiveBlock with a Linear Layer and a sigmoid activation function
 ```python
 import torch
 from torch import nn
+
 from zeta import RecursiveBlock
 
 linear_module = nn.Sequential(

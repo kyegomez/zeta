@@ -83,8 +83,9 @@ Let's explore a usage example of the `VisionEmbedding` class to understand how t
 ### Using the `VisionEmbedding` Class <a name="using-the-visionembedding-class"></a>
 
 ```python
-from zeta import VisionEmbedding
 import torch
+
+from zeta import VisionEmbedding
 
 # Create an instance of VisionEmbedding
 vision_embedding = VisionEmbedding(

@@ -1,8 +1,10 @@
 # LaplaceActivation
 
+import math
+
 import pytest
 import torch
-import math
+
 from zeta.nn import LaplaceActivation
 
 

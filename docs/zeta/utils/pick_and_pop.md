@@ -22,7 +22,7 @@ def pick_and_pop(keys, d):
     Returns:
         dict: A dictionary with the specified keys and their values.
     """
-    values = list(map(lambda key: d.pop(key), keys))
+    values = list(map(d.pop, keys))
     return dict(zip(keys, values))
 ```
 

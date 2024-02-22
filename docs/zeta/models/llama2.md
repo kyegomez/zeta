@@ -36,7 +36,7 @@ class LLama2:
             ),
         )
         self.decoder = AutoregressiveWrapper(self.decoder)
-        
+
     def forward(self, text):
         model_input = self.decoder.forward(text)[0]
         return self.decoder(model_input, padded_x=model_input[0])
@@ -75,9 +75,10 @@ This example illustrates how to instantiate the model and pass a sample text thr
 
 ```python
 import torch
-from torch.nn import Transformer, Decoder
-from zeta.structs import AutoregressiveWrapper
+from torch.nn import Decoder, Transformer
+
 from zeta.models import LLama2
+from zeta.structs import AutoregressiveWrapper
 
 # Initializing model
 llama2_model = LLama2()
@@ -96,7 +97,9 @@ print(output)
 This example illustrates how to instantiate the model with custom parameters.
 
 ```python
-llama2_model = LLama2(num_tokens=1000, max_seq_len=512, dim=512, depth=4, dim_head=64, heads=4)
+llama2_model = LLama2(
+    num_tokens=1000, max_seq_len=512, dim=512, depth=4, dim_head=64, heads=4
+)
 
 text = torch.tensor([1, 2, 3, 4])
 
@@ -110,12 +113,14 @@ print(output)
 This example illustrates how you could use this model for a sequence classification task.
 
 ```python
-llama2_model = LLama2(num_tokens=5000, max_seq_len=256, dim=128, depth=2, dim_head=32, heads=2)
+llama2_model = LLama2(
+    num_tokens=5000, max_seq_len=256, dim=128, depth=2, dim_head=32, heads=2
+)
 
 text_sequences = torch.tensor([[1, 2, 3, 4], [2, 3, 1, 4]])
 target_sequences = torch.tensor([1, 0])  # 2 sequences, 1 for each sequence
 
-outputs = llama2_model.forward(text_sequences)  
+outputs = llama2_model.forward(text_sequences)
 loss = loss_function(outputs, target_sequences)
 ```
 In this usage example, an instance of the LLama2 class is created using custom parameters. A tensor representing text sequences is passed to the model, and the output is computed. You would typically use a loss function suitable for classification tasks (like Cross-Entropy Loss) and compute the loss against some target sequences. 

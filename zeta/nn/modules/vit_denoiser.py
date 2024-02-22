@@ -1,7 +1,7 @@
 import torch
-from torch import nn, Tensor
 from einops import rearrange
 from einops.layers.torch import Rearrange
+from torch import Tensor, nn
 
 
 def to_patch_embedding(x: Tensor, patch_size: int, patch_dim: int, dim):

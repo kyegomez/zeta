@@ -22,10 +22,11 @@ def video_tensor_to_gift(tensor, path, duration=120, loop=0, optimize=True):
     Examples:
 
     This is a simple usage case.
-    
+
     ```python
-    from torchvision.transforms import functional as T
     import torch
+    from torchvision.transforms import functional as T
+
     from zeta.utils import video_tensor_to_gift
 
     # Generate a random tensor representing a video
@@ -37,10 +38,11 @@ def video_tensor_to_gift(tensor, path, duration=120, loop=0, optimize=True):
     ```
 
     This example showcases usage with different arguments.
-    
+
     ```python
-    from torchvision.transforms import functional as T
     import torch
+    from torchvision.transforms import functional as T
+
     from zeta.utils import video_tensor_to_gift
 
     # Generate a random tensor representing a video

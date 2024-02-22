@@ -11,7 +11,7 @@ def get_package_versions(requirements_path, output_path):
     Extract package names and versions from a requirements.txt file and write them to a new file.
     """
     try:
-        with open(requirements_path, "r", encoding="utf-8") as file:
+        with open(requirements_path, encoding="utf-8") as file:
             requirements = file.readlines()
     except FileNotFoundError:
         print(f"Error: The file '{requirements_path}' was not found.")

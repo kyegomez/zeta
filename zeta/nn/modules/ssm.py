@@ -26,7 +26,7 @@ def selective_scan(x, delta, A, B, C, D):
     deltaA = torch.exp(delta.unsqueeze(-1) * A)  # (B, L, ED, N)
     deltaB = delta.unsqueeze(-1) * B.unsqueeze(2)  # (B, L, ED, N)
 
-    BX = deltaB * (x.unsqueeze(-1))  # (B, L, ED, N)
+    BX = deltaB * x.unsqueeze(-1)  # (B, L, ED, N)
 
     hs = pscan(deltaA, BX)
 
@@ -62,7 +62,7 @@ def selective_scan_seq(x, delta, A, B, C, D, dim_inner: int, d_state: int):
     deltaA = torch.exp(delta.unsqueeze(-1) * A)  # (B, L, ED, N)
     deltaB = delta.unsqueeze(-1) * B.unsqueeze(2)  # (B, L, ED, N)
 
-    BX = deltaB * (x.unsqueeze(-1))  # (B, L, ED, N)
+    BX = deltaB * x.unsqueeze(-1)  # (B, L, ED, N)
 
     h = torch.zeros(
         x.size(0),
@@ -100,7 +100,7 @@ class SSM(nn.Module):
             d_state (int): The dimension of the state.
 
         """
-        super(SSM, self).__init__()
+        super().__init__()
         self.dt_rank = dt_rank
         self.dim_inner = dim_inner
         self.d_state = d_state

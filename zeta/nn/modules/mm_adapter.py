@@ -8,7 +8,7 @@ class SkipConnection(nn.Module):
     """
 
     def __init__(self):
-        super(SkipConnection, self).__init__()
+        super().__init__()
 
     def forward(self, x1, x2):
         return x1 + x2

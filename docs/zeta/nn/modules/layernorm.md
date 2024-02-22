@@ -53,7 +53,7 @@ class LayerNorm(nn.Module):
         fp16_eps=1e-3,
         stable=False
     )
-    
+
     def forward(self, x)
 ```
 
@@ -93,6 +93,7 @@ Here's how to use the `LayerNorm` class to normalize a tensor:
 
 ```python
 import torch
+
 from zeta.nn import LayerNorm
 
 # Create an instance of LayerNorm for a tensor with 10 dimensions
@@ -114,6 +115,7 @@ Here's how to use the `l2norm` function to perform L2 normalization on a tensor:
 
 ```python
 import torch
+
 from zeta.nn import l2norm
 
 # Create a random input tensor

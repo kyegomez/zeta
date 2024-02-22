@@ -1,5 +1,6 @@
-import torch
 import pytest
+import torch
+
 from zeta.nn.modules.s4 import s4d_kernel
 
 # Test cases for s4d_kernel function

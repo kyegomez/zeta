@@ -63,17 +63,18 @@ It outputs a 2D tensor with dimensions `(batch size, number of classes)`, repres
 
 ```python
 import torch
+
 from zeta.models import NaViT
 
 # initialize the model
 model = NaViT(
-    image_size = 32,
-    patch_size = 4,
-    num_classes = 10,
-    dim = 512,
-    depth = 6,
-    heads = 8,
-    mlp_dim = 1024,
+    image_size=32,
+    patch_size=4,
+    num_classes=10,
+    dim=512,
+    depth=6,
+    heads=8,
+    mlp_dim=1024,
 )
 
 # random tensor representing a batch of 10 images, with 3 color channels, each 32x32 pixels

@@ -1,7 +1,8 @@
 import torch
 from torch import nn
-from zeta.nn.modules.feedforward import FeedForward
+
 from zeta.nn.attention.shaped_attention import ShapedAttention
+from zeta.nn.modules.feedforward import FeedForward
 from zeta.nn.modules.residual import Residual
 
 
@@ -29,7 +30,7 @@ class SimpleTransformerBlock(nn.Module):
         heads,
         dropout: float = 0.0,
     ):
-        super(SimpleTransformerBlock, self).__init__()
+        super().__init__()
         self.layers = nn.ModuleList([])
         self.x_proj = nn.Linear(dim, dim)
 

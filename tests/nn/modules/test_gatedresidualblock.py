@@ -2,6 +2,7 @@ import pytest
 import torch
 import torch.nn as nn
 from torch.autograd import gradcheck
+
 from zeta.nn.modules import GatedResidualBlock
 
 

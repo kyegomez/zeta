@@ -48,6 +48,7 @@ This particular sequence ensures that the neural network can learn a rich repres
    ```python
    import torch
    import torch.nn as nn
+
    from zeta.nn.modules import SimpleFeedForward
 
    model = SimpleFeedForward(768, 2048, 0.1)
@@ -61,17 +62,20 @@ This particular sequence ensures that the neural network can learn a rich repres
    ```python
    import torch
    import torch.nn as nn
+
    from zeta.nn.modules import SimpleFeedForward
+
 
    class CustomModel(nn.Module):
        def __init__(self):
-           super(CustomModel, self).__init__()
+           super().__init__()
            self.ff = SimpleFeedForward(768, 2048, 0.1)
            self.final_layer = nn.Linear(768, 10)  # Example output layer
 
        def forward(self, x):
            x = self.ff(x)
            return self.final_layer(x)
+
 
    model = CustomModel()
    x = torch.randn(1, 768)
@@ -84,6 +88,7 @@ This particular sequence ensures that the neural network can learn a rich repres
    ```python
    import torch
    import torch.nn as nn
+
    from zeta.nn.modules import SimpleFeedForward
 
    model = SimpleFeedForward(768, 2048, 0.5)  # Setting a higher dropout value

@@ -1,6 +1,7 @@
 import logging
+
 import torch
-from transformers import CLIPProcessor, AutoTokenizer
+from transformers import AutoTokenizer, CLIPProcessor
 
 logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"

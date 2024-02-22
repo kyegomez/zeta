@@ -40,11 +40,7 @@ The `fsdp` function is the core component of the Zeta library, providing a strai
 
 ```python
 model = fsdp(
-    model,
-    auto_wrap=False,
-    mp="fp32",
-    shard_strat="NO_SHARD",
-    TransformerBlock=None
+    model, auto_wrap=False, mp="fp32", shard_strat="NO_SHARD", TransformerBlock=None
 )
 ```
 
@@ -95,11 +91,13 @@ fsdp_model = fsdp(model)
 ```python
 import torch.nn as nn
 
+
 # Define a custom transformer layer type
 class TransformerBlock(nn.Module):
     def __init__(self):
         # Define your custom transformer layer here
         pass
+
 
 # Define your PyTorch model with transformer layers
 model = nn.Sequential(

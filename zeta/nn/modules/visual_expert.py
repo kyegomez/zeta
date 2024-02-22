@@ -20,6 +20,7 @@ of attention heads, and D is the hidden size. In the attention with visual exper
 
 Shape = B, SEQ_LEN, DIM or regular text shape
 """
+
 import torch
 from torch import nn
 

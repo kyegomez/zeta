@@ -1,10 +1,11 @@
 import torch
 from torch import Tensor, nn
-from zeta.nn.modules.rms_norm import RMSNorm
+
 from zeta.nn.modules.mlp import MLP
-from zeta.nn.modules.visual_expert import VisualExpert
+from zeta.nn.modules.rms_norm import RMSNorm
 from zeta.nn.modules.simple_mamba import MambaBlock
-from zeta.structs.transformer import ViTransformerWrapper, Encoder
+from zeta.nn.modules.visual_expert import VisualExpert
+from zeta.structs.transformer import Encoder, ViTransformerWrapper
 
 
 class MultiModalMamba(nn.Module):
@@ -77,7 +78,7 @@ class MultiModalMamba(nn.Module):
         *args,
         **kwargs,
     ):
-        super(MultiModalMamba, self).__init__()
+        super().__init__()
         self.vocab_size = vocab_size
         self.dim = dim
         self.depth = depth

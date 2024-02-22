@@ -1,7 +1,8 @@
 import pytest
 import torch
-from zeta.models import NaViT
 from torch.nn import Sequential
+
+from zeta.models import NaViT
 
 
 # ---- SETUP ----

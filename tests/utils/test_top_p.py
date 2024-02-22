@@ -1,8 +1,9 @@
 # first, here are some imports and mock data setup:
 
+import pytest
 import torch
 import torch.nn.functional as F
-import pytest
+
 from zeta.utils import top_p
 
 # mock data

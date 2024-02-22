@@ -2,8 +2,9 @@ import torch
 import torch.nn.functional as F
 from einops import rearrange
 from torch import einsum, nn
-from zeta.nn.attention.cross_attn_images import MultiModalCrossAttention
+
 import zeta.nn as znn
+from zeta.nn.attention.cross_attn_images import MultiModalCrossAttention
 
 
 class LayerNorm(nn.Module):
@@ -75,7 +76,7 @@ class GatedXDenseBlock(nn.Module):
         alpha_xattn: float = 0.0,
         alpha_dense: float = 0.0,
     ):
-        super(GatedXDenseBlock, self).__init__()
+        super().__init__()
         self.dim = dim
         self.heads = heads
         self.context_dim = context_dim

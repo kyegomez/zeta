@@ -1,12 +1,12 @@
 # modularize the decoder to accept any attemtion, dilated or multihead
 
+import bitsandbytes
 import torch
 from torch.nn import Module
-import bitsandbytes
-
-from zeta import DecoderConfig, Decoder
-from zeta.utils.embedding import PositionalEmbedding
 from transformers import AutoTokenizer
+
+from zeta import Decoder, DecoderConfig
+from zeta.utils.embedding import PositionalEmbedding
 
 
 class LongNetTokenizer:

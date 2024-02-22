@@ -15,8 +15,7 @@ Key concepts:
 
 ```python
 class DynamicPositionBias(nn.Module):
-    def __init__(self, dim: int, heads: int):
-        ...
+    def __init__(self, dim: int, heads: int): ...
 ```
 
 ### Parameters:
@@ -46,8 +45,9 @@ The positional bias can be utilized in attention mechanisms to provide awareness
 
 1. **Basic Usage**:
     ```python
-    from zeta import DynamicPositionBias
     import torch
+
+    from zeta import DynamicPositionBias
 
     # Initialize the module
     module = DynamicPositionBias(dim=64, heads=8)
@@ -58,9 +58,11 @@ The positional bias can be utilized in attention mechanisms to provide awareness
 
 2. **Integration with Transformer**:
     ```python
-    from zeta import DynamicPositionBias
-    from torch.nn import MultiheadAttention
     import torch
+    from torch.nn import MultiheadAttention
+
+    from zeta import DynamicPositionBias
+
 
     class CustomAttention(MultiheadAttention):
         def __init__(self, embed_dim, num_heads):
@@ -73,9 +75,10 @@ The positional bias can be utilized in attention mechanisms to provide awareness
 
 3. **Inspecting the Bias**:
     ```python
-    from zeta import DynamicPositionBias
-    import torch
     import matplotlib.pyplot as plt
+    import torch
+
+    from zeta import DynamicPositionBias
 
     # Initialize the module
     module = DynamicPositionBias(dim=64, heads=8)

@@ -1,7 +1,8 @@
-import torch
-from torch import nn, Tensor
-from einops import rearrange
 from math import sqrt
+
+import torch
+from einops import rearrange
+from torch import Tensor, nn
 
 
 class DepthWiseConv2d(nn.Module):

@@ -45,7 +45,7 @@ class ConvolutionLanguageBlock(nn.Module):
         dilation=1,
         dropout=0.1,
     ):
-        super(ConvolutionLanguageBlock, self).__init__()
+        super().__init__()
         self.in_channels = in_channels
         self.out_channels = out_channels
         self.kernel_size = kernel_size

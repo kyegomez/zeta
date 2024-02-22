@@ -1,9 +1,8 @@
-import torch
 import pytest
+import torch
 from torch import nn
-from zeta.ops.mos import (
-    MixtureOfSoftmaxes,
-)
+
+from zeta.ops.mos import MixtureOfSoftmaxes
 
 
 # Create a fixture for initializing the model
@@ -79,14 +78,16 @@ def test_softmax_outputs_sum_to_one(mos_model):
 def test_mixture_weights_range(mos_model):
     input_data = torch.randn(32, 128)
     mixture_weights = mos_model.mixture_weights(input_data)
-    assert torch.all(mixture_weights >= 0) and torch.all(mixture_weights <= 1)
+    assert torch.all(mixture_weights >= 0)
+    assert torch.all(mixture_weights <= 1)
 
 
 # Test if softmax outputs are within [0, 1]
 def test_softmax_outputs_range(mos_model):
     input_data = torch.randn(32, 128)
     output = mos_model(input_data)
-    assert torch.all(output >= 0) and torch.all(output <= 1)
+    assert torch.all(output >= 0)
+    assert torch.all(output <= 1)
 
 
 # Test edge case with zero input size and classes

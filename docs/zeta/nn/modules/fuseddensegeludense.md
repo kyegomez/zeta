@@ -25,6 +25,7 @@ This module is particularly useful for creating deep learning models that requir
 ```python
 # Example of using the FusedDenseGELUDense module
 import torch
+
 from zeta.nn import FusedDenseGELUDense
 
 # Define input data

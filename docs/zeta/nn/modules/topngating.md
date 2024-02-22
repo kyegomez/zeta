@@ -42,11 +42,17 @@ We will now illustrate the usage of the `TopNGating` module through code example
 
 ```python
 import torch
+
 from zeta.nn import TopNGating
 
 x = torch.randn(1, 2, 3)
 model = TopNGating(3, 4)
-out, _, _, _, = model(x)
+(
+    out,
+    _,
+    _,
+    _,
+) = model(x)
 print(out.shape)
 ```
 
@@ -54,11 +60,17 @@ print(out.shape)
 
 ```python
 import torch
+
 from zeta.nn import TopNGating
 
 x = torch.randn(2, 3, 4)
 model = TopNGating(4, 3, top_n=3)
-out, _, _, _, = model(x, noise_gates=True, noise_mult=0.7)
+(
+    out,
+    _,
+    _,
+    _,
+) = model(x, noise_gates=True, noise_mult=0.7)
 print(out.shape)
 ```
 
@@ -66,11 +78,19 @@ print(out.shape)
 
 ```python
 import torch
+
 from zeta.nn import TopNGating
 
 x = torch.randn(2, 5, 6)
-model = TopNGating(6, 5, threshold_train=(0.2, 0.3, 0.4, 0.35), threshold_eval=(0.21, 0.31, 0.41, 0.36))
-out, _, _, _, = model(x, noise_gates=True, noise_mult=0.8)
+model = TopNGating(
+    6, 5, threshold_train=(0.2, 0.3, 0.4, 0.35), threshold_eval=(0.21, 0.31, 0.41, 0.36)
+)
+(
+    out,
+    _,
+    _,
+    _,
+) = model(x, noise_gates=True, noise_mult=0.8)
 print(out.shape)
 ```
 

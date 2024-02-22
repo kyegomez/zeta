@@ -1,4 +1,5 @@
 import torch
+
 from zeta.quant.absmax import absmax_quantize
 
 

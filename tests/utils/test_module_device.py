@@ -1,6 +1,6 @@
 import pytest
-from torch.nn import Module
 import torch
+from torch.nn import Module
 
 from zeta.utils.module_device import module_device
 

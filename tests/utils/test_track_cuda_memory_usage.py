@@ -1,5 +1,7 @@
-import pytest
 from unittest.mock import patch
+
+import pytest
+
 from zeta.utils import track_cuda_memory_usage
 
 

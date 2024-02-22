@@ -1,4 +1,5 @@
 import torch
+
 from zeta.nn.modules.visual_expert import VisualExpert
 
 visual_expert = VisualExpert(1024, 2048, 0.1, 16)

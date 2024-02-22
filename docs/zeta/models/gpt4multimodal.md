@@ -52,28 +52,31 @@ Consider having an image tensor `img` of size (1, 256, 256, 3) and a text tensor
 
 ```python
 import torch
+
 from zeta.models import GPT4MultiModal
 
 # Initialize the model
-model = GPT4MultiModal(image_size=256, 
-                       patch_size=32, 
-                       encoder_dim=512, 
-                       encoder_depth=6, 
-                       encoder_heads=8, 
-                       num_tokens=20000, 
-                       max_seq_len=1024, 
-                       decoder_dim=512, 
-                       decoder_depth=6, 
-                       decoder_heads=8, 
-                       alibi_num_heads=4, 
-                       use_abs_pos_emb=False, 
-                       cross_attend=True, 
-                       alibi_pos_bias=True, 
-                       rotary_xpos=True, 
-                       attn_flash=True, 
-                       qk_norm=True)
+model = GPT4MultiModal(
+    image_size=256,
+    patch_size=32,
+    encoder_dim=512,
+    encoder_depth=6,
+    encoder_heads=8,
+    num_tokens=20000,
+    max_seq_len=1024,
+    decoder_dim=512,
+    decoder_depth=6,
+    decoder_heads=8,
+    alibi_num_heads=4,
+    use_abs_pos_emb=False,
+    cross_attend=True,
+    alibi_pos_bias=True,
+    rotary_xpos=True,
+    attn_flash=True,
+    qk_norm=True,
+)
 
-# Assume we have an image tensor 'img' of size (1, 256, 256, 3) and 
+# Assume we have an image tensor 'img' of size (1, 256, 256, 3) and
 # a text tensor 'text' of size (1, 50)
 
 # Run the model

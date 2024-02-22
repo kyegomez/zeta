@@ -1,8 +1,9 @@
 # prompts to jquesnelle
 # https://github.com/jquesnelle/yarn/blob/master/scaled_rope/LlamaDynamicYaRNScaledRotaryEmbedding.py
+import math
+
 import torch
 from torch import nn
-import math
 
 
 # helpers

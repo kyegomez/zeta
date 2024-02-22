@@ -42,6 +42,7 @@ Then, use the function in a Python script:
 ```python
 import torch
 from einops import rearrange
+
 from zeta.ops import img_transpose_2daxis
 
 # Create a dummy image tensor with shape (height, width, channels)
@@ -50,7 +51,7 @@ img_tensor = torch.rand(100, 200, 3)  # Example Tensor of shape (100, 200, 3)
 # Transpose the 2D axis of the image tensor
 transposed_img = img_transpose_2daxis(img_tensor)
 
-print("Original shape:", img_tensor.shape) 
+print("Original shape:", img_tensor.shape)
 print("Transposed shape:", transposed_img.shape)
 ```
 
@@ -59,16 +60,17 @@ print("Transposed shape:", transposed_img.shape)
 Let's say you're working with image data loaded using the PIL library:
 
 ```python
-from PIL import Image
 import numpy as np
+from PIL import Image
+
 from zeta.ops import img_transpose_2daxis
 
 # Open an image using PIL and convert it to a NumPy array
-image = Image.open('path_to_your_image.jpg')
+image = Image.open("path_to_your_image.jpg")
 img_array = np.array(image)
 
 # Assuming the image array has a shape (height, width, channels)
-print("Original shape:", img_array.shape) 
+print("Original shape:", img_array.shape)
 
 # Transpose the 2D axis using our function
 transposed_img_array = img_transpose_2daxis(img_array)
@@ -81,18 +83,21 @@ print("Transposed shape:", transposed_img_array.shape)
 If you are using `img_transpose_2daxis` as part of a data preprocessing pipeline in PyTorch:
 
 ```python
-from torchvision import transforms
 from torch.utils.data import DataLoader
+from torchvision import transforms
+
 from zeta.ops import img_transpose_2daxis
 
 # Define a custom transform using Lambda
-transpose_transform = transforms.Lambda(lambda x: img_transpose_2daxis(x))
+transpose_transform = transforms.Lambda(img_transpose_2daxis)
 
 # Compose this with other transforms
 transform = transforms.Compose([transforms.ToTensor(), transpose_transform])
 
 # Use the composed transforms in your dataset loader
-train_loader = DataLoader(your_dataset, batch_size=32, shuffle=True, transform=transform)
+train_loader = DataLoader(
+    your_dataset, batch_size=32, shuffle=True, transform=transform
+)
 
 # Now, when the images from train_loader are accessed, they will already be transposed
 ```

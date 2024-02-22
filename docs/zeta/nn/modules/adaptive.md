@@ -50,14 +50,16 @@ Adapts the parameters of the `AdaptiveParameterList` using the provided function
 ### **1. Basic Usage**
 
 ```python
-from shapeless import x  # Placeholder, as actual import statement was not provided
 import torch
 import torch.nn as nn
 from AdaptiveParameterList import AdaptiveParameterList
+from shapeless import x  # Placeholder, as actual import statement was not provided
+
 
 # Define an adaptation function
 def adaptation_function(param):
     return param * 0.9
+
 
 adaptive_params = AdaptiveParameterList([nn.Parameter(torch.randn(10, 10))])
 
@@ -70,19 +72,24 @@ adaptive_params.adapt(adapt_funcs)
 ### **2. Using Multiple Adaptation Functions**
 
 ```python
-from shapeless import x
 import torch
 import torch.nn as nn
 from AdaptiveParameterList import AdaptiveParameterList
+from shapeless import x
+
 
 # Define multiple adaptation functions
 def adaptation_function1(param):
     return param * 0.9
 
+
 def adaptation_function2(param):
     return param + 0.1
 
-adaptive_params = AdaptiveParameterList([nn.Parameter(torch.randn(10, 10)), nn.Parameter(torch.randn(10, 10))])
+
+adaptive_params = AdaptiveParameterList(
+    [nn.Parameter(torch.randn(10, 10)), nn.Parameter(torch.randn(10, 10))]
+)
 
 # Apply different adaptation functions to different parameters
 adapt_funcs = {0: adaptation_function1, 1: adaptation_function2}
@@ -93,14 +100,16 @@ adaptive_params.adapt(adapt_funcs)
 ### **3. Handling Errors with Adaptation Functions**
 
 ```python
-from shapeless import x
 import torch
 import torch.nn as nn
 from AdaptiveParameterList import AdaptiveParameterList
+from shapeless import x
+
 
 # Incorrect adaptation function (not returning a tensor of the same shape)
 def wrong_adaptation_function(param):
     return param[0]
+
 
 adaptive_params = AdaptiveParameterList([nn.Parameter(torch.randn(10, 10))])
 

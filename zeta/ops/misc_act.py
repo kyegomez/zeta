@@ -1,5 +1,5 @@
-from torch import nn, Tensor
 import torch.nn.functional as F
+from torch import Tensor, nn
 
 
 # These extra constant values ensure that the activations
@@ -25,7 +25,7 @@ class VPReLU(nn.Module):
     inplace: bool
 
     def __init__(self, inplace: bool = False):
-        super(VPReLU, self).__init__()
+        super().__init__()
         self.inplace = inplace
 
     def forward(self, input: Tensor) -> Tensor:

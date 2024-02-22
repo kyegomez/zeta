@@ -31,6 +31,7 @@ The `sparsemax` is used much like softmax when you need to pick only the top k l
 
 ```python
 import torch
+
 from zeta.ops import sparsemax
 
 # Initialize an input tensor
@@ -47,6 +48,7 @@ print(output)
 
 ```python
 import torch
+
 from zeta.ops import sparsemax
 
 # Initialize a large tensor with random values
@@ -63,6 +65,7 @@ print(output)
 
 ```python
 import torch
+
 from zeta.ops import sparsemax
 
 try:
@@ -70,7 +73,7 @@ try:
     x = torch.tensor([[1.0, 2.0, 3.0]])
 
     # Try to apply sparsemax with an invalid k
-    k = 5 # More than the number of logits
+    k = 5  # More than the number of logits
     output = sparsemax(x, k)
 except ValueError as e:
     print(e)

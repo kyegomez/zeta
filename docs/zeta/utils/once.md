@@ -16,7 +16,7 @@ Let's consider the structure and details of the `once` function. It accepts a si
 def once(fn):
     """
     Decorator to ensure the function is only called once.
-    
+
     Args:
        fn (function): The function to wrap.
 
@@ -32,7 +32,7 @@ def once(fn):
             return
         called = True
         return fn(x)
-    
+
     return inner
 ```
 
@@ -51,7 +51,8 @@ Let's demonstrate the `once` function with a setup function, `setup()`. This cou
 ```python
 @once
 def setup():
-    print('Setting up...')
+    print("Setting up...")
+
 
 # The setup() function is invoked twice.
 setup()  # Prints: 'Setting up...'
@@ -65,9 +66,10 @@ Here is an example where a computation should only be executed once:
 ```python
 @once
 def heavy_computation():
-    print('Doing heavy computation...')
+    print("Doing heavy computation...")
     # long running computation
-    
+
+
 # The heavy_computation() function is invoked twice.
 heavy_computation()  # Prints: 'Doing heavy computation...'
 heavy_computation()  # Doesn't print anything.
@@ -81,7 +83,8 @@ If you are dealing with a stateful class and need to initialize something only o
 class MyClass:
     @once
     def initialize(self):
-        print('Initializing state...')
+        print("Initializing state...")
+
 
 # MyClass object is created, the initialize function is called twice.
 obj = MyClass()

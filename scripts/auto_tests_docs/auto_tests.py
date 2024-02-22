@@ -2,24 +2,23 @@ import inspect
 import os
 import re
 import threading
-from swarms import OpenAIChat
-from scripts.auto_tests_docs.docs import TEST_WRITER_SOP_PROMPT
 
+from dotenv import load_dotenv
+from swarms import OpenAIChat
+
+from scripts.auto_tests_docs.docs import TEST_WRITER_SOP_PROMPT
+from zeta.nn.modules.dynamic_routing_block import DynamicRoutingBlock
+from zeta.nn.modules.gated_residual_block import GatedResidualBlock
+from zeta.nn.modules.stochastic_depth import StochasticSkipBlocK
 
 # Import all classes from zeta.structs
 # Tests will be automatically generated in the tests folder using parallized gpt4 with each of the file logic handled autonomously thus
 # leading to a much faster testing process where you just import your classes or functions and tests are automatically generated
 # Automating tests and documentation frees up atleast 75% of your time to focus on the actual logic of your code
 from zeta.nn.modules.triple_skip import TripleSkipBlock
-from zeta.nn.modules.dynamic_routing_block import DynamicRoutingBlock
-from zeta.nn.modules.gated_residual_block import GatedResidualBlock
-from zeta.nn.modules.stochastic_depth import StochasticSkipBlocK
-
 
 ####################
 
-
-from dotenv import load_dotenv
 
 load_dotenv()
 

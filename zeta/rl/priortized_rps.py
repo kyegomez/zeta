@@ -1,6 +1,7 @@
-from sumtree import SumTree
-import torch
 import random
+
+import torch
+from sumtree import SumTree
 
 
 class PrioritizedSequenceReplayBuffer:

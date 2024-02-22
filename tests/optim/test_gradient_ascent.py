@@ -1,5 +1,6 @@
 import pytest
 import torch
+
 from zeta.optim.gradient_ascent import GradientAscent
 
 

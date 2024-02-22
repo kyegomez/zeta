@@ -1,6 +1,7 @@
-import pytest
 import numpy as np
+import pytest
 import torch
+
 from zeta.utils import get_sinusoid_encoding_table
 
 

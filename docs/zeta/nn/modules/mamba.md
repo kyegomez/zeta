@@ -28,6 +28,7 @@ Example 1:
 
 ```python
 import torch
+
 from zeta.nn import Mamba
 
 x = torch.randint(0, 16, (1, 64))
@@ -40,6 +41,7 @@ Example 2:
 
 ```python
 import torch
+
 from zeta.nn import Mamba
 
 x = torch.randint(0, 16, (1, 32))
@@ -53,6 +55,7 @@ Example 3:
 
 ```python
 import torch
+
 from zeta.nn import Mamba
 
 x = torch.randint(0, 32, (1, 32))

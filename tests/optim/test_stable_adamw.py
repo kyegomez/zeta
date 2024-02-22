@@ -1,5 +1,6 @@
-import torch
 import pytest
+import torch
+
 from zeta.optim.stable_adam import StableAdamWUnfused
 
 
@@ -22,7 +23,6 @@ def test_optimizer_step_no_custom_scalar():
     loss = simple_loss(model.parameters())
     loss.backward()
     optimizer.step()
-    assert True  # No exceptions were raised
 
 
 # Test optimizer step with custom scalar
@@ -34,7 +34,6 @@ def test_optimizer_step_with_custom_scalar():
     loss = simple_loss(model.parameters())
     (loss * 65536).backward()
     optimizer.step()
-    assert True  # No exceptions were raised
 
 
 # Test optimizer step with NaN or Inf gradients
@@ -73,7 +72,6 @@ def test_optimizer_large_parameter_set():
     loss = simple_loss(model.parameters())
     loss.backward()
     optimizer.step()
-    assert True  # No exceptions were raised
 
 
 # Test optimizer with weight decay
@@ -83,7 +81,6 @@ def test_optimizer_with_weight_decay():
     loss = simple_loss(model.parameters())
     loss.backward()
     optimizer.step()
-    assert True  # No exceptions were raised
 
 
 # Test optimizer with different learning rates
@@ -98,7 +95,6 @@ def test_optimizer_with_different_learning_rates():
     loss = simple_loss(model.parameters())
     loss.backward()
     optimizer.step()
-    assert True  # No exceptions were raised
 
 
 # Test optimizer with different beta values
@@ -108,7 +104,6 @@ def test_optimizer_with_different_beta_values():
     loss = simple_loss(model.parameters())
     loss.backward()
     optimizer.step()
-    assert True  # No exceptions were raised
 
 
 # Test optimizer with custom clip threshold
@@ -118,7 +113,6 @@ def test_optimizer_with_custom_clip_threshold():
     loss = simple_loss(model.parameters())
     loss.backward()
     optimizer.step()
-    assert True  # No exceptions were raised
 
 
 # Test optimizer with custom epsilon
@@ -128,7 +122,6 @@ def test_optimizer_with_custom_epsilon():
     loss = simple_loss(model.parameters())
     loss.backward()
     optimizer.step()
-    assert True  # No exceptions were raised
 
 
 # Test optimizer with custom precision
@@ -138,7 +131,6 @@ def test_optimizer_with_custom_precision():
     loss = simple_loss(model.parameters())
     (loss * 65536).backward()
     optimizer.step()
-    assert True  # No exceptions were raised
 
 
 # Test optimizer with custom scalar and precision
@@ -150,7 +142,6 @@ def test_optimizer_with_custom_scalar_and_precision():
     loss = simple_loss(model.parameters())
     (loss * 65536).backward()
     optimizer.step()
-    assert True  # No exceptions were raised
 
 
 # Test optimizer with zero gradients
@@ -158,7 +149,6 @@ def test_optimizer_with_zero_gradients():
     model = torch.nn.Linear(10, 10)
     optimizer = StableAdamWUnfused(model.parameters())
     optimizer.step()
-    assert True  # No exceptions were raised
 
 
 # Test optimizer with a negative learning rate (should raise a ValueError)
@@ -189,7 +179,6 @@ def test_optimizer_with_zero_gradient_and_custom_precision():
     model = torch.nn.Linear(10, 10)
     optimizer = StableAdamWUnfused(model.parameters(), precision="custom_fp16")
     optimizer.step()
-    assert True  # No exceptions were raised
 
 
 # Test optimizer with zero gradient and custom scalar and precision (should not raise exceptions)
@@ -199,7 +188,6 @@ def test_optimizer_with_zero_gradient_and_custom_scalar_and_precision():
         model.parameters(), precision="custom_fp16", custom_scalar=65536
     )
     optimizer.step()
-    assert True  # No exceptions were raised
 
 
 # Test optimizer with large clip threshold (should not raise exceptions)
@@ -209,4 +197,3 @@ def test_optimizer_with_large_clip_threshold():
     loss = simple_loss(model.parameters())
     loss.backward()
     optimizer.step()
-    assert True  # No exceptions were raised

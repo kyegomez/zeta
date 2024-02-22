@@ -1,5 +1,5 @@
-from torch import Tensor
 from einops import rearrange
+from torch import Tensor
 
 
 def patch_img(x: Tensor, patches: int):

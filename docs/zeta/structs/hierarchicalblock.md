@@ -46,8 +46,7 @@ class HierarchicalBlock(nn.Module):
 ### forward
 
 ```python
-def forward(self, x):
-    ...
+def forward(self, x): ...
 ```
 
 ## Method Parameters and returns
@@ -69,8 +68,7 @@ Import necessary modules and define an input sequence:
 ```python
 import torch
 import torch.nn as nn
-from functools import partial
-from utils import is_power_of_two, pad_seq_to_multiple, token_shift, rearrange, exists
+from utils import exists, is_power_of_two, pad_seq_to_multiple, rearrange, token_shift
 
 sequence_length = 10
 batch_size = 32

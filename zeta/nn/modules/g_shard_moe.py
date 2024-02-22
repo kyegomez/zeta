@@ -85,7 +85,7 @@ def get_all2all_group(moe_expert_count):
             # more experts than world size
             if world_size <= moe_expert_count:
                 assert moe_expert_count % world_size == 0
-                all2all_groups = [[i for i in range(world_size)]]
+                all2all_groups = [list(range(world_size))]
 
             # larger world than num experts
             else:
@@ -763,9 +763,9 @@ class GShardMoELayer(Base):
                 device=input.device,
             )
             if input_padding_mask is not None:
-                padded_input_padding_mask[: input_shape[0], :] = (
-                    input_padding_mask
-                )
+                padded_input_padding_mask[
+                    : input_shape[0], :
+                ] = input_padding_mask
             else:
                 padded_input_padding_mask[: input_shape[0], :] = False
             input_padding_mask = padded_input_padding_mask
@@ -803,9 +803,9 @@ class GShardMoELayer(Base):
                 (expected_dim,), dtype=torch.bool, device=padded_input.device
             )
             if reshaped_input_padding_mask is not None:
-                padded_input_padding_mask[: reshaped_input_shape[0]] = (
-                    reshaped_input_padding_mask
-                )
+                padded_input_padding_mask[
+                    : reshaped_input_shape[0]
+                ] = reshaped_input_padding_mask
             else:
                 padded_input_padding_mask[: reshaped_input_shape[0]] = False
             reshaped_input_padding_mask = padded_input_padding_mask

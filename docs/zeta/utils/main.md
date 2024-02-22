@@ -63,9 +63,11 @@ Decorator to ensure the function is only called once.
 ```python
 from zeta.utils.main import once
 
+
 @once
 def perform_operation():
     print("Operation performed")
+
 
 perform_operation()  # Output: Operation performed
 perform_operation()  # No output (function is only called once)
@@ -82,17 +84,20 @@ Decorator to ensure a method switches to eval mode before execution and returns 
 
 ### Example:
 ```python
-from zeta.utils.main import eval_decorator
 import torch
 import torch.nn as nn
+
+from zeta.utils.main import eval_decorator
+
 
 class ExampleModel(nn.Module):
     def __init__(self):
         super().__init__()
-    
+
     @eval_decorator
     def forward(self, x):
         return x
+
 
 model = ExampleModel()
 model.train()  # Set model to training mode
@@ -137,9 +142,11 @@ Decorator that calls a function if the first argument exists.
 ```python
 from zeta.utils.main import maybe
 
+
 @maybe
 def perform_operation(x):
     print(f"Operation performed with {x}")
+
 
 perform_operation(10)  # Output: Operation performed with 10
 perform_operation(None)  # No output (function not called)
@@ -213,8 +220,9 @@ Initialize the weights and bias of a torch layer to zero.
 
 ### Example:
 ```python
-from zeta.utils.main import init_zero_
 import torch.nn as nn
+
+from zeta.utils.main import init_zero_
 
 layer = nn.Linear(10, 5)
 init_zero_(layer)
@@ -261,8 +269,8 @@ Group dictionary keys based on a condition.
 ```python
 from zeta.utils.main import group_dict_by_key
 
-data = {'a': 1, 'b': 2, 'c': 3, 'd': 4}
-condition = lambda x: x in ['a', 'b']
+data = {"a": 1, "b": 2, "c": 3, "d": 4}
+condition = lambda x: x in ["a", "b"]
 
 group1, group2 = group_dict_by_key(condition, data)
 print(group1)  # Output: {'a': 1, 'b': 2}
@@ -283,8 +291,8 @@ Check if a string begins with a specific prefix.
 ```python
 from zeta.utils.main import string_begins_with
 
-result1 = string_begins_with('hello', 'hello world')  # Output: True
-result2 = string_begins_with('world', 'hello world')  # Output: False
+result1 = string_begins_with("hello", "hello world")  # Output: True
+result2 = string_begins_with("world", "hello world")  # Output: False
 
 print(result1)
 print(result2)
@@ -304,8 +312,8 @@ Group dictionary items by keys that start with a specific prefix.
 ```python
 from zeta.utils.main import group_by_key_prefix
 
-data = {'prefix_a_1': 1, 'prefix_a_2': 2, 'prefix_b_1': 3}
-prefix = 'prefix_a'
+data = {"prefix_a_1": 1, "prefix_a_2": 2, "prefix_b_1": 3}
+prefix = "prefix_a"
 
 group1, group2 = group_by_key_prefix(prefix, data)
 print(group1)  # Output: {'prefix_a_1': 1, 'prefix_a_2': 2}
@@ -326,8 +334,8 @@ Group dictionary items by keys that start with a specific prefix and remove the 
 ```python
 from zeta.utils.main import groupby_prefix_and_trim
 
-data = {'prefix_a_1': 1, 'prefix_a_2': 2, 'prefix_b_1': 3}
-prefix = 'prefix_a'
+data = {"prefix_a_1": 1, "prefix_a_2": 2, "prefix_b_1": 3}
+prefix = "prefix_a"
 
 group1, group2 = groupby_prefix_and_trim(prefix, data)
 print(group1)  # Output: {'1': 1, '2': 2}
@@ -349,7 +357,7 @@ Check if a number is divisible by another number.
 from zeta.utils.main import divisible_by
 
 result1 = divisible_by(10, 2)  # Output: True
-result2 = divisible_by(7, 3)   # Output: False
+result2 = divisible_by(7, 3)  # Output: False
 
 print(result1)
 print(result2)
@@ -367,8 +375,9 @@ Apply top-p sampling to logits.
 
 ### Example:
 ```python
-from zeta.utils.main import top_p
 import torch
+
+from zeta.utils.main import top_p
 
 logits = torch.tensor([1.0, 2.0, 3.0])
 processed_logits = top_p(logits)  # Processed logits based on top-p sampling
@@ -388,8 +397,9 @@ Apply top-k sampling to logits.
 
 ### Example:
 ```python
-from zeta.utils.main import top_k
 import torch
+
+from zeta.utils.main import top_k
 
 logits = torch.tensor([1.0, 2.0, 3.0])
 processed_logits = top_k(logits)  # Processed logits based on top-k sampling
@@ -410,8 +420,9 @@ Apply top-a sampling to logits.
 
 ### Example:
 ```python
-from zeta.utils.main import top_a
 import torch
+
+from zeta.utils.main import top_a
 
 logits = torch.tensor([1.0, 2.0, 3.0])
 processed_logits = top_a(logits)  # Processed logits based on top-a sampling
@@ -431,8 +442,9 @@ Compute the natural logarithm of a tensor element-wise.
 
 ### Example:
 ```python
-from zeta.utils.main import log
 import torch
+
+from zeta.utils.main import log
 
 tensor = torch.tensor([0.5, 1.0, 2.0])
 log_tensor = log(tensor)  # Output: tensor([-0.6931,  0.0000,  0.6931])
@@ -451,8 +463,9 @@ Generate Gumbel noise from a uniform noise tensor.
 
 ### Example:
 ```python
-from zeta.utils.main import gumbel_noise
 import torch
+
+from zeta.utils.main import gumbel_noise
 
 uniform_noise = torch.rand(3)
 gumbel_noise_tensor = gumbel_noise(uniform_noise)
@@ -473,8 +486,9 @@ Sample from a tensor using Gumbel-softmax relaxation.
 
 ### Example:
 ```python
-from zeta.utils.main import gumnel_sample
 import torch
+
+from zeta.utils.main import gumnel_sample
 
 logits = torch.tensor([1.0, 2.0, 3.0])
 sampled_tensor = gumnel_sample(logits)  # Sampled tensor using Gumbel-softmax
@@ -494,8 +508,9 @@ Calculate contrastive loss using top-k sampling.
 
 ### Example:
 ```python
-from zeta.utils.main import ContrastiveTopK
 import torch
+
+from zeta.utils.main import ContrastiveTopK
 
 contrastive = ContrastiveTopK(alpha=0.5, k=3)
 
@@ -515,14 +530,17 @@ Print the number of parameters in a model.
 
 ### Example:
 ```python
-from zeta.utils.main import print_num_params
-from accelerate import Accelerator
 import torch.nn as nn
+from accelerate import Accelerator
+
+from zeta.utils.main import print_num_params
+
 
 class ExampleModel(nn.Module):
     def __init__(self):
         super().__init__()
         self.fc = nn.Linear(10, 5)
+
 
 model = ExampleModel()
 accelerator = Accelerator()
@@ -542,8 +560,9 @@ A basic block module with convolution, normalization, and activation layers.
 
 ### Example:
 ```python
-from zeta.utils.main import Block
 import torch
+
+from zeta.utils.main import Block
 
 block = Block(dim=64, dim_out=128, groups=4)
 
@@ -567,8 +586,9 @@ A residual block with convolutional layers and optional time embedding.
 
 ### Example:
 ```python
-from zeta.utils.main import ResnetBlock
 import torch
+
+from zeta.utils.main import ResnetBlock
 
 resnet_block = ResnetBlock(dim=128, dim_out=256, time_emb_dim=32)
 
@@ -592,7 +612,7 @@ Load a model from a file.
 ```python
 from zeta.utils.main import load_model
 
-model = load_model('model_checkpoint.pth')
+model = load_model("model_checkpoint.pth")
 print(model)
 ```
 
@@ -608,10 +628,11 @@ Iterate over all frames of a GIF image.
 
 ### Example:
 ```python
-from zeta.utils.main import seek_all_images
 from PIL import Image
 
-gif_path = 'animation.gif'
+from zeta.utils.main import seek_all_images
+
+gif_path = "animation.gif"
 gif_img = Image.open(gif_path)
 
 for frame in seek_all_images(gif_img, channels=3):
@@ -630,11 +651,12 @@ Convert a video tensor to a GIF image.
 
 ### Example:
 ```python
-from zeta.utils.main import video_tensor_to_gif
 import torch
 
+from zeta.utils.main import video_tensor_to_gif
+
 video_tensor = torch.randn(3, 10, 256, 256)
-output_gif_path = 'output_animation.gif'
+output_gif_path = "output_animation.gif"
 
 video_tensor_to_gif(video_tensor, output_gif_path, duration=100)
 ```
@@ -654,7 +676,7 @@ Convert a GIF image to a video tensor.
 ```python
 from zeta.utils.main import gif_to_tensor
 
-input_gif_path = 'input_animation.gif'
+input_gif_path = "input_animation.gif"
 video_tensor = gif_to_tensor(input_gif_path, channels=3)
 
 print(video_tensor.shape)
@@ -673,11 +695,12 @@ Identity function that returns the input tensor as is.
 
 ### Example:
 ```python
-from zeta.utils.main import identity
 import torch
 
+from zeta.utils.main import identity
+
 tensor = torch.tensor([1.0, 2.0, 3.0])
-output = identity(tensor, some_arg='value')
+output = identity(tensor, some_arg="value")
 
 print(output)
 ```
@@ -693,8 +716,9 @@ Normalize an image tensor to the range [-1, 1].
 
 ### Example:
 ```python
-from zeta.utils.main import normalize_img
 import torch
+
+from zeta.utils.main import normalize_img
 
 image_tensor = torch.rand(3, 256, 256)  # RGB image
 normalized_image = normalize_img(image_tensor)
@@ -713,8 +737,9 @@ Unnormalize a normalized image tensor.
 
 ### Example:
 ```python
-from zeta.utils.main import unnormalize_img
 import torch
+
+from zeta.utils.main import unnormalize_img
 
 normalized_image = torch.rand(3, 256, 256)  # Normalized image
 unnormalized_image = unnormalize_img(normalized_image)
@@ -734,8 +759,9 @@ Cast the number of frames in a video tensor to a specific value.
 
 ### Example:
 ```python
-from zeta.utils.main import cast_num_frames
 import torch
+
+from zeta.utils.main import cast_num_frames
 
 video_tensor = torch.rand(3, 10, 256, 256)
 video_tensor_casted = cast_num_frames(video_tensor, frames=8)
@@ -754,8 +780,9 @@ Get the maximum negative value for a tensor's data type.
 
 ### Example:
 ```python
-from zeta.utils.main import max_neg_values
 import torch
+
+from zeta.utils.main import max_neg_values
 
 tensor = torch.tensor([1.0, 2.0, 3.0])
 max_neg = max_neg_values(tensor.dtype)
@@ -777,8 +804,9 @@ Perform L2 normalization along specified groups of a tensor.
 
 ### Example:
 ```python
-from zeta.utils.main import l2norm
 import torch
+
+from zeta.utils.main import l2norm
 
 tensor = torch.tensor([1.0, 2.0, 3.0])
 l2_normalized_tensor = l2norm(tensor, groups=2)
@@ -800,8 +828,9 @@ Pad a tensor along a specified dimension.
 
 ### Example:
 ```python
-from zeta.utils.main import pad_at_dim
 import torch
+
+from zeta.utils.main import pad_at_dim
 
 tensor = torch.tensor([1.0, 2.0, 3.0])
 padded_tensor = pad_at_dim(tensor, pad=(1, 1), dim=-1, value=-1)
@@ -820,8 +849,9 @@ Perform element-wise logical OR reduction on a list of masks.
 
 ### Example:
 ```python
-from zeta.utils.main import or_reduce
 import torch
+
+from zeta.utils.main import or_reduce
 
 mask1 = torch.tensor([True, False, True])
 mask2 = torch.tensor([False, True, False])
@@ -848,10 +878,10 @@ class MyModule(nn.Module):
     def __init__(self):
         super(MyModule, self).__init__()
         # Define your layers here
-    
+
     def forward(self, x):
         # Forward pass logic
-        
+
 my_module = MyModule()
 residual_module = Residual(my_module)
 
@@ -872,8 +902,9 @@ Sinusoidal positional embedding module for self-attention mechanisms.
 
 ### Example:
 ```python
-from zeta.utils.main import SinusoidalPosEmb
 import torch
+
+from zeta.utils.main import SinusoidalPosEmb
 
 pos_emb_module = SinusoidalPosEmb(dim=128)
 
@@ -894,8 +925,9 @@ Create an upsample layer for a given dimension.
 
 ### Example:
 ```python
-from zeta.utils.main import upsample
 import torch.nn as nn
+
+from zeta.utils.main import upsample
 
 upsample_layer = upsample(dim=256)
 
@@ -916,8 +948,9 @@ Create a downsample layer for a given dimension.
 
 ### Example:
 ```python
-from zeta.utils.main import downsample
 import torch.nn as nn
+
+from zeta.utils.main import downsample
 
 downsample_layer = downsample(dim=256)
 
@@ -939,8 +972,9 @@ Layer normalization module.
 
 ### Example:
 ```python
-from zeta.utils.main import LayerNorm
 import torch.nn as nn
+
+from zeta.utils.main import LayerNorm
 
 layer_norm = LayerNorm(dim=256, eps=1e-5)
 
@@ -969,10 +1003,10 @@ class MyModule(nn.Module):
     def __init__(self):
         super(MyModule, self).__init__()
         # Define your layers here
-    
+
     def forward(self, x):
         # Forward pass logic
-        
+
 my_module = MyModule()
 pre_norm_module = PreNorm(dim=128, fn=my_module)
 
@@ -994,8 +1028,9 @@ Generate a cosine beta schedule for progressive loss scaling.
 
 ### Example:
 ```python
-from zeta.utils.main import cosine_beta_schedule
 import torch
+
+from zeta.utils.main import cosine_beta_schedule
 
 beta_schedule = cosine_beta_schedule(timesteps=1000, s=0.01)
 print(beta_schedule)
@@ -1012,8 +1047,9 @@ Normalization module to perform L2 normalization along a specific dimension.
 
 ### Example:
 ```python
-from zeta.utils.main import Normalize
 import torch.nn as nn
+
+from zeta.utils.main import Normalize
 
 normalize_module = Normalize(dim=256)
 
@@ -1036,17 +1072,18 @@ Learnable logit scaling module for temperature scaling in temperature sampling.
 
 ### Example:
 ```python
-from zeta.utils.main import LearnableLogitScaling
 import torch.nn as nn
 
-logit_scaling = LearnableLogitScaling(logit_scale_init=1.0, learnable=True, max_logit_scale=10.0)
+from zeta.utils.main import LearnableLogitScaling
+
+logit_scaling = LearnableLogitScaling(
+    logit_scale_init=1.0, learnable=True, max_logit_scale=10.0
+)
 
 x = torch.randn(1, 256)  # Input tensor
 scaled_x = logit_scaling(x)
 
 print(scaled_x.shape)
-
-
 ```
 
 ## Class: EinOpsRearrange(nn.Module)
@@ -1061,10 +1098,11 @@ EinOps-based module for rearranging tensor dimensions.
 
 ### Example:
 ```python
-from zeta.utils.main import EinOpsRearrange
 import torch
 
-rearrange_module = EinOpsRearrange(rearrange_expr='b h w c -> b c h w', h=16, w=16)
+from zeta.utils.main import EinOpsRearrange
+
+rearrange_module = EinOpsRearrange(rearrange_expr="b h w c -> b c h w", h=16, w=16)
 
 x = torch.randn(1, 16, 16, 256)  # Input tensor
 rearranged_x = rearrange_module(x)
@@ -1089,8 +1127,9 @@ Generate a sinusoidal positional encoding table for self-attention mechanisms.
 
 ### Example:
 ```python
-from zeta.utils.main import get_sinusoid_encoding_table
 import torch
+
+from zeta.utils.main import get_sinusoid_encoding_table
 
 pos_encoding_table = get_sinusoid_encoding_table(n_position=100, d_hid=128)
 
@@ -1109,11 +1148,14 @@ Interpolate 2D positional embeddings to a target spatial size.
 
 ### Example:
 ```python
-from zeta.utils.main import interpolate_pos_encoding_2d
 import torch
 
+from zeta.utils.main import interpolate_pos_encoding_2d
+
 pos_embed = torch.randn(1, 64, 128)  # Input positional embeddings
-interpolated_pos_embed = interpolate_pos_encoding_2d(target_spatial_size=256, pos_embed=pos_embed)
+interpolated_pos_embed = interpolate_pos_encoding_2d(
+    target_spatial_size=256, pos_embed=pos_embed
+)
 
 print(interpolated_pos_embed.shape)
 ```
@@ -1131,11 +1173,14 @@ Cast a tensor to a target dtype if its source dtype matches.
 
 ### Example:
 ```python
-from zeta.utils.main import cast_if_src_dtype
 import torch
 
+from zeta.utils.main import cast_if_src_dtype
+
 tensor = torch.randn(1, 256)
-casted_tensor = cast_if_src_dtype(tensor, src_dtype=torch.float32, tgt_dtype=torch.bfloat16)
+casted_tensor = cast_if_src_dtype(
+    tensor, src_dtype=torch.float32, tgt_dtype=torch.bfloat16
+)
 
 print(casted_tensor.dtype)
 ```
@@ -1151,8 +1196,9 @@ Select specific elements from an input tensor using given indices.
 
 ### Example:
 ```python
-from zeta.utils.main import SelectElements
 import torch
+
+from zeta.utils.main import SelectElements
 
 select_module = SelectElements(index=2)
 
@@ -1173,8 +1219,9 @@ Select elements from the end of a sequence and apply a projection.
 
 ### Example:
 ```python
-from zeta.utils.main import SelectEOSAndProject
 import torch.nn as nn
+
+from zeta.utils.main import SelectEOSAndProject
 
 proj_module = nn.Linear(256, 128)
 select_and_project = SelectEOSAndProject(proj=proj_module)

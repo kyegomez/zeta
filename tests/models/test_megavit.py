@@ -1,5 +1,6 @@
 import pytest
 import torch
+
 from zeta.models import MegaVit
 
 # Basic tests, checking instantiation and forward pass with different parameters

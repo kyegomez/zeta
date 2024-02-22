@@ -1,5 +1,5 @@
 """
-An attempt to create a really really scalable sparse multi modal model using bitnet 
+An attempt to create a really really scalable sparse multi modal model using bitnet
 with other features.
 
 
@@ -16,6 +16,7 @@ import torch.nn.functional as F
 from einops import pack, rearrange, reduce, repeat, unpack
 from packaging import version
 from torch import Tensor, einsum, nn
+
 from zeta.quant.bitlinear import BitLinear
 
 # constants
@@ -517,12 +518,12 @@ def init_zero_(layer):
 
 
 def pick_and_pop(keys, d):
-    values = list(map(lambda key: d.pop(key), keys))
+    values = list(map(d.pop, keys))
     return dict(zip(keys, values))
 
 
 def group_dict_by_key(cond, d):
-    return_val = [dict(), dict()]
+    return_val = [{}, {}]
     for key in d.keys():
         match = bool(cond(key))
         ind = int(not match)
@@ -1834,11 +1835,10 @@ class AttentionLayers(nn.Module):
         attn_cache = []
 
         if exists(cache):
-            assert (
-                not self.training
-                and self.causal
-                and not any([*map(exists, (mask, attn_mask))])
-            )
+
+            assert not self.training
+            assert self.causal
+            assert not any([*map(exists, (mask, attn_mask))])
 
             if cache_age > 0:
                 x = x[

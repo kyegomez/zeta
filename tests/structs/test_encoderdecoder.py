@@ -1,8 +1,9 @@
-import torch
 import argparse
-import pytest
 
-from zeta.structs import EncoderDecoder, Encoder, Decoder
+import pytest
+import torch
+
+from zeta.structs import Decoder, Encoder, EncoderDecoder
 
 
 @pytest.fixture

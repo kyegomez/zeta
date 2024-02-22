@@ -89,10 +89,10 @@ odd_sized_tensor = torch.randn(7, 3)
 
 # Attempt to apply local_softmax with 4 chunks
 try:
-  output_tensor = local_softmax(odd_sized_tensor, num_chunks=4)
-  print(output_tensor)
+    output_tensor = local_softmax(odd_sized_tensor, num_chunks=4)
+    print(output_tensor)
 except RuntimeError as e:
-  print(f"Error: {e}")
+    print(f"Error: {e}")
 ```
 
 Note: In the third example, since the input tensor cannot be evenly split into 4 chunks, a `RuntimeError` is raised by PyTorch. Users will need to handle such exceptions or ensure that the number of chunks divides the size of the first dimension of the tensor.

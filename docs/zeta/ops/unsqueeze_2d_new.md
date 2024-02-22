@@ -51,6 +51,7 @@ This example demonstrates how to use the `unsqueeze_2d_new` function to double t
 
 ```python
 import torch
+
 from zeta.ops import unsqueeze_2d_new
 
 # 1. Prepare a random tensor with shape (batch_size=1, channels=3, height=4, width=4)
@@ -69,8 +70,8 @@ In this example, we show how to use a different scaling factor to alter the spat
 
 ```python
 import torch
-from zeta.ops import unsqueeze_2d_new
 
+from zeta.ops import unsqueeze_2d_new
 
 # 1. Prepare a random tensor with shape (batch_size=1, channels=3, height=4, width=4)
 input_tensor = torch.rand(1, 3, 4, 4)
@@ -89,12 +90,13 @@ Lastly, we will demonstrate how `unsqueeze_2d_new` can be integrated into a  neu
 ```python
 import torch
 import torch.nn as nn
+
 from zeta.ops import unsqueeze_2d_new
 
 
 class UpsampleLayer(nn.Module):
     def __init__(self, factor=2):
-        super(UpsampleLayer, self).__init__()
+        super().__init__()
         self.factor = factor
 
     def forward(self, x):

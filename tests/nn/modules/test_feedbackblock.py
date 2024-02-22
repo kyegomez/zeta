@@ -4,13 +4,14 @@
 import pytest
 import torch
 import torch.nn as nn
+
 from zeta.nn import FeedbackBlock
 
 
 # Set up simple neural network module for testing FeedbackBlock
 class TestModule(nn.Module):
     def __init__(self):
-        super(TestModule, self).__init__()
+        super().__init__()
         self.linear = nn.Linear(10, 10)
 
     def forward(self, x):

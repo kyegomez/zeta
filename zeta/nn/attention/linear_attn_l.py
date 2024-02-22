@@ -1,5 +1,6 @@
-from torch import nn, Tensor, einsum
 from einops import rearrange
+from torch import Tensor, einsum, nn
+
 from zeta.utils.main import exists
 
 

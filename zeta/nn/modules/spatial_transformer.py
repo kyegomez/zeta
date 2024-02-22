@@ -1,7 +1,7 @@
 import torch
-from torch import nn
-from einops.layers.torch import Rearrange
 import torch.nn.functional as F
+from einops.layers.torch import Rearrange
+from torch import nn
 
 
 class SpatialTransformer(nn.Module):
@@ -17,7 +17,7 @@ class SpatialTransformer(nn.Module):
     """
 
     def __init__(self):
-        super(SpatialTransformer, self).__init__()
+        super().__init__()
 
         # spatial transformer localization-network
         linear = nn.Linear(32, 3 * 2)

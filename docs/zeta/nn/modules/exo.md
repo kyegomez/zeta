@@ -66,14 +66,14 @@ Now, let's explore the Exo class, which implements the Exo activation function.
 class Exo(nn.Module):
     """
     Exo activation function.
-    
+
     Parameters:
     - alpha (float): Alpha value for the activation function. Default: 1.0
     """
-    
+
     def __init__(self, alpha=1.0):
         """INIT function."""
-        super(Exo, self).__init__()
+        super().__init__()
 
     def forward(self, x):
         """Forward function."""

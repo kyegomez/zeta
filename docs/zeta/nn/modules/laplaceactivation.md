@@ -15,7 +15,7 @@ The `LaplaceActivation` is part of the `PyTorch` neural network (`nn`) module, s
 
 ```python
 class LaplaceActivation(nn.Module):
-   pass
+    pass
 ```
 
 ### Method: `forward`
@@ -48,7 +48,7 @@ A tensor with Laplace function applied elementwise.
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import math
+
 from zeta.nn import LaplaceActivation
 ```
 #### Defining an instance

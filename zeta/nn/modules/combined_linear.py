@@ -1,5 +1,6 @@
 import math
 from typing import Optional
+
 import torch
 from torch import nn
 from torch.nn.parameter import Parameter
@@ -51,6 +52,7 @@ class CombinedLinear(nn.Module):
         >>> print(output.size())
         torch.Size([128, 30])
     """
+
     __constants__ = ["in_features", "out_features"]
     in_features: int
     out_features: int
@@ -65,7 +67,7 @@ class CombinedLinear(nn.Module):
     ) -> None:
         factory_kwargs = {"device": device, "dtype": dtype}
 
-        super(CombinedLinear, self).__init__()
+        super().__init__()
 
         self.in_features = in_features
         self.out_features = out_features

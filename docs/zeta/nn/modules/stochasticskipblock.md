@@ -63,6 +63,7 @@ First, you need to import the necessary module:
 import torch
 import torch.nn as nn
 from torch.nn.functional import relu
+
 from zeta.nn import StochasticSkipBlock
 ```
 
@@ -71,12 +72,11 @@ Now, you need to define the architecture of the model:
 ```python
 class MyModel(nn.Module):
     def __init__(self):
-        super(MyModel, self).__init__()
+        super().__init__()
         self.layer1 = nn.Linear(10, 20)
-        self.layer2 = StochasticSkipBlock(nn.Sequential(
-            nn.Linear(20, 20),
-            nn.ReLU()
-        ), p=0.5) # 50% chance to skip the subsequence of layers
+        self.layer2 = StochasticSkipBlock(
+            nn.Sequential(nn.Linear(20, 20), nn.ReLU()), p=0.5
+        )  # 50% chance to skip the subsequence of layers
         self.layer3 = nn.Linear(20, 1)
 
     def forward(self, x):
@@ -101,10 +101,10 @@ This example shows how to embed `StochasticSkipBlock` in between convolutional l
 ```python
 class MyCNNModel(nn.Module):
     def __init__(self):
-        super(MyCNNModel, self).__init__()
+        super().__init__()
         self.conv1 = nn.Conv2d(3, 32, kernel_size=5)
         self.conv2 = StochasticSkipBlock(nn.Conv2d(32, 64, kernel_size=5), p=0.6)
-        self.fc1 = nn.Linear(64*5*5, 120)
+        self.fc1 = nn.Linear(64 * 5 * 5, 120)
         self.fc2 = nn.Linear(120, 84)
         self.fc3 = nn.Linear(84, 10)
 
@@ -123,16 +123,16 @@ class MyCNNModel(nn.Module):
 This shows how to train the model using StochasticSkipBlock module. Please note, This example assumes you have your dataloader ('train_dataloader') ready with training data.
 
 ```python
-from torch.optim import SGD
-from torch.nn.functional import binary_cross_entropy
 import torch.optim as optim
+from torch.nn.functional import binary_cross_entropy
+from torch.optim import SGD
+
 from zeta.nn import StochasticSkipBlock
 
-
-#initiate model
+# initiate model
 model = MyModel()
 
-#defining loss function
+# defining loss function
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
 
@@ -149,9 +149,9 @@ for epoch in range(50):  # loop over the dataset
         optimizer.step()
 
         running_loss += loss.item()
-    print('Epoch %d loss: %.3f' % (epoch + 1, running_loss))
+    print("Epoch %d loss: %.3f" % (epoch + 1, running_loss))
 
-print('Finished Training')
+print("Finished Training")
 ```
 
 ## Additional Tips

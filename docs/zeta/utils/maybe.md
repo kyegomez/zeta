@@ -20,7 +20,7 @@ def maybe(fn):
             return x
         return fn(x, *args, **kwargs)
 
-    return inner 
+    return inner
 ```
 
 ## Description:
@@ -46,8 +46,10 @@ This type of decorator can be tremendously useful in a number of contexts, inclu
 ```python
 from functools import wraps
 
+
 def exists(x):
     return x is not None
+
 
 def maybe(fn):
     @wraps(fn)
@@ -55,14 +57,17 @@ def maybe(fn):
         if not exists(x):
             return x
         return fn(x, *args, **kwargs)
+
     return inner
+
 
 @maybe
 def add_one(x):
     return x + 1
 
+
 print(add_one(None))  # Returns: None
-print(add_one(2))     # Returns: 3
+print(add_one(2))  # Returns: 3
 ```
 
 In this example, we have created a `maybe` decorator using the given `maybe` function and applied it to the `add_one` function. When we call `add_one` with `None` as the argument, the `maybe` decorator checks if `None` exists (which it does not), and so it simply returns `None` without calling the `add_one` function. 

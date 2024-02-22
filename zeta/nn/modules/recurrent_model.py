@@ -19,7 +19,7 @@ class RNN(nn.Module):
     """
 
     def __init__(self, ntoken, ninp, nhid, nlayers, dropout=0.5):
-        super(RNN, self).__init__()
+        super().__init__()
 
         self.drop = nn.Dropout(p=dropout)
         self.encoder = nn.Embedding(ntoken, ninp)

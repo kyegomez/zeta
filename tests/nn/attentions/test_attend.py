@@ -1,6 +1,7 @@
-""" Test cases for the Attend module. """
+"""Test cases for the Attend module."""
 
 import torch
+
 from zeta.nn.attention.attend import Attend
 
 
@@ -126,6 +127,7 @@ def test_attend_flash_attention():
 # Test case for configuring flash attention
 def test_flash_attention():
     import torch
+
     from zeta.nn import FlashAttention
 
     q = torch.randn(2, 4, 6, 8)

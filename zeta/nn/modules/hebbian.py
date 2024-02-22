@@ -29,7 +29,7 @@ class BasicHebbianGRUModel(nn.Module):
         - hidden_dim: Dimension of the hidden state in the GRU.
         - output_dim: Dimension of the output features.
         """
-        super(BasicHebbianGRUModel, self).__init__()
+        super().__init__()
         self.weights = nn.Parameter(torch.randn(input_dim, hidden_dim))
         self.gru = nn.GRU(hidden_dim, hidden_dim, batch_first=True)
         self.fc = nn.Linear(hidden_dim, output_dim)

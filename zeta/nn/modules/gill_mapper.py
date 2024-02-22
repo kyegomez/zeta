@@ -53,7 +53,7 @@ class GILLMapper(nn.Module):
     args: dict = None
 
     def __post_init__(self):
-        super(GILLMapper, self).__init__()
+        super().__init__()
         self.transformer = nn.Transformer(
             d_model=self.text_emb_size,
             num_encoder_layers=self.num_encoder_layers,

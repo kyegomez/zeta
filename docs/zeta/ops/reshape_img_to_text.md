@@ -50,6 +50,7 @@ Let's import necessary modules and perform the reshaping of a dummy image tensor
 ```python
 import torch
 from einops import rearrange
+
 from zeta.ops import reshape_img_to_text
 
 # Image tensor with batch size of 2, 3 channels, height of 32 and width of 32
@@ -67,8 +68,10 @@ Using the `reshape_img_to_text` function in a machine learning pipeline where im
 
 ```python
 # Assume we have a batch of images and corresponding text
-batch_images = torch.rand(16, 3, 64, 64)   # dummy image batch tensor
-batch_texts = torch.rand(16, 128, 512)     # dummy text batch tensor with a sequence length of 128 and a feature size of 512
+batch_images = torch.rand(16, 3, 64, 64)  # dummy image batch tensor
+batch_texts = torch.rand(
+    16, 128, 512
+)  # dummy text batch tensor with a sequence length of 128 and a feature size of 512
 
 # Reshape images to have a compatible sequence length and feature size
 batch_images_reshaped = reshape_img_to_text(batch_images)
@@ -82,11 +85,13 @@ Integrating the `reshape_img_to_text` function inside a custom neural network cl
 
 ```python
 import torch.nn as nn
+
 from zeta.ops import reshape_img_to_text
+
 
 class MultimodalModel(nn.Module):
     def __init__(self):
-        super(MultimodalModel, self).__init__()
+        super().__init__()
         # Define other layers or modules here
 
     def forward(self, image, text):
@@ -96,6 +101,7 @@ class MultimodalModel(nn.Module):
         # ...
         # Return processed data
         return output
+
 
 # Instantiate the model
 model = MultimodalModel()

@@ -1,5 +1,5 @@
 import torch
-from torch import nn, Tensor
+from torch import Tensor, nn
 
 
 class HalfBitLinear(nn.Module):
@@ -28,7 +28,7 @@ class HalfBitLinear(nn.Module):
     """
 
     def __init__(self, in_features: int, out_features: int):
-        super(HalfBitLinear, self).__init__()
+        super().__init__()
         self.in_features = in_features
         self.out_features = out_features
         self.weight = nn.Parameter(torch.randn(out_features, in_features))

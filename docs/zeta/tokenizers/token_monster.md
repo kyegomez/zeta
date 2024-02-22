@@ -183,15 +183,15 @@ def export_yaml(self, order_by_score=False):
 ```python
 def tokenize(self, text):
     """
-    Tokenizes a
+       Tokenizes a
 
- string into tokens according to the vocabulary.
+    string into tokens according to the vocabulary.
 
-    Args:
-        text (str): A string or bytes string or a list of strings or bytes strings.
+       Args:
+           text (str): A string or bytes string or a list of strings or bytes strings.
 
-    Returns:
-        numpy array: The token IDs.
+       Returns:
+           numpy array: The token IDs.
     """
 ```
 
@@ -345,7 +345,14 @@ def token_to_id(self, token):
 #### 19. Modifying Vocabulary
 
 ```python
-def modify(self, add_special_tokens=None, add_regular_tokens=None, delete_tokens=None, resize=None, change_unk=None):
+def modify(
+    self,
+    add_special_tokens=None,
+    add_regular_tokens=None,
+    delete_tokens=None,
+    resize=None,
+    change_unk=None,
+):
     """
     Modifies the vocabulary.
 
@@ -859,7 +866,7 @@ You can use the `deserialize_tokens` method to deserialize a binary string into 
 
 ```python
 # Deserialize tokens
-binary_string = b'\x01\x00\x00\x00\x02\x00\x00\x00\x03\x00\x00\x00'
+binary_string = b"\x01\x00\x00\x00\x02\x00\x00\x00\x03\x00\x00\x00"
 deserialized_tokens = tokenizer.deserialize_tokens(binary_string)
 ```
 
@@ -925,10 +932,22 @@ from zeta.tokenizers import TokenMonster
 tokenizer = TokenMonster("path/to/vocabulary")
 
 # Add a special token
-tokenizer.modify(add_special_tokens="[_START_]", add_regular_tokens=None, delete_tokens=None, resize=None, change_unk=None)
+tokenizer.modify(
+    add_special_tokens="[_START_]",
+    add_regular_tokens=None,
+    delete_tokens=None,
+    resize=None,
+    change_unk=None,
+)
 
 # Delete a regular token
-tokenizer.modify(add_special_tokens=None, add_regular_tokens=None, delete_tokens=["apple"], resize=None, change_unk=None)
+tokenizer.modify(
+    add_special_tokens=None,
+    add_regular_tokens=None,
+    delete_tokens=["apple"],
+    resize=None,
+    change_unk=None,
+)
 ```
 
 ### Example 4: Exporting Vocabulary to YAML

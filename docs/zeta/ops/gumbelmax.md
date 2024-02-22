@@ -27,6 +27,7 @@ The `hard` parameter allows users to decide between a 'soft', probabilistic repr
 ```python
 import torch
 import torch.nn.functional as F
+
 from zeta.ops import gumbelmax
 
 # Unnormalized log probabilities

@@ -1,5 +1,5 @@
 import torch
-from torch import nn, Tensor
+from torch import Tensor, nn
 
 from zeta.structs.auto_regressive_wrapper import AutoregressiveWrapper
 from zeta.structs.transformer import (
@@ -142,7 +142,7 @@ class GPT4MultiModal(torch.nn.Module):
         *args,
         **kwargs,
     ):
-        super(GPT4MultiModal, self).__init__()
+        super().__init__()
 
         # Encoder
         self.encoder = ViTransformerWrapper(
