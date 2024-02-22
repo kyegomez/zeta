@@ -3,7 +3,6 @@ import math
 from collections import OrderedDict
 
 import torch
-from packaging import version
 from torch import Tensor, nn
 
 logger = logging.getLogger(__name__)
@@ -21,11 +20,6 @@ class PytorchGELUTanh(nn.Module):
 
     def __init__(self):
         super().__init__()
-        if version.parse(torch.__version__) < version.parse("1.12.0"):
-            raise ImportError(
-                f"You are using torch=={torch.__version__}, but torch>=1.12.0"
-                " is required to use PytorchGELUTanh. Please upgrade torch."
-            )
 
     def forward(self, input: Tensor) -> Tensor:
         return nn.functional.gelu(input, approximate="tanh")
@@ -161,10 +155,7 @@ class MishActivation(nn.Module):
 
     def __init__(self):
         super().__init__()
-        if version.parse(torch.__version__) < version.parse("1.9.0"):
-            self.act = self._mish_python
-        else:
-            self.act = nn.functional.mish
+        self.act = nn.functional.mish
 
     def _mish_python(self, input: Tensor) -> Tensor:
         return input * torch.tanh(nn.functional.softplus(input))

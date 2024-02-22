@@ -15,8 +15,10 @@ def disable_warnings_and_logs():
         def filter(self, record):
             unwanted_logs = [
                 "Setting ds_accelerator to mps (auto detect)",
-                "NOTE: Redirects are currently not supported in Windows or"
-                " MacOs.",
+                (
+                    "NOTE: Redirects are currently not supported in Windows or"
+                    " MacOs."
+                ),
             ]
             return not any(log in record.getMessage() for log in unwanted_logs)
 
