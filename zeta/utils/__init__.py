@@ -1,4 +1,3 @@
-
 from zeta.utils.cuda_memory_wrapper import track_cuda_memory_usage
 
 from zeta.utils.benchmark import (
@@ -90,5 +89,5 @@ __all__ = [
     "append_nvcc_threads",
     "check_cuda",
     "VerboseExecution",
-    "seek_all_images"
+    "seek_all_images",
 ]
