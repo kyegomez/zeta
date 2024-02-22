@@ -1,7 +1,6 @@
 # MishActivation
 
 import torch
-from packaging import version
 from torch import nn
 
 from zeta.nn import MishActivation
@@ -9,11 +8,7 @@ from zeta.nn import MishActivation
 
 def test_MishActivation_init():
     mish_activation = MishActivation()
-
-    if version.parse(torch.__version__) < version.parse("1.9.0"):
-        assert mish_activation.act == mish_activation._mish_python
-    else:
-        assert mish_activation.act == nn.functional.mish
+    assert mish_activation.act == nn.functional.mish
 
 
 def test__mish_python():
@@ -28,9 +23,6 @@ def test_forward():
     mish_activation = MishActivation()
     input = torch.tensor([[0.1, 0.2, 0.3], [0.4, 0.5, 0.6]])
 
-    if version.parse(torch.__version__) < version.parse("1.9.0"):
-        expected_output = input * torch.tanh(nn.functional.softplus(input))
-    else:
-        expected_output = nn.functional.mish(input)
+    expected_output = nn.functional.mish(input)
 
     assert torch.equal(mish_activation.forward(input), expected_output)
