@@ -90,5 +90,5 @@ __all__ = [
     "check_cuda",
     "VerboseExecution",
     "seek_all_images",
-    "log_torch_op"
+    "log_torch_op",
 ]

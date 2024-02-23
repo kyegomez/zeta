@@ -13,8 +13,8 @@ logger.add(
     format="<green>{time}</green> <level>{message}</level>",
     backtrace=True,
     diagnose=True,
-    enqueue = True,
-    catch = True,
+    enqueue=True,
+    catch=True,
 )
 
 
@@ -39,6 +39,7 @@ def log_torch_op(
     Returns:
         function: The decorated function.
     """
+
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
