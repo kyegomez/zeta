@@ -1,6 +1,6 @@
-
 from torch import Tensor, nn
 from zeta.utils.log_pytorch_op import log_torch_op
+
 
 class PaloLDP(nn.Module):
     """
@@ -75,7 +75,6 @@ class PaloLDP(nn.Module):
         x = self.pointwise_conv(x)
         print(x.shape)  # torch.Size([2, 1, 4, 4]
 
-
         # Depthwise convolution with 1 stide
         x = self.depthwise_conv(x)
         print(x.shape)
@@ -89,7 +88,7 @@ class PaloLDP(nn.Module):
         print(x.shape)
 
         # Norm
-        x = self.norm(x) #+ skip
+        x = self.norm(x)  # + skip
         print(x.shape)
 
         # Depthwise convolution with 2 stide
@@ -109,5 +108,3 @@ class PaloLDP(nn.Module):
         x = nn.LayerNorm(w)(x)
 
         return x
-
-
