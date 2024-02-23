@@ -46,7 +46,7 @@ from zeta.utils.cuda_wrapper import (
     check_cuda,
 )
 from zeta.utils.verbose_execution import VerboseExecution
-
+from zeta.utils.log_pytorch_op import log_torch_op
 
 __all__ = [
     "track_cuda_memory_usage",
@@ -90,4 +90,5 @@ __all__ = [
     "check_cuda",
     "VerboseExecution",
     "seek_all_images",
+    "log_torch_op"
 ]
