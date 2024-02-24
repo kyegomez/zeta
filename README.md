@@ -92,6 +92,7 @@ custom_rel_pos_bias = RelativePositionBias(
 
 ### `FeedForward`
 The FeedForward module performs a feedforward operation on the input tensor x. It consists of a multi-layer perceptron (MLP) with an optional activation function and LayerNorm. 
+Used in most language, multi-modal, and modern neural networks.
 
 ```python
 import torch
@@ -448,6 +449,8 @@ print(out)
 
 
 ### DPO - Direct Policy Optimization
+Direct Policy Optimization employed for many RLHF applications for LLMs.
+
 ```python
 import torch
 from torch import nn
