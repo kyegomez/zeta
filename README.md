@@ -514,10 +514,29 @@ options:
 ```bash
 zeta -f train.py -g A100:8
 ```
+----
+
 
 # Documentation
-[Click here for the documentation, it's at zeta.apac.ai](https://zeta.apac.ai)
+All classes must have documentation if you see a class or function without documentation then please report it to me at kye@apac.ai,
 
+Documentation is at [zeta.apac.ai](https://zeta.apac.ai/)
+
+
+-------
+
+
+# Running tests
+You should install the pre-commit hooks with pre-commit install. This will run the linter, mypy, and a subset of the tests on every commit.
+
+For more examples on how to run the full test suite please refer to the CI workflow.
+
+Some examples of running tests locally:
+
+```bash
+python3 -m pip install -e '.[testing]'  # install extra deps for testing
+python3 -m pytest tests/                 # whole test suite
+```
 ----
 
 ## Community
