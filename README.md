@@ -16,7 +16,10 @@ Build SOTA AI Models 80% faster with modular, high-performance, and scalable bui
 
 [![Share on Reddit](https://img.shields.io/badge/-Share%20on%20Reddit-orange)](https://www.reddit.com/submit?url=https%3A%2F%2Fgithub.com%2Fkyegomez%2Fzeta&title=zeta%20-%20the%20future%20of%20AI) [![Share on Hacker News](https://img.shields.io/badge/-Share%20on%20Hacker%20News-orange)](https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fgithub.com%2Fkyegomez%2Fzeta&t=zeta%20-%20the%20future%20of%20AI) [![Share on Pinterest](https://img.shields.io/badge/-Share%20on%20Pinterest-red)](https://pinterest.com/pin/create/button/?url=https%3A%2F%2Fgithub.com%2Fkyegomez%2Fzeta&media=https%3A%2F%2Fexample.com%2Fimage.jpg&description=zeta%20-%20the%20future%20of%20AI) [![Share on WhatsApp](https://img.shields.io/badge/-Share%20on%20WhatsApp-green)](https://api.whatsapp.com/send?text=Check%20out%20zeta%20-%20the%20future%20of%20AI%20%23zeta%20%23AI%0A%0Ahttps%3A%2F%2Fgithub.com%2Fkyegomez%2Fzeta)
 
-After building out thousands of neural nets and facing the same annoying bottlenecks of chaotic codebases with no modularity and low performance modules, Zeta needed to be born to enable me and others to quickly prototype, train, and optimize the latest SOTA neural nets and deploy them into production. Zeta places a radical emphasis on useability, modularity, and performance. Zeta is now currently employed in 100s of models across my github and across others. Get started below and LMK if you want my help building any model, I'm here for you 😊 💜 
+After building out thousands of neural nets and facing the same annoying bottlenecks of chaotic codebases with no modularity and low performance modules, Zeta needed to be born to enable me and others to quickly prototype, train, and optimize the latest SOTA neural nets and deploy them into production. 
+
+Zeta places a radical emphasis on useability, modularity, and performance. Zeta is now currently employed in 100s of models across my github and across others. 
+Get started below and LMK if you want my help building any model, I'm here for you 😊 💜 
 
 
 # Install
