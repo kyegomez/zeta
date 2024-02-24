@@ -24,7 +24,7 @@ Get started below and LMK if you want my help building any model, I'm here for y
 
 # Install
 
-`pip install zetascale`
+`$ pip3 install -U zetascale`
 
 # Usage
 
