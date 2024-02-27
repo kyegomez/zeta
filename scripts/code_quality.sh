@@ -16,4 +16,4 @@ black --experimental-string-processing zeta/
 ruff zeta/ --fix
 
 # YAPF
-yapf --recursive --in-place --verbose --style=google --parallel tests
+# yapf --recursive --in-place --verbose --style=google --parallel tests

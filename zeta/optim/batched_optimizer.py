@@ -360,7 +360,7 @@ class ScaledAdam(BatchedOptimizer):
                 else 0.0
             )
             first_state["num_clipped"] = 0
-            quartiles = " ".join(["%.3e" % x for x in quartiles])
+            quartiles = " ".join([f"{x:.3e}" for x in quartiles])
             logging.info(
                 f"Clipping_scale={clipping_scale}, grad-norm quartiles"
                 f" {quartiles}, threshold={threshold:.3e},"
