@@ -69,8 +69,8 @@ def fsdp(
         )
     else:
         raise ValueError(
-            "Invalid scheduler_type. Expected 'bf16', 'fp16' or 'fp32', got: {}"
-            .format(mp)
+            "Invalid scheduler_type. Expected 'bf16', 'fp16' or 'fp32', got:"
+            f" {mp}"
         )
 
     if shard_strat == "SHARD_GRAD":
