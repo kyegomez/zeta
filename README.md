@@ -16,10 +16,15 @@ Build SOTA AI Models 80% faster with modular, high-performance, and scalable bui
 
 [![Share on Reddit](https://img.shields.io/badge/-Share%20on%20Reddit-orange)](https://www.reddit.com/submit?url=https%3A%2F%2Fgithub.com%2Fkyegomez%2Fzeta&title=zeta%20-%20the%20future%20of%20AI) [![Share on Hacker News](https://img.shields.io/badge/-Share%20on%20Hacker%20News-orange)](https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fgithub.com%2Fkyegomez%2Fzeta&t=zeta%20-%20the%20future%20of%20AI) [![Share on Pinterest](https://img.shields.io/badge/-Share%20on%20Pinterest-red)](https://pinterest.com/pin/create/button/?url=https%3A%2F%2Fgithub.com%2Fkyegomez%2Fzeta&media=https%3A%2F%2Fexample.com%2Fimage.jpg&description=zeta%20-%20the%20future%20of%20AI) [![Share on WhatsApp](https://img.shields.io/badge/-Share%20on%20WhatsApp-green)](https://api.whatsapp.com/send?text=Check%20out%20zeta%20-%20the%20future%20of%20AI%20%23zeta%20%23AI%0A%0Ahttps%3A%2F%2Fgithub.com%2Fkyegomez%2Fzeta)
 
+After building out thousands of neural nets and facing the same annoying bottlenecks of chaotic codebases with no modularity and low performance modules, Zeta needed to be born to enable me and others to quickly prototype, train, and optimize the latest SOTA neural nets and deploy them into production. 
+
+Zeta places a radical emphasis on useability, modularity, and performance. Zeta is now currently employed in 100s of models across my github and across others. 
+Get started below and LMK if you want my help building any model, I'm here for you 😊 💜 
+
 
 # Install
 
-`pip install zetascale`
+`$ pip3 install -U zetascale`
 
 # Usage
 
@@ -92,6 +97,7 @@ custom_rel_pos_bias = RelativePositionBias(
 
 ### `FeedForward`
 The FeedForward module performs a feedforward operation on the input tensor x. It consists of a multi-layer perceptron (MLP) with an optional activation function and LayerNorm. 
+Used in most language, multi-modal, and modern neural networks.
 
 ```python
 import torch
@@ -448,6 +454,8 @@ print(out)
 
 
 ### DPO - Direct Policy Optimization
+Direct Policy Optimization employed for many RLHF applications for LLMs.
+
 ```python
 import torch
 from torch import nn
@@ -514,10 +522,29 @@ options:
 ```bash
 zeta -f train.py -g A100:8
 ```
+----
+
 
 # Documentation
-[Click here for the documentation, it's at zeta.apac.ai](https://zeta.apac.ai)
+All classes must have documentation if you see a class or function without documentation then please report it to me at kye@apac.ai,
 
+Documentation is at [zeta.apac.ai](https://zeta.apac.ai/)
+
+
+-------
+
+
+# Running tests
+You should install the pre-commit hooks with pre-commit install. This will run the linter, mypy, and a subset of the tests on every commit.
+
+For more examples on how to run the full test suite please refer to the CI workflow.
+
+Some examples of running tests locally:
+
+```bash
+python3 -m pip install -e '.[testing]'  # install extra deps for testing
+python3 -m pytest tests/                 # whole test suite
+```
 ----
 
 ## Community
