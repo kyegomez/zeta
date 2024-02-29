@@ -13,7 +13,7 @@ black --experimental-string-processing zeta/
 
 # Run ruff on the 'tests' directory.
 # Add any additional flags if needed according to your version of ruff.
-ruff zeta/ --fix
+ruff zeta/ --fixb
 
 # YAPF
 # yapf --recursive --in-place --verbose --style=google --parallel tests
