@@ -31,3 +31,4 @@ skypilot==0.4.1
 argparse
 numexpr
 fairseq==0.12.2
+loguru
