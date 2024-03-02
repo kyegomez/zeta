@@ -14,7 +14,8 @@ class RotaryEmbedding(nn.Module):
         interpolation_factor=1.0,
         base=10000,
         base_rescale_factor=1.0,
-    ): ...
+    ):
+        ...
 ```
 
 ### Parameters
@@ -29,7 +30,8 @@ class RotaryEmbedding(nn.Module):
 ### Method: `forward`
 
 ```python
-def forward(self, seq_len, device): ...
+def forward(self, seq_len, device):
+    ...
 ```
 
 #### Parameters

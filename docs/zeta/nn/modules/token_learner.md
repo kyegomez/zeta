@@ -19,7 +19,8 @@ class TokenLearner(nn.Module):
         ff_mult: int = 2,
         num_output_tokens: int = 8,
         num_layers: int = 2,
-    ): ...
+    ):
+        ...
 ```
 
 ### Parameters:
@@ -43,7 +44,8 @@ The forward method of the `TokenLearner` class takes an input tensor `x` and per
 ### Method:
 
 ```python
-def forward(self, x): ...
+def forward(self, x):
+    ...
 ```
 
 ### Parameters:

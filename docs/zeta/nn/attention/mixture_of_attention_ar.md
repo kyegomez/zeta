@@ -32,7 +32,8 @@ class MixtureOfAutoregressiveAttention(nn.Module):
         prenorm: bool = True,
         average_routed: bool = False,
         **kwargs,
-    ): ...
+    ):
+        ...
 ```
 
 ### Parameters:
@@ -62,7 +63,8 @@ def forward(
     rotary_emb: Optional[torch.Tensor] = None,
     num_routed_queries: Optional[int] = None,
     num_routed_key_values: Optional[int] = None,
-) -> torch.Tensor: ...
+) -> torch.Tensor:
+    ...
 ```
 
 - `x` (torch.Tensor): Input tensor of shape `(batch_size, sequence_length, dim)`.

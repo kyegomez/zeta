@@ -15,7 +15,8 @@ Key terms:
 ## Class Definition
 
 ```python
-class LocalAttention(nn.Module): ...
+class LocalAttention(nn.Module):
+    ...
 ```
 
 ### Parameters
