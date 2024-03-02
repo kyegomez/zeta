@@ -32,9 +32,11 @@ class VisualExpert:
         hidden_dim: int,
         dropout: float,
         heads: int,
-    ): ...
+    ):
+        ...
 
-    def __call__(self, x: torch.Tensor): ...
+    def __call__(self, x: torch.Tensor):
+        ...
 ```
 
 ### Parameters <a name="parameters"></a>
