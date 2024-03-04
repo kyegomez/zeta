@@ -14,7 +14,7 @@ class LocalMHA(nn.Module):
         window_size,
         dim_head=64,
         heads=8,
-        dropout=0.0,
+        dropout=0.1,
         causal=False,
         prenorm=False,
         qk_rmsnorm=False,

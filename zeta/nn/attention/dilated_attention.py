@@ -57,7 +57,7 @@ class DilatedAttention(BaseAttention):
         num_heads: The number of attention heads.
         dilation_rate: The dilation rate for dilated attention.
         segment_size: The segment size for dilated attention.
-        dropout (optional): The dropout probability. Default: 0.0
+        dropout (optional): The dropout probability. Default: 0.1
         casual (optional): If set to True, the attention mechanism is casual. Default: False
         use_xpos (optional): If set to True, xpos is used for positional encoding. Default: False
         use_rel_pos_bias (optional): If set to True, relative position bias is used in the attention mechanism. Default: False
@@ -78,7 +78,7 @@ class DilatedAttention(BaseAttention):
         num_heads: int = None,
         dilation_rate: int = None,
         segment_size: int = None,
-        dropout: int = 0.0,
+        dropout: float = 0.1,
         casual: bool = False,
         use_xpos: bool = False,
         use_rel_pos_bias: bool = False,
@@ -184,7 +184,7 @@ class MultiheadDilatedAttention(nn.Module):
         num_heads: int,
         dilation_rates: Sequence[int],
         segment_lengths: Sequence[int],
-        dropout: float = 0.0,
+        dropout: float = 0.1,
         bias: bool = True,
         layer_norm: bool = True,
         layer_norm_eps: float = 1e-5,

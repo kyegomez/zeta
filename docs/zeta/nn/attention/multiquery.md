@@ -21,7 +21,7 @@ class MultiQueryAttention(nn.Module):
 - `clip_qkv` (Optional[float]): Clipping value for query, key, and value. If specified, qkv is clamped within the range [-clip_qkv, clip_qkv].
 - `qk_ln` (bool, optional): If True, layer normalization is applied to query and key.
 - `softmax_scale` (Optional[float]): Scale for softmax. Default value is computed as 1/sqrt(head_dim).
-- `attn_pdrop` (float, optional): Attention dropout probability. Default is 0.0.
+- `attn_pdrop` (float, optional): Attention dropout probability. Default is 0.1`.
 - `norm_type` (str, optional): Normalization type, default is 'low_precision_layernorm'.
 - `fc_type` (str, optional): Fully connected layer type, default is 'torch'.
 - `verbose` (int, optional): Verbosity level, default is 0.

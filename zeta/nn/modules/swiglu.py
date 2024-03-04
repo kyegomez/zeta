@@ -41,7 +41,7 @@ class SwiGLUStacked(nn.Module):
         self,
         dim: int,
         hidden_dim: int = None,
-        dropout: float = None,
+        dropout: float = 0.1,
         bias: bool = False,
         *args,
         **kwargs,

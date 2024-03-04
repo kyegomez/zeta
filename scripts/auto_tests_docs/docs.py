@@ -45,7 +45,7 @@ def DOCUMENTATION_WRITER_SOP(
 
     # Module/Function Name: MultiheadAttention
 
-    class torch.nn.MultiheadAttention(embed_dim, num_heads, dropout=0.0, bias=True, add_bias_kv=False, add_zero_attn=False, kdim=None, vdim=None, batch_first=False, device=None, dtype=None):
+    class torch.nn.MultiheadAttention(embed_dim, num_heads, dropout=0.1, bias=True, add_bias_kv=False, add_zero_attn=False, kdim=None, vdim=None, batch_first=False, device=None, dtype=None):
         ```
         Creates a multi-head attention module for joint information representation from the different subspaces.
 

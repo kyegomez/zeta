@@ -31,7 +31,7 @@ class LocalAttention(nn.Module):
         causal: (bool, optional) If set to True, ensures causal attention. Default: False.
         look_backward: (int, optional) How many positions to look backward from the current position. Default: 1.
         look_forward: (int, optional) How many positions to look forward from the current position. Default: None which implies 0 if causal is True.
-        dropout: (float, optional) Dropout rate for attention weights. Default: 0..
+        dropout: (float, optional) Dropout rate for attention weights. Default: 0.1.
         shared_qk: (bool, optional) If set to True, the query and key are the same. Useful for certain types of attention mechanisms. Default: False.
         rel_pos_emb_config: (Optional) Deprecated. Configuration for the relative positional embeddings.
         dim: (int, optional) Dimension of embeddings. Only needed if rel_pos_emb_config is not provided.
@@ -55,7 +55,7 @@ class LocalAttention(nn.Module):
         causal=False,
         look_backward=1,
         look_forward=None,
-        dropout=0.0,
+        dropout=0.1,
         shared_qk=False,
         rel_pos_emb_config=None,
         dim=None,

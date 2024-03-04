@@ -112,7 +112,7 @@ class SwiGLU(nn.Module):
 # Assuming necessary imports like RotaryEmbedding, SwiGLU, etc. are present
 
 
-def FeedForward(dim, hidden_dim, dropout=0.0):
+def FeedForward(dim, hidden_dim, dropout=0.1):
     return nn.Sequential(
         nn.LayerNorm(dim),
         nn.Linear(dim, hidden_dim),

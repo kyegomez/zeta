@@ -52,7 +52,7 @@ class XCAttention(nn.Module):
         heads: int = 8,
         scale: int = 8,
         flash=False,
-        dropout: 0.0,
+        dropout: 0.1,
     ):
         super().__init__()
         dim_inner = dim_head * heads

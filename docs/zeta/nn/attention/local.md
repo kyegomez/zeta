@@ -29,7 +29,7 @@ class LocalAttention(nn.Module):
 
 - `look_forward`: (int, optional) How many positions to look forward from the current position. Default: `None` which implies 0 if causal is `True`.
 
-- `dropout`: (float, optional) Dropout rate for attention weights. Default: `0.`.
+- `dropout`: (float, optional) Dropout rate for attention weights. Default: `0.1`.
 
 - `shared_qk`: (bool, optional) If set to `True`, the query and key are the same. Useful for certain types of attention mechanisms. Default: `False`.
 

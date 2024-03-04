@@ -90,7 +90,7 @@ class Attend(nn.Module):
     Attend module performs attention mechanism for neural networks.
 
     Args:
-        dropout (float): Dropout probability. Default is 0.0.
+        dropout (float): Dropout probability. Default is 0.1.
         causal (bool): Whether to use causal attention. Default is False.
         heads (int): Number of attention heads. Default is None.
         talking_heads (bool): Whether to use talking heads attention. Default is False.
@@ -105,7 +105,7 @@ class Attend(nn.Module):
     def __init__(
         self,
         *,
-        dropout=0.0,
+        dropout=0.1,
         causal=False,
         heads=None,
         talking_heads=False,
@@ -1213,7 +1213,7 @@ class FeedForward(nn.Module):
         swish=False,
         relu_squared=False,
         post_act_ln=False,
-        dropout=0.0,
+        dropout=0.1,
         no_bias=False,
         zero_init_output=False,
     ):
@@ -1267,7 +1267,7 @@ class Attention(nn.Module):
         head_scale=False,
         sparse_topk=None,
         num_mem_kv=0,
-        dropout=0.0,
+        dropout=0.1,
         on_attn=False,
         gate_values=False,
         zero_init_output=False,
@@ -1619,8 +1619,8 @@ class AttentionLayers(nn.Module):
         resi_dual=False,
         resi_dual_scale=1.0,
         zero_init_branch_output=False,
-        layer_dropout=0.0,
-        cross_attn_tokens_dropout=0.0,
+        layer_dropout=0.1,
+        cross_attn_tokens_dropout=0.1,
         **kwargs,
     ):
         super().__init__()
@@ -2037,7 +2037,7 @@ class ViTransformerWrapper(nn.Module):
         channels=3,
         num_classes=None,
         post_emb_norm=False,
-        emb_dropout=0.0,
+        emb_dropout=0.1,
     ):
         super().__init__()
         assert isinstance(
@@ -2104,7 +2104,7 @@ class Transformer(nn.Module):
         emb_dim=None,
         max_mem_len=0,
         shift_mem_down=0,
-        emb_dropout=0.0,
+        emb_dropout=0.1,
         post_emb_norm=False,
         num_memory_tokens=None,
         tie_embedding=False,

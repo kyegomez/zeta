@@ -17,7 +17,7 @@ class CrossAttention(nn.Module):
         context_dim=None,
         dim_head=64,
         heads=8,
-        dropout=0.0,
+        dropout=0.1,
         norm_context=False,
         cosine_sim=False,
         cosine_sim_scale=16,

@@ -8,7 +8,7 @@ class MMFusionFFN(nn.Module):
     Args:
         input_dim (int): input dimension.
         hidden_dim (int): hidden dimension.
-        dropout (float, optional): dropout probability. (Default: 0.0)
+        dropout (float, optional): dropout probability. (Default: 0.1)
     """
 
     def __init__(

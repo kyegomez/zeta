@@ -6,7 +6,7 @@ The Vision Transformer (ViT) is a class designed as part of the `zeta.models` li
 
 ```python
 class ViT(nn.Module):
-    def __init__(self, *, image_size, patch_size, attn_layers, channels=3, num_classes=None, post_emb_norm=False, emb_dropout=0.0):
+    def __init__(self, *, image_size, patch_size, attn_layers, channels=3, num_classes=None, post_emb_norm=False, emb_dropout=0.1):
 ```
 This class takes the following parameters as inputs:
 
@@ -18,7 +18,7 @@ This class takes the following parameters as inputs:
 | channels | int | The number of color-bands (usually RGB). | 3 |
 | num_classes | int | The number of classes to be detected, otherwise `None` for unsupervised learning scenarios. | `None` |
 | post_emb_norm | bool | Whether to apply layer-normalization to the embeddings. | `False` |
-| emb_dropout | float | The probability of an element to be zeroed in dropout. | `0.0` |
+| emb_dropout | float | The probability of an element to be zeroed in dropout. | `0.1` |
 
 ## Method Definitions
 

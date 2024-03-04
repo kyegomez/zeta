@@ -12,7 +12,7 @@ class LinearAttention(nn.Module):
         dim (int): The dimension of the input tensor.
         heads (int, optional): The number of attention heads. Defaults to 4.
         dim_head (int, optional): The dimension of each attention head. Defaults to 64.
-        dropout (float, optional): The dropout probability. Defaults to 0.0.
+        dropout (float, optional): The dropout probability. Defaults to 0.1.
 
     Returns:
         Tensor: The output tensor after linear attention mechanism.
@@ -33,7 +33,7 @@ class LinearAttention(nn.Module):
         dim: int,
         heads: int = 4,
         dim_head: int = 64,
-        dropout: float = 0.0,
+        dropout: float = 0.1,
         *args,
         **kwargs,
     ):

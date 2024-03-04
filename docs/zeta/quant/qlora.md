@@ -38,7 +38,7 @@ class QloraLinear(nn.Module):
 | weight        | torch.Tensor | Weight tensor of shape (out_features, in_features).               |
 | r             | int          | Number of blocks to use for QLoRA.                                |
 | lora_alpha    | int          | (Optional) Scaling factor for QLoRA. Default: 1.                  |
-| lora_dropout  | float        | (Optional) Dropout to apply to the QLoRA term. Default: 0.0.      |
+| lora_dropout  | float        | (Optional) Dropout to apply to the QLoRA term. Default: 0.1.      |
 
 ### Methods
 
@@ -81,7 +81,7 @@ If you want to introduce dropout to the QLoRA term:
 
 ```python
 lora_alpha = 2
-lora_dropout = 0.5
+lora_dropout = 0.1
 
 dropout_layer = QloraLinear(
     in_features, out_features, weight, r, lora_alpha, lora_dropout

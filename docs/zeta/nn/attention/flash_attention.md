@@ -13,14 +13,14 @@ class FlashAttention(nn.Module):
 ### Parameters:
 
 - `causal` (bool, optional): Determines whether to apply causal masking. Default: False.
-- `dropout` (float, optional): Dropout probability. Default: 0.
+- `dropout` (float, optional): Dropout probability. Default: 0.1
 - `flash` (bool, optional): Whether to use flash attention. Requires PyTorch version 2.0 or above. Default: True.
 
 ---
 
 ## Methods:
 
-### `__init__(self, causal=False, dropout=0., flash=True)`
+### `__init__(self, causal=False, dropout=0.1, flash=True)`
 
 Initializes the FlashAttention module.
 

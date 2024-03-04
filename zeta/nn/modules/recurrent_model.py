@@ -12,13 +12,13 @@ class RNN(nn.Module):
             ninp=20,
             nhid=50,
             nlayers=2,
-            dropout=0.5,
+            dropout=0.1,
         )
         net(x)
 
     """
 
-    def __init__(self, ntoken, ninp, nhid, nlayers, dropout=0.5):
+    def __init__(self, ntoken, ninp, nhid, nlayers, dropout=0.1):
         super().__init__()
 
         self.drop = nn.Dropout(p=dropout)

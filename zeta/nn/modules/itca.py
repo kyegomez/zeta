@@ -32,7 +32,7 @@ class CrossAttention(nn.Module):
         dim,
         heads: int = 8,
         dim_head: int = 64,
-        dropout: float = 0.0,
+        dropout: float = 0.1,
         qk_norm: bool = True,
     ):
         super().__init__()

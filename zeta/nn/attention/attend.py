@@ -84,7 +84,7 @@ class Attend(nn.Module):
     Attend module performs attention mechanism for neural networks.
 
     Args:
-        dropout (float): Dropout probability. Default is 0.0.
+        dropout (float): Dropout probability. Default is 0.1.
         causal (bool): Whether to use causal attention. Default is False.
         heads (int): Number of attention heads. Default is None.
         talking_heads (bool): Whether to use talking heads attention. Default is False.
@@ -99,7 +99,7 @@ class Attend(nn.Module):
     def __init__(
         self,
         *,
-        dropout=0.0,
+        dropout=0.1,
         causal=False,
         heads=None,
         talking_heads=False,

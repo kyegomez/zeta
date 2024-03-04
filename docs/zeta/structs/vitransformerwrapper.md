@@ -12,7 +12,7 @@ The `ViTransformerWrapper` class inherits from PyTorch's `nn.Module` class which
 
 ```python
 class ViTransformerWrapper(nn.Module):
-    def __init__(self, *, image_size, patch_size, attn_layers, channels=3, num_classes=None, post_emb_norm=False, emb_dropout=0.0):
+    def __init__(self, *, image_size, patch_size, attn_layers, channels=3, num_classes=None, post_emb_norm=False, emb_dropout=0.1):
     def forward(self, img, return_embeddings=False):
 ```
 
@@ -26,7 +26,7 @@ class ViTransformerWrapper(nn.Module):
 | channels      | int (default is 3)  | Number of channels in the image. |
 | num_classes   | int (optional)  | Number of classes in the classification task. If `None`, the model will output raw embeddings. |
 | post_emb_norm | bool (default is `False`) | If `True`, enables normalization of embeddings after they are generated. |
-| emb_dropout   | float (default is 0.0) | Dropout rate for the embeddings. |
+| emb_dropout   | float (default is 0.1) | Dropout rate for the embeddings. |
 
 ### Attributes
 

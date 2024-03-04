@@ -78,14 +78,14 @@ class Intermediates:
 
 class FlashAttention(BaseAttention):
     def __init__(
-        self, causal: bool = False, dropout: float = 0.0, flash: bool = True
+        self, causal: bool = False, dropout: float = 0.1, flash: bool = True
     ):
         """
         FlashAttention module that performs attention computation.
 
         Args:
             causal (bool): Whether to apply causal masking (default: False).
-            dropout (float): Dropout probability (default: 0.).
+            dropout (float): Dropout probability (default: 0.1).
             flash (bool): Whether to use flash attention (default: True).
 
         """

@@ -28,7 +28,7 @@ class LayerNorm(nn.Module):
 
 
 class FeedForward(nn.Module):
-    def __init__(self, dim, hidden_dim, dropout=0.0):
+    def __init__(self, dim, hidden_dim, dropout=0.1):
         super().__init__()
         self.net = nn.Sequential(
             nn.LayerNorm(dim),
@@ -44,7 +44,7 @@ class FeedForward(nn.Module):
 
 
 class Attention(nn.Module):
-    def __init__(self, dim, heads=8, dim_head=64, dropout=0.0):
+    def __init__(self, dim, heads=8, dim_head=64, dropout=0.1):
         super().__init__()
         inner_dim = dim_head * heads
         project_out = not (heads == 1 and dim_head == dim)
@@ -90,7 +90,7 @@ class Attention(nn.Module):
 
 
 class Transformer(nn.Module):
-    def __init__(self, dim, depth, heads, dim_head, mlp_dim, dropout=0.0):
+    def __init__(self, dim, depth, heads, dim_head, mlp_dim, dropout=0.1):
         super().__init__()
         self.norm = nn.LayerNorm(dim)
         self.layers = nn.ModuleList([])
@@ -182,8 +182,8 @@ class MegaVit(nn.Module):
         pool="cls",
         channels=3,
         dim_head=64,
-        dropout=0.0,
-        emb_dropout=0.0,
+        dropout=0.1,
+        emb_dropout=0.1,
     ):
         super().__init__()
         image_height, image_width = pair(image_size)

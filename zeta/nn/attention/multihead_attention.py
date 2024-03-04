@@ -19,7 +19,7 @@ class MultiheadAttention(BaseAttention):
         self,
         embed_dim: int = None,
         num_heads: int = None,
-        dropout: int = 0.0,
+        dropout: float = 0.1,
         self_attention: bool = False,
         subln: bool = False,
         layernorm_eps=1e-05,

@@ -14,7 +14,7 @@ The `VisionAttention` class requires the following parameters to be passed:
 - dim (int): The input dimension of the tensor.
 - heads (int, optional): The number of attention heads. Defaults to 8.
 - dim_head (int, optional): The dimension of each attention head. Defaults to 64.
-- dropout (float, optional): The dropout probability. Defaults to 0.0.
+- dropout (float, optional): The dropout probability. Defaults to 0.1 .
 
 The data types and default values for the parameters are strictly enforced for creating an instance of the `VisionAttention` module.
 
@@ -37,7 +37,7 @@ from zeta.nn import VisionAttention
 x = torch.randn(1, 3, 32, 32)
 
 # Initialize the VisionAttention module
-model = VisionAttention(dim=32, heads=8, dim_head=64, dropout=0.0)
+model = VisionAttention(dim=32, heads=8, dim_head=64, dropout=0.1)
 
 # Perform self-attention on the input tensor
 out = model(x)

@@ -9,7 +9,7 @@ def scaled_dot_product_attention(
     key,
     value,
     attn_mask=None,
-    dropout_p=0.0,
+    dropout_p=0.1,
     is_causal=False,
     scale=None,
 ) -> torch.Tensor:

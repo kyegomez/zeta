@@ -22,7 +22,7 @@ class RNNL(nn.Module):
             output_dim=10,
             n_layers=2,
             bidirectional=True,
-            dropout=0.5,
+            dropout=0.1,
         )
         net(x)
 

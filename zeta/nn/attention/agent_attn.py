@@ -23,7 +23,7 @@ class AgentSelfAttention(Module):
         num_agent_tokens (int): The number of agent tokens.
         dim_head (int, optional): The dimension of each attention head. Defaults to 64.
         heads (int, optional): The number of attention heads. Defaults to 8.
-        dropout (float, optional): The dropout rate. Defaults to 0.0.
+        dropout (float, optional): The dropout rate. Defaults to 0.1.
         talking_heads (bool, optional): Whether to use talking heads mechanism. Defaults to True.
         gate (bool, optional): Whether to apply gating mechanism. Defaults to True.
         combine_agent_tokens (bool, optional): Whether to combine agent tokens. Defaults to False.
@@ -45,7 +45,7 @@ class AgentSelfAttention(Module):
         num_agent_tokens,
         dim_head=64,
         heads=8,
-        dropout=0.0,
+        dropout=0.1,
         talking_heads=True,
         gate=True,
         combine_agent_tokens=False,

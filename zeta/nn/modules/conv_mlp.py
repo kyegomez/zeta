@@ -27,7 +27,7 @@ class Conv2DFeedforward(nn.Module):
         hidden_layer_multiplier: int = 1,
         dim_out: Optional[int] = None,
         activation=nn.GELU(),
-        dropout=0.0,
+        dropout=0.1,
         *args,
         **kwargs,
     ):
