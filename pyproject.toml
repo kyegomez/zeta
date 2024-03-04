@@ -20,7 +20,7 @@ python = "^3.8"
 torch = "2.2.0"
 timm = "0.9.16"
 torchdiffeq = "0.2.3"
-pytest = "8.0.1"
+pytest = "8.0.2"
 torchfix = "*"
 einops = "0.7.0"
 tensorflow = "*"
@@ -63,7 +63,7 @@ types-pytz = ">=2023.3,<2025.0"
 black = "^23.1.0"
 types-chardet = "^5.0.4.6"
 mypy-protobuf = "^3.0.0"
-pytest = "8.0.1"
+pytest = "8.0.2"
 
 
 [tool.autopep8]
