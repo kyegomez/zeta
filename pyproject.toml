@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zetascale"
-version = "2.1.7"
+version = "2.2.0"
 description = "Transformers at zeta scales"
 authors = ["Zeta Team <kye@apac.ai>"]
 license = "MIT"
@@ -33,6 +33,7 @@ accelerate = "0.27.2"
 datasets = "*"
 lion-pytorch = "0.1.2"
 jax = "*"
+loguru = "*"
 jaxlib = "*"
 sentencepiece = "0.1.99"
 colt5-attention = "0.10.19"

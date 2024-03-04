@@ -15,7 +15,8 @@ Key concepts:
 
 ```python
 class DynamicPositionBias(nn.Module):
-    def __init__(self, dim: int, heads: int): ...
+    def __init__(self, dim: int, heads: int):
+        ...
 ```
 
 ### Parameters:

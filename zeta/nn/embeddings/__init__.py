@@ -27,6 +27,10 @@ from zeta.nn.embeddings.xpos_relative_position import (
     rotate_every_two,
 )
 from zeta.nn.embeddings.yarn import YarnEmbedding
+from zeta.nn.embeddings.scaled_sinusoidal_embeddings import (
+    ScaledSinusoidalEmbedding,
+)
+
 
 __all__ = [
     "AbsolutePositionalEmbedding",
@@ -56,4 +60,5 @@ __all__ = [
     "fixed_pos_embedding",
     "duplicate_interleave",
     "VisionEmbedding",
+    "ScaledSinusoidalEmbedding",
 ]
