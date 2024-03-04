@@ -1,4 +1,5 @@
 import torch
+import pytest
 
 from zeta.utils import interpolate_pos_encoding_2d
 
