@@ -58,7 +58,7 @@ def cross_modal_ffn(
     ffn_auxiliar_linear: nn.Linear,
     dim: int,
     ff_mult: int,
-    dropout: int,
+    dropout: float,
     ffn_original_last_linear: nn.Linear,
     ffn_aux_last_linear: nn.Linear,
     *args,
