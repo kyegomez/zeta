@@ -20,7 +20,7 @@ The architecture of this module is designed to process multi-dimensional data wi
 | hidden_layer_multiplier | Integer parameter - The multiplier factor used to determine the number of hidden features defined as a multiple of the input feature dimension.  |
 | dim_out                 | Optional Integer parameter - The total number of output features of the given data.                                                             |
 | activation              | Object - The non-linear activation function. Default: GELU (Gaussian Error Linear Unit).                                                        |
-| dropout                 | Float parameter - Determines the probability of dropout on the feedforward network's output. Default: 0.0.                                       |
+| dropout                 | Float parameter - Determines the probability of dropout on the feedforward network's output. Default: 0.1                                       |
 | \*args                  | Additional positional parameters.                                                                                                                |
 | \*\*kwargs              | Additional keyword parameters.                                                                                                                   |
 

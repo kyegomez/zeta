@@ -22,8 +22,8 @@ def __init__(
     mlp_dim,
     channels=3,
     dim_head=64,
-    dropout=0.0,
-    emb_dropout=0.0,
+    dropout=0.1,
+    emb_dropout=0.1,
     token_dropout_prob=None,
 )
 ```
@@ -39,7 +39,7 @@ def __init__(
 | mlp_dim                      | int   | The dimension of the multilayer perceptron in the feedforward network.                         |
 | channels                      | int  | The number of input channels. Defaults to 3.      |
 | dim_head                     | int   | The dimension of the attention head. Defaults to 64. |
-| dropout                       | float | Standard dropout. Defaults to 0. The probability of a feature being zeroed out during training. |
+| dropout                       | float | Standard dropout. Defaults to 0.1 . The probability of a feature being zeroed out during training. |
 | emb_dropout                | float | Dropout applied to the learned embedding at the beginning of the transformer stack. Defaults to 0. |
 | token_dropout_prob     | scalar | The probability of dropping out tokens before the transformer. Optional.|
 

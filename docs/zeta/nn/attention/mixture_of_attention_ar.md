@@ -26,7 +26,7 @@ class MixtureOfAutoregressiveAttention(nn.Module):
         num_experts: int = 2,
         dim_head: int = 64,
         heads: int = 8,
-        dropout: float = 0.0,
+        dropout: float = 0.1,
         use_triton: bool = False,
         flash_attn: bool = True,
         prenorm: bool = True,
@@ -46,7 +46,7 @@ class MixtureOfAutoregressiveAttention(nn.Module):
 - `num_experts` (int, optional): Number of experts. Defaults to 2.
 - `dim_head` (int, optional): Dimensionality of each attention head. Defaults to 64.
 - `heads` (int, optional): Number of attention heads. Defaults to 8.
-- `dropout` (float, optional): Dropout probability. Defaults to 0.
+- `dropout` (float, optional): Dropout probability. Defaults to 0.1
 - `use_triton` (bool, optional): Flag to use Triton for optimization. Defaults to False.
 - `flash_attn` (bool, optional): Flag to use flash attention mechanism. Defaults to True.
 - `prenorm` (bool, optional): Flag for pre-normalization. Defaults to True.

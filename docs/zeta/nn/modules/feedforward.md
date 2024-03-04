@@ -20,7 +20,7 @@ class FeedForward(nn.Module):
         swish (bool, optional): Whether to use the SiLU activation. Defaults to False.
         relu_squared (bool, optional): Whether to use the ReLU squared activation. Defaults to False.
         post_act_ln (bool, optional): Whether to apply LayerNorm after activation. Defaults to False.
-        dropout (float, optional): Dropout probability. Defaults to 0.0.
+        dropout (float, optional): Dropout probability. Defaults to 0.1 .
         no_bias (bool, optional): Whether to use bias terms in linear layers. Defaults to False.
         zero_init_output (bool, optional): Whether to initialize the output linear layer to zero. Defaults to False.
 
@@ -43,7 +43,7 @@ class FeedForward(nn.Module):
 | swish            | Whether to use SiLU activation                            | False           | bool   |
 | relu_squared     | Whether to use ReLU squared activation                     | False           | bool   |
 | post_act_ln      | Whether to apply LayerNorm after activation               | False           | bool   |
-| dropout          | Dropout probability                                       | 0.0             | float  |
+| dropout          | Dropout probability                                       | 0.1             | float  |
 | no_bias          | Whether to use bias terms in linear layers                | False           | bool   |
 | zero_init_output | Whether to initialize the output linear layer to zero     | False           | bool   |
 

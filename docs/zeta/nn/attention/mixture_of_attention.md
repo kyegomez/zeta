@@ -36,7 +36,7 @@ class MixtureOfAttention(nn.Module):
 
 - **heads (int, optional)**: Number of attention heads. Defaults to 8.
 
-- **dropout (float, optional)**: Dropout probability. Defaults to 0.0.
+- **dropout (float, optional)**: Dropout probability. Defaults to 0.1.
 
 - **use_triton (bool, optional)**: Whether to use Triton for optimized computation. Defaults to True.
 

@@ -20,7 +20,7 @@ class ConvolutionLanguageBlock(nn.Module):
     - dilation (int, optional): Spacing between kernel elements. Default: 1
     - activation (str, optional): Type of activation function. Options: 'relu', 'gelu'. Default: 'relu'
     - use_batchnorm (bool, optional): If True, includes batch normalization. Default: False
-    - dropout (float, optional): Dropout rate. Default: 0.0
+    - dropout (float, optional): Dropout rate. Default: 0.1
 
     Examples:
         >>> import torch

@@ -25,7 +25,7 @@ class SinePositionalEmbedding(nn.Module):
     def __init__(
         self,
         dim_model: int,
-        dropout: float = 0.0,
+        dropout: float = 0.1,
         scale: bool = False,
         alpha: bool = False,
     ):

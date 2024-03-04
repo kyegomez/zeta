@@ -48,7 +48,7 @@ This function carries out the forward propagation through the `MaxVit` model giv
 | `x`                    | `torch.Tensor`       | The input tensor to the `MaxVit` model.                                                                                                     |
 | `texts`                |`List[str]` (Optional)| list of textual data for interpreting image data |
 | `cond_fns`           |`Tuple[Callable, ...]` (Optional)|  List of conditional functions to apply per layer |
-| `cond_drop_prob` |`float` (Default = 0.0) | Conditional dropout probability. |
+| `cond_drop_prob` |`float` (Default = 0.01) | Conditional dropout probability. |
 | `return_embeddings` |`bool` (Default = False) | Whether to return embeddings instead of class scores.|
 
 #### Returns

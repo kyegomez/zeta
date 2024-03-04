@@ -69,7 +69,7 @@ def posemb_sincos_2d(
 
 class VisionAttention(nn.Module):
     def __init__(
-        self, dim: int, heads: int = 8, dim_head: int = 64, dropout: float = 0.0
+        self, dim: int, heads: int = 8, dim_head: int = 64, dropout: float = 0.1
     ):
         """
         VisionAttention module performs self-attention on the input tensor.
@@ -78,11 +78,11 @@ class VisionAttention(nn.Module):
             dim (int): The input dimension of the tensor.
             heads (int, optional): The number of attention heads. Defaults to 8.
             dim_head (int, optional): The dimension of each attention head. Defaults to 64.
-            dropout (float, optional): The dropout probability. Defaults to 0.0.
+            dropout (float, optional): The dropout probability. Defaults to 0.1.
 
         Example::
             >>> x = torch.randn(1, 3, 32, 32)
-            >>> model = VisionAttention(dim=32, heads=8, dim_head=64, dropout=0.0)
+            >>> model = VisionAttention(dim=32, heads=8, dim_head=64, dropout=0.1)
             >>> out = model(x)
             >>> print(out)
         """

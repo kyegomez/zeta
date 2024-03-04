@@ -48,7 +48,7 @@ class FeedForward(nn.Module):
         swish=False,
         relu_squared=False,
         post_act_ln=False,
-        dropout: float = 0.0,
+        dropout: float = 0.1,
         no_bias=False,
         zero_init_output=False,
     ):

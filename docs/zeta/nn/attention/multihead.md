@@ -22,7 +22,7 @@ class zeta.nn.MultiheadAttention(nn.Module):
 - `args`: General arguments passed for configuring the module.
 - `embed_dim` (int): Total dimension of the model.
 - `num_heads` (int): Number of parallel attention heads. The embed_dim will be split across num_heads.
-- `dropout` (float): Dropout probability. Default: 0.0.
+- `dropout` (float): Dropout probability. Default: 0.1.
 - `self_attention` (bool): Whether to apply self attention. Only one of `self_attention` or `encoder_decoder_attention` can be True. Default: False.
 - `encoder_decoder_attention` (bool): Whether to apply encoder-decoder attention. Only one of `self_attention` or `encoder_decoder_attention` can be True. Default: False.
 - `subln` (bool): If True, applies layer normalization after self attention. Default: False.

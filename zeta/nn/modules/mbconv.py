@@ -50,7 +50,7 @@ class SqueezeExcitation(nn.Module):
 
 
 class MBConvResidual(nn.Module):
-    def __init__(self, fn, dropout=0.0):
+    def __init__(self, fn, dropout=0.1):
         super().__init__()
         self.fn = fn
         self.downsample = DropSample(dropout)
@@ -68,7 +68,7 @@ def MBConv(
     downsample,
     expansion_rate=4,
     shrinkage_rate=0.25,
-    dropout=0.0,
+    dropout=0.1,
 ):
     """
     MobileNetV3 Bottleneck Convolution (MBConv) block.
@@ -79,7 +79,7 @@ def MBConv(
         downsample (bool): Whether to downsample the spatial dimensions.
         expansion_rate (float, optional): Expansion rate for the hidden dimension. Defaults to 4.
         shrinkage_rate (float, optional): Shrinkage rate for the squeeze excitation. Defaults to 0.25.
-        dropout (float, optional): Dropout rate. Defaults to 0.0.
+        dropout (float, optional): Dropout rate. Defaults to 0.1.
 
     Returns:
         nn.Sequential: MBConv block.

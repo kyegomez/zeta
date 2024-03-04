@@ -15,10 +15,10 @@ class CustomMLP(nn.Module):
     Parameters:
         layer_sizes (list of int): List of layer sizes including input and output layer.
         activation (str, optional): Type of activation function. Default is 'relu'.
-        dropout (float, optional): Dropout probability. Default is 0.0 (no dropout).
+        dropout (float, optional): Dropout probability. Default is 0.1
     """
 
-    def __init__(self, layer_sizes, activation="relu", dropout=0.0):
+    def __init__(self, layer_sizes, activation="relu", dropout=0.1):
         super().__init__()
 
         # Validate input parameters

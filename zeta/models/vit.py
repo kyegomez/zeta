@@ -34,7 +34,7 @@ class ViT(nn.Module):
         channels=3,
         num_classes=None,
         post_emb_norm=False,
-        emb_dropout=0.0,
+        emb_dropout=0.1,
     ):
         super().__init__()
 

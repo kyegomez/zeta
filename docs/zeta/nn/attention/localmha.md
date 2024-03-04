@@ -26,7 +26,7 @@ class LocalMHA(nn.Module):
   
 - `heads (int, optional)`: Number of attention heads. Default is 8.
   
-- `dropout (float, optional)`: Dropout probability applied after the attention mechanism. Default is 0.0.
+- `dropout (float, optional)`: Dropout probability applied after the attention mechanism. Default is 0.1.
   
 - `causal (bool, optional)`: If set to `True`, the attention mechanism will be causal, ensuring that each position only attends to previous positions. Default is `False`.
   

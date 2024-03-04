@@ -33,7 +33,6 @@ accelerate = "0.27.2"
 datasets = "*"
 lion-pytorch = "0.1.2"
 jax = "*"
-loguru = "*"
 jaxlib = "*"
 sentencepiece = "0.2.0"
 colt5-attention = "0.10.19"
@@ -48,6 +47,7 @@ fairseq = "0.12.2"
 argparse = "^1.4.0"
 skypilot = "0.4.1"
 numexpr = "*"
+loguru = "0.7.2"
 
 
 [build-system]

@@ -22,7 +22,7 @@ class Transformer(nn.Module):
         emb_dim = None,
         max_mem_len = 0.,
         shift_mem_down = 0,
-        emb_dropout = 0.,
+        emb_dropout = 0.1,
         post_emb_norm = False,
         num_memory_tokens = None,
         tie_embedding = False,
@@ -43,7 +43,7 @@ class Transformer(nn.Module):
 - `emb_dim` (int, optional): The embedding dimension. Default is `None`, in which case `emb_dim` is set to the same dimension as the `attn_layers`.
 - `max_mem_len` (float, optional): Maximum memory length for memory tokens. Default is `0.0`, indicating no memory tokens.
 - `shift_mem_down` (int, optional): Number of positions to shift memory tokens down in each layer. Default is `0`.
-- `emb_dropout` (float, optional): Dropout rate applied to the embedding layer. Default is `0.0`.
+- `emb_dropout` (float, optional): Dropout rate applied to the embedding layer. Default is `0.1`.
 - `post_emb_norm` (bool, optional): Apply layer normalization to the post-embedding inputs. Default is `False`.
 - `num_memory_tokens` (int, optional): Number of memory tokens to use. Default is `None`, indicating no memory tokens.
 - `tie_embedding` (bool, optional): Tie the output projection weights with the input token embeddings. Default is `False`.

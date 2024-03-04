@@ -40,7 +40,7 @@ class LogFF(nn.Module):
         output_width (int): The width of the output, i.e. the size of the last dimension of the tensor returned by `forward()`.
         depth (int): The depth of the FFF tree. Will result to 2**depth leaves.
         activation (torch.nn.Module, optional): The activation function to use. Defaults to `torch.nn.ReLU()`.
-        dropout (float, optional): The probability to use for the dropout at the leaves after the activations have been computed. Defaults to 0.0.
+        dropout (float, optional): The probability to use for the dropout at the leaves after the activations have been computed. Defaults to 0.1.
                 Plays no role if self.training is False.
         train_hardened (bool, optional): Whether to use hardened decisions during training. Defaults to False.
         region_leak (float, optional): The probability of a region to leak to the next region at each node. Defaults to 0.0.
@@ -79,7 +79,7 @@ class LogFF(nn.Module):
         output_width: int,
         depth: int,
         activation=nn.ReLU(),
-        dropout: float = 0.0,
+        dropout: float = 0.1,
         train_hardened: bool = False,
         region_leak: float = 0.0,
         usage_mode: str = "none",
@@ -100,7 +100,7 @@ class LogFF(nn.Module):
         activation : torch.nn.Module, optional
                 The activation function to use. Defaults to `torch.nn.ReLU()`.
         dropout : float, optional
-                The probability to use for the dropout at the leaves after the activations have been computed. Defaults to 0.0.
+                The probability to use for the dropout at the leaves after the activations have been computed. Defaults to 0.1.
                 Plays no role if self.training is False.
         train_hardened : bool, optional
                 Whether to use hardened decisions during training. Defaults to False.

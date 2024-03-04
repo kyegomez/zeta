@@ -50,8 +50,8 @@ TransformerBlock(
     qk_rmsnorm=False,
     qk_scale=8,
     ff_mult=4,
-    attn_dropout=0.0,
-    ff_dropout=0.0,
+    attn_dropout=0.1,
+    ff_dropout=0.1,
     use_xpos=True,
     xpos_scale_base=512,
     flash_attn=False,
@@ -74,9 +74,9 @@ TransformerBlock(
 
 - `ff_mult` (int): Multiplier for the feedforward network dimension. Default is `4`.
 
-- `attn_dropout` (float): Dropout probability for attention layers. Default is `0.0`.
+- `attn_dropout` (float): Dropout probability for attention layers. Default is `0.1`.
 
-- `ff_dropout` (float): Dropout probability for the feedforward network. Default is `0.0`.
+- `ff_dropout` (float): Dropout probability for the feedforward network. Default is `0.1`.
 
 - `use_xpos` (bool): Whether to use positional embeddings. Default is `True`.
 

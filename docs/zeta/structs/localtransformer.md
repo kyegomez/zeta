@@ -34,8 +34,8 @@ class LocalTransformer(nn.Module):
 | dim_head | int | The dimensionality of each attention head. | 64 |
 | heads | int | The number of attention heads. | 8 |
 | ff_mult | int | The multiplier for the feedforward network dimension. | 4 |
-| attn_dropout | float | The dropout rate for attention layers. | 0.0 |
-| ff_dropout | float | The dropout rate for feedforward layers. | 0.0 |
+| attn_dropout | float | The dropout rate for attention layers. | 0.1 |
+| ff_dropout | float | The dropout rate for feedforward layers. | 0.1 |
 | ignore_index | int | The index to ignore during loss calculation. | -1 |
 | use_xpos | bool | Whether to use positional embeddings based on xpos. | False |
 | xpos_scale_base | None | The base value for scaling xpos positional embeddings. | None |

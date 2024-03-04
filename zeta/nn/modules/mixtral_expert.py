@@ -16,7 +16,7 @@ class MixtralExpert(nn.Module):
         dim (int):
         dim_out (int):
         num_experts (int):
-        dropout (float, optional): Defaults to 0.0.
+        dropout (float, optional): Defaults to 0.1.
 
 
     """
@@ -26,7 +26,7 @@ class MixtralExpert(nn.Module):
         dim: int,
         dim_out: int,
         num_experts: int,
-        dropout: float = 0.0,
+        dropout: float = 0.1,
         expansion_rate: int = 2,
         *args,
         **kwargs,

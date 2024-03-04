@@ -63,7 +63,7 @@ class MultiModalMamba(nn.Module):
         vocab_size: int,
         dim: int,
         depth: int,
-        dropout: float,
+        dropout: float =0.1,
         heads: int,
         d_state: int,
         image_size: int,

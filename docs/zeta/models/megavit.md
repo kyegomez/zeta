@@ -28,8 +28,8 @@ def __init__(
     pool="cls",
     channels=3,
     dim_head=64,
-    dropout=0.0,
-    emb_dropout=0.0,
+    dropout=0.1,
+    emb_dropout=0.1,
 ):
 ```
 

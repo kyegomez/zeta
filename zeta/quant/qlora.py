@@ -659,7 +659,7 @@ class QloraLinear(nn.Module):
         weight: torch.Tensor,
         r: int,
         lora_alpha: int = 1,
-        lora_dropout: float = 0.0,
+        lora_dropout: float = 0.1,
     ) -> None:
         super().__init__()
         self.weight = NF4Tensor.from_tensor(weight)

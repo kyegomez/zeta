@@ -28,7 +28,7 @@ class SimpleTransformerBlock(nn.Module):
         dim,
         depth,
         heads,
-        dropout: float = 0.0,
+        dropout: float = 0.1,
     ):
         super().__init__()
         self.layers = nn.ModuleList([])
