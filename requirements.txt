@@ -1,5 +1,5 @@
 torch==2.2.0
-timm==0.9.12
+timm==0.9.16
 einops==0.7.0
 memory-profiler
 bitsandbytes==0.41.3.post2
