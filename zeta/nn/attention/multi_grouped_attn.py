@@ -272,6 +272,7 @@ class MultiGroupedQueryAttn(nn.Module):
         #   d - embedding dimension
         #
         # Input shape: (b, n, d)
+
         q: Tensor = self.q_proj(query)
         k: Tensor = self.k_proj(key)
         v: Tensor = self.v_proj(value)
@@ -280,6 +281,7 @@ class MultiGroupedQueryAttn(nn.Module):
         q = rearrange(q, "b n (h d) -> b n h d", h=self.query_heads)
         k = rearrange(k, "b n (h d) -> b n h d", h=self.kv_heads)
         v = rearrange(v, "b n (h d) -> b n h d", h=self.kv_heads)
+
         # Apply attention, then fold 'h' attention heads back into 'd'.
         x, attn = scaled_dot_product_gqa(
             query=q,
@@ -302,6 +304,7 @@ class MultiGroupedQueryAttn(nn.Module):
         if self.layer_norm:
             assert self.norm is not None
             x = self.norm(x)
+
         # Linear projection on attention outputs.
         x = self.out_proj(x)
 
