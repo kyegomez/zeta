@@ -1,58 +1,37 @@
-import logging
 import os
 import warnings
+import logging
 
-import numexpr as ne
-import tensorflow as tf
+# Immediately suppress warnings
+warnings.filterwarnings("ignore")
 
+# Set environment variables to minimize logging before importing any modules
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # Suppress TensorFlow logs
+
+# Force NumExpr to use minimal threads to reduce its logging output
+os.environ['NUMEXPR_MAX_THREADS'] = '1'
+os.environ['NUMEXPR_NUM_THREADS'] = '1'
 
 def disable_warnings_and_logs():
-    """
-    Disables various warnings and logs.
-    """
+    # Attempt to reduce TensorFlow verbosity if installed
+    try:
+        import tensorflow as tf
+        tf.get_logger().setLevel(logging.ERROR)
+        tf.autograph.set_verbosity(3)
+    except ImportError:
+        pass
 
-    class CustomFilter(logging.Filter):
-        def filter(self, record):
-            unwanted_logs = [
-                "Setting ds_accelerator to mps (auto detect)",
-                (
-                    "NOTE: Redirects are currently not supported in Windows or"
-                    " MacOs."
-                ),
-            ]
-            return not any(log in record.getMessage() for log in unwanted_logs)
+    # Reduce logging for known verbose libraries
+    logging.getLogger().setLevel(logging.CRITICAL)  # Suppress most logs globally
+    
+    # Suppress specific verbose loggers known to output unwanted messages
+    for logger_name in ['transformers', 'torch', 'tensorflow', 'numexpr']:
+        logging.getLogger(logger_name).setLevel(logging.CRITICAL)
 
-    # disable warnings
-    warnings.filterwarnings("ignore")
+    # Specifically target the NumExpr logger if it's being stubborn
+    logging.getLogger('numexpr').setLevel(logging.CRITICAL)
 
-    # disable tensorflow warnings
-    os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
-    tf.get_logger().setLevel("ERROR")
+# Run the suppression function at the start
+disable_warnings_and_logs()
 
-    ## disable tensorflow logs
-    os.getenv("TF_CPP_MIN_LOG_LEVEL", "3")
-
-    # disable numexpr INFO logs
-    ne.set_num_threads(1)
-    ne.set_vml_num_threads(1)
-
-    # disable bnb warnings and others
-    logging.getLogger().setLevel(logging.ERROR)
-
-    # add custom filter to root logger
-    logger = logging.getLogger()
-    f = CustomFilter()
-    logger.addFilter(f)
-
-    # disable specific loggers
-    loggers = [
-        "real_accelerator",
-        "torch.distributed.elastic.multiprocessing.redirects",
-    ]
-
-    for logger_name in loggers:
-        logger = logging.getLogger(logger_name)
-        logger.setLevel(logging.CRITICAL)
-
-    # disable all loggers
-    logging.disable(logging.CRITICAL)
+# Ensure to place any of your script's import statements here, after the call to disable_warnings_and_logs()
