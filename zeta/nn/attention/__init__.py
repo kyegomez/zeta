@@ -21,6 +21,7 @@ from zeta.nn.attention.multiquery_attention import MultiQueryAttention
 from zeta.nn.attention.sparse_attention import SparseAttention
 from zeta.nn.attention.spatial_linear_attention import SpatialLinearAttention
 from zeta.structs.transformer import Attention, AttentionLayers
+from zeta.nn.attention.multi_grouped_attn import MultiGroupedAttention
 
 # from zeta.nn.attention.flash_attention2 import FlashAttentionTwo
 # from zeta.nn.attention.mgqa import MGQA
@@ -46,4 +47,5 @@ __all__ = [
     "LinearAttention",
     "Attention",
     "AttentionLayers",
+    "MultiGroupedAttention",
 ]

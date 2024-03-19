@@ -190,6 +190,7 @@ from zeta.nn.modules.yolo import yolo
 from zeta.nn.modules.palo_ldp import PaloLDP
 from zeta.nn.modules.relu_squared import ReluSquared
 from zeta.nn.modules.scale_norm import ScaleNorm
+from zeta.nn.modules.mr_adapter import MRAdapter
 
 # from zeta.nn.modules.g_shard_moe import (
 #     Top1Gate,
@@ -390,4 +391,5 @@ __all__ = [
     "PaloLDP",
     "ReluSquared",
     "ScaleNorm",
+    "MRAdapter",
 ]

@@ -2,6 +2,39 @@ import torch
 
 
 class StableAdamWUnfused(torch.optim.Optimizer):
+    """
+    Implements the StableAdamWUnfused optimizer.
+
+    Args:
+        params (iterable): Iterable of parameters to optimize or dicts defining
+            parameter groups.
+        lr (float, optional): Learning rate (default: 0.002).
+        weight_decay (float, optional): Weight decay (L2 penalty) (default: 0.2).
+        betas (Tuple[float, float], optional): Coefficients used for computing
+            running averages of gradient and its square (default: (0.9, 0.99)).
+        eps (float, optional): Term added to the denominator to improve
+            numerical stability (default: 1e-8).
+        clip_thresh (float, optional): Threshold value for update clipping
+            (default: 1.0).
+        precision (str, optional): Precision mode. Set to "amp_bfloat16" to use
+            a fixed loss scalar, custom_scalar, which is divided out in the
+            update step. If set to "custom_fp16", custom_scalar is used and
+            (custom_scalar * loss).backward() should be called instead of
+            loss.backward() (default: "amp_bfloat16").
+        custom_scalar (int, optional): Custom scalar value used for precision
+            mode "amp_bfloat16" (default: 65536).
+
+    Attributes:
+        eps (float): Term added to the denominator to improve numerical stability.
+        d (float): Threshold value for update clipping.
+        precision (str): Precision mode.
+        custom_scaler (int): Custom scalar value used for precision mode "amp_bfloat16".
+
+    Example:
+        >>> optimizer = StableAdamWUnfused(model.parameters(), lr=0.002, weight_decay=0.2)
+        >>> optimizer.step()
+    """
+
     def __init__(
         self,
         params,
@@ -22,9 +55,6 @@ class StableAdamWUnfused(torch.optim.Optimizer):
         self.eps = eps
         self.d = clip_thresh
 
-        # Set precision to "custom_fp16" if you want to use a fixed loss scalar, custom_scalar, which is divided out in the update step.
-        # If you do this, call (custom_scalar * loss).backward() instead of
-        # loss.backward().
         self.precision = precision
         self.custom_scaler = custom_scalar
 
@@ -79,8 +109,6 @@ class StableAdamWUnfused(torch.optim.Optimizer):
 
                 denominator = u.sqrt().add_(self.eps)
 
-                # StableAdamW = AdamW + update clipping
-                # (https://arxiv.org/abs/1804.04235) applied tensor-wise.
                 rms = (
                     torch.div(
                         g.pow(2),
@@ -95,7 +123,6 @@ class StableAdamWUnfused(torch.optim.Optimizer):
                     v, denominator, value=-lr * (1.0 / max(1.0, rms / self.d))
                 )
 
-                # save current params
                 param_state["exp_avg"] = v
                 param_state["exp_avg_sq"] = u
 
