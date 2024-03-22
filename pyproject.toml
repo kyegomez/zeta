@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zetascale"
-version = "2.2.5"
+version = "2.2.6"
 description = "Transformers at zeta scales"
 authors = ["Zeta Team <kye@apac.ai>"]
 license = "MIT"
@@ -40,6 +40,7 @@ beartype = "0.17.2"
 tiktoken = "0.6.0"
 tqdm = "4.66.2"
 rich = "13.7.0"
+colt5-attention = "*"
 argparse = "^1.4.0"
 skypilot = "0.4.1"
 numexpr = "*"
