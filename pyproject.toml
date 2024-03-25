@@ -42,7 +42,7 @@ tqdm = "4.66.2"
 rich = "13.7.0"
 colt5-attention = "*"
 argparse = "^1.4.0"
-skypilot = "0.4.1"
+skypilot = "0.5.0"
 numexpr = "*"
 
 
