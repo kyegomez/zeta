@@ -23,13 +23,7 @@ def apply_activation(
     if "n_elements" not in kwargs:
         kwargs["n_elements"] = n_elements
 
-    if "axis_ld" in kwargs:
-        axis_ld = kwargs.pop("axis_ld")
-        activation_fn[grid](
-            *activation_args, axis_ld, BLOCK_SIZE=1024, **kwargs
-        )
-    else:
-        activation_fn[grid](*activation_args, BLOCK_SIZE=1024, **kwargs)
+    activation_fn[grid](*activation_args, BLOCK_SIZE=1024, **kwargs)
 
     return output
 
@@ -43,4 +37,22 @@ def tanh_activation(x: torch.Tensor, *args, **kwargs):
 def hard_tanh_activation(x: torch.Tensor, *args, **kwargs):
     return apply_activation(
         x, Functions.hard_tanh_activation_kernel, *args, **kwargs
+    )
+
+
+def relu_activation(x: torch.Tensor, *args, **kwargs):
+    return apply_activation(
+        x, Functions.relu_activation_kernel, *args, **kwargs
+    )
+
+
+def relu6_activation(x: torch.Tensor, *args, **kwargs):
+    return apply_activation(
+        x, Functions.relu6_activation_kernel, *args, **kwargs
+    )
+
+
+def leaky_relu_activation(x: torch.Tensor, alpha: float = 0.2, *args, **kwargs):
+    return apply_activation(
+        x, Functions.leaky_relu_activation_kernel, alpha=alpha, *args, **kwargs
     )
