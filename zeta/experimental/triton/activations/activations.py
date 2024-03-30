@@ -28,31 +28,59 @@ def apply_activation(
     return output
 
 
-def tanh_activation(x: torch.Tensor, *args, **kwargs):
+def tanh_activation(x: torch.Tensor):
+    return apply_activation(x, Functions.tanh_activation_kernel)
+
+
+def hard_tanh_activation(x: torch.Tensor):
+    return apply_activation(x, Functions.hard_tanh_activation_kernel)
+
+
+def relu_activation(x: torch.Tensor):
+    return apply_activation(x, Functions.relu_activation_kernel)
+
+
+def relu6_activation(x: torch.Tensor):
+    return apply_activation(x, Functions.relu6_activation_kernel)
+
+
+def leaky_relu_activation(x: torch.Tensor, alpha: float = 0.2):
     return apply_activation(
-        x, Functions.tanh_activation_kernel, *args, **kwargs
+        x, Functions.leaky_relu_activation_kernel, alpha=alpha
     )
 
 
-def hard_tanh_activation(x: torch.Tensor, *args, **kwargs):
-    return apply_activation(
-        x, Functions.hard_tanh_activation_kernel, *args, **kwargs
-    )
+def softsign_activation(x: torch.Tensor):
+    return apply_activation(x, Functions.softsign_activation_kernel)
 
 
-def relu_activation(x: torch.Tensor, *args, **kwargs):
-    return apply_activation(
-        x, Functions.relu_activation_kernel, *args, **kwargs
-    )
+def softplus_activation(x: torch.Tensor):
+    return apply_activation(x, Functions.softplus_activation_kernel)
 
 
-def relu6_activation(x: torch.Tensor, *args, **kwargs):
-    return apply_activation(
-        x, Functions.relu6_activation_kernel, *args, **kwargs
-    )
+def sigmoid_activation(x: torch.Tensor):
+    return apply_activation(x, Functions.sigmoid_activation_kernel)
 
 
-def leaky_relu_activation(x: torch.Tensor, alpha: float = 0.2, *args, **kwargs):
-    return apply_activation(
-        x, Functions.leaky_relu_activation_kernel, alpha=alpha, *args, **kwargs
-    )
+def hard_sigmoid_activation(x: torch.Tensor):
+    return apply_activation(x, Functions.hard_sigmoid_activation_kernel)
+
+
+def silu_activation(x: torch.Tensor):
+    return apply_activation(x, Functions.silu_activation_kernel)
+
+
+def hard_silu_activation(x: torch.Tensor):
+    return apply_activation(x, Functions.hard_silu_activation_kernel)
+
+
+def softmax_activation(x: torch.Tensor):
+    return apply_activation(x, Functions.softmax_activation_kernel)
+
+
+def gelu_activation(x: torch.Tensor, approximate: bool = True):
+    return apply_activation(x, Functions.gelu_activation_kernel, approximate)
+
+
+def swiglu_activation(x: torch.Tensor):
+    return apply_activation(x, Functions.swiglu_activation_kernel)
