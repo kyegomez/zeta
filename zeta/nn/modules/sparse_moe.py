@@ -378,9 +378,11 @@ class HeirarchicalSparseMoE(nn.Module):
             self.num_experts_outer,
             self.num_experts_inner,
         )
-        dispatch_tensor_outer, combine_tensor_outer, loss_outer = (
-            self.gate_outer(inputs)
-        )
+        (
+            dispatch_tensor_outer,
+            combine_tensor_outer,
+            loss_outer,
+        ) = self.gate_outer(inputs)
         expert_inputs_outer = torch.einsum(
             "bnd,bnec->ebcd", inputs, dispatch_tensor_outer
         )
@@ -394,9 +396,11 @@ class HeirarchicalSparseMoE(nn.Module):
             (importance > 0.5).float() + (importance > 0.0).float()
         )
 
-        dispatch_tensor_inner, combine_tensor_inner, loss_inner = (
-            self.gate_inner(expert_inputs_outer, importance=importance)
-        )
+        (
+            dispatch_tensor_inner,
+            combine_tensor_inner,
+            loss_inner,
+        ) = self.gate_inner(expert_inputs_outer, importance=importance)
         expert_inputs = torch.einsum(
             "ebnd,ebnfc->efbcd", expert_inputs_outer, dispatch_tensor_inner
         )
