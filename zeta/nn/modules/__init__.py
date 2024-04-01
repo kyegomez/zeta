@@ -191,12 +191,11 @@ from zeta.nn.modules.palo_ldp import PaloLDP
 from zeta.nn.modules.relu_squared import ReluSquared
 from zeta.nn.modules.scale_norm import ScaleNorm
 from zeta.nn.modules.mr_adapter import MRAdapter
-
-# from zeta.nn.modules.g_shard_moe import (
-#     Top1Gate,
-#     Top2Gate,
-#     GShardMoELayer,
-# )
+from zeta.nn.modules.sparse_moe import (
+    Top2Gating,
+    NormalSparseMoE,
+    HeirarchicalSparseMoE,
+)
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -392,4 +391,7 @@ __all__ = [
     "ReluSquared",
     "ScaleNorm",
     "MRAdapter",
+    "Top2Gating",
+    "NormalSparseMoE",
+    "HeirarchicalSparseMoE",
 ]
