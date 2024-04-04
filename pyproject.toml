@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "zetascale"
-version = "2.2.7"
-description = "Transformers at zeta scales"
+version = "2.2.8"
+description = "Rapidly Build, Optimize, and Deploy SOTA AI Models"
 authors = ["Zeta Team <kye@apac.ai>"]
 license = "MIT"
 readme = "README.md"
@@ -16,34 +16,25 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-torch = "2.2.0"
-timm = "0.9.16"
-torchdiffeq = "0.2.3"
+python = "^3.9"
+torch = "*"
 pytest = "8.1.1"
 torchfix = "*"
 einops = "0.7.0"
 bitsandbytes = "0.43.0"
-typing = "3.7.4.3"
 transformers = "4.39.1"
 einops-exts = "0.0.4"
 torchvision = "0.17.0"
 accelerate = "0.28.0"
 datasets = "*"
-lion-pytorch = "0.1.2"
 loguru = "*"
-sentencepiece = "0.2.0"
 vector-quantize-pytorch = "1.14.5"
-tokenmonster = "1.1.12"
 scipy = "1.9.3"
 beartype = "0.17.2"
-tiktoken = "0.6.0"
 tqdm = "4.66.2"
 rich = "13.7.1"
 colt5-attention = "*"
 argparse = "^1.4.0"
-skypilot = "0.4.1"
-numexpr = "*"
 
 
 [build-system]

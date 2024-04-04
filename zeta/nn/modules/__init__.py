@@ -42,7 +42,6 @@ from zeta.nn.modules.cross_modal_reparametization import (
     reparameterize_aux_into_target_model,
 )
 from zeta.nn.modules.dense_connect import DenseBlock
-from zeta.nn.modules.droppath import DropPath
 from zeta.nn.modules.dual_path_block import DualPathBlock
 from zeta.nn.modules.dynamic_module import DynamicModule
 from zeta.nn.modules.dynamic_routing_block import DynamicRoutingBlock
@@ -214,7 +213,6 @@ __all__ = [
     "CNNNew",
     "CombinedLinear",
     "ConvNet",
-    "DropPath",
     "DynamicModule",
     "Exo",
     "FastTextNew",
