@@ -23,7 +23,7 @@ tqdm==4.66.2
 mkdocs
 mkdocs-material
 mkdocs-glightbox
-skypilot==0.4.1
+skypilot==0.5.0
 argparse
 numexpr
 fairseq==0.12.2
