@@ -1,7 +1,7 @@
 import torch
 from torch import Tensor, nn
 
-from zeta.structs.auto_regressive_wrapper import AutoregressiveWrapper
+from zeta.structs.auto_regressive_wrapper import AutoRegressiveWrapper
 from zeta.structs.transformer import (
     Decoder,
     Encoder,
@@ -81,7 +81,7 @@ class GPT4(nn.Module):
                 ),
             )
 
-            self.decoder = AutoregressiveWrapper(self.decoder)
+            self.decoder = AutoRegressiveWrapper(self.decoder)
 
         except Exception as e:
             print("Failed to initialize Andromeda: ", e)
