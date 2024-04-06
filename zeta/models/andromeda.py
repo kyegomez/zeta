@@ -1,7 +1,7 @@
 # the best llm ever made
 from torch.nn import Module
 
-from zeta.structs.auto_regressive_wrapper import AutoregressiveWrapper
+from zeta.structs.auto_regressive_wrapper import AutoRegressiveWrapper
 from zeta.structs.transformer import Decoder, Transformer
 
 
@@ -74,7 +74,7 @@ class Andromeda(Module):
                 ),
             )
 
-            self.decoder = AutoregressiveWrapper(self.Andromeda)
+            self.decoder = AutoregRessiveWrapper(self.Andromeda)
 
         except Exception as e:
             print("Failed to initialize Andromeda: ", e)

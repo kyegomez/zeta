@@ -1,6 +1,6 @@
 import torch
 
-from zeta.structs.auto_regressive_wrapper import AutoregressiveWrapper
+from zeta.structs.auto_regressive_wrapper import AutoRegressiveWrapper
 from zeta.structs.transformer import (
     Decoder,
     Encoder,
@@ -57,7 +57,7 @@ class PalmE(torch.nn.Module):
             ),
         )
 
-        self.decoder = AutoregressiveWrapper(self.decoder)
+        self.decoder = AutoRegressiveWrapper(self.decoder)
 
     def forward(self, img, text):
         try:
