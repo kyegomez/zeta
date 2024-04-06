@@ -206,6 +206,8 @@ from zeta.nn.modules.return_loss_text import (
 from zeta.nn.modules.patch_linear_flatten import (
     vit_output_head,
     patch_linear_flatten,
+    cls_tokens,
+    video_patch_linear_flatten,
 )
 from zeta.nn.modules.chan_layer_norm import ChanLayerNorm
 
@@ -416,4 +418,6 @@ __all__ = [
     "vit_output_head",
     "posemb_sincos_2d",
     "ChanLayerNorm",
+    "cls_tokens",
+    "video_patch_linear_flatten",
 ]
