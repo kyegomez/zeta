@@ -195,6 +195,20 @@ from zeta.nn.modules.sparse_moe import (
     NormalSparseMoE,
     HeirarchicalSparseMoE,
 )
+from zeta.nn.modules.return_loss_text import (
+    return_loss_text,
+    calc_z_loss,
+    max_neg_value,
+    TextTokenEmbedding,
+    dropout_seq,
+    transformer_generate,
+)
+from zeta.nn.modules.patch_linear_flatten import (
+    vit_output_head,
+    patch_linear_flatten,
+)
+from zeta.nn.modules.chan_layer_norm import ChanLayerNorm
+
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -392,4 +406,14 @@ __all__ = [
     "Top2Gating",
     "NormalSparseMoE",
     "HeirarchicalSparseMoE",
+    "return_loss_text",
+    "calc_z_loss",
+    "max_neg_value",
+    "TextTokenEmbedding",
+    "dropout_seq",
+    "transformer_generate",
+    "patch_linear_flatten",
+    "vit_output_head",
+    "posemb_sincos_2d",
+    "ChanLayerNorm",
 ]

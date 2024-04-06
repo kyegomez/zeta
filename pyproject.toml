@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zetascale"
-version = "2.3.3"
+version = "2.3.5"
 description = "Rapidly Build, Optimize, and Deploy SOTA AI Models"
 authors = ["Zeta Team <kye@apac.ai>"]
 license = "MIT"
@@ -35,6 +35,7 @@ tqdm = "4.66.2"
 rich = "13.7.1"
 colt5-attention = "*"
 argparse = "^1.4.0"
+local-attention = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
