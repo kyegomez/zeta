@@ -1,16 +1,16 @@
 import torch
 import torch.nn.functional as F
 from einops import pack, rearrange, unpack
-from torch import nn
+from torch import Tensor, nn
 
-from zeta.utils.main import once  # noqa: F401
 from zeta.utils.main import (
     eval_decorator,
     exists,
+    once,  # noqa: F401
     top_a,
     top_k,
     top_p,
-)  # noqa: E402
+)
 
 
 # Utils
@@ -86,7 +86,7 @@ def contrastive_guidance(self, logits, k):
     return torch.multinomial(F.softmax(top_k_logits, dim=-1), 1)
 
 
-class AutoregressiveWrapper(nn.Module):
+class AutoRegressiveWrapper(nn.Module):
     """
 
     Auto-regressive wrapper for any nn.Module that takes in a sequence of
@@ -114,11 +114,11 @@ class AutoregressiveWrapper(nn.Module):
 
     def __init__(
         self,
-        net,
-        ignore_index=-100,
-        pad_value=0,
-        mask_prob=0.0,
-        speculative=False,
+        net: nn.Module,
+        ignore_index: int = -100,
+        pad_value: int = 0,
+        mask_prob: float = 0.0,
+        speculative: bool = False,
     ):
         super().__init__()
         self.pad_value = pad_value
@@ -138,7 +138,7 @@ class AutoregressiveWrapper(nn.Module):
     def generate(
         self,
         start_tokens,
-        seq_len,
+        seq_len: int,
         eos_token=None,
         strategy="temperature",
         temperature=1.0,
@@ -352,3 +352,11 @@ class AutoregressiveWrapper(nn.Module):
 
     def grade_solution(self, solution):
         """Grade a solution."""
+        ...
+        return self.net(solution)
+
+    def majority_voting(self, task: Tensor):
+        """
+        Majority voting.
+        """
+        ...
