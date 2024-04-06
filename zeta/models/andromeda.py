@@ -1,7 +1,6 @@
 # the best llm ever made
 from torch.nn import Module
 
-from zeta.structs.auto_regressive_wrapper import AutoRegressiveWrapper
 from zeta.structs.transformer import Decoder, Transformer
 
 
