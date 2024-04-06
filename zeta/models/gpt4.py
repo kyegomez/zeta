@@ -13,7 +13,7 @@ from zeta.structs.transformer import (
 class GPT4(nn.Module):
     """
     GPT4 is a transformer-based model architecture. It initializes with
-    a Transformer and AutoregressiveWrapper with default or user-specified parameters.
+    a Transformer and AutoRegressiveWrapper with default or user-specified parameters.
         Initialize the model with specified or default parameters.
         Args:
         - num_tokens: Number of tokens in the vocabulary

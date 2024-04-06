@@ -316,7 +316,7 @@ class SimpleTransformer(nn.Module):
 
 
 # autoregressive wrapper for generation
-class AutoregressiveWrapper(nn.Module):
+class AutoRegressiveWrapper(nn.Module):
     """
     Autoregressive Wrapper
 
@@ -326,7 +326,7 @@ class AutoregressiveWrapper(nn.Module):
         pad_value (int): The pad value.
 
     Example:
-        >>> module = AutoregressiveWrapper(nn.Linear(10, 10))
+        >>> module = AutoRegressiveWrapper(nn.Linear(10, 10))
         >>> x = torch.randn(2, 1024).long()
         >>> y = module(x)
         >>> y.shape
@@ -365,7 +365,7 @@ class AutoregressiveWrapper(nn.Module):
             torch.Tensor: The generated tokens.
 
         Example:
-            >>> module = AutoregressiveWrapper(nn.Linear(10, 10))
+            >>> module = AutoRegressiveWrapper(nn.Linear(10, 10))
             >>> x = torch.randn(2, 1024).long()
             >>> y = module(x)
             >>> y.shape

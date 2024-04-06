@@ -1,14 +1,14 @@
 import torch
 from torch import nn
 
-from zeta.structs.auto_regressive_wrapper import AutoregressiveWrapper
+from zeta.structs.auto_regressive_wrapper import AutoRegressiveWrapper
 
 
 def test_autoregressive_wrapper_initialization():
     net = nn.Linear(10, 10)
-    wrapper = AutoregressiveWrapper(net)
+    wrapper = AutoRegressiveWrapper(net)
 
-    assert isinstance(wrapper, AutoregressiveWrapper)
+    assert isinstance(wrapper, AutoRegressiveWrapper)
     assert wrapper.net == net
     assert wrapper.max_seq_len == net.max_seq_len
     assert wrapper.pad_value == 0
@@ -18,7 +18,7 @@ def test_autoregressive_wrapper_initialization():
 
 def test_autoregressive_wrapper_forward():
     net = nn.Linear(10, 10)
-    wrapper = AutoregressiveWrapper(net)
+    wrapper = AutoRegressiveWrapper(net)
 
     x = torch.randn(1, 10)
     logits = wrapper(x)
@@ -29,7 +29,7 @@ def test_autoregressive_wrapper_forward():
 
 def test_autoregressive_wrapper_generate():
     net = nn.Linear(10, 10)
-    wrapper = AutoregressiveWrapper(net)
+    wrapper = AutoRegressiveWrapper(net)
 
     x = torch.randn(1, 10)
     generated = wrapper.generate(x, 10)

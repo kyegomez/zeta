@@ -3,7 +3,7 @@
 
 This documentation provides details on the functionality of the Andromeda class from the zeta.models library. 
 
-The Andromeda class is a transformer-based model helper class that acts as a wrapper for the Transformer and AutoregressiveWrapper modules, defaulting or accepting user-specified values in its configuration. 
+The Andromeda class is a transformer-based model helper class that acts as a wrapper for the Transformer and AutoRegressiveWrapper modules, defaulting or accepting user-specified values in its configuration. 
 
 Features of the Andromeda model include but are not limited to: 
 - Configurable model dimensions, including token count, maximum sequence length, layer depth, and head dimensions.
@@ -15,13 +15,13 @@ Features of the Andromeda model include but are not limited to:
 class Andromeda(Module):
     """
     Andromeda is a transformer-based model architecture. It initializes with
-    a Transformer and AutoregressiveWrapper with default or user-specified parameters.
+    a Transformer and AutoRegressiveWrapper with default or user-specified parameters.
     """
 ```
-This class inherits the PyTorch Module class and serves as a wrapper to both the Transformer and AutoregressiveWrapper classes. 
+This class inherits the PyTorch Module class and serves as a wrapper to both the Transformer and AutoRegressiveWrapper classes. 
 
 ## Initialization (__init__) Function:
-The init function is where the Transformer and AutoregressiveWrapper objects are assigned to `self.Andromeda` and `self.decoder` respectively. 
+The init function is where the Transformer and AutoRegressiveWrapper objects are assigned to `self.Andromeda` and `self.decoder` respectively. 
 
 ```python
 def __init__(
@@ -105,10 +105,10 @@ Techniques such as query-key normalization aid in the alignment of the query’s
 
 Also, It's important to ensure that the defined text tokens fit within the dimensions defined for `num_tokens` and `max_seq_len`. Otherwise, you might encounter an error during forward pass. 
 
-For more information on the underlying Transformer and AutoregressiveWrapper modules, please check the official PyTorch documentation. 
+For more information on the underlying Transformer and AutoRegressiveWrapper modules, please check the official PyTorch documentation. 
 
 ## Other Additional Information & Tips 
-The Andromeda class is notable for its robust set of flexible features that can lend it to varying use-cases and it is inherently versatile due to its Transformer and AutoregressiveWrapper architecture. This model emphasizes on the detail to accepting user-specified parameters for a high level of customization. 
+The Andromeda class is notable for its robust set of flexible features that can lend it to varying use-cases and it is inherently versatile due to its Transformer and AutoRegressiveWrapper architecture. This model emphasizes on the detail to accepting user-specified parameters for a high level of customization. 
 
 However, due to its complexity and high-dimensional nature, this model may not be preferable under constraints of memory, processing power or the need for simplicity. 
 

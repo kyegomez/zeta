@@ -35,7 +35,7 @@ class LLama2:
                 rotary_xpos=rotary_xpos,
             ),
         )
-        self.decoder = AutoregressiveWrapper(self.decoder)
+        self.decoder = AutoRegressiveWrapper(self.decoder)
 
     def forward(self, text):
         model_input = self.decoder.forward(text)[0]
@@ -78,7 +78,7 @@ import torch
 from torch.nn import Decoder, Transformer
 
 from zeta.models import LLama2
-from zeta.structs import AutoregressiveWrapper
+from zeta.structs import AutoRegressiveWrapper
 
 # Initializing model
 llama2_model = LLama2()

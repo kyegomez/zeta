@@ -59,7 +59,7 @@ def classifier_free_guidance(self, logits_cond, logits_uncond, alpha):
     Examples::
 
                 >>> net = nn.Linear(10, 10)
-                >>> net = AutoregressiveWrapper(net)
+                >>> net = AutoRegressiveWrapper(net)
                 >>> x = torch.randn(1, 10)
                 >>> logits = net(x)
                 >>> print(logits.shape)
@@ -104,7 +104,7 @@ class AutoRegressiveWrapper(nn.Module):
     Examples::
 
             >>> net = nn.Linear(10, 10)
-            >>> net = AutoregressiveWrapper(net)
+            >>> net = AutoRegressiveWrapper(net)
             >>> x = torch.randn(1, 10)
             >>> logits = net(x)
             >>> print(logits.shape)
@@ -171,7 +171,7 @@ class AutoRegressiveWrapper(nn.Module):
         Examples::
 
                     >>> net = nn.Linear(10, 10)
-                    >>> net = AutoregressiveWrapper(net)
+                    >>> net = AutoRegressiveWrapper(net)
                     >>> x = torch.randn(1, 10)
                     >>> generated = net.generate(x, 10)
                     >>> print(generated.shape)
@@ -297,7 +297,7 @@ class AutoRegressiveWrapper(nn.Module):
         Examples::
 
                 >>> net = nn.Linear(10, 10)
-                >>> net = AutoregressiveWrapper(net)
+                >>> net = AutoRegressiveWrapper(net)
                 >>> x = torch.randn(1, 10)
                 >>> logits = net(x)
                 >>> print(logits.shape)
