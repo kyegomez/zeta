@@ -52,7 +52,7 @@ def test_forward_successful(init_andromeda, monkeypatch):
         return [text_tokens]
 
     monkeypatch.setattr(
-        "zeta.models.AutoregressiveWrapper.forward", mock_forward
+        "zeta.models.AutoRegressiveWrapper.forward", mock_forward
     )
 
     result = init_andromeda.forward([1, 2, 3, 4])
@@ -64,7 +64,7 @@ def test_forward_exception(init_andromeda, monkeypatch):
         raise Exception("Test Forward Error")
 
     monkeypatch.setattr(
-        "zeta.models.AutoregressiveWrapper.forward", mock_forward
+        "zeta.models.AutoRegressiveWrapper.forward", mock_forward
     )
 
     with pytest.raises(Exception, match="Test Forward Error"):

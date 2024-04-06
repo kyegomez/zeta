@@ -2,12 +2,12 @@
 from torch.nn import Module
 
 from zeta.structs.transformer import Decoder, Transformer
-
+from zeta.structs.auto_regressive_wrapper import AutoRegressiveWrapper
 
 class Andromeda(Module):
     """
     Andromeda is a transformer-based model architecture. It initializes with
-    a Transformer and AutoregressiveWrapper with default or user-specified parameters.
+    a Transformer and AutoRegressiveWrapper with default or user-specified parameters.
     """
 
     def __init__(
@@ -73,7 +73,7 @@ class Andromeda(Module):
                 ),
             )
 
-            self.decoder = AutoregRessiveWrapper(self.Andromeda)
+            self.decoder = AutoRegressiveWrapper(self.Andromeda)
 
         except Exception as e:
             print("Failed to initialize Andromeda: ", e)
