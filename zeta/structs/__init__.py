@@ -1,4 +1,4 @@
-from zeta.structs.auto_regressive_wrapper import AutoregressiveWrapper
+from zeta.structs.auto_regressive_wrapper import AutoRegressiveWrapper
 from zeta.structs.clip_encoder import CLIPVisionTower, build_vision_tower
 from zeta.structs.encoder_decoder import EncoderDecoder
 from zeta.structs.hierarchical_transformer import (
@@ -21,7 +21,7 @@ from zeta.structs.transformer import (
 from zeta.structs.transformer_block import TransformerBlock
 
 __all__ = [
-    "AutoregressiveWrapper",
+    "AutoRegressiveWrapper",
     "Encoder",
     "Decoder",
     "EncoderDecoder",
