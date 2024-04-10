@@ -140,7 +140,7 @@ print(output.size())  # torch.Size([128, 20])
 import torch
 
 from zeta.structs import (
-    AutoregressiveWrapper,
+    AutoRegressiveWrapper,
     Decoder,
     Encoder,
     Transformer,
@@ -239,7 +239,7 @@ class PalmE(torch.nn.Module):
         )
 
         # autoregressive wrapper to enable generation of tokens
-        self.decoder = AutoregressiveWrapper(self.decoder)
+        self.decoder = AutoRegressiveWrapper(self.decoder)
 
     def forward(self, img: torch.Tensor, text: torch.Tensor):
         """Forward pass of the model."""

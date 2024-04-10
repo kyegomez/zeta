@@ -42,7 +42,6 @@ from zeta.nn.modules.cross_modal_reparametization import (
     reparameterize_aux_into_target_model,
 )
 from zeta.nn.modules.dense_connect import DenseBlock
-from zeta.nn.modules.droppath import DropPath
 from zeta.nn.modules.dual_path_block import DualPathBlock
 from zeta.nn.modules.dynamic_module import DynamicModule
 from zeta.nn.modules.dynamic_routing_block import DynamicRoutingBlock
@@ -191,12 +190,27 @@ from zeta.nn.modules.palo_ldp import PaloLDP
 from zeta.nn.modules.relu_squared import ReluSquared
 from zeta.nn.modules.scale_norm import ScaleNorm
 from zeta.nn.modules.mr_adapter import MRAdapter
+from zeta.nn.modules.sparse_moe import (
+    Top2Gating,
+    NormalSparseMoE,
+    HeirarchicalSparseMoE,
+)
+from zeta.nn.modules.return_loss_text import (
+    return_loss_text,
+    calc_z_loss,
+    max_neg_value,
+    TextTokenEmbedding,
+    dropout_seq,
+    transformer_generate,
+)
+from zeta.nn.modules.patch_linear_flatten import (
+    vit_output_head,
+    patch_linear_flatten,
+    cls_tokens,
+    video_patch_linear_flatten,
+)
+from zeta.nn.modules.chan_layer_norm import ChanLayerNorm
 
-# from zeta.nn.modules.g_shard_moe import (
-#     Top1Gate,
-#     Top2Gate,
-#     GShardMoELayer,
-# )
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -215,7 +229,6 @@ __all__ = [
     "CNNNew",
     "CombinedLinear",
     "ConvNet",
-    "DropPath",
     "DynamicModule",
     "Exo",
     "FastTextNew",
@@ -392,4 +405,19 @@ __all__ = [
     "ReluSquared",
     "ScaleNorm",
     "MRAdapter",
+    "Top2Gating",
+    "NormalSparseMoE",
+    "HeirarchicalSparseMoE",
+    "return_loss_text",
+    "calc_z_loss",
+    "max_neg_value",
+    "TextTokenEmbedding",
+    "dropout_seq",
+    "transformer_generate",
+    "patch_linear_flatten",
+    "vit_output_head",
+    "posemb_sincos_2d",
+    "ChanLayerNorm",
+    "cls_tokens",
+    "video_patch_linear_flatten",
 ]

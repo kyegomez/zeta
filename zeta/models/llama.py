@@ -1,4 +1,4 @@
-from zeta.structs.auto_regressive_wrapper import AutoregressiveWrapper
+from zeta.structs.auto_regressive_wrapper import AutoRegressiveWrapper
 from zeta.structs.transformer import Decoder, Transformer
 
 
@@ -28,7 +28,7 @@ class LLama2:
                 rotary_xpos=rotary_xpos,
             ),
         )
-        self.decoder = AutoregressiveWrapper(self.decoder)
+        self.decoder = AutoRegressiveWrapper(self.decoder)
 
     def forward(self, text):
         model_input = self.decoder.forward(text)[0]

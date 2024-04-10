@@ -226,7 +226,7 @@ Zeta's `PalmE` is a multi-modal transformer architecture that opens new possibil
 import torch
 
 from zeta.structs import (
-    AutoregressiveWrapper,
+    AutoRegressiveWrapper,
     Decoder,
     Encoder,
     Transformer,

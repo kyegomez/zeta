@@ -1,6 +1,6 @@
 # GPT4 Class
 
-GPT4 is a class providing the architecture of a transformer-based model. The class primarily consists of two main components, a Transformer and an AutoregressiveWrapper. 
+GPT4 is a class providing the architecture of a transformer-based model. The class primarily consists of two main components, a Transformer and an AutoRegressiveWrapper. 
 
 Based on the method used by OpenAI's GPT-3, the GPT4 in this implementation expands on that base with user-specified or default parameters. These parameters allow users to customize the architecture, depth, and functionality of their models for specific use-cases.
 
@@ -36,9 +36,9 @@ In this case, the Transformer is a Decoder, which transpires the depth, dim_head
 
 If initialization fails for any reason, an exception is caught and logged in the console, and the exception is re-raised.
 
-## AutoregressiveWrapper
+## AutoRegressiveWrapper
 
-As a next step, the transformer is wrapped with an AutoregressiveWrapper. Autoregressive models are ones where the output from one step is fed as an input to the next step. This allows for modeling the sequence of data effectively, thus making it excellent for tasks like text generation and language modelling.
+As a next step, the transformer is wrapped with an AutoRegressiveWrapper. Autoregressive models are ones where the output from one step is fed as an input to the next step. This allows for modeling the sequence of data effectively, thus making it excellent for tasks like text generation and language modelling.
 
 ## Forward function
 

@@ -22,10 +22,7 @@ from zeta.nn.attention.sparse_attention import SparseAttention
 from zeta.nn.attention.spatial_linear_attention import SpatialLinearAttention
 from zeta.structs.transformer import Attention, AttentionLayers
 from zeta.nn.attention.multi_grouped_attn import MultiGroupedQueryAttn
-
-# from zeta.nn.attention.flash_attention2 import FlashAttentionTwo
-# from zeta.nn.attention.mgqa import MGQA
-
+from zeta.nn.attention.scalable_img_self_attn import ScalableImgSelfAttention
 
 __all__ = [
     "Attend",
@@ -48,4 +45,5 @@ __all__ = [
     "Attention",
     "AttentionLayers",
     "MultiGroupedQueryAttn",
+    "ScalableImgSelfAttention",
 ]

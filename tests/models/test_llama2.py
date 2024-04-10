@@ -8,7 +8,7 @@ def test_llama2_initialization():
     mock_autoregressive_wrapper = Mock()
 
     with patch("zeta.models.Transformer", return_value=mock_transformer), patch(
-        "zeta.models.AutoregressiveWrapper",
+        "zeta.models.AutoRegressiveWrapper",
         return_value=mock_autoregressive_wrapper,
     ):
         llama = LLama2()
@@ -23,7 +23,7 @@ def test_llama2_forward():
     mock_autoregressive_wrapper.forward = mock_forward
 
     with patch("zeta.models.Transformer", return_value=mock_transformer), patch(
-        "zeta.models.AutoregressiveWrapper",
+        "zeta.models.AutoRegressiveWrapper",
         return_value=mock_autoregressive_wrapper,
     ):
         llama = LLama2()
