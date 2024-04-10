@@ -2,7 +2,7 @@ import pytest
 import torch
 
 from zeta.models import PalmE
-from zeta.structs import AutoregressiveWrapper, ViTransformerWrapper
+from zeta.structs import AutoRegressiveWrapper, ViTransformerWrapper
 
 
 @pytest.fixture
@@ -13,7 +13,7 @@ def palme():
 def test_palme_initialization(palme):
     assert isinstance(palme, PalmE)
     assert isinstance(palme.encoder, ViTransformerWrapper)
-    assert isinstance(palme.decoder, AutoregressiveWrapper)
+    assert isinstance(palme.decoder, AutoRegressiveWrapper)
     assert palme.decoder_dim == 512
 
 

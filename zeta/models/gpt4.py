@@ -1,7 +1,7 @@
 import torch
 from torch import Tensor, nn
 
-from zeta.structs.auto_regressive_wrapper import AutoregressiveWrapper
+from zeta.structs.auto_regressive_wrapper import AutoRegressiveWrapper
 from zeta.structs.transformer import (
     Decoder,
     Encoder,
@@ -13,7 +13,7 @@ from zeta.structs.transformer import (
 class GPT4(nn.Module):
     """
     GPT4 is a transformer-based model architecture. It initializes with
-    a Transformer and AutoregressiveWrapper with default or user-specified parameters.
+    a Transformer and AutoRegressiveWrapper with default or user-specified parameters.
         Initialize the model with specified or default parameters.
         Args:
         - num_tokens: Number of tokens in the vocabulary
@@ -81,7 +81,7 @@ class GPT4(nn.Module):
                 ),
             )
 
-            self.decoder = AutoregressiveWrapper(self.decoder)
+            self.decoder = AutoRegressiveWrapper(self.decoder)
 
         except Exception as e:
             print("Failed to initialize Andromeda: ", e)

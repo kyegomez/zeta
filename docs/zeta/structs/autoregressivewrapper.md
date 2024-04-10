@@ -1,6 +1,6 @@
-# AutoregressiveWrapper Class
+# AutoRegressiveWrapper Class
 
-In the following documentation, you'll learn all about the AutoregressiveWrapper class of zeta.structs module. As autoregressive models are sequence models used to predict subsequent data points in sequence data, this class provides a wrapper that can be used to wrap any PyTorch nn.Module to make them autoregressive model compliant.
+In the following documentation, you'll learn all about the AutoRegressiveWrapper class of zeta.structs module. As autoregressive models are sequence models used to predict subsequent data points in sequence data, this class provides a wrapper that can be used to wrap any PyTorch nn.Module to make them autoregressive model compliant.
 
 ## Table of Contents
 
@@ -12,15 +12,15 @@ In the following documentation, you'll learn all about the AutoregressiveWrapper
 
 ## 1. Class Definition
 
-AutoregressiveWrapper is a Python class that inherits from PyTorch's nn.Module and applies an autoregressive mask on the input sequence to any module that takes sequence input. This wrapper ensures the output sequence obeys a property inherent to causal or autoregressive models – the prediction at each position in the sequence is based only on preceding positions.
+AutoRegressiveWrapper is a Python class that inherits from PyTorch's nn.Module and applies an autoregressive mask on the input sequence to any module that takes sequence input. This wrapper ensures the output sequence obeys a property inherent to causal or autoregressive models – the prediction at each position in the sequence is based only on preceding positions.
 
 ```python
-class AutoregressiveWrapper(nn.Module):
+class AutoRegressiveWrapper(nn.Module):
 ```
 
 ## 2. Parameters
 
-The parameters accepted by AutoregressiveWrapper are:
+The parameters accepted by AutoRegressiveWrapper are:
 
 | Name | Type | Description | Default |
 |---|---|---|---|
@@ -32,11 +32,11 @@ The parameters accepted by AutoregressiveWrapper are:
 
 ## 3. Methods
 
-The methods provided by AutoregressiveWrapper are:
+The methods provided by AutoRegressiveWrapper are:
 
 ### 3.1 __init__()
 
-The `__init__()` method initializes an instance of the AutoregressiveWrapper class.
+The `__init__()` method initializes an instance of the AutoRegressiveWrapper class.
 
 ```python
 def __init__(self, net, ignore_index=-100, pad_value=0, mask_prob=0.0, speculative=False)
@@ -84,16 +84,16 @@ def evaluate_and_select_best_solution(self, solutions, reward_model)
 
 To help you better understand the usage of this class, here are some examples.
 
-First example demonstrates how to instantiate the AutoregressiveWrapper over an existing nn.module (nn.Linear in this case).
+First example demonstrates how to instantiate the AutoRegressiveWrapper over an existing nn.module (nn.Linear in this case).
 
 ```python
 import torch
 import torch.nn as nn
 
-from zeta.structs import AutoregressiveWrapper
+from zeta.structs import AutoRegressiveWrapper
 
 net = nn.Linear(10, 10)
-net = AutoregressiveWrapper(net)
+net = AutoRegressiveWrapper(net)
 x = torch.randn(1, 10)
 logits, loss = net(x, return_loss=True)
 print(logits.shape)
@@ -120,4 +120,4 @@ In the example above, the reward model simply returns the negative sum of the se
 
 ## 5. Conclusion
 
-In this documentation, you have learned about the AutoregressiveWrapper class of zeta.structs. You should now be more comfortable and confident in leveraging this class in your neural network architectures to realize autoregressive transformation.
+In this documentation, you have learned about the AutoRegressiveWrapper class of zeta.structs. You should now be more comfortable and confident in leveraging this class in your neural network architectures to realize autoregressive transformation.

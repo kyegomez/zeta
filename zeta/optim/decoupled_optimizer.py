@@ -1,6 +1,7 @@
 import torch
 from accelerate import Accelerator
-from lion_pytorch import Lion
+
+# from lion_pytorch import Lion
 from torch.nn import LayerNorm
 from torch.optim import AdamW
 
@@ -138,13 +139,13 @@ def decoupled_optimizer(
 
     # Create a variable called optimizer that stores an instance of the
     # optimizer.
-    if optimizer_type == "lion":
-        optimizer = Lion(
-            grouped_params,
-            lr=learning_rate,
-            betas=(beta_1, beta_2),
-        )
-    elif optimizer_type == "adamw":
+    # if optimizer_type == "lion":
+    #     # optimizer = Lion(
+    #     #     grouped_params,
+    #     lr=learning_rate,
+    #     betas=(beta_1, beta_2),
+    # )
+    if optimizer_type == "adamw":
         optimizer = AdamW(
             grouped_params,
             lr=learning_rate,

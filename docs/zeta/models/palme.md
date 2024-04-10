@@ -58,7 +58,7 @@ class PalmE(torch.nn.Module):
 
 ### `__init__()` 
 
-The `__init__()` method initializes the `PalmE` instance, sets up the encoder and decoder, and wraps the decoder in an `AutoregressiveWrapper`.
+The `__init__()` method initializes the `PalmE` instance, sets up the encoder and decoder, and wraps the decoder in an `AutoRegressiveWrapper`.
 
 ### `forward()`
 
