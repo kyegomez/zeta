@@ -199,7 +199,7 @@ class MambaBlock(nn.Module):
         )
 
         # Perform selective scan (see scan_SSM() in The Annotated S4 [2])
-        x = torch.zeros((b, d_in, n))
+        x = torch.zeros((b, d_in, n), device=next(self.parameters()).device)
         ys = []
         for i in range(l):
             x = deltaA[:, :, i] * x + deltaB_u[:, :, i]
