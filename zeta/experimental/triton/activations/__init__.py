@@ -7,6 +7,9 @@ from zeta.experimental.triton.activations.activations import relu6_activation
 from zeta.experimental.triton.activations.activations import (
     leaky_relu_activation,
 )
+from zeta.experimental.triton.activations.activations import (
+    smooth_relu_activation,
+)
 from zeta.experimental.triton.activations.activations import softsign_activation
 from zeta.experimental.triton.activations.activations import softplus_activation
 from zeta.experimental.triton.activations.activations import sigmoid_activation
@@ -27,6 +30,7 @@ __all__ = [
     "relu_activation",
     "relu6_activation",
     "leaky_relu_activation",
+    "smooth_relu_activation",
     "softsign_activation",
     "softplus_activation",
     "sigmoid_activation",

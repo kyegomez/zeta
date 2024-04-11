@@ -50,6 +50,16 @@ def leaky_relu_activation(x: torch.Tensor, alpha: float = 0.2):
     )
 
 
+def smooth_relu_activation(x: torch.Tensor, beta: float = 2.0):
+    # Make input tensor contiguous if needed
+    if not x.is_contiguous():
+        x = x.contiguous()
+
+    return apply_activation(
+        x, Functions.smooth_relu_activation_kernel, beta=beta
+    )
+
+
 def softsign_activation(x: torch.Tensor):
     return apply_activation(x, Functions.softsign_activation_kernel)
 
