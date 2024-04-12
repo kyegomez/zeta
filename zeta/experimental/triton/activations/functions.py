@@ -95,6 +95,27 @@ class Functions:
 
     @staticmethod
     @triton.jit
+    def smooth_relu_activation_kernel(
+        x_ptr, output_ptr, n_elements, beta, BLOCK_SIZE: tl.constexpr
+    ):
+        """
+        Convolution of ReLU with a box, transition region widens, the loss surface becomes smoother
+        """
+        idx = tl.program_id(0)
+        block_st = idx * BLOCK_SIZE
+        offsets = block_st + tl.arange(0, BLOCK_SIZE)
+        mask = offsets < n_elements
+        x = tl.load(x_ptr + offsets, mask=mask)
+
+        output = tl.where(x >= beta, x, 0.0)
+        output = tl.where(
+            tl.abs(x) <= beta, ((x + beta) * (x + beta) / (4.0 * beta), output)
+        )
+
+        tl.store(output_ptr + offsets, output, mask=mask)
+
+    @staticmethod
+    @triton.jit
     def softsign_activation_kernel(
         x_ptr, output_ptr, n_elements, BLOCK_SIZE: tl.constexpr
     ):
