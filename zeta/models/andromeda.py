@@ -4,6 +4,7 @@ from torch.nn import Module
 from zeta.structs.transformer import Decoder, Transformer
 from zeta.structs.auto_regressive_wrapper import AutoRegressiveWrapper
 
+
 class Andromeda(Module):
     """
     Andromeda is a transformer-based model architecture. It initializes with
