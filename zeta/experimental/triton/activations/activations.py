@@ -1,6 +1,5 @@
 import torch
 import triton
-import triton.language as tl
 
 from typing import Callable
 from activations.functions import Functions
@@ -16,7 +15,9 @@ def apply_activation(
 
     output = torch.empty_like(x)
     n_elements = output.numel()
-    grid = lambda meta: (triton.cdiv(n_elements, meta["BLOCK_SIZE"]),)
+
+    def grid(meta):
+        return (triton.cdiv(n_elements, meta["BLOCK_SIZE"]),)
 
     activation_args = [x, output] + list(args)
 
