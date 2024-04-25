@@ -255,7 +255,7 @@ class Functions:
         mask = offsets < n_elements
         x = tl.load(x_ptr + offsets, mask=mask)
 
-        if approximation == True:
+        if approximation is True:
             output = (
                 0.5
                 * x
