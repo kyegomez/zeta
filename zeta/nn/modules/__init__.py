@@ -212,6 +212,7 @@ from zeta.nn.modules.patch_linear_flatten import (
 from zeta.nn.modules.chan_layer_norm import ChanLayerNorm
 
 from zeta.nn.modules.query_proposal import TextHawkQueryProposal
+from zeta.nn.modules.pixel_shuffling import PixelShuffleDownscale
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -422,4 +423,5 @@ __all__ = [
     "cls_tokens",
     "video_patch_linear_flatten",
     "TextHawkQueryProposal",
+    "PixelShuffleDownscale",
 ]
