@@ -3,6 +3,7 @@ import torch.nn.functional as F
 from zeta.nn.modules.glu import GLU
 from zeta.nn.modules.swiglu import SwiGLU
 from typing import Optional
+from zeta.experimental.triton.triton_modules.linear_proj import LinearTriton
 
 
 class ReluSquared(nn.Module):
@@ -40,6 +41,7 @@ class FeedForward(nn.Module):
         zero_init_output: Optional[bool] = False,
         custom_act: Optional[nn.Module] = None,
         swiglu: Optional[bool] = False,
+        triton_kernels_on: bool = False,
     ):
         """
         FeedForward module that applies a series of linear transformations and activations.
@@ -60,6 +62,21 @@ class FeedForward(nn.Module):
             swiglu (bool, optional): Whether to use SwiGLU activation. Defaults to False.
         """
         super().__init__()
+        self.dim = dim
+        self.dim_out = dim_out
+        self.mult = mult
+        self.glu = glu
+        self.glu_mult_bias = glu_mult_bias
+        self.swish = swish
+        self.relu_squared = relu_squared
+        self.post_act_ln = post_act_ln
+        self.dropout = dropout
+        self.no_bias = no_bias
+        self.zero_init_output = zero_init_output
+        self.custom_act = custom_act
+        self.swiglu = swiglu
+        self.triton_kernels_on = triton_kernels_on
+
         inner_dim = int(dim * mult)
         dim_out = default(dim_out, dim)
 
@@ -78,6 +95,10 @@ class FeedForward(nn.Module):
             project_in = GLU(
                 dim, inner_dim, activation, mult_bias=glu_mult_bias
             )
+        elif triton_kernels_on is True:
+            project_in = nn.Sequential(
+                LinearTriton(dim, inner_dim, bias=no_bias), activation
+            )
         else:
             project_in = nn.Sequential(
                 nn.Linear(dim, inner_dim, bias=not no_bias), activation
@@ -88,7 +109,7 @@ class FeedForward(nn.Module):
                 project_in,
                 nn.LayerNorm(inner_dim),
                 nn.Dropout(dropout),
-                nn.Linear(inner_dim, dim_out, bias=not no_bias),
+                nn.Linear(inner_dim, dim_out, bias=no_bias),
             )
         else:
             self.ff = nn.Sequential(
