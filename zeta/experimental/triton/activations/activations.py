@@ -2,7 +2,7 @@ import torch
 import triton
 
 from typing import Callable
-from activations.functions import Functions
+from zeta.experimental.triton.activations.functions import Functions
 
 BLOCK_SIZE = 1024
 
