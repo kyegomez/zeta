@@ -106,7 +106,14 @@ class SplitMultiOutput(nn.Module):
 
 
 class OutputHead(nn.Module):
-    def __init__(self, dim: int, dim_range: int, *args, **kwargs):
+    def __init__(
+        self,
+        dim: int,
+        dim_range: int = 1,
+        vocab_size: int = 20000,
+        *args,
+        **kwargs,
+    ):
         """
         Initializes an OutputHead module.
 
@@ -123,8 +130,10 @@ class OutputHead(nn.Module):
         # Linear layer for each output
         self.output_layers = nn.Sequential(
             nn.LayerNorm(dim),
-            nn.Linear(dim, dim),
+            nn.Linear(dim, vocab_size),
             nn.Softmax(dim_range),
+            *args,
+            **kwargs,
         )
 
     def forward(self, x: Tensor):
