@@ -4,6 +4,7 @@ import torch.nn.functional as F
 from zeta.nn.attention.multiquery_attention import MultiQueryAttention
 from zeta.nn import OutputHead
 
+
 class TokaTransformerBlock(nn.Module):
     """
     Transformer block used in the Toka model.
@@ -35,7 +36,7 @@ class TokaTransformerBlock(nn.Module):
         ff_mult: int,
         dropout: float = 0.1,
         *args,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.dim = dim
@@ -43,13 +44,13 @@ class TokaTransformerBlock(nn.Module):
         self.heads = heads
         self.ff_mult = ff_mult
         self.dropout = dropout
-            
+
         # Attention
         self.attn = MultiQueryAttention(
             dim,
             heads,
         )
-        
+
         # FFn
         self.mlp = nn.Sequential(
             nn.Linear(dim, dim * ff_mult),
@@ -60,10 +61,10 @@ class TokaTransformerBlock(nn.Module):
             nn.LayerNorm(dim),
             nn.Linear(dim, dim),
         )
-        
+
         # LayerNorm
         self.norm = nn.LayerNorm(dim)
-        
+
     def forward(self, x: Tensor):
         """
         Forward pass of the TokaTransformerBlock.
@@ -77,18 +78,18 @@ class TokaTransformerBlock(nn.Module):
         """
         skip = x
         x, _, _ = self.attn(x)
-        
+
         # Add with the skip connection
         x = x + skip
         x = self.norm(x)
         skip_two = x
-        
+
         # MLP
         x = self.mlp(x)
         x = x + skip_two
         return self.norm(x)
-        
-        
+
+
 class TokaTransformer(nn.Module):
     """
     A transformer model based on the Toka architecture.
@@ -121,7 +122,7 @@ class TokaTransformer(nn.Module):
         dropout: float = 0.1,
         depth: int = 6,
         *args,
-        **kwargs
+        **kwargs,
     ):
         super().__init__()
         self.dim = dim
@@ -129,15 +130,18 @@ class TokaTransformer(nn.Module):
         self.heads = heads
         self.ff_mult = ff_mult
         self.dropout = dropout
-            
+
         # Transformer layer
-        self.layers = nn.ModuleList([
-            TokaTransformerBlock(dim, dim_head, heads, ff_mult, dropout) for _ in range(depth)
-        ])
-        
+        self.layers = nn.ModuleList(
+            [
+                TokaTransformerBlock(dim, dim_head, heads, ff_mult, dropout)
+                for _ in range(depth)
+            ]
+        )
+
         # Norm
         self.norm = nn.LayerNorm(dim)
-        
+
     def forward(self, x: Tensor):
         """
         Forward pass of the TokaTransformer.
@@ -150,10 +154,10 @@ class TokaTransformer(nn.Module):
 
         """
         x = self.norm(x)
-        
+
         for layer in self.layers:
             x = layer(x)
-            
+
         return OutputHead(self.dim, 1)(x)
 
 
@@ -190,7 +194,9 @@ class TokaCriticNetworkBlock(nn.Module):
 
         self.act = nn.Tanh()
 
-        self.lstm_head = nn.LSTM(dim, dim, num_layers=num_layers, dropout=dropout)
+        self.lstm_head = nn.LSTM(
+            dim, dim, num_layers=num_layers, dropout=dropout
+        )
         self.transformer = TokaTransformer(
             dim,
             dropout=dropout,
@@ -203,7 +209,7 @@ class TokaCriticNetworkBlock(nn.Module):
             nn.ELU(),
             nn.Linear(dim * ff_mult, dim),
             nn.LayerNorm(dim),
-        )q
+        )
 
     def forward(self, x: Tensor) -> Tensor:
         """
@@ -223,9 +229,9 @@ class TokaCriticNetworkBlock(nn.Module):
         # LSTM
         if self.transformer is True:
             x = self.transformer(x)
-        else: 
+        else:
             x, _ = self.lstm_head(x)
-        
+
         print(x.shape)
 
         # Concatenate
@@ -268,7 +274,7 @@ class TokaPolicyBlock(nn.Module):
     Attributes:
         dim (int): The dimension of the input and output tensors.
         dropout (float): The dropout probability.
-        ff_mult (int): The multiplier for the dimension of the hidden layer in the MLP.
+       e ff_mult (int): The multiplier for the dimension of the hidden layer in the MLP.
         actions (int): The number of output actions.
         proj (nn.Linear): The linear projection layer.
         norm (nn.LayerNorm): The layer normalization layer.
@@ -319,10 +325,9 @@ class TokaPolicyBlock(nn.Module):
 
         # Softplus
         self.soft = nn.Softplus()
-        
+
         # Final proj
         self.final_proj = nn.Linear(dim, actions)
-
 
         # Initialize weights using truncated normal distribution
         nn.init.trunc_normal_(self.proj.weight, std=1 / (dim**0.5))
@@ -337,7 +342,6 @@ class TokaPolicyBlock(nn.Module):
         self.mlp[2].bias.data.zero_()
         self.mlp[4].bias.data.zero_()
         self.final_proj.bias.data.zero_()
-
 
     def forward(self, x: Tensor) -> Tensor:
         """
