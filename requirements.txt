@@ -16,7 +16,7 @@ loguru
 rich==13.7.1
 tiktoken==0.6.0
 transformers==4.36.0
-tqdm==4.66.2
+tqdm==4.66.3
 mkdocs
 mkdocs-material
 mkdocs-glightbox
