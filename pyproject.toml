@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zetascale"
-version = "2.4.5"
+version = "2.4.6"
 description = "Rapidly Build, Optimize, and Deploy SOTA AI Models"
 authors = ["Zeta Team <kye@apac.ai>"]
 license = "MIT"
@@ -16,7 +16,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 torch = ">=2.1.1,<3.0"
 pytest = "8.1.1"
 torchfix = "*"

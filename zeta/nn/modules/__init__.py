@@ -214,7 +214,8 @@ from zeta.nn.modules.chan_layer_norm import ChanLayerNorm
 from zeta.nn.modules.query_proposal import TextHawkQueryProposal
 from zeta.nn.modules.pixel_shuffling import PixelShuffleDownscale
 from zeta.nn.modules.kan import KAN
-
+from zeta.nn.modules.layer_scale import LayerScale
+from zeta.nn.modules.fractoral_norm import FractoralNorm
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
 # from zeta.nn.modules.scaled_sinusoidal import ScaledSinuosidalEmbedding
@@ -426,4 +427,6 @@ __all__ = [
     "TextHawkQueryProposal",
     "PixelShuffleDownscale",
     "KAN",
+    "LayerScale",
+    "FractoralNorm",
 ]
