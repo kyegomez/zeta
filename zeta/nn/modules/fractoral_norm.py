@@ -10,11 +10,11 @@ class FractoralNorm(nn.Module):
         depth (int): Number of times to apply LayerNorm.
     """
 
-    def __init__(self, num_features: int, depth: int):
+    def __init__(self, num_features: int, depth: int, *args, **kwargs):
         super().__init__()
 
         self.layers = nn.ModuleList(
-            [nn.LayerNorm(num_features) for _ in range(depth)]
+            [nn.LayerNorm(num_features, *args, **kwargs) for _ in range(depth)]
         )
 
     def forward(self, x: Tensor) -> Tensor:

@@ -3,7 +3,7 @@ import torch.nn.functional as F
 from zeta.nn.modules.glu import GLU
 from zeta.nn.modules.swiglu import SwiGLU
 from typing import Optional
-from zeta.experimental.triton.triton_modules.linear_proj import LinearTriton
+# from zeta.experimental.triton.triton_modules.linear_proj import LinearTriton
 
 
 class ReluSquared(nn.Module):
@@ -95,10 +95,10 @@ class FeedForward(nn.Module):
             project_in = GLU(
                 dim, inner_dim, activation, mult_bias=glu_mult_bias
             )
-        elif triton_kernels_on is True:
-            project_in = nn.Sequential(
-                LinearTriton(dim, inner_dim, bias=no_bias), activation
-            )
+        # elif triton_kernels_on is True:
+        #     project_in = nn.Sequential(
+        #         LinearTriton(dim, inner_dim, bias=no_bias), activation
+        #     )
         else:
             project_in = nn.Sequential(
                 nn.Linear(dim, inner_dim, bias=not no_bias), activation
