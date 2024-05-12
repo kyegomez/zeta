@@ -1,6 +1,7 @@
 from torch.nn import Module
-import torch 
+import torch
 from torch import nn, Tensor
+
 
 class LayerScale(Module):
     """
@@ -17,7 +18,7 @@ class LayerScale(Module):
 
     """
 
-    def __init__(self, fn: Module, dim, init_value=0.):
+    def __init__(self, fn: Module, dim, init_value=0.0):
         super().__init__()
         self.fn = fn
         self.gamma = nn.Parameter(torch.ones(dim) * init_value)
