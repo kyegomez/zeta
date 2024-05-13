@@ -216,7 +216,8 @@ from zeta.nn.modules.pixel_shuffling import PixelShuffleDownscale
 from zeta.nn.modules.kan import KAN
 from zeta.nn.modules.layer_scale import LayerScale
 from zeta.nn.modules.fractoral_norm import FractoralNorm
-
+from zeta.nn.modules.kv_cache_update import kv_cache_with_update
+from zeta.nn.modules.expand import expand
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
 # from zeta.nn.modules.scaled_sinusoidal import ScaledSinuosidalEmbedding
@@ -430,4 +431,6 @@ __all__ = [
     "KAN",
     "LayerScale",
     "FractoralNorm",
+    "kv_cache_with_update",
+    "expand",
 ]
