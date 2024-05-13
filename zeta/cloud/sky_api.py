@@ -1,8 +1,3 @@
-"""sky_api module"""
-
-""" This module provides a simplified interface for launching, executing, 
-stopping, starting, and tearing down clusters. """
-
 from typing import List
 
 import sky
