@@ -1,4 +1,4 @@
-import torch 
+import torch
 from torch import nn, Tensor
 
 
@@ -7,8 +7,11 @@ class LinearizedAttention(nn.Module):
         self,
         dim: int,
         heads: int = 8,
-        seqlen: int = 10000,
+        seqlen: int = 1000,
         groups: int = 1,
+        mask_on: bool = False,
+        *args, 
+        **kwargs
     ):
         """
         Linearized Attention module.
@@ -24,17 +27,21 @@ class LinearizedAttention(nn.Module):
         self.heads = heads
         self.seqlen = seqlen
         self.groups = groups
-        
+        self.mask_on = mask_on
+
         # Projection
         self.proj = nn.Linear(dim, dim)
-        
+
         # RELU
         self.act = nn.ReLU()
-        
+
         # Groupnorm
         self.norm = nn.GroupNorm(groups, dim)
         
-    def forward(self, x: Tensor) -> Tensor:
+        # Mask Tensor
+        self.mask_tensor = torch.zeros(1, seqlen).bool()
+
+    def forward(self, x: Tensor, mask: bool = None) -> Tensor:
         """
         Forward pass of the LinearizedAttention module.
 
@@ -48,21 +55,29 @@ class LinearizedAttention(nn.Module):
         q = self.proj(x)
         k = self.proj(x)
         v = self.proj(x)
-        
+
         # Projected again
         q_p = self.proj(q)
         q_k = self.proj(k)
-        
+
         # Apply the relu
         q_acted = self.act(q_p)
         k_acted = self.act(q_k)
-        
+
         # Groupnorm
-        return nn.GroupNorm(self.groups, s)(q_acted + k_acted + v)
-        
-    
-        
-# x = torch.randn(1, 100, 512)
-# model = LinearizedAttention(512, 8)
+        output = nn.GroupNorm(self.groups, s)(q_acted + k_acted + v)
+
+        # Apply mask
+        if mask is not None:
+            if self.mask_on is True:
+                mask = self.mask_tensor
+            else:
+                output = output.masked_fill(mask.unsqueeze(-1), float('-inf'))
+                print(output.shape)
+
+        return output
+
+# x = torch.randn(1, 10, 20)
+# model = LinearizedAttention(20, 8, mask_on=True)
 # print(model(x))
-# # torch.Size([1, 100, 512])
+# # torch.Size([1, 10, 20])
