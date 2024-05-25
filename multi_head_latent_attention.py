@@ -40,22 +40,12 @@ class MultiHeadLatentAttention(nn.Module):
         # KV
         self.latent_kv = nn.Parameter(torch.randn(batch_size, seqlen, dim))
 
-    def forward(self, x: Tensor) -> Tensor:
-        device = x.device
-        k_r_t, scale = self.rope(self.seqlen, device)
-        print(k_r_t)
-        x = k_r_t + x
+        # Output
+        self.to_out = nn.Linear(dim, dim)
 
+    def forward(
+        self, x: Tensor, mask: Tensor = None, *args, **kwargs
+    ) -> Tensor:
+        b, s, d = x.shape
 
-# # Example
-# x = torch.randn(1, 100, 10)
-
-# # Attention
-# model = MultiHeadLatentAttention(
-#     10,
-#     8,
-# )
-
-# # Apply the model
-# out = model(x)
-# print(out.shape)
+        return x

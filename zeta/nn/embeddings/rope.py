@@ -67,13 +67,15 @@ class RotaryEmbedding(nn.Module):
         return freqs, scale
 
 
-def rotate_half(x):
+def rotate_half(x: torch.Tensor) -> torch.Tensor:
     x = rearrange(x, "... (j d) -> ... j d", j=2)
     x1, x2 = x.unbind(dim=-1)
     return torch.cat((-x2, x1), dim=-1)
 
 
-def apply_rotary_pos_emb(t, freqs, scale=1):
+def apply_rotary_pos_emb(
+    t: torch.Tensor, freqs: torch.Tensor, scale: float = 1
+) -> torch.Tensor:
     seq_len = t.shape[-2]
     freqs = freqs[-seq_len:, :]
     return (t * freqs.cos() * scale) + (rotate_half(t) * freqs.sin() * scale)
