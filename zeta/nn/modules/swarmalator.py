@@ -34,9 +34,7 @@ def function_for_sigma(
 
     # Define dynamics for sigma based on our assumptions
     d_sigma = (
-        gamma * interaction_sum
-        + epsilon_a * sigma_i
-        - epsilon_r * (sigma_i**3)
+        gamma * interaction_sum + epsilon_a * sigma_i - epsilon_r * (sigma_i**3)
     )
     return d_sigma
 

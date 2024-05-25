@@ -610,8 +610,7 @@ class MultiHeadAttention(nn.Module):
                     " flash` "
                     + "it uses more memory. When training larger models"
                     " this can"
-                    " trigger "
-                    + "alloc retries which hurts performance. If"
+                    " trigger " + "alloc retries which hurts performance. If"
                     " encountered, we"
                     " recommend "
                     + "using `attn_impl: flash` if your model does not use"
@@ -624,8 +623,7 @@ class MultiHeadAttention(nn.Module):
                     "Using `attn_impl: torch`. If your model does not use"
                     " `alibi` or "
                     + "`prefix_lm` we recommend using `attn_impl: flash`"
-                    " otherwise "
-                    + "we recommend using `attn_impl: triton`."
+                    " otherwise " + "we recommend using `attn_impl: triton`."
                 )
         else:
             raise ValueError(f"{attn_impl=} is an invalid setting.")
@@ -744,8 +742,7 @@ class MultiQueryAttention(BaseAttention):
                     " flash` "
                     + "it uses more memory. When training larger models"
                     " this can"
-                    " trigger "
-                    + "alloc retries which hurts performance. If"
+                    " trigger " + "alloc retries which hurts performance. If"
                     " encountered, we"
                     " recommend "
                     + "using `attn_impl: flash` if your model does not use"
@@ -758,8 +755,7 @@ class MultiQueryAttention(BaseAttention):
                     "Using `attn_impl: torch`. If your model does not use"
                     " `alibi` or "
                     + "`prefix_lm` we recommend using `attn_impl: flash`"
-                    " otherwise "
-                    + "we recommend using `attn_impl: triton`."
+                    " otherwise " + "we recommend using `attn_impl: triton`."
                 )
         else:
             raise ValueError(f"{attn_impl=} is an invalid setting.")
