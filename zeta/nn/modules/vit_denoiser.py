@@ -26,7 +26,7 @@ def to_patch_embedding(x: Tensor, patch_size: int, patch_dim: int, dim):
         nn.LayerNorm(patch_dim),
         nn.Linear(patch_dim, dim),
         nn.LayerNorm(dim),
-    )
+    )(x)
 
 
 def posemb_sincos_2d(

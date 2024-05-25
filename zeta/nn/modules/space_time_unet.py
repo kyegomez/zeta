@@ -444,7 +444,11 @@ class ResnetBlock(nn.Module):
 # where time dimension can be configured
 class Downsample(nn.Module):
     def __init__(
-        self, dim, downsample_space=True, downsample_time=False, nonlin=False
+        self,
+        dim: int,
+        downsample_space: bool = True,
+        downsample_time=False,
+        nonlin=False,
     ):
         super().__init__()
         assert downsample_space or downsample_time

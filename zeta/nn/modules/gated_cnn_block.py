@@ -11,6 +11,8 @@ class GatedCNNBlock(nn.Module):
         kernel_size: int = 7,
         conv_ratio: float = 1.0,
         drop_path: float = 0.0,
+        *args,
+        **kwargs,
     ):
         super(GatedCNNBlock, self).__init__()
         self.dim = dim
@@ -21,6 +23,7 @@ class GatedCNNBlock(nn.Module):
         self.hidden = int(expansion_ratio * dim)
         self.norm = nn.LayerNorm(dim, eps=1e-6)
         self.act = nn.GELU()
+        self.g_act = nn.GroupNorm(1, dim)
 
         # Linear layers
         self.fc1 = nn.Linear(dim, self.hidden * 2)
@@ -47,6 +50,7 @@ class GatedCNNBlock(nn.Module):
         # Normalize
         x = self.norm(x)
 
+        # Torch split
         g, i, c = torch.split(self.fc1(x), self.split_indices, dim=-1)
 
         # C
@@ -58,9 +62,11 @@ class GatedCNNBlock(nn.Module):
         return x + shortcut
 
 
-# Forward example
-x = torch.randn(1, 3, 32, 32)
+# # Forward example
+# x = torch.randn(1, 3, 64, 64)
 
-block = GatedCNNBlock(dim=3)
+# model = GatedCNNBlock(
+#     dim = 3,
+# )
 
-print(block(x).shape)
+# print(model(x).shape)

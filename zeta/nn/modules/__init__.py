@@ -219,6 +219,10 @@ from zeta.nn.modules.fractoral_norm import FractoralNorm
 from zeta.nn.modules.kv_cache_update import kv_cache_with_update
 from zeta.nn.modules.expand import expand
 from zeta.nn.modules.sig_lip_loss import SigLipSigmoidLoss
+from zeta.nn.modules.sparse_token_integration import (
+    SparseTokenIntegration,
+    SparseChannelIntegration,
+)
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -436,4 +440,6 @@ __all__ = [
     "kv_cache_with_update",
     "expand",
     "SigLipSigmoidLoss",
+    "SparseTokenIntegration",
+    "SparseChannelIntegration",
 ]
