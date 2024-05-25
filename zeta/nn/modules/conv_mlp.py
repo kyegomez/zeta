@@ -70,9 +70,7 @@ class Conv2DFeedforward(nn.Module):
         # The conv layers expect NCHW, we have NLC by default
         B, L, C = x.shape
         HW = int(math.sqrt(x.shape[-2]))
-        assert (
-            HW**2 == L
-        ), "Conv2DFeedforward requires squared context lengths"
+        assert HW**2 == L, "Conv2DFeedforward requires squared context lengths"
 
         x = x.reshape((B, HW, HW, C)).swapdims(1, -1)
 

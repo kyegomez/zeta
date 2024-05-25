@@ -10,8 +10,8 @@ class LinearizedAttention(nn.Module):
         seqlen: int = 1000,
         groups: int = 1,
         mask_on: bool = False,
-        *args, 
-        **kwargs
+        *args,
+        **kwargs,
     ):
         """
         Linearized Attention module.
@@ -37,7 +37,7 @@ class LinearizedAttention(nn.Module):
 
         # Groupnorm
         self.norm = nn.GroupNorm(groups, dim)
-        
+
         # Mask Tensor
         self.mask_tensor = torch.zeros(1, seqlen).bool()
 
@@ -72,10 +72,11 @@ class LinearizedAttention(nn.Module):
             if self.mask_on is True:
                 mask = self.mask_tensor
             else:
-                output = output.masked_fill(mask.unsqueeze(-1), float('-inf'))
+                output = output.masked_fill(mask.unsqueeze(-1), float("-inf"))
                 print(output.shape)
 
         return output
+
 
 # x = torch.randn(1, 10, 20)
 # model = LinearizedAttention(20, 8, mask_on=True)

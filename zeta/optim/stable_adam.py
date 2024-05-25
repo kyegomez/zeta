@@ -97,12 +97,8 @@ class StableAdamWUnfused(torch.optim.Optimizer):
                     v = param_state["exp_avg"]
                     u = param_state["exp_avg_sq"]
 
-                beta1hat = (
-                    beta1 * (1 - beta1 ** (step - 1)) / (1 - beta1**step)
-                )
-                beta2hat = (
-                    beta2 * (1 - beta2 ** (step - 1)) / (1 - beta2**step)
-                )
+                beta1hat = beta1 * (1 - beta1 ** (step - 1)) / (1 - beta1**step)
+                beta2hat = beta2 * (1 - beta2 ** (step - 1)) / (1 - beta2**step)
 
                 v = v.mul_(beta1hat).add_(g, alpha=1.0 - beta1hat)
                 u = u.mul_(beta2hat).addcmul_(g, g, value=1.0 - beta2hat)

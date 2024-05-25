@@ -325,9 +325,7 @@ class ScaledAdam(BatchedOptimizer):
                     "ScaledAdam optimizer does not support sparse gradients"
                 )
             if p.numel() == p.shape[0]:  # a batch of scalars
-                tot_sumsq += (
-                    grad**2
-                ).sum()  # sum() to change shape [1] to []
+                tot_sumsq += (grad**2).sum()  # sum() to change shape [1] to []
             else:
                 tot_sumsq += ((grad * state["param_rms"]) ** 2).sum()
 
@@ -490,9 +488,7 @@ class ScaledAdam(BatchedOptimizer):
             if step % size_update_period == size_update_period - 1:
                 param_rms = state["param_rms"]  # shape: (batch_size, 1, 1, ..)
                 param_rms.copy_(
-                    (p**2)
-                    .mean(dim=list(range(1, p.ndim)), keepdim=True)
-                    .sqrt()
+                    (p**2).mean(dim=list(range(1, p.ndim)), keepdim=True).sqrt()
                 )
                 if step > 0:
                     # self._size_update() learns the overall scale on the
@@ -543,9 +539,7 @@ class ScaledAdam(BatchedOptimizer):
             "scale_exp_avg_sq"
         ]  # shape: (batch_size, 1, 1, ..)
         scale_exp_avg_sq.mul_(beta2_corr).add_(
-            (scale_grads**2).mean(
-                dim=0
-            ),  # mean over dim `size_update_period`
+            (scale_grads**2).mean(dim=0),  # mean over dim `size_update_period`
             alpha=1 - beta2_corr,
         )  # shape is (batch_size, 1, 1, ...)
 
@@ -558,10 +552,7 @@ class ScaledAdam(BatchedOptimizer):
         denom = scale_exp_avg_sq.sqrt() + eps
 
         scale_step = (
-            -size_lr
-            * (bias_correction2**0.5)
-            * scale_grads.sum(dim=0)
-            / denom
+            -size_lr * (bias_correction2**0.5) * scale_grads.sum(dim=0) / denom
         )
 
         is_too_small = param_rms < param_min_rms
@@ -773,8 +764,7 @@ class Eden(LRScheduler):
         factor = (
             (self.batch**2 + self.lr_batches**2) / self.lr_batches**2
         ) ** -0.25 * (
-            ((self.epoch**2 + self.lr_epochs**2) / self.lr_epochs**2)
-            ** -0.25
+            ((self.epoch**2 + self.lr_epochs**2) / self.lr_epochs**2) ** -0.25
         )
         warmup_factor = (
             1.0

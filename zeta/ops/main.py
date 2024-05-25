@@ -115,9 +115,7 @@ def matrix_inverse_root(
     else:
         raise NotImplementedError(
             "Root inverse method is not implemented! Specified root inverse"
-            " method is "
-            + str(root_inv_method)
-            + "."
+            " method is " + str(root_inv_method) + "."
         )
 
     return X

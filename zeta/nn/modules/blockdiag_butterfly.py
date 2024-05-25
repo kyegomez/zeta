@@ -6,7 +6,7 @@ import torch
 import torch.nn.functional as F
 from einops import rearrange
 from torch import nn
-from torch.nn import functional as F, init
+from torch.nn import init
 
 
 def blockdiag_butterfly_multiply_reference(x, w1_bfly, w2_bfly, version=2):
