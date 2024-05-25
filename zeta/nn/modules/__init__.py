@@ -122,8 +122,6 @@ from zeta.nn.modules.pulsar import Pulsar
 from zeta.nn.modules.pyro import hyper_optimize
 from zeta.nn.modules.qformer import QFormer
 from zeta.nn.modules.qkv_norm import qk_norm, qkv_norm
-
-#######
 from zeta.nn.modules.quantized_layernorm import QuantizedLN
 from zeta.nn.modules.recursive_block import RecursiveBlock
 from zeta.nn.modules.residual import Residual
@@ -134,14 +132,10 @@ from zeta.nn.modules.shufflenet import ShuffleNet
 from zeta.nn.modules.sig_lip import SigLipLoss
 from zeta.nn.modules.simple_attention import simple_attention
 from zeta.nn.modules.simple_feedforward import SimpleFeedForward
-
-######
 from zeta.nn.modules.simple_mamba import Mamba, MambaBlock
 from zeta.nn.modules.simple_res_block import SimpleResBlock
 from zeta.nn.modules.skipconnection import SkipConnection
 from zeta.nn.modules.slerp_model_merger import SLERPModelMerger
-
-####
 from zeta.nn.modules.space_time_unet import (
     ContinuousPositionBias,
     Downsample,
@@ -223,6 +217,8 @@ from zeta.nn.modules.sparse_token_integration import (
     SparseTokenIntegration,
     SparseChannelIntegration,
 )
+from zeta.nn.modules.simple_lstm import SimpleLSTM
+from zeta.nn.modules.simple_rnn import SimpleRNN
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -442,4 +438,6 @@ __all__ = [
     "SigLipSigmoidLoss",
     "SparseTokenIntegration",
     "SparseChannelIntegration",
+    "SimpleLSTM",
+    "SimpleRNN",
 ]
