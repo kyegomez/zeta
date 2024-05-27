@@ -4,7 +4,7 @@ from typing import Tuple
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from scipy.stats import norm
+# from scipy.stats import norm
 from tqdm import tqdm
 
 bnb_available = False
@@ -362,9 +362,9 @@ class NF4TensorDebug:
             )
 
         offset = 0.9677083
-        v1 = norm.ppf(torch.linspace(offset, 0.5, 9)[:-1]).tolist()
+        v1 = torch.linspace(offset, 0.5, 9)[:-1].tolist()
         # v2 = [0]*(256-15)
-        v3 = (-norm.ppf(torch.linspace(offset, 0.5, 8)[:-1])).tolist()
+        v3 = (torch.linspace(offset, 0.5, 8)[:-1]).tolist()
         # v = v1 + v3 + 0.0
         nkf = torch.tensor(v1 + v3 + [0.0])
         nkf = nkf.sort().values
