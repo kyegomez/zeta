@@ -24,7 +24,9 @@ Get started below and LMK if you want my help building any model, I'm here for y
 
 # Install
 
-`$ pip3 install -U zetascale`
+```bash
+$ pip3 install -U zetascale
+```
 
 # Usage
 
@@ -50,7 +52,9 @@ print(output.shape)
 
 
 ### `SwiGLU`
-- Powers Transformer models
+The SwiGLU activation function takes an input tensor and applies a gating mechanism to selectively pass information. It consists of two parts: the "switch" gate and the "glu" gate. The switch gate controls the flow of information, while the glu gate performs a non-linear transformation on the input.
+
+
 ```python
 import torch
 
@@ -61,8 +65,17 @@ swiglu = SwiGLUStacked(10, 20)
 swiglu(x).shape
 ```
 
-### ```RelativePositionBias```
-- ```RelativePositionBias``` quantizes the distance between two positions into a certain number of buckets and then uses an embedding to get the relative position bias. This mechanism aids in the attention mechanism by providing biases based on relative positions between the query and key, rather than relying solely on their absolute positions.
+In this example, we first import the necessary modules, including torch for tensor operations and SwiGLUStacked from zeta.nn for the SwiGLU activation function.
+
+We then create a random input tensor x with a shape of (5, 10). Next, we instantiate an instance of SwiGLUStacked with an input size of 10 and an output size of 20.
+
+Finally, we pass the input tensor x to the swiglu module, which applies the SwiGLU activation function to it. The resulting output tensor is stored in the output variable. We print the shape of the output tensor to see the
+
+-------
+
+### RelativePositionBias
+- `RelativePositionBias` quantizes the distance between two positions into a certain number of buckets and then uses an embedding to get the relative position bias. This mechanism aids in the attention mechanism by providing biases based on relative positions between the query and key, rather than relying solely on their absolute positions.
+
 ```python
 import torch
 from torch import nn
@@ -490,40 +503,6 @@ print(loss)
 ```
 
 
-### ZetaCloud
-Train or finetune any model on any cluster in 1 click with zetacloud, just pass in your file and the GPU type and quantity you want! To gain access first `pip install zetascale` then run `zeta -h` in the terminal. [Here is the docs for more](https://zeta.apac.ai/en/latest/zeta/cloud/main/)
-
-- Flexible Pricing with pooling from many clouds
-- Easy Deployment with 1 click
-- Various options for cloud providers!
-
-```bash
-Zetacloud CLI
-
-options:
-  -h, --help            show this help message and exit
-  -t TASK_NAME, --task_name TASK_NAME
-                        Task name
-  -c CLUSTER_NAME, --cluster_name CLUSTER_NAME
-                        Cluster name
-  -cl CLOUD, --cloud CLOUD
-                        Cloud provider
-  -g GPUS, --gpus GPUS  GPUs
-  -f FILENAME, --filename FILENAME
-                        Filename
-  -s, --stop            Stop flag
-  -d, --down            Down flag
-  -sr, --status_report  Status report flag
-
-```
-
-- A simple run example code would be like:
-
-```bash
-zeta -f train.py -g A100:8
-```
-----
-
 
 # Documentation
 All classes must have documentation if you see a class or function without documentation then please report it to me at kye@apac.ai,
@@ -585,3 +564,14 @@ Help us accelerate our backlog by supporting us financially! Note, we're an open
 
 # License 
 - Apache
+
+
+# Citation
+```bibtex
+@misc{zetascale,
+    title = {Zetascale Framework},
+    author = {Kye Gomez},
+    year = {2024},
+    howpublished = {\url{https://github.com/kyegomez/zeta}},
+}
+```
