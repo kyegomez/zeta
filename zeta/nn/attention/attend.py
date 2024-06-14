@@ -305,7 +305,7 @@ class Attend(nn.Module):
             Intermediates: Intermediate values during attention computation.
         """
 
-        n, heads, kv_heads, device = (
+        _n, heads, kv_heads, device = (
             q.shape[-2],
             q.shape[1],
             k.shape[1],

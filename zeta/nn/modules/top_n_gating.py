@@ -124,7 +124,7 @@ class TopNGating(Module):
         k - top-n experts
         """
 
-        *_, b, group_size, dim, dtype, top_n, num_gates, eps = (
+        *_, _b, group_size, _dim, dtype, top_n, num_gates, eps = (
             *x.shape,
             x.dtype,
             self.top_n,
