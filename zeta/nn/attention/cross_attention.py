@@ -69,7 +69,7 @@ class CrossAttention(nn.Module):
         Returns:
             torch.Tensor: The output tensor of shape (batch_size, sequence_length, dim).
         """
-        b, n, device = *x.shape[:2], x.device
+        b, _n, _device = *x.shape[:2], x.device
 
         x = self.norm(x)
         context = self.norm_context(context)

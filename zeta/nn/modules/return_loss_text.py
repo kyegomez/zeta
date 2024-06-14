@@ -26,7 +26,7 @@ def return_loss_text(
     Returns:
         Tensor: The computed cross-entropy loss.
     """
-    seq, labels = x[:, :-1], x[:, 1:]
+    _seq, labels = x[:, :-1], x[:, 1:]
 
     labels = labels.masked_fill(~mask[:, 1:], ignore_index)
 

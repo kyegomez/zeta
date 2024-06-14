@@ -143,7 +143,7 @@ class LocalAttention(nn.Module):
         ), "cannot perform window size extrapolation if xpos is not turned on"
 
         (
-            shape,
+            _shape,
             autopad,
             pad_value,
             window_size,
@@ -176,7 +176,7 @@ class LocalAttention(nn.Module):
                 (q, k, v),
             )
 
-        b, n, dim_head, device, dtype = *q.shape, q.device, q.dtype
+        b, n, dim_head, device, _dtype = *q.shape, q.device, q.dtype
 
         scale = default(self.scale, dim_head**-0.5)
 

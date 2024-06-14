@@ -20,7 +20,7 @@ class MultiModalCausalAttention(nn.Module):
         self.to_out = nn.Sequential(nn.Linear(dim, dim), nn.Dropout(dropout))
 
     def forward(self, visual_features, textual_features, mask=None):
-        b, n, _, h = *visual_features.shape, self.heads
+        _b, _n, _, h = *visual_features.shape, self.heads
 
         qkv_visual = self.to_qkv(visual_features).chunk(3, dim=-1)
         qkv_textual = self.to_qkv(textual_features).chunk(3, dim=-1)

@@ -300,7 +300,7 @@ class NormalSparseMoE(nn.Module):
         self.loss_coef = loss_coef
 
     def forward(self, inputs, **kwargs):
-        b, n, d, e = *inputs.shape, self.num_experts
+        _b, _n, d, e = *inputs.shape, self.num_experts
         dispatch_tensor, combine_tensor, loss = self.gate(inputs)
         expert_inputs = torch.einsum("bnd,bnec->ebcd", inputs, dispatch_tensor)
 
@@ -373,7 +373,7 @@ class HeirarchicalSparseMoE(nn.Module):
         self.loss_coef = loss_coef
 
     def forward(self, inputs, **kwargs):
-        b, n, d, eo, ei = (
+        _b, _n, d, eo, ei = (
             *inputs.shape,
             self.num_experts_outer,
             self.num_experts_inner,

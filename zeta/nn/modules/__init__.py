@@ -220,6 +220,8 @@ from zeta.nn.modules.sparse_token_integration import (
 from zeta.nn.modules.simple_lstm import SimpleLSTM
 from zeta.nn.modules.simple_rnn import SimpleRNN
 from zeta.nn.modules.cope import CoPE
+from zeta.nn.modules.multi_layer_key_cache import MultiLayerKeyValueAttention
+
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -442,4 +444,5 @@ __all__ = [
     "SimpleLSTM",
     "SimpleRNN",
     "CoPE",
+    "MultiLayerKeyValueAttention",
 ]
