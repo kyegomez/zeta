@@ -6,7 +6,7 @@ typing>=3.7.4.3,<3.8.0
 einops-exts>=0.0.4,<0.1.0
 torchvision
 accelerate
-datasets>=2.18.0,<2.19.0
+datasets>=2.20.0,<2.21.0
 torchfix
 torchdiffeq>=0.2.3,<0.3.0
 beartype>=0.15.0,<0.16.0
