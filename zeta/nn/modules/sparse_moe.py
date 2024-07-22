@@ -260,6 +260,31 @@ class Top2Gating(nn.Module):
 
 
 class NormalSparseMoE(nn.Module):
+    """
+    NormalSparseMoE is a module that implements the Normal Sparse Mixture of Experts.
+
+    Args:
+        dim (int): The input dimension.
+        num_experts (int, optional): The number of experts in the mixture. Defaults to 16.
+        hidden_dim (int, optional): The dimension of the hidden layer in the experts. Defaults to None.
+        activation (torch.nn.Module, optional): The activation function to use in the experts. Defaults to torch.nn.ReLU.
+        second_policy_train (str, optional): The policy for selecting the second expert during training. Defaults to "random".
+        second_policy_eval (str, optional): The policy for selecting the second expert during evaluation. Defaults to "random".
+        second_threshold_train (float, optional): The threshold for selecting the second expert during training. Defaults to 0.2.
+        second_threshold_eval (float, optional): The threshold for selecting the second expert during evaluation. Defaults to 0.2.
+        capacity_factor_train (float, optional): The capacity factor for the gating mechanism during training. Defaults to 1.25.
+        capacity_factor_eval (float, optional): The capacity factor for the gating mechanism during evaluation. Defaults to 2.0.
+        loss_coef (float, optional): The coefficient for the loss term. Defaults to 1e-2.
+        experts (torch.nn.Module, optional): The module that implements the experts. Defaults to None.
+
+    Attributes:
+        num_experts (int): The number of experts in the mixture.
+        gate (Top2Gating): The gating mechanism for selecting the experts.
+        experts (torch.nn.Module): The module that implements the experts.
+        loss_coef (float): The coefficient for the loss term.
+
+    """
+
     def __init__(
         self,
         dim,
@@ -300,6 +325,17 @@ class NormalSparseMoE(nn.Module):
         self.loss_coef = loss_coef
 
     def forward(self, inputs, **kwargs):
+        """
+        Forward pass of the NormalSparseMoE module.
+
+        Args:
+            inputs (torch.Tensor): The input tensor.
+
+        Returns:
+            output (torch.Tensor): The output tensor.
+            loss (torch.Tensor): The loss tensor.
+
+        """
         _b, _n, d, e = *inputs.shape, self.num_experts
         dispatch_tensor, combine_tensor, loss = self.gate(inputs)
         expert_inputs = torch.einsum("bnd,bnec->ebcd", inputs, dispatch_tensor)
