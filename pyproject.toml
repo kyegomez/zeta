@@ -1,19 +1,50 @@
 [tool.poetry]
 name = "zetascale"
-version = "2.5.9"
-description = "Rapidly Build, Optimize, and Deploy SOTA AI Models"
+version = "2.6.1"
+description = "Rapidly Build, Optimize, and Train SOTA AI Models"
 authors = ["Zeta Team <kye@apac.ai>"]
 license = "MIT"
 readme = "README.md"
 homepage = "https://github.com/kyegomez/zeta"
-keywords = ["artificial intelligence", "deep learning", "optimizers", "Prompt Engineering"]
+keywords = [
+    "artificial intelligence",
+    "deep learning",
+    "optimizers",
+    "Prompt Engineering",
+    "swarms",
+    "agents",
+    "llms",
+    "transformers",
+    "multi-agent",
+    "swarms of agents",
+    "Enterprise-Grade Agents",
+    "Production-Grade Agents",
+    "Agents",
+    "Multi-Grade-Agents",
+    "Swarms",
+    "Transformers",
+    "LLMs",
+    "Prompt Engineering",
+    "Agents",
+    "Generative Agents",
+    "Generative AI",
+    "Agent Marketplace",
+    "Agent Store",
+    "LSTMS",
+    "GRUs",
+    "RNNs",
+    "CNNs",
+    "MLPs",
+    "DNNs",
+]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3.9"
+    "Programming Language :: Python :: 3.10",
 ]
+
 
 packages = [
     { include = "zeta" },
@@ -65,7 +96,7 @@ target-version = ['py38']
 preview = true
 
 
-[tool.poetry.scripts]
-zeta = 'zeta.cli.main:main'
+# [tool.poetry.scripts]
+# zeta = 'zeta.cli.main:main'
 
 

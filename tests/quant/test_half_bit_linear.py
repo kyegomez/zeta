@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-from zeta.quant.half_bit_linear import HalfBitLinear
+from zeta.nn.quant.half_bit_linear import HalfBitLinear
 
 
 def test_half_bit_linear_init():

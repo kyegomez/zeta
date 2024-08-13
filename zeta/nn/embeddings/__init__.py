@@ -30,6 +30,7 @@ from zeta.nn.embeddings.yarn import YarnEmbedding
 from zeta.nn.embeddings.scaled_sinusoidal_embeddings import (
     ScaledSinusoidalEmbedding,
 )
+from zeta.nn.embeddings.mi_rope import MIRoPE
 
 
 __all__ = [
@@ -61,4 +62,5 @@ __all__ = [
     "duplicate_interleave",
     "VisionEmbedding",
     "ScaledSinusoidalEmbedding",
+    "MIRoPE",
 ]

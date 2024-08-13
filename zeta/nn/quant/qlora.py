@@ -635,7 +635,7 @@ class QloraLinear(nn.Module):
 
     Example:
         import torch
-        from zeta.quant.qlora import QloraLinear
+        from zeta.nn.quant.qlora import QloraLinear
         # Convert the weight tensor to torch.bfloat16
         weight_bfloat16 = torch.rand(4096, 4096).to(torch.bfloat16)
 

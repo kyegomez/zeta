@@ -1,7 +1,7 @@
 import pytest
 import torch
 
-from zeta.quant.bitlinear import BitLinear, absmax_quantize
+from zeta.nn.quant.bitlinear import BitLinear, absmax_quantize
 
 
 def test_bitlinear_reset_parameters():

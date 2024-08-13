@@ -61,7 +61,7 @@ Performs the forward pass of the `BitLinear` module.
 ```python
 import torch
 
-from zeta.quant import BitLinear
+from zeta.nn.quant import BitLinear
 
 # Initialize the BitLinear module
 linear = BitLinear(10, 20)
@@ -82,7 +82,7 @@ print(output.size())  # torch.Size([128, 20])
 ```python
 import torch
 
-from zeta.quant import BitLinear
+from zeta.nn.quant import BitLinear
 
 # Initialize the BitLinear module with 2 groups
 linear = BitLinear(10, 20, groups=2)
@@ -103,7 +103,7 @@ print(output.size())  # torch.Size([128, 20])
 import torch
 from torch import nn
 
-from zeta.quant import BitLinear
+from zeta.nn.quant import BitLinear
 
 
 class MyModel(nn.Module):

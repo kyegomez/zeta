@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 
 from zeta.nn import QFTSPEmbedding
-from zeta.quant.niva import niva
+from zeta.nn.quant.niva import niva
 
 
 def test_niva_model_type():

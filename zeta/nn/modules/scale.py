@@ -23,7 +23,7 @@ class Scale(nn.Module):
 
     """
 
-    def __init__(self, value, fn):
+    def __init__(self, value: float = 0.5, fn: callable = None):
         super().__init__()
         self.value = value
         self.fn = fn

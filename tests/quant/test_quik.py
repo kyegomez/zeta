@@ -1,6 +1,6 @@
 import torch
 
-from zeta.quant.quick import QUIK
+from zeta.nn.quant.quick import QUIK
 
 
 def test_quik_initialization():

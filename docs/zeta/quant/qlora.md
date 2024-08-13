@@ -54,7 +54,7 @@ To instantiate a QloraLinear layer:
 ```python
 import torch.nn as nn
 
-from zeta.quant.qlora import QloraLinear
+from zeta.nn.quant.qlora import QloraLinear
 
 in_features = 20
 out_features = 30
