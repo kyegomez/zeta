@@ -7,7 +7,7 @@ from zeta.nn.quant.qlora import QloraLinear
 from zeta.nn.quant.quick import QUIK
 from zeta.nn.quant.ste import STE
 
-__all__ = [d
+__all__ = [
     "QUIK",
     "absmax_quantize",
     "BitLinear",

@@ -13,6 +13,7 @@ __pycache__/
 data
 # Distribution / packaging
 .Python
+.DS_Store
 build/
 .ruff_cache
 .vscode
