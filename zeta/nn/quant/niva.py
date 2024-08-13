@@ -26,7 +26,7 @@ def niva(
 
     Examples:
     >>> import torch
-    >>> from zeta.quant import niva
+    >>> from zeta.nn.quant import niva
     >>> from zeta.nn import QFTSPEmbedding
     >>> model = QFTSPEmbedding(100, 100)
     >>> niva(

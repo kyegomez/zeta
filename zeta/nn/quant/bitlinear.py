@@ -35,7 +35,7 @@ class BitLinear(nn.Module):
 
     Usage:
         >>> import torch
-        >>> from zeta.quant.bitlinear import BitLinear
+        >>> from zeta.nn.quant.bitlinear import BitLinear
         >>> linear = BitLinear(10, 20)
         >>> input = torch.randn(128, 10)
         >>> output = linear(input)

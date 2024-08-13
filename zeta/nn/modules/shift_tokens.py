@@ -1,6 +1,7 @@
 import torch
 import torch.nn.functional as F
 from torch import nn
+from torch import Tensor
 
 
 def pad_at_dim(t, pad, dim=-1, value=0.0):
@@ -47,12 +48,12 @@ class ShiftTokens(nn.Module):
 
     """
 
-    def __init__(self, shifts, fn):
+    def __init__(self, shifts: list = None, fn: callable = None):
         super().__init__()
         self.fn = fn
         self.shifts = tuple(shifts)
 
-    def forward(self, x, **kwargs):
+    def forward(self, x: Tensor, **kwargs):
         """Forward method of ShiftTokens"""
         mask = kwargs.get("mask", None)
         shifts = self.shifts

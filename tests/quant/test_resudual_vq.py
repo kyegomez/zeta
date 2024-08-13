@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-from zeta.quant.residual_vq import ResidualVectorQuantizer
+from zeta.nn.quant.residual_vq import ResidualVectorQuantizer
 
 
 def test_residual_vector_quantizer_init():

@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 
-from zeta.quant.lfq import LFQ
+from zeta.nn.quant.lfq import LFQ
 
 
 def test_lfg_init():

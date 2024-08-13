@@ -124,7 +124,7 @@ In this example, we'll initialize the QUIK layer.
 ```python
 import torch
 
-from zeta.quant import QUIK
+from zeta.nn.quant import QUIK
 
 # Initialize the QUIK module
 quik = QUIK(in_features=784, out_features=10)

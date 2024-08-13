@@ -1,6 +1,6 @@
 from torch import Tensor, nn
 
-from zeta.quant.bitlinear import absmax_quantize
+from zeta.nn.quant.bitlinear import absmax_quantize
 
 
 class QuantizedLN(nn.Module):

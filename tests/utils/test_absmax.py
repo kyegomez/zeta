@@ -1,6 +1,6 @@
 import torch
 
-from zeta.quant.absmax import absmax_quantize
+from zeta.nn.quant.absmax import absmax_quantize
 
 
 def test_absmax_quantize_default_bits():
