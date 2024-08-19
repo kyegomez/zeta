@@ -14,7 +14,7 @@ vector-quantize-pytorch>=1.12.0,<1.13.0
 loguru
 rich==13.7.1
 tiktoken==0.6.0
-transformers==4.41.2
+transformers==4.44.0
 tqdm==4.66.4
 mkdocs
 mkdocs-material
