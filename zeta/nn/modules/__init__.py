@@ -224,6 +224,7 @@ from zeta.nn.modules.multi_layer_key_cache import MultiLayerKeyValueAttention
 from zeta.nn.modules.evlm_xattn import GatedMoECrossAttn, GatedXAttention
 from zeta.nn.modules.snake_act import Snake
 from zeta.nn.modules.adaptive_gating import AdaptiveGating
+from zeta.nn.modules.crome_adapter import CROMEAdapter
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -451,4 +452,5 @@ __all__ = [
     "GatedXAttention",
     "Snake",
     "AdaptiveGating",
+    "CROMEAdapter",
 ]
