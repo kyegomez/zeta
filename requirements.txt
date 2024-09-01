@@ -20,4 +20,4 @@ mkdocs
 mkdocs-material
 mkdocs-glightbox
 argparse
-fairseq
+fairseq==0.12.2
