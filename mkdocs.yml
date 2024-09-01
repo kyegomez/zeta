@@ -305,17 +305,4 @@ nav:
             - BitLinear: "zeta/quant/bitlinear.md"
             - niva: "zeta/quant/niva.md"
       - zeta.rl:
-          - Reinforcement Learning:
-            - DPO: "zeta/rl/dpo.md"
-  # - Examples:
-  #   - Overview: "examples/index.md"
-  #   - PytorchCS: "examples/torch_cs.md"
-  # - Corporate:
-  #   - Overview: "corporate/main.md"
-  #   - Product:
-  #     - Overview: "zeta/product/product_ideas.md"
-  #     - Zetahub: "zeta/product/zetahub.md"
-  #     - Growth: "corporate/growth.md"
-  #     - ZetaCloud: "corporate/zeta_cloud.md"
-  # - Blog:
-  #   - Introduction: "blog/introduction_to_zeta.md"
+          - DPO: "zeta/rl/dpo.md"
