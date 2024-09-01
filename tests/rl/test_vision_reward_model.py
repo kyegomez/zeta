@@ -24,7 +24,7 @@ def test_residual_block_strides(stride):
 
 # 3. VisionRewardModel shape tests
 @pytest.mark.parametrize("batch_size", [1, 8, 32])
-def test_vision_reward_model_shapes(batch_size):
+def test_vision_rewardim_shapes(batch_size):
     model = VisionRewardModel()
     sample_image = torch.randn(batch_size, 3, 32, 32)
     predicted_rewards = model(sample_image)
@@ -32,7 +32,7 @@ def test_vision_reward_model_shapes(batch_size):
 
 
 # 4. VisionRewardModel outputs type check
-def test_vision_reward_model_output_type():
+def test_vision_rewardim_output_type():
     model = VisionRewardModel()
     sample_image = torch.randn(8, 3, 32, 32)
     predicted_rewards = model(sample_image)
@@ -48,7 +48,7 @@ def test_residual_block_no_nan():
 
 
 # 6. Ensure no NaN values in VisionRewardModel outputs
-def test_vision_reward_model_no_nan():
+def test_vision_rewardim_no_nan():
     model = VisionRewardModel()
     sample_image = torch.randn(8, 3, 32, 32)
     predicted_rewards = model(sample_image)
@@ -56,7 +56,7 @@ def test_vision_reward_model_no_nan():
 
 
 # 7. Ensure non-zero outputs for VisionRewardModel
-def test_vision_reward_model_non_zero():
+def test_vision_rewardim_non_zero():
     model = VisionRewardModel()
     sample_image = torch.randn(8, 3, 32, 32)
     predicted_rewards = model(sample_image)
@@ -85,7 +85,7 @@ def test_residual_block_zero_input():
 
 
 # 10. Testing zero inputs result in non-zero outputs for VisionRewardModel
-def test_vision_reward_model_zero_input():
+def test_vision_rewardim_zero_input():
     model = VisionRewardModel()
     sample_image = torch.zeros(8, 3, 32, 32)
     predicted_rewards = model(sample_image)
@@ -94,7 +94,7 @@ def test_vision_reward_model_zero_input():
 
 # Additional Testing for various shapes (e.g., larger images)
 @pytest.mark.parametrize("image_size", [32, 64, 128])
-def test_vision_reward_model_with_different_image_sizes(image_size):
+def test_vision_rewardim_with_different_image_sizes(image_size):
     model = VisionRewardModel()
     sample_image = torch.randn(8, 3, image_size, image_size)
     predicted_rewards = model(sample_image)

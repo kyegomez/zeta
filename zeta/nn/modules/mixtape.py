@@ -4,10 +4,10 @@ import torch.nn.functional as F
 
 
 class Mixtape(nn.Module):
-    def __init__(self, vocab_size, d_model, d1, d2, num_gates=4):
+    def __init__(self, vocab_size, dim, d1, d2, num_gates=4):
         super(Mixtape, self).__init__()
         self.vocab_size = vocab_size
-        self.d_model = d_model
+        self.dim = dim
         self.d1 = d1
         self.d2 = d2
         self.num_gates = num_gates
@@ -20,12 +20,12 @@ class Mixtape(nn.Module):
 
         # Parameters for context embeddings
         self.H = nn.Parameter(
-            torch.randn(self.num_gates, self.d_model, self.d1)
+            torch.randn(self.num_gates, self.dim, self.d1)
         )
 
         # Token embeddings (not specified in the abstract, assuming needed)
         self.token_embeddings = nn.Parameter(
-            torch.randn(self.vocab_size, self.d_model)
+            torch.randn(self.vocab_size, self.dim)
         )
 
     def forward(self, gc):
@@ -35,7 +35,7 @@ class Mixtape(nn.Module):
         # Expanded gc to [batch_size, seq_length, 1, d1] for broadcasting
         hc = torch.tanh(
             torch.einsum("kij,btj->btki", self.H, gc)
-        )  # (batch_size, seq_length, num_gates, d_model)
+        )  # (batch_size, seq_length, num_gates, dim)
 
         # Compute pre-activation gate priors for each token and gate
         # Expanded gc for broadcasting with different parameters
@@ -80,13 +80,13 @@ class Mixtape(nn.Module):
 
 
 # Example usage
-d_model = 512
+dim = 512
 d1 = 256
 d2 = 128
 vocab_size = 10000
 seq_length = 20
 
-model = Mixtape(vocab_size=vocab_size, d_model=d_model, d1=d1, d2=d2)
+model = Mixtape(vocab_size=vocab_size, dim=dim, d1=d1, d2=d2)
 gc = torch.randn(
     10, seq_length, d1
 )  # Simulated last-layer hidden states for a batch of 10 with sequence length 20

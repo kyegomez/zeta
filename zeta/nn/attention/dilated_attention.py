@@ -53,7 +53,7 @@ class DilatedAttention(BaseAttention):
     Dilated Attention Module.
 
     Arguments:
-        d_model: The dimension of the attention layers.
+        dim: The dimension of the attention layers.
         num_heads: The number of attention heads.
         dilation_rate: The dilation rate for dilated attention.
         segment_size: The segment size for dilated attention.
@@ -66,7 +66,7 @@ class DilatedAttention(BaseAttention):
         The `DilatedAttention` class can be used as a module for neural networks and is especially suited for transformer architectures.
 
         Example:
-            attention = DilatedAttention(d_model=512, num_heads=8, dilation_rate=2, segment_size=64, use_xpos=True, use_rel_pos_bias=True)
+            attention = DilatedAttention(dim=512, num_heads=8, dilation_rate=2, segment_size=64, use_xpos=True, use_rel_pos_bias=True)
             output = attention(input_tensor)
 
         This will return the output tensor after applying dilated attention. The `use_xpos` and `use_rel_pos_bias` parameters allow for switching on positional encoding and relative positional bias respectively.
@@ -74,7 +74,7 @@ class DilatedAttention(BaseAttention):
 
     def __init__(
         self,
-        d_model: int = None,
+        dim: int = None,
         num_heads: int = None,
         dilation_rate: int = None,
         segment_size: int = None,
@@ -84,7 +84,7 @@ class DilatedAttention(BaseAttention):
         use_rel_pos_bias: bool = False,
     ):
         super().__init__()
-        self.d_model = d_model
+        self.dim = dim
         self.num_heads = num_heads
 
         self.dilation_rate = dilation_rate
@@ -101,14 +101,14 @@ class DilatedAttention(BaseAttention):
         )
 
         if use_xpos:
-            self.xpos = XPOS(head_dim=d_model // num_heads)
+            self.xpos = XPOS(head_dim=dim // num_heads)
         if use_rel_pos_bias:
             self.relative_bias = RelativePositionBias(
                 num_buckets=32, max_distance=128, n_heads=num_heads
             )
 
         # head offsets
-        self.head_offsets = nn.Parameter(torch.randn(num_heads, d_model))
+        self.head_offsets = nn.Parameter(torch.randn(num_heads, dim))
 
     def get_mask(self, i, j):
         return torch.ones((i, j), device=device, dtype=torch.bool).triu(
@@ -128,7 +128,7 @@ class DilatedAttention(BaseAttention):
             x = self.xpos(x)
 
         # Split and sparsify
-        x = x.view(batch_size, -1, self.segment_size, self.d_model)
+        x = x.view(batch_size, -1, self.segment_size, self.dim)
         print(f"z after view shape: {x.shape}")
 
         x = x[:, :, :: self.dilation_rate, :]
@@ -169,7 +169,7 @@ class DilatedAttention(BaseAttention):
         )
 
         # Scatter and concatenate
-        attn_output = attn_output.reshape(batch_size, -1, self.d_model)
+        attn_output = attn_output.reshape(batch_size, -1, self.dim)
         print(
             f"attn_output scatter and concatenate: {attn_output.shape} and"
             f" {attn_output.dtype}"

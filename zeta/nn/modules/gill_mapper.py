@@ -55,7 +55,7 @@ class GILLMapper(nn.Module):
     def __post_init__(self):
         super().__init__()
         self.transformer = nn.Transformer(
-            d_model=self.text_emb_size,
+            dim=self.text_emb_size,
             num_encoder_layers=self.num_encoder_layers,
             num_decoder_layers=self.num_decoder_layers,
             dim_feedforward=self.dim_ffn,
@@ -74,7 +74,7 @@ class GILLMapper(nn.Module):
 
         self.transformer_encoder = nn.TransformerEncoder(
             nn.TransformerEncoderLayer(
-                d_model=self.text_emb_size,
+                dim=self.text_emb_size,
                 nhead=self.heads,
                 dim_feedforward=self.dim_ffn,
             ),

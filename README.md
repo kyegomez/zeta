@@ -34,21 +34,26 @@ $ pip3 install -U zetascale
 
 ## Starting Your Journey
 
-Creating a model empowered with the aforementioned breakthrough research features is a breeze. Here's how to quickly materialize the renowned Flash Attention
+Creating a model empowered with the aforementioned breakthrough research features is a breeze. Here's how to quickly materialize the renowned Multi Query Attention
 
 ```python
 import torch
+from zeta import MultiQueryAttention
 
-from zeta.nn import FlashAttention
+# Model
+model = MultiQueryAttention(
+    dim=512,
+    heads=8,
+)
 
-q = torch.randn(2, 4, 6, 8)
-k = torch.randn(2, 4, 10, 8)
-v = torch.randn(2, 4, 10, 8)
+# Input
+text = torch.randn(2, 4, 512)
 
-attention = FlashAttention(causal=False, dropout=0.1, flash=True)
-output = attention(q, k, v)
-
+# Output
+output, _, _ = model(text)
 print(output.shape)
+print(output)
+
 ```
 
 
@@ -352,8 +357,8 @@ model = YourModelClass()
 # Quantize the model dynamically, specifying layers to quantize
 niva(
     model=model,
-    model_path="path_to_pretrained_model_weights.pt",
-    output_path="quantized_model.pt",
+    model_path="path_to_pretrainedim_weights.pt",
+    output_path="quantizedim.pt",
     quant_type="dynamic",
     quantize_layers=[nn.Linear, nn.Conv2d],
     dtype=torch.qint8,

@@ -15,7 +15,7 @@ class MultiQueryAttention(nn.Module):
 ```
 
 ### Parameters:
-- `d_model` (int): Dimension of the model.
+- `dim` (int): Dimension of the model.
 - `heads` (int): Number of parallel attention heads.
 - `attn_impl` (str, optional): Attention implementation type, can be either 'triton', 'flash', or 'torch'. Default is 'triton'.
 - `clip_qkv` (Optional[float]): Clipping value for query, key, and value. If specified, qkv is clamped within the range [-clip_qkv, clip_qkv].
@@ -68,7 +68,7 @@ import torch
 from zeta.nn import MultiQueryAttention
 
 # Initialize the attention module
-attention_layer = MultiQueryAttention(d_model=512, heads=8, attn_impl="torch")
+attention_layer = MultiQueryAttention(dim=512, heads=8, attn_impl="torch")
 
 # Random input tensor
 x = torch.rand(16, 10, 512)  # Batch of 16, sequence length 10, embedding size 512

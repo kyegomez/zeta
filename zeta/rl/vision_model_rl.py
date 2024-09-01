@@ -93,8 +93,8 @@ class VisionRewardModel(nn.Module):
 # output_tensor = res_block(sample_tensor)
 
 # # 2. Example for VisionRewardModel
-# vision_reward_model = VisionRewardModel()
+# vision_rewardim = VisionRewardModel()
 # sample_image = torch.randn(8, 3, 32, 32)
-# predicted_rewards = vision_reward_model(sample_image)
+# predicted_rewards = vision_rewardim(sample_image)
 
 # print(output_tensor.shape, predicted_rewards.shape)

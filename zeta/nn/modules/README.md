@@ -322,6 +322,6 @@ model_path = f"runs:/{run.info.run_id}/model"
 version = register_model(model_uri=model_path, name=model_name)
 
 # Load the registered model for inference
-loaded_model = Model.load(model_uri=f"models:/{model_name}/{version}")
+loadedim = Model.load(model_uri=f"models:/{model_name}/{version}")
 By incorporating these additional shapeless and fluid containers, AI engineering can be made more seamless, efficient, and modular, ultimately leading to improved development and deployment of AI models and algorithms.
 message.txt

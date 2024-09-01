@@ -117,7 +117,7 @@ class TestMultiheadAttention(unittest.TestCase):
         )
 
         def setUp(self):
-            self.d_model = 128
+            self.dim = 128
             self.num_heads = 4
             self.dilation_rate = 2
             self.segment_size = 32
@@ -129,10 +129,10 @@ class TestMultiheadAttention(unittest.TestCase):
             self.batch_size = 10
             self.seq_len = 100
 
-            self.x = torch.rand(self.batch_size, self.seq_len, self.d_model)
+            self.x = torch.rand(self.batch_size, self.seq_len, self.dim)
 
             self.sparse_dilated_attention = MultiheadAttention(
-                self.d_model,
+                self.dim,
                 self.num_heads,
                 self.dilation_rate,
                 self.segment_size,
@@ -145,7 +145,7 @@ class TestMultiheadAttention(unittest.TestCase):
     def test_forward_pass(self):
         output = self.sparse_dilated_attention(self.x)
         self.assertEqual(
-            output.size(), (self.batch_size, self.seq_len, self.d_model)
+            output.size(), (self.batch_size, self.seq_len, self.dim)
         )
 
     def test_attention_outputs(self):

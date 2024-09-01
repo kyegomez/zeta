@@ -76,7 +76,7 @@ This method is particularly useful for generating multiple forecasted sequence p
 The `evaluate_and_select_best_solution()` method evaluates the solutions based on a reward model and returns the best one.
 
 ```python
-def evaluate_and_select_best_solution(self, solutions, reward_model)
+def evaluate_and_select_best_solution(self, solutions, rewardim)
 ```
 
 
@@ -113,7 +113,7 @@ The third example shows generating multiple solutions and selecting the best one
 ```python
 solutions = net.generate_n_solutions(start_tokens, n=5, seqlen=10)
 best_solution = net.evaluate_and_select_best_solution(
-    solutions, reward_model=lambda x: -x.sum()
+    solutions, rewardim=lambda x: -x.sum()
 )
 ```
 In the example above, the reward model simply returns the negative sum of the sequence, and the solution with lowest sum is selected as the best solution.

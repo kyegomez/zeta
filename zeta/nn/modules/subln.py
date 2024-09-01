@@ -10,7 +10,7 @@ class SubLN(nn.Module):
 
     Parameters:
     -----------
-    d_model: int
+    dim: int
         The number of expected features in the input x
     γ: float, optional
         Gain value for weight initialization. Default is 1.0.
@@ -22,21 +22,21 @@ class SubLN(nn.Module):
     import torch
     from zeta.nn.modules import SubLN
 
-    model = SubLN(d_model=512)
+    model = SubLN(dim=512)
     x = torch.randn(10, 512)
     out = model(x)
     print(out)
 
     """
 
-    def __init__(self, d_model, γ=1.0):
+    def __init__(self, dim, γ=1.0):
         super().__init__()
 
         # Define necessary layers and operations
-        self.LN1 = nn.LayerNorm(d_model)
-        self.fin = nn.Linear(d_model, d_model)  # Example layer for fin
-        self.fout = nn.Linear(d_model, d_model)  # Example layer for fout
-        self.LN2 = nn.LayerNorm(d_model)
+        self.LN1 = nn.LayerNorm(dim)
+        self.fin = nn.Linear(dim, dim)  # Example layer for fin
+        self.fout = nn.Linear(dim, dim)  # Example layer for fout
+        self.LN2 = nn.LayerNorm(dim)
 
         # Weight initialization
         self._initialize_weights(γ)
@@ -48,12 +48,12 @@ class SubLN(nn.Module):
         Parameters:
         -----------
         x : torch.Tensor
-            Input tensor of shape [batch_size, d_model]
+            Input tensor of shape [batch_size, dim]
 
         Returns:
         --------
         torch.Tensor
-            Output tensor of shape [batch_size, d_model]
+            Output tensor of shape [batch_size, dim]
 
         """
         return x + self.fout(self.LN2(self.fin(self.LN1(x))))

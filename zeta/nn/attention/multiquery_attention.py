@@ -558,7 +558,7 @@ class MultiHeadAttention(nn.Module):
 
     def __init__(
         self,
-        d_model: int,
+        dim: int,
         heads: int,
         attn_impl: str = "triton",
         clip_qkv: Optional[float] = None,
@@ -576,29 +576,29 @@ class MultiHeadAttention(nn.Module):
         self.clip_qkv = clip_qkv
         self.qk_ln = qk_ln
 
-        self.d_model = d_model
+        self.dim = dim
         self.heads = heads
         self.softmax_scale = softmax_scale
         if self.softmax_scale is None:
-            self.softmax_scale = 1 / math.sqrt(self.d_model / self.heads)
+            self.softmax_scale = 1 / math.sqrt(self.dim / self.heads)
         self.attn_dropout = attn_pdrop
 
         fc_kwargs = {}
         if fc_type != "te":
             fc_kwargs["device"] = device
         self.Wqkv = FC_CLASS_REGISTRY[fc_type](
-            self.d_model,
-            3 * self.d_model,
+            self.dim,
+            3 * self.dim,
             **fc_kwargs,
         )
         # for param init fn; enables shape based init of fused layers
-        fuse_splits = (d_model, 2 * d_model)
+        fuse_splits = (dim, 2 * dim)
         self.Wqkv._fused = (0, fuse_splits)  # type: ignore
 
         if self.qk_ln:
             norm_class = NORM_CLASS_REGISTRY[norm_type.lower()]
-            self.q_ln = norm_class(self.d_model, device=device)
-            self.k_ln = norm_class(self.d_model, device=device)
+            self.q_ln = norm_class(self.dim, device=device)
+            self.k_ln = norm_class(self.dim, device=device)
 
         if self.attn_impl == "flash":
             self.attn_fn = flash_attn_fn
@@ -629,8 +629,8 @@ class MultiHeadAttention(nn.Module):
             raise ValueError(f"{attn_impl=} is an invalid setting.")
 
         self.out_proj = FC_CLASS_REGISTRY[fc_type](
-            self.d_model,
-            self.d_model,
+            self.dim,
+            self.dim,
             **fc_kwargs,
         )
         self.out_proj._is_residual = True  # type: ignore
@@ -688,7 +688,7 @@ class MultiQueryAttention(BaseAttention):
 
     def __init__(
         self,
-        d_model: int,
+        dim: int,
         heads: int,
         attn_impl: str = "torch",
         clip_qkv: Optional[float] = None,
@@ -706,9 +706,9 @@ class MultiQueryAttention(BaseAttention):
         self.clip_qkv = clip_qkv
         self.qk_ln = qk_ln
 
-        self.d_model = d_model
+        self.dim = dim
         self.heads = heads
-        self.head_dim = d_model // heads
+        self.head_dim = dim // heads
         self.softmax_scale = softmax_scale
         if self.softmax_scale is None:
             self.softmax_scale = 1 / math.sqrt(self.head_dim)
@@ -719,17 +719,17 @@ class MultiQueryAttention(BaseAttention):
             fc_kwargs["device"] = device
         # - vchiley
         self.Wqkv = FC_CLASS_REGISTRY[fc_type](
-            d_model,
-            d_model + 2 * self.head_dim,
+            dim,
+            dim + 2 * self.head_dim,
             **fc_kwargs,
         )
         # for param init fn; enables shape based init of fused layers
-        fuse_splits = (d_model, d_model + self.head_dim)
+        fuse_splits = (dim, dim + self.head_dim)
         self.Wqkv._fused = (0, fuse_splits)  # type: ignore
 
         if self.qk_ln:
             norm_class = NORM_CLASS_REGISTRY[norm_type.lower()]
-            self.q_ln = norm_class(d_model, device=device)
+            self.q_ln = norm_class(dim, device=device)
             self.k_ln = norm_class(self.head_dim, device=device)
 
         if self.attn_impl == "flash":
@@ -761,8 +761,8 @@ class MultiQueryAttention(BaseAttention):
             raise ValueError(f"{attn_impl=} is an invalid setting.")
 
         self.out_proj = FC_CLASS_REGISTRY[fc_type](
-            self.d_model,
-            self.d_model,
+            self.dim,
+            self.dim,
             **fc_kwargs,
         )
         self.out_proj._is_residual = True  # type: ignore
@@ -782,7 +782,7 @@ class MultiQueryAttention(BaseAttention):
             qkv = qkv.clamp(min=-self.clip_qkv, max=self.clip_qkv)
 
         query, key, value = qkv.split(
-            [self.d_model, self.head_dim, self.head_dim], dim=2
+            [self.dim, self.head_dim, self.head_dim], dim=2
         )
 
         key_padding_mask = mask

@@ -7,7 +7,7 @@ from zeta.rl.dpo import (
 )
 from zeta.rl.hindsight_replay import HindsightExperienceReplay
 from zeta.rl.language_reward import LanguageReward
-from zeta.rl.reward_model import RewardModel
+from zeta.rl.rewardim import RewardModel
 
 __all__ = [
     "RewardModel",

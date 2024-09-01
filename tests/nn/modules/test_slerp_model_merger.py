@@ -18,9 +18,9 @@ def test_slerp_model_merger_merge():
     model1 = nn.Linear(10, 10)
     model2 = nn.Linear(10, 10)
     merger = SLERPModelMerger(model1, model2, 0.5)
-    merged_model = merger.merge()
-    assert isinstance(merged_model, nn.Module)
-    assert merged_model.state_dict().keys() == model1.state_dict().keys()
+    mergedim = merger.merge()
+    assert isinstance(mergedim, nn.Module)
+    assert mergedim.state_dict().keys() == model1.state_dict().keys()
 
 
 def test_slerp_model_merger_slerp():

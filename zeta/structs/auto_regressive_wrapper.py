@@ -343,10 +343,10 @@ class AutoRegressiveWrapper(nn.Module):
     def evaluate_and_select_best_solution(
         self,
         solutions,
-        reward_model,
+        rewardim,
     ):
         """Evaluate solutions and select the best one."""
-        scores = [reward_model(solution) for solution in solutions]
+        scores = [rewardim(solution) for solution in solutions]
         best_solution_idx = scores.index(max(scores))
         return solutions[best_solution_idx]
 

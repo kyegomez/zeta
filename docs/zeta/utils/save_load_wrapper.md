@@ -90,7 +90,7 @@ my_model = MyModel()
 my_model.save("my_model.pth")
 
 # Load the model checkpoint
-loaded_model = MyModel.load("my_model.pth")
+loadedim = MyModel.load("my_model.pth")
 ```
 
 #### Custom Methods and Hooks <a name="custom-methods-and-hooks"></a>
@@ -171,13 +171,13 @@ class VersionedModel(Module):
 
 
 # Create an instance of VersionedModel
-versioned_model = VersionedModel()
+versionedim = VersionedModel()
 
 # Save the model checkpoint
-versioned_model.save("versioned_model.pth")
+versionedim.save("versionedim.pth")
 
 # Load the model checkpoint with version compatibility check
-loaded_versioned_model = VersionedModel.load("versioned_model.pth")
+loaded_versionedim = VersionedModel.load("versionedim.pth")
 ```
 
 ## 5. Additional Information <a name="additional-information"></a>

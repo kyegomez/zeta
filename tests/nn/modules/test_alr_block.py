@@ -17,7 +17,7 @@ def alrblock_model():
 
 
 @pytest.fixture
-def feedforward_model():
+def feedforwardim():
     return FeedForward(512, 2048, 0.1)
 
 
@@ -27,8 +27,8 @@ def test_feedforward_creation():
     assert isinstance(model, nn.Module)
 
 
-def test_feedforward_forward(sample_input, feedforward_model):
-    output = feedforward_model(sample_input)
+def test_feedforward_forward(sample_input, feedforwardim):
+    output = feedforwardim(sample_input)
     assert output.shape == sample_input.shape
 
 
