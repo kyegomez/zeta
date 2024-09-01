@@ -1,0 +1,321 @@
+site_name: Zeta Docs
+site_url: 'https://zeta.apac.ai'
+site_author: APAC AI
+site_description: >-
+  Create Ultra-Powerful Multi-Modality Models Seamlessly and Efficiently in as
+  minimal lines of code as possible.
+repo_name: kyegomez/zeta
+repo_url: 'https://github.com/kyegomez/zeta'
+edit_uri: 'https://github.com/kyegomez/"zeta/tree/main/docs'
+copyright: APAC Corp 2023. All rights reserved.
+plugins:
+  - glightbox
+  - search
+extra_css:
+  - docs/assets/css/extra.css
+extra:
+  social:
+    - icon: fontawesome/solid/house
+      link: assets/img/zeta-logo.png
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/qUtxnK2NMf
+    - icon: fontawesome/brands/github
+      link: https://github.com/kyegomez/Zeta/
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/Zeta/
+theme:
+  name: material
+  custom_dir: docs/overrides
+  logo: assets/img/zeta-logo.png
+  palette:
+    - scheme: default
+      primary: custom
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: custom
+      accent: light blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - content.code.copy
+    - content.code.annotate
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - announce.dismiss
+  font:
+    text: Roboto
+    code: Roboto Mono
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - admonition
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tabbed
+  - tables
+  - def_list
+  - footnotes
+nav:
+  - Home:
+    - Overview: "index.md"
+    - Contributing: "contributing.md"
+  - Zeta:
+      - Overview: "zeta/index.md"
+      - zeta.nn:
+          - zeta.nn.biases:
+              - Xpos: "zeta/nn/biases/xpos.md"
+              - RelativePositionBias: "zeta/nn/biases/relative_bias.md"
+              - AlibiPositionalBias: "zeta/nn/biases/alibi.md"
+              - DynamicPositionBias: "zeta/nn/biases/dynamic.md"
+          - zeta.nn.embeddings:
+              - MultiWay: "zeta/nn/embeddings/multiway.md"
+              - RotaryEmbeddings: "zeta/nn/embeddings/rope.md"
+              - TruncatedRotaryEmbedding: "zeta/nn/embeddings/truncated_rope.md"
+              - PositionalEmbedding: "zeta/nn/embeddings/positional_embeddings.md"
+              - XPOS: "zeta/nn/embeddings/xpos.md"
+              - YarnEmbedding: "zeta/nn/embeddings/yarn.md"
+              - VisionEmbedding: "zeta/nn/embeddings/vis_emb.md"
+              - SinusoidalEmbeddings: "zeta/nn/embeddings/sinusoidal.md"
+              - PatchEmbeddings: "zeta/nn/embeddings/patch_embeddings.md"
+              - PositionInterpolationEmbeddings: "zeta/nn/embeddings/positional_interpolation.md"
+          - zeta.nn.modules:
+              - custom_mlp: "zeta/nn/modules/custom_mlp.md"
+              - mbconv: "zeta/nn/modules/mbconv.md"
+              - dynamicroutingblock: "zeta/nn/modules/dynamicroutingblock.md"
+              - clippedgeluactivation: "zeta/nn/modules/clippedgeluactivation.md"
+              - mambablock: "zeta/nn/modules/mambablock.md"
+              - vittransformerblock: "zeta/nn/modules/vittransformerblock.md"
+              - fuseddensegeludense: "zeta/nn/modules/fuseddensegeludense.md"
+              - pscan: "zeta/nn/modules/pscan.md"
+              - adaptive: "zeta/nn/modules/adaptive.md"
+              - filmconditioning: "zeta/nn/modules/filmconditioning.md"
+              - mmfusionffn: "zeta/nn/modules/mmfusionffn.md"
+              - quickgeluactivation: "zeta/nn/modules/quickgeluactivation.md"
+              - gatedresidualblock: "zeta/nn/modules/gatedresidualblock.md"
+              - highwaylayer: "zeta/nn/modules/highwaylayer.md"
+              - multimodalmambablock: "zeta/nn/modules/multimodalmambablock.md"
+              - rms_norm: "zeta/nn/modules/rms_norm.md"
+              - ssm: "zeta/nn/modules/ssm.md"
+              - dualpathblock: "zeta/nn/modules/dualpathblock.md"
+              - topngating: "zeta/nn/modules/topngating.md"
+              - mmlayernorm: "zeta/nn/modules/mmlayernorm.md"
+              - mm_adapter: "zeta/nn/modules/mm_adapter.md"
+              - laplaceactivation: "zeta/nn/modules/laplaceactivation.md"
+              - nfnstem: "zeta/nn/modules/nfnstem.md"
+              - laser: "zeta/nn/modules/laser.md"
+              - denseblock: "zeta/nn/modules/denseblock.md"
+              - depthwiseconv2d: "zeta/nn/modules/depthwiseconv2d.md"
+              - lora: "zeta/nn/modules/lora.md"
+              - vlayernorm: "zeta/nn/modules/vlayernorm.md"
+              - flexiconv: "zeta/nn/modules/flexiconv.md"
+              - pulsar: "zeta/nn/modules/pulsar.md"
+              - pool: "zeta/nn/modules/pool.md"
+              - time_up_sample: "zeta/nn/modules/time_up_sample.md"
+              - spatial_downsample: "zeta/nn/modules/spatial_downsample.md"
+              - parallel: "zeta/nn/modules/parallel.md"
+              - conv2dfeedforward: "zeta/nn/modules/conv2dfeedforward.md"
+              - video_autoencoder: "zeta/nn/modules/video_autoencoder.md"
+              - recursiveblock: "zeta/nn/modules/recursiveblock.md"
+              - relusquaredactivation: "zeta/nn/modules/relusquaredactivation.md"
+              - fastgeluactivation: "zeta/nn/modules/fastgeluactivation.md"
+              - token_learner: "zeta/nn/modules/token_learner.md"
+              - layernorm: "zeta/nn/modules/layernorm.md"
+              - averagemodelmerger: "zeta/nn/modules/averagemodelmerger.md"
+              - linearactivation: "zeta/nn/modules/linearactivation.md"
+              - stochdepth: "zeta/nn/modules/stochdepth.md"
+              - expert: "zeta/nn/modules/expert.md"
+              - siglip: "zeta/nn/modules/siglip.md"
+              - ether: "zeta/nn/modules/ether.md"
+              - newgeluactivation: "zeta/nn/modules/newgeluactivation.md"
+              - pytorchgelutanh: "zeta/nn/modules/pytorchgelutanh.md"
+              - multiscaleblock: "zeta/nn/modules/multiscaleblock.md"
+              - umambablock: "zeta/nn/modules/umambablock.md"
+              - film: "zeta/nn/modules/film.md"
+              - adaptive_conv: "zeta/nn/modules/adaptive_conv.md"
+              - fused_dropout_layernorm: "zeta/nn/modules/fused_dropout_layernorm.md"
+              - accurategeluactivation: "zeta/nn/modules/accurategeluactivation.md"
+              - exo: "zeta/nn/modules/exo.md"
+              - polymorphic_activation: "zeta/nn/modules/polymorphic_activation.md"
+              - fusedprojsoftmax: "zeta/nn/modules/fusedprojsoftmax.md"
+              - quantizedln: "zeta/nn/modules/quantizedln.md"
+              - postnorm: "zeta/nn/modules/postnorm.md"
+              - moerouter: "zeta/nn/modules/moerouter.md"
+              - geluactivation: "zeta/nn/modules/geluactivation.md"
+              - visionattention: "zeta/nn/modules/visionattention.md"
+              - fused_gelu_dense: "zeta/nn/modules/fused_gelu_dense.md"
+              - feedforward: "zeta/nn/modules/feedforward.md"
+              - wsconv2d: "zeta/nn/modules/wsconv2d.md"
+              - mlp: "zeta/nn/modules/mlp.md"
+              - slerpmodelmerger: "zeta/nn/modules/slerpmodelmerger.md"
+              - fuseddropoutlayernorm: "zeta/nn/modules/fuseddropoutlayernorm.md"
+              - tripleskipblock: "zeta/nn/modules/tripleskipblock.md"
+              - dm: "zeta/nn/modules/dm.md"
+              - feedbackblock: "zeta/nn/modules/feedbackblock.md"
+              - mixtureofexperts: "zeta/nn/modules/mixtureofexperts.md"
+              - mamba: "zeta/nn/modules/mamba.md"
+              - perceiverlayer: "zeta/nn/modules/perceiverlayer.md"
+              - mishactivation: "zeta/nn/modules/mishactivation.md"
+              - hebbian: "zeta/nn/modules/hebbian.md"
+              - simple_feedback: "zeta/nn/modules/simple_feedback.md"
+              - visual_expert: "zeta/nn/modules/visual_expert.md"
+              - stochasticskipblock: "zeta/nn/modules/stochasticskipblock.md"
+              - unet: "zeta/nn/modules/unet.md"
+          - zeta.nn.attention:
+              - FlashAttention: "zeta/nn/attention/flash_attention.md"
+              - MultiQueryAttention: "zeta/nn/attention/multiquery.md"
+              - MultiheadAttention: "zeta/nn/attention/multihead.md"
+              - FlashAttentionTwo: "zeta/nn/attention/flash2.md"
+              - BaseAttention: "zeta/nn/attention/base.md"
+              - LocalAttention: "zeta/nn/attention/local.md"
+              - LocalMHA: "zeta/nn/attention/localmha.md"
+              - MixtureOfAttention: "zeta/nn/attention/mixture_of_attention.md"
+              - MixtureOfAutoregressiveAttention: "zeta/nn/attention/mixture_of_attention_ar.md"
+              - SparseAttention: "zeta/nn/attention/sparse_attn.md"
+      - zeta.tokenizers:
+          - Language:
+            - LanguageTokenizerGPTX: "zeta/tokenizers/language_tokenizer.md"
+            - SentencePieceTokenizer: "zeta/tokenizers/sentencepiece.md"
+            - TokenMonster: "zeta/tokenizers/token_monster.md"
+          - MultiModal:
+            - MultiModalTokenizer: "zeta/tokenizers/multi_modal_tokenizer.md"
+      - zeta.utils:
+          - Misc:
+            - cast_tuple: "zeta/utils/cast_tuple.md"
+            - group_by_key_prefix: "zeta/utils/group_by_key_prefix.md"
+            - eval_decorator: "zeta/utils/eval_decorator.md"
+            - print_cuda_memory_usage: "zeta/utils/print_cuda_memory_usage.md"
+            - once: "zeta/utils/once.md"
+            - default: "zeta/utils/default.md"
+            - gumbel_noise: "zeta/utils/gumbel_noise.md"
+            - pad_at_dim: "zeta/utils/pad_at_dim.md"
+            - init_zero_: "zeta/utils/init_zero_.md"
+            - top_p: "zeta/utils/top_p.md"
+            - cast_if_src_dtype: "zeta/utils/cast_if_src_dtype.md"
+            - disable_warnings_and_logs: "zeta/utils/disable_warnings_and_logs.md"
+            - save_load_wrapper: "zeta/utils/save_load_wrapper.md"
+            - get_sinusoid_encoding_table: "zeta/utils/get_sinusoid_encoding_table.md"
+            - main: "zeta/utils/main.md"
+            - string_begins_with: "zeta/utils/string_begins_with.md"
+            - gif_to_tensor: "zeta/utils/gif_to_tensor.md"
+            - l2norm: "zeta/utils/l2norm.md"
+            - save_load: "zeta/utils/save_load.md"
+            - log: "zeta/utils/log.md"
+            - module_device: "zeta/utils/module_device.md"
+            - print_num_params: "zeta/utils/print_num_params.md"
+            - top_a: "zeta/utils/top_a.md"
+            - interpolate_pos_encoding_2d: "zeta/utils/interpolate_pos_encoding_2d.md"
+            - exists: "zeta/utils/exists.md"
+            - cosine_beta_schedule: "zeta/utils/cosine_beta_schedule.md"
+            - track_cuda_memory: "zeta/utils/track_cuda_memory.md"
+            - maybe: "zeta/utils/maybe.md"
+            - save_memory_snapshot: "zeta/utils/save_memory_snapshot.md"
+            - top_k: "zeta/utils/top_k.md"
+            - print_main: "zeta/utils/print_main.md"
+            - pick_and_pop: "zeta/utils/pick_and_pop.md"
+            - track_cuda_memory_usage: "zeta/utils/track_cuda_memory_usage.md"
+            - group_dict_by_key: "zeta/utils/group_dict_by_key.md"
+            - video_tensor_to_gift: "zeta/utils/video_tensor_to_gift.md"
+      - zeta.ops:
+          - Misc:
+            - img_compose_decompose: "zeta/ops/img_compose_decompose.md"
+            - img_transpose_2daxis: "zeta/ops/img_transpose_2daxis.md"
+            - img_transpose: "zeta/ops/img_transpose.md"
+            - img_order_of_axes: "zeta/ops/img_order_of_axes.md"
+            - mos: "zeta/ops/mos.md"
+            - merge_small_dims: "zeta/ops/merge_small_dims.md"
+            - multi_dim_cat: "zeta/ops/multi_dim_cat.md"
+            - img_compose_bw: "zeta/ops/img_compose_bw.md"
+            - squeeze_2d_new: "zeta/ops/squeeze_2d_new.md"
+            - temp_softmax: "zeta/ops/temp_softmax.md"
+            - gumbelmax: "zeta/ops/gumbelmax.md"
+            - _matrix_inverse_root_newton: "zeta/ops/_matrix_inverse_root_newton.md"
+            - compute_matrix_root_inverse_residuals: "zeta/ops/compute_matrix_root_inverse_residuals.md"
+            - matrix_root_diagonal: "zeta/ops/matrix_root_diagonal.md"
+            - sparse_softmax: "zeta/ops/sparse_softmax.md"
+            - reshape_audio_to_text: "zeta/ops/reshape_audio_to_text.md"
+            - local_softmax: "zeta/ops/local_softmax.md"
+            - softmaxes: "zeta/ops/softmaxes.md"
+            - _matrix_root_eigen: "zeta/ops/_matrix_root_eigen.md"
+            - main: "zeta/ops/main.md"
+            - norm_exp_softmax: "zeta/ops/norm_exp_softmax.md"
+            - multi_dim_split: "zeta/ops/multi_dim_split.md"
+            - img_width_to_height: "zeta/ops/img_width_to_height.md"
+            - fast_softmax: "zeta/ops/fast_softmax.md"
+            - standard_softmax: "zeta/ops/standard_softmax.md"
+            - unitwise_norm: "zeta/ops/unitwise_norm.md"
+            - reshape_video_to_text: "zeta/ops/reshape_video_to_text.md"
+            - img_decompose: "zeta/ops/img_decompose.md"
+            - unsqueeze_2d_new: "zeta/ops/unsqueeze_2d_new.md"
+            - reshape_img_to_text: "zeta/ops/reshape_img_to_text.md"
+            - channel_shuffle_new: "zeta/ops/channel_shuffle_new.md"
+            - matrix_inverse_root: "zeta/ops/matrix_inverse_root.md"
+            - sparsemax: "zeta/ops/sparsemax.md"
+            - gram_matrix_new: "zeta/ops/gram_matrix_new.md"
+            - logit_scaled_softmax: "zeta/ops/logit_scaled_softmax.md"
+            - selu_softmax: "zeta/ops/selu_softmax.md"
+            - reshape_text_to_img: "zeta/ops/reshape_text_to_img.md"
+      - zeta.optim:
+          - Optimizers:
+            - StableAdamWUnfused: "zeta/optims/adamw.md"
+            - GradientAscent: "zeta/optims/ga.md"
+            - DecoupledLionW: "zeta/training/optimizers/decoupled_lion.md"
+            - SophiaG: "zeta/training/optimizers/sophia.md"
+      - zeta.training:
+          - Training:
+            - fsdp: "zeta/training/fsdp.md"
+            - ParallelWrapper: "zeta/training/parallel_wrapper.md"
+            - train: "zeta/training/train.md"
+      - zeta.models:
+          - Language and MultiModal:
+            - vit: "zeta/models/vit.md"
+            - gpt4multimodal: "zeta/models/gpt4multimodal.md"
+            - maxvit: "zeta/models/maxvit.md"
+            - llama2: "zeta/models/llama2.md"
+            - gpt4: "zeta/models/gpt4.md"
+            - andromeda: "zeta/models/andromeda.md"
+            - basemodel: "zeta/models/basemodel.md"
+            - palme: "zeta/models/palme.md"
+            - megavit: "zeta/models/megavit.md"
+            - navit: "zeta/models/navit.md"
+      - zeta.structs:
+          - Structures:
+            - Decoder: "zeta/nn/architecture/decoder.md"
+            - Transformer: "zeta/nn/architecture/transformer.md"
+            - TransformerBlock: "zeta/nn/architecture/transformerblock.md"
+            - paralleltransformerblock: "paralleltransformerblock.md"
+            - hierarchicalblock: "hierarchicalblock.md"
+            - vitransformerwrapper: "vitransformerwrapper.md"
+            - localtransformer: "localtransformer.md"
+            - AutoRegressiveWrapper: "AutoRegressiveWrapper.md"
+            - simpletransformer: "simpletransformer.md"
+            - encoder: "encoder.md"
+            - encoderdecoder: "encoderdecoder.md"
+      - zeta.quant:
+          - Quantization Algorithms:
+            - QUIK: "zeta/quant/quik.md"
+            - BitLinear: "zeta/quant/bitlinear.md"
+            - niva: "zeta/quant/niva.md"
+      - zeta.rl:
+          - Reinforcement Learning:
+            - DPO: "zeta/rl/dpo.md"
+  # - Examples:
+  #   - Overview: "examples/index.md"
+  #   - PytorchCS: "examples/torch_cs.md"
+  # - Corporate:
+  #   - Overview: "corporate/main.md"
+  #   - Product:
+  #     - Overview: "zeta/product/product_ideas.md"
+  #     - Zetahub: "zeta/product/zetahub.md"
+  #     - Growth: "corporate/growth.md"
+  #     - ZetaCloud: "corporate/zeta_cloud.md"
+  # - Blog:
+  #   - Introduction: "blog/introduction_to_zeta.md"
