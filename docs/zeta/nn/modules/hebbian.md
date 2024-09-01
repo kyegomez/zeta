@@ -34,7 +34,7 @@ class BasicHebbianGRUModel(nn.Module):
     A basic Hebbian learning model combined with a GRU for text-based tasks.
 
     Parameters:
-    - input_dim (int): Dimension of the input features.
+    - dim (int): Dimension of the input features.
     - hidden_dim (int): Dimension of the hidden state in the GRU.
     - output_dim (int): Dimension of the output features.
     """
@@ -42,7 +42,7 @@ class BasicHebbianGRUModel(nn.Module):
 
 The `BasicHebbianGRUModel` class has the following attributes and methods:
 
-- `input_dim` (int): Dimension of the input features.
+- `dim` (int): Dimension of the input features.
 - `hidden_dim` (int): Dimension of the hidden state in the GRU.
 - `output_dim` (int): Dimension of the output features.
 
@@ -53,10 +53,10 @@ The `BasicHebbianGRUModel` class has the following attributes and methods:
 To create an instance of the `BasicHebbianGRUModel`, you need to specify the dimensions of input, hidden state, and output features. Here's how you can initialize the model:
 
 ```python
-input_dim = 512  # Dimension of the input features
+dim = 512  # Dimension of the input features
 hidden_dim = 256  # Dimension of the hidden state in the GRU
 output_dim = 128  # Dimension of the output features
-model = BasicHebbianGRUModel(input_dim, hidden_dim, output_dim)
+model = BasicHebbianGRUModel(dim, hidden_dim, output_dim)
 ```
 
 ---
@@ -73,7 +73,7 @@ The forward pass of the model processes input data through several stages:
 Here's how to perform a forward pass:
 
 ```python
-# Assuming input_tensor is a 3D tensor of shape (B, Seqlen, input_dim)
+# Assuming input_tensor is a 3D tensor of shape (B, Seqlen, dim)
 output = model(input_tensor)
 ```
 
@@ -84,16 +84,16 @@ output = model(input_tensor)
 ### Example 1: Model Initialization
 
 ```python
-input_dim = 512
+dim = 512
 hidden_dim = 256
 output_dim = 128
-model = BasicHebbianGRUModel(input_dim, hidden_dim, output_dim)
+model = BasicHebbianGRUModel(dim, hidden_dim, output_dim)
 ```
 
 ### Example 2: Forward Pass
 
 ```python
-# Assuming input_tensor is a 3D tensor of shape (B, Seqlen, input_dim)
+# Assuming input_tensor is a 3D tensor of shape (B, Seqlen, dim)
 output = model(input_tensor)
 ```
 

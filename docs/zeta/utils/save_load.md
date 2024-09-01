@@ -67,9 +67,9 @@ from zeta.utils import save_load
 @save_load()
 class MyModel(Module):
 
-    def __init__(self, input_dim, output_dim):
+    def __init__(self, dim, output_dim):
         super().__init__()
-        self.layer = Linear(input_dim, output_dim)
+        self.layer = Linear(dim, output_dim)
 
     def forward(self, x):
         return self.layer(x)

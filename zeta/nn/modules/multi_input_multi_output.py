@@ -154,7 +154,7 @@ class DynamicOutputDecoder(nn.Module):
     Decoder module for dynamic output.
 
     Args:
-        input_dim (int): The input dimension.
+        dim (int): The input dimension.
         robot_count (int): The number of robots.
 
     Attributes:
@@ -162,10 +162,10 @@ class DynamicOutputDecoder(nn.Module):
 
     """
 
-    def __init__(self, input_dim, robot_count):
+    def __init__(self, dim, robot_count):
         super().__init__()
         self.decoders = nn.ModuleList(
-            [nn.Linear(input_dim, input_dim) for _ in range(robot_count)]
+            [nn.Linear(dim, dim) for _ in range(robot_count)]
         )
 
     def forward(self, x):
@@ -188,7 +188,7 @@ class DynamicInputChannels(nn.Module):
 
     Args:
         num_robots (int): The number of robots.
-        input_dim (int): The input dimension.
+        dim (int): The input dimension.
         output_dim (int): The output dimension.
 
     Attributes:
@@ -199,10 +199,10 @@ class DynamicInputChannels(nn.Module):
 
     """
 
-    def __init__(self, num_robots, input_dim, output_dim):
+    def __init__(self, num_robots, dim, output_dim):
         super().__init__()
         self.layers = nn.ModuleList(
-            [nn.Linear(input_dim, output_dim) for _ in range(num_robots)]
+            [nn.Linear(dim, output_dim) for _ in range(num_robots)]
         )
 
     def forward(self, x):
@@ -216,7 +216,7 @@ class OutputDecoders(nn.Module):
 
     Args:
         num_robots (int): The number of robots.
-        input_dim (int): The input dimension.
+        dim (int): The input dimension.
         output_dim (int): The output dimension.
 
     Attributes:
@@ -227,10 +227,10 @@ class OutputDecoders(nn.Module):
 
     """
 
-    def __init__(self, num_robots, input_dim, output_dim):
+    def __init__(self, num_robots, dim, output_dim):
         super().__init__()
         self.decoders = nn.ModuleList(
-            [nn.Linear(input_dim, output_dim) for _ in range(num_robots)]
+            [nn.Linear(dim, output_dim) for _ in range(num_robots)]
         )
 
     def forward(self, x):

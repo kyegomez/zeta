@@ -52,7 +52,7 @@ def test_embedding_layers():
 
 
 # Test case for different input dimensions
-def test_different_input_dimensions():
+def test_different_dimensions():
     dim_in = 3
     dim_out = 4
     seq_len = 5
@@ -63,7 +63,7 @@ def test_different_input_dimensions():
 
 
 # Test case for large input dimensions
-def test_large_input_dimensions():
+def test_large_dimensions():
     dim_in = 256
     dim_out = 512
     seq_len = 16

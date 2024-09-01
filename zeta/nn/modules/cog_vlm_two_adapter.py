@@ -10,17 +10,17 @@ class CogVLMTwoAdapter(nn.Module):
     with linguistic representations using a 1D convolutional layer followed by a SwiGLU module.
     """
 
-    def __init__(self, input_dim: int):
+    def __init__(self, dim: int):
         """
         Initialize the CogVLMTwoAdapter module.
 
         Args:
-            input_dim (int): The dimension of the input features.
+            dim (int): The dimension of the input features.
         """
         super(CogVLMTwoAdapter, self).__init__()
         self.conv = nn.Conv1d(
-            in_channels=input_dim,
-            out_channels=input_dim,
+            in_channels=dim,
+            out_channels=dim,
             kernel_size=2,
             stride=2,
         )
@@ -31,18 +31,18 @@ class CogVLMTwoAdapter(nn.Module):
         Forward pass of the CogVLMTwoAdapter module.
 
         Args:
-            x (torch.Tensor): The input tensor of shape (batch_size, sequence_length, input_dim).
+            x (torch.Tensor): The input tensor of shape (batch_size, sequence_length, dim).
 
         Returns:
             torch.Tensor: The output tensor after applying the 1D convolution and SwiGLU module.
         """
-        # Rearrange input tensor to match the expected input shape for Conv1d (batch, input_dim, sequence_length)
+        # Rearrange input tensor to match the expected input shape for Conv1d (batch, dim, sequence_length)
         x = rearrange(x, "b s d -> b d s")
 
         # Apply the convolution
         x = self.conv(x)
 
-        # Rearrange back to (batch, sequence_length, input_dim)
+        # Rearrange back to (batch, sequence_length, dim)
         x = rearrange(x, "b d s -> b s d")
 
         # Apply SwiGLU module
@@ -55,5 +55,5 @@ class CogVLMTwoAdapter(nn.Module):
 # if __name__ == "__main__":
 #     # Example input (batch, sequence_length, dimension)
 #     x = torch.randn(2, 4, 3)  # Adjust these dimensions as needed
-#     model = CogVLMTwoAdapter(input_dim=3)
+#     model = CogVLMTwoAdapter(dim=3)
 #     print(model(x).shape)

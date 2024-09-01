@@ -7,7 +7,7 @@ def audio_to_text(x: Tensor, seqlen: int, dim: int, norm: bool = True):
     Reshapes and projects the audio input tensor to text representation.
 
     Args:
-        x (Tensor): Input audio tensor of shape (batch_size, sequence_length, input_dim).
+        x (Tensor): Input audio tensor of shape (batch_size, sequence_length, dim).
         seqlen (int): Length of the output sequence.
         dim (int): Dimension of the projected audio tensor.
         norm (bool, optional): Whether to apply layer normalization. Defaults to True.

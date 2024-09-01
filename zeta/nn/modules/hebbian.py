@@ -12,7 +12,7 @@ class BasicHebbianGRUModel(nn.Module):
     introducing non-linearity.
 
     Parameters:
-    - input_dim: Dimension of the input features.
+    - dim: Dimension of the input features.
     - hidden_dim: Dimension of the hidden state in the GRU.
     - output_dim: Dimension of the output features.
 
@@ -20,17 +20,17 @@ class BasicHebbianGRUModel(nn.Module):
     GRU, and finally applies a ReLU activation.
     """
 
-    def __init__(self, input_dim, hidden_dim, output_dim):
+    def __init__(self, dim, hidden_dim, output_dim):
         """
         Initializes the Basic Hebbian GRU model.
 
         Args:
-        - input_dim: Dimension of the input features.
+        - dim: Dimension of the input features.
         - hidden_dim: Dimension of the hidden state in the GRU.
         - output_dim: Dimension of the output features.
         """
         super().__init__()
-        self.weights = nn.Parameter(torch.randn(input_dim, hidden_dim))
+        self.weights = nn.Parameter(torch.randn(dim, hidden_dim))
         self.gru = nn.GRU(hidden_dim, hidden_dim, batch_first=True)
         self.fc = nn.Linear(hidden_dim, output_dim)
 
@@ -39,7 +39,7 @@ class BasicHebbianGRUModel(nn.Module):
         Forward pass of the model.
 
         Args:
-        - x: Input tensor of shape (B, Seqlen, input_dim)
+        - x: Input tensor of shape (B, Seqlen, dim)
 
         Returns:
         - Output tensor of shape (B, Seqlen, output_dim)
@@ -59,10 +59,10 @@ class BasicHebbianGRUModel(nn.Module):
 
 
 # # Example usage
-input_dim = 512  # Dimension of the input features
+dim = 512  # Dimension of the input features
 hidden_dim = 256  # Dimension of the hidden state in the GRU
 output_dim = 128  # Dimension of the output features
-model = BasicHebbianGRUModel(input_dim, hidden_dim, output_dim)
+model = BasicHebbianGRUModel(dim, hidden_dim, output_dim)
 
 x = torch.randn(1, 512, 512)
 output = model(x)
