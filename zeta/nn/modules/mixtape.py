@@ -19,9 +19,7 @@ class Mixtape(nn.Module):
         self.b = nn.Parameter(torch.randn(self.vocab_size, self.num_gates))
 
         # Parameters for context embeddings
-        self.H = nn.Parameter(
-            torch.randn(self.num_gates, self.dim, self.d1)
-        )
+        self.H = nn.Parameter(torch.randn(self.num_gates, self.dim, self.d1))
 
         # Token embeddings (not specified in the abstract, assuming needed)
         self.token_embeddings = nn.Parameter(

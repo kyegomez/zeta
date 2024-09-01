@@ -120,7 +120,7 @@ class HyperAttentionmPLUGOwlBlock(nn.Module):
         Returns:
             Tensor: The output tensor.
         """
-        n = img.shape[1]
+        img.shape[1]
         img = self.norm(img)
         text = self.norm(text)
 
