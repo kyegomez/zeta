@@ -82,7 +82,7 @@ model = MyModel(32, 10)
 model.save("model.pt")
 
 # Load your model
-loaded_model = MyModel.load("model.pt")
+loadedim = MyModel.load("model.pt")
 ```
 
 ### Example 2:  Using the `save_load` with non-default arguments

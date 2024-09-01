@@ -327,8 +327,8 @@ model = YourModelClass()
 # Quantize the model dynamically, specifying layers to quantize
 niva(
     model=model,
-    model_path="path_to_pretrained_model_weights.pt",
-    output_path="quantized_model.pt",
+    model_path="path_to_pretrainedim_weights.pt",
+    output_path="quantizedim.pt",
     quant_type="dynamic",
     quantize_layers=[nn.Linear, nn.Conv2d],
     dtype=torch.qint8,

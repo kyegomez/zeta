@@ -16,13 +16,13 @@ class CLIPVisionTower(nn.Module):
         self.select_feature = getattr(args, "mm_vision_select_feature", "patch")
 
         if not delay_load:
-            self.load_model()
+            self.loadim()
         else:
             self.cfg_only = CLIPVisionConfig.from_pretrained(
                 self.vision_tower_name
             )
 
-    def load_model(self):
+    def loadim(self):
         self.image_processor = CLIPImageProcessor.from_pretrained(
             self.vision_tower_name
         )

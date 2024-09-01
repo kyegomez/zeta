@@ -25,8 +25,8 @@ class SLERPModelMerger(nn.Module):
     model4 = nn.Linear(10, 10)
 
     merge = SLERPModelMerger(model1, model2, 0.5)
-    merged_model = merge.merge()
-    print(merged_model.state_dict())
+    mergedim = merge.merge()
+    print(mergedim.state_dict())
     """
 
     @enforce_types
@@ -48,14 +48,14 @@ class SLERPModelMerger(nn.Module):
         Returns:
             nn.Module: A new model with merged weights.
         """
-        merged_model = self._copy_model_structure(self.model1)
+        mergedim = self._copy_model_structure(self.model1)
 
         # Get the state dicts of both models
         state_dict1 = self.model1.state_dict()
         state_dict2 = self.model2.state_dict()
 
         # Init a state dict for the merged model
-        merged_state_dict = merged_model.state_dict()
+        merged_state_dict = mergedim.state_dict()
 
         for key in merged_state_dict.keys():
             # Perform WELP for each parameter
@@ -64,8 +64,8 @@ class SLERPModelMerger(nn.Module):
             merged_state_dict[key] = self._slerp(w1, w2, self.t)
 
         # Load the mergd state dict into the new model
-        merged_model.load_state_dict(merged_state_dict)
-        return merged_model
+        mergedim.load_state_dict(merged_state_dict)
+        return mergedim
 
     @staticmethod
     @enforce_types
@@ -119,5 +119,5 @@ class SLERPModelMerger(nn.Module):
 # model4 = nn.Linear(10, 10)
 
 # merge = SLERPModelMerger(model1, model2, 0.5)
-# merged_model = merge.merge()
-# print(merged_model.state_dict())
+# mergedim = merge.merge()
+# print(mergedim.state_dict())

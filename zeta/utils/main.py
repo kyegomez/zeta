@@ -434,7 +434,7 @@ class ResnetBlock(nn.Module):
         return h + self.res_conv(x)
 
 
-def load_model(path):
+def loadim(path):
     with open(path, "rb") as f:
         return torch.load(
             f, map_location=torch.device("cpu"), weights_only=True

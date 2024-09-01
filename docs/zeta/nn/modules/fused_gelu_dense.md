@@ -117,7 +117,7 @@ import torch
 from zeta.nn import FusedDenseGELUDense
 
 # Create an instance of FusedDenseGELUDense with quantization
-quantized_model = FusedDenseGELUDense(
+quantizedim = FusedDenseGELUDense(
     dim=512, dim_out=1024, has_fp16_weights=True, threshold=4.0
 )
 
@@ -125,7 +125,7 @@ quantized_model = FusedDenseGELUDense(
 x = torch.randn(1, 512)
 
 # Forward pass with quantization
-out = quantized_model(x)
+out = quantizedim(x)
 ```
 
 ## 7. Additional Information <a name="additional-information"></a>

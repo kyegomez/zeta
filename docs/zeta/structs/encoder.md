@@ -33,9 +33,9 @@ from zeta.structs import AttentionLayers
 
 
 class MyEncoder(AttentionLayers):
-    def __init__(self, d_model, nhead, num_layers):
-        super().__init__(d_model=d_model, nhead=nhead, num_layers=num_layers)
-        self.linear = nn.Linear(d_model, d_model)
+    def __init__(self, dim, nhead, num_layers):
+        super().__init__(dim=dim, nhead=nhead, num_layers=num_layers)
+        self.linear = nn.Linear(dim, dim)
 
     def forward(self, x):
         x = super().forward(x)
@@ -47,16 +47,16 @@ We built a custom encoder by extending the AttentionLayers, added a linear layer
 
 Firstly, let's initialize the model:
 ```python
-model = MyEncoder(d_model=512, nhead=8, num_layers=6)
+model = MyEncoder(dim=512, nhead=8, num_layers=6)
 ```
-The model is initialized with the dimensions of model `d_model=512`, number of heads `nhead=8`, and the number of layers `num_layers=6`.
+The model is initialized with the dimensions of model `dim=512`, number of heads `nhead=8`, and the number of layers `num_layers=6`.
 
 Now, let's define some dummy input data and pass it through the model:
 
 ```python
 import torch
 
-x = torch.randn(10, 32, 512)  # (sequence_length, batch_size, d_model)
+x = torch.randn(10, 32, 512)  # (sequence_length, batch_size, dim)
 output = model(x)  # forward pass
 print(output.shape)  # torch.Size([10, 32, 512])
 ```

@@ -9,7 +9,7 @@ class PositionalEmbedding(nn.Embedding):
 
 
     Args:
-        d_model (int): Dimension of the model.
+        dim (int): Dimension of the model.
         max_len (int): Maximum length of the input sequence.
         padding_idx (int, optional): Index of the padding token. Defaults to 0.
         scale_grad_by_freq (bool, optional): If True, scale gradients by frequency. Defaults to False.

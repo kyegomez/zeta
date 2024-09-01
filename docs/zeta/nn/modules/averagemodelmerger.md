@@ -19,8 +19,8 @@ class AverageModelMerger:
     model2 = nn.Linear(in_features=10, out_features=10)
     model3 = nn.Linear(in_features=10, out_features=10)
     merge = AverageModelMerger([model1, model2, model3])
-    merged_model = merge.merge_models()
-    print(merged_model)
+    mergedim = merge.merge_models()
+    print(mergedim)
     """
 ```
 
@@ -80,10 +80,10 @@ model3 = nn.Linear(in_features=10, out_features=10)
 merger = AverageModelMerger([model1, model2, model3])
 
 # Merge models
-merged_model = merger.merge_models()
+mergedim = merger.merge_models()
 
 # Print merged model
-print(merged_model)
+print(mergedim)
 ```
 
 ### Example 2
@@ -101,10 +101,10 @@ model3 = nn.Conv2d(3, 6, 5)
 merger = AverageModelMerger([model1, model2, model3])
 
 # Merge models
-merged_model = merger.merge_models()
+mergedim = merger.merge_models()
 
 # Print merged model
-print(merged_model)
+print(mergedim)
 ```
 
 ### Example 3
@@ -122,10 +122,10 @@ model3 = nn.CrossEntropyLoss()
 merger = AverageModelMerger([model1, model2, model3])
 
 # Merge models
-merged_model = merger.merge_models()
+mergedim = merger.merge_models()
 
 # Print merged model
-print(merged_model)
+print(mergedim)
 ```
 
 All the examples above demonstrate the basic usage of this class. In cases where you have multiple trained models (e.g., resultant from a k-fold cross-validation or models trained on different datasets), you can use this class to merge or average their weights. The resultant model will carry averaged weights, giving a balanced representation of all the models.

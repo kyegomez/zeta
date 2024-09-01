@@ -66,7 +66,7 @@ class AudioEncoder(nn.Module):
         )
 
         transformer_encoder_layer = TransformerEncoderLayer(
-            d_model=cnn_channels * 8,
+            dim=cnn_channels * 8,
             nhead=nhead,
             dim_feedforward=dim_feedforward,
         )

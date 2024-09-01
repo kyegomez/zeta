@@ -258,10 +258,10 @@ def Trainer(
     accelerator.print(f"Saving model to {output_dir}")
     if output_dir is not None:
         accelerator.wait_for_everyone()
-        unwrapped_model = accelerator.unwrap_model(model)
+        unwrappedim = accelerator.unwrap_model(model)
         with accelerator.main_process_first():
             accelerator.save(
-                unwrapped_model.state_dict(),
+                unwrappedim.state_dict(),
                 f"{output_dir}/final/final_model.pt",
             )
 

@@ -599,7 +599,7 @@ output = resnet_block(x, time_emb=time_emb)
 print(output.shape)
 ```
 
-## Function: load_model(path)
+## Function: loadim(path)
 Load a model from a file.
 
 ### Parameters:
@@ -610,9 +610,9 @@ Load a model from a file.
 
 ### Example:
 ```python
-from zeta.utils.main import load_model
+from zeta.utils.main import loadim
 
-model = load_model("model_checkpoint.pth")
+model = loadim("model_checkpoint.pth")
 print(model)
 ```
 

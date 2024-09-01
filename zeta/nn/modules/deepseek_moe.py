@@ -41,8 +41,8 @@ class DeepSeekMoE(nn.Module):
         self.gate = nn.Linear(dim, num_experts)
 
     def forward(self, x: Tensor):
-        batch_size, seq_len, d_model = x.shape
-        x_flat = x.view(-1, d_model)  # Flatten for gating
+        batch_size, seq_len, dim = x.shape
+        x_flat = x.view(-1, dim)  # Flatten for gating
 
         # Apply gating mechanism and ensure indices are within the valid range
         gate_scores = F.softmax(self.gate(x_flat), dim=-1)
@@ -71,13 +71,13 @@ class DeepSeekMoE(nn.Module):
 
 
 # Example usage
-d_model = 512
+dim = 512
 num_experts = 16
 d_ff = 2048
 top_k = 2
 num_shared_experts = 2
 
-moe_model = DeepSeekMoE(d_model, num_experts, d_ff, top_k, num_shared_experts)
+moe_model = DeepSeekMoE(dim, num_experts, d_ff, top_k, num_shared_experts)
 input_tensor = torch.randn(
     10, 15, 512
 )  # Batch size of 10, sequence length 15, feature size of 512

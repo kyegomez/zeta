@@ -50,15 +50,15 @@ def asynchronized_softmax(Q, K, V, unified_max_value):
 
 # Define the main class for the attention mechanism
 class AsynchronizedAttention(nn.Module):
-    def __init__(self, d_model, n_heads, unified_max_value):
+    def __init__(self, dim, n_heads, unified_max_value):
         super().__init__()
-        self.d_model = d_model
+        self.dim = dim
         self.n_heads = n_heads
         self.unified_max_value = unified_max_value
-        self.head_dim = d_model // n_heads
+        self.head_dim = dim // n_heads
 
         # Linear layers for Q, K, V projections
-        self.qkv_proj = nn.Linear(d_model, d_model * 3)
+        self.qkv_proj = nn.Linear(dim, dim * 3)
 
     def forward(self, x):
         batch_size, seq_length, _ = x.size()

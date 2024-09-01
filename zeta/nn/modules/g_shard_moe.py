@@ -719,7 +719,7 @@ class GShardMoELayer(Base):
         # assert input.shape[0] % len(self.experts) == 0, "num tokens must be order of number of local experts"
 
         # Implement Algorithm 2 from GShard paper.
-        d_model = input.shape[2]
+        dim = input.shape[2]
         # Pad to expected batch size
         input_shape = list(input.shape)
         expected_bsz = (
@@ -771,7 +771,7 @@ class GShardMoELayer(Base):
             input_padding_mask = padded_input_padding_mask
 
         # Reshape into S tokens by dropping sequence dimension.
-        reshaped_input = input.reshape(-1, d_model)
+        reshaped_input = input.reshape(-1, dim)
         reshaped_input_shape = reshaped_input.shape
         reshaped_input_padding_mask = (
             input_padding_mask.reshape(-1)
@@ -851,7 +851,7 @@ class GShardMoELayer(Base):
 
         # Re-shape after all-to-all: ecm -> gecm
         dispatched_input = dispatched_input.reshape(
-            self.all2all_size, self.num_local_experts, -1, d_model
+            self.all2all_size, self.num_local_experts, -1, dim
         )
         chunks = dispatched_input.chunk(self.num_local_experts, dim=1)
         expert_outputs = []
@@ -864,7 +864,7 @@ class GShardMoELayer(Base):
 
         # Re-shape back: gecm -> ecm
         expert_output = expert_output.reshape(
-            self.all2all_size * self.num_local_experts, -1, d_model
+            self.all2all_size * self.num_local_experts, -1, dim
         )
 
         if has_tutel:

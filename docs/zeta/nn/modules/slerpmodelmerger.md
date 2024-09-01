@@ -49,10 +49,10 @@ model1 = nn.Linear(10, 10)
 model2 = nn.Linear(10, 10)
 
 merger = SLERPModelMerger(model1, model2, 0.5)
-merged_model = merger.merge()
+mergedim = merger.merge()
 
 # This will output the merged state_dict
-print(merged_model.state_dict())
+print(mergedim.state_dict())
 ```
 
 The prints statement will output the state_dict of the merged model. The state_dict is a Python dictionary that maps each layer to its corresponding parameters (tensors). 
