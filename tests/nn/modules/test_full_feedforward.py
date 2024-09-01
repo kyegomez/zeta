@@ -16,18 +16,14 @@ def test_feed_forward_forward(feed_forwardim):
 
 
 def test_feed_forward_relu_squared(feed_forwardim):
-    feed_forwardim_relu_squared = FeedForward(
-        768, 2048, 0.1, relu_squared=True
-    )
+    feed_forwardim_relu_squared = FeedForward(768, 2048, 0.1, relu_squared=True)
     x = torch.randn(1, 768)
     output = feed_forwardim_relu_squared(x)
     assert output.shape == (1, 2048)
 
 
 def test_feed_forward_post_act_ln(feed_forwardim):
-    feed_forwardim_post_act_ln = FeedForward(
-        768, 2048, 0.1, post_act_ln=True
-    )
+    feed_forwardim_post_act_ln = FeedForward(768, 2048, 0.1, post_act_ln=True)
     x = torch.randn(1, 768)
     output = feed_forwardim_post_act_ln(x)
     assert output.shape == (1, 2048)
