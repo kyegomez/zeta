@@ -61,11 +61,11 @@ def test_xc_attention_with_different_heads():
         )
 
 
-def test_xc_attention_with_different_input_dims():
+def test_xc_attention_with_different_dims():
     """Test case to check if XCAttention handles different input dimensions correctly."""
-    input_dims = [128, 256, 512]
+    dims = [128, 256, 512]
 
-    for dim in input_dims:
+    for dim in dims:
         model = XCAttention(dim=dim, cond_dim=64, heads=8)
         assert isinstance(model, XCAttention)
         assert model.to_qkv[0].in_features == dim
@@ -81,7 +81,7 @@ def test_xc_attention_with_different_cond_dims():
         assert model.film[0].in_features == cond_dim * 2
 
 
-def test_xc_attention_negative_input_dim():
+def test_xc_attention_negative_dim():
     """Test case to check if XCAttention handles negative input dimensions correctly."""
     with pytest.raises(ValueError):
         XCAttention(dim=-256, cond_dim=64, heads=8)

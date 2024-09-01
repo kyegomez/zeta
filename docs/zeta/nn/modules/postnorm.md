@@ -27,10 +27,10 @@ from zeta.nn import PostNorm
 
 # Define a simple model
 class SimpleModel(nn.Module):
-    def __init__(self, input_dim, hidden_dim, output_dim):
+    def __init__(self, dim, hidden_dim, output_dim):
         super().__init__()
 
-        self.hidden_layer = nn.Linear(input_dim, hidden_dim)
+        self.hidden_layer = nn.Linear(dim, hidden_dim)
         self.postnorm_layer = PostNorm(hidden_dim, nn.Linear(hidden_dim, output_dim))
 
     def forward(self, x):
@@ -41,9 +41,9 @@ class SimpleModel(nn.Module):
 
 
 # Usage:
-input_dim, hidden_dim, output_dim = 10, 20, 2
-model = SimpleModel(input_dim, hidden_dim, output_dim)
-inputs = torch.randn(64, input_dim)
+dim, hidden_dim, output_dim = 10, 20, 2
+model = SimpleModel(dim, hidden_dim, output_dim)
+inputs = torch.randn(64, dim)
 outputs = model(inputs)
 
 print(f"Input Shape: {inputs.shape}\nOutput Shape: {outputs.shape}")
@@ -60,9 +60,9 @@ from zeta.nn import PostNorm
 
 # Define a model architecture for image data
 class ImageModel(nn.Module):
-    def __init__(self, input_dim, hidden_dim, output_dim):
+    def __init__(self, dim, hidden_dim, output_dim):
         super().__init__()
-        self.fc1 = nn.Linear(input_dim, hidden_dim)
+        self.fc1 = nn.Linear(dim, hidden_dim)
         self.fc2 = nn.Linear(hidden_dim, output_dim)
         self.postnorm = PostNorm(output_dim, nn.ReLU())
 
@@ -73,9 +73,9 @@ class ImageModel(nn.Module):
 
 
 # Usage:
-input_dim, hidden_dim, output_dim = 784, 256, 10  # Applicable for MNIST data
-model = ImageModel(input_dim, hidden_dim, output_dim)
-inputs = torch.randn(64, input_dim)
+dim, hidden_dim, output_dim = 784, 256, 10  # Applicable for MNIST data
+model = ImageModel(dim, hidden_dim, output_dim)
+inputs = torch.randn(64, dim)
 outputs = model(inputs)
 
 print(f"Input Shape: {inputs.shape}\nOutput Shape: {outputs.shape}")

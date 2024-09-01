@@ -43,17 +43,17 @@ from zeta.rl import DPO
 
 # Define a simple policy model
 class PolicyModel(nn.Module):
-    def __init__(self, input_dim, output_dim):
+    def __init__(self, dim, output_dim):
         super().__init__()
-        self.fc = nn.Linear(input_dim, output_dim)
+        self.fc = nn.Linear(dim, output_dim)
 
     def forward(self, x):
         return self.fc(x)
 
 
-input_dim = 10
+dim = 10
 output_dim = 5
-policy_model = PolicyModel(input_dim, output_dim)
+policy_model = PolicyModel(dim, output_dim)
 
 # Initialize DPO with the policy model
 dpo_model = DPO(model=policy_model, beta=0.1)

@@ -76,7 +76,7 @@ def test_feed_forward_swish(feed_forwardim):
     assert output.shape == (1, 2048)
 
 
-def test_feed_forward_input_dim_mismatch():
+def test_feed_forward_dim_mismatch():
     with pytest.raises(ValueError):
         FeedForward(768, 1024, 0.1)(torch.randn(1, 512))
 

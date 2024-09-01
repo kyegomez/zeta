@@ -17,7 +17,7 @@ def test_creation(mm_adapter):
 
 # Example of a parameterized test with different input dimensions
 @pytest.mark.parametrize("dim", [256, 512, 1024])
-def test_input_dimensions(dim):
+def test_dimensions(dim):
     mm_adapter = MultiModalAdapterDenseNetwork(dim=dim)
     assert mm_adapter.dim == dim
 

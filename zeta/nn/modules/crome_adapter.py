@@ -4,22 +4,22 @@ from typing import Tuple
 
 
 class CROMEAdapter(nn.Module):
-    def __init__(self, input_dim: int, bottleneck_dim: int):
+    def __init__(self, dim: int, bottleneck_dim: int):
         """
         Initialize the CROMEAdapter module.
 
         Args:
-            input_dim (int): The dimension of the input features.
+            dim (int): The dimension of the input features.
             bottleneck_dim (int): The dimension of the bottleneck layer.
         """
         super(CROMEAdapter, self).__init__()
 
-        self.Wd_text = nn.Linear(input_dim, bottleneck_dim)
-        self.Wg_text = nn.Linear(input_dim, bottleneck_dim)
-        self.Wd_image = nn.Linear(input_dim, bottleneck_dim)
-        self.Wg_image = nn.Linear(input_dim, bottleneck_dim)
+        self.Wd_text = nn.Linear(dim, bottleneck_dim)
+        self.Wg_text = nn.Linear(dim, bottleneck_dim)
+        self.Wd_image = nn.Linear(dim, bottleneck_dim)
+        self.Wg_image = nn.Linear(dim, bottleneck_dim)
 
-        self.Wu = nn.Linear(bottleneck_dim, input_dim)
+        self.Wu = nn.Linear(bottleneck_dim, dim)
 
         self.silu = nn.SiLU()
 

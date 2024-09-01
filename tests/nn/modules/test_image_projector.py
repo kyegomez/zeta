@@ -169,9 +169,9 @@ def test_patch_projector_invalid_patch_size():
 # Test case for custom projection function
 def test_patch_projector_custom_projection(sample_input_tensor):
     class CustomProjection(nn.Module):
-        def __init__(self, input_dim, output_dim):
+        def __init__(self, dim, output_dim):
             super().__init__()
-            self.proj = nn.Linear(input_dim, output_dim)
+            self.proj = nn.Linear(dim, output_dim)
 
         def forward(self, x):
             return self.proj(x)

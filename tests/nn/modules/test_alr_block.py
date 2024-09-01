@@ -44,16 +44,16 @@ def test_alrblock_forward(sample_input, alrblock_model):
 
 # Parameterized testing for various input dimensions and dropout rates
 @pytest.mark.parametrize(
-    "input_dim, hidden_dim, dropout",
+    "dim, hidden_dim, dropout",
     [
         (256, 1024, 0.2),
         (512, 2048, 0.0),
         (128, 512, 0.3),
     ],
 )
-def test_feedforward_parameterized(input_dim, hidden_dim, dropout):
-    model = FeedForward(input_dim, hidden_dim, dropout)
-    input_tensor = torch.randn(1, 1024, input_dim)
+def test_feedforward_parameterized(dim, hidden_dim, dropout):
+    model = FeedForward(dim, hidden_dim, dropout)
+    input_tensor = torch.randn(1, 1024, dim)
     output = model(input_tensor)
     assert output.shape == input_tensor.shape
 

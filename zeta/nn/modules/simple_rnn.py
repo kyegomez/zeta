@@ -30,7 +30,7 @@ class SimpleRNN(nn.Module):
         Forward pass of the simple RNN module.
 
         Args:
-            x (Tensor): The input tensor of shape (batch_size, sequence_length, input_dim).
+            x (Tensor): The input tensor of shape (batch_size, sequence_length, dim).
 
         Returns:
             Tensor: The output tensor of shape (batch_size, sequence_length, hidden_dim).

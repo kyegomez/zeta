@@ -9,13 +9,13 @@ def threed_to_text(
     Converts a 3D tensor to text representation.
 
     Args:
-        x (Tensor): The input tensor of shape (batch_size, sequence_length, input_dim).
+        x (Tensor): The input tensor of shape (batch_size, sequence_length, dim).
         max_seq_len (int): The maximum sequence length of the output tensor.
         dim (int): The dimension of the intermediate tensor.
         flatten (bool, optional): Whether to flatten the intermediate tensor. Defaults to False.
 
     Returns:
-        Tensor: The output tensor of shape (batch_size, max_seq_len, input_dim).
+        Tensor: The output tensor of shape (batch_size, max_seq_len, dim).
     """
     b, s, d = x.shape
 
@@ -29,11 +29,11 @@ def threed_to_text(
 
 def text_to_twod(x: Tensor, dim: int):
     """
-    Converts a 3D tensor of shape (batch_size, sequence_length, input_dim) to a 2D tensor of shape (batch_size, dim)
+    Converts a 3D tensor of shape (batch_size, sequence_length, dim) to a 2D tensor of shape (batch_size, dim)
     by averaging the sequence dimension and applying a linear transformation.
 
     Args:
-        x (Tensor): The input tensor of shape (batch_size, sequence_length, input_dim).
+        x (Tensor): The input tensor of shape (batch_size, sequence_length, dim).
         dim (int): The output dimension.
 
     Returns:

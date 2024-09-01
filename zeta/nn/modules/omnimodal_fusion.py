@@ -31,12 +31,12 @@ class OmniModalFusion(nn.Module):
     def forward(self, *modalities: torch.Tensor) -> torch.Tensor:
         # Dynamically add encoders for new modalities
         while len(self.modality_encoders) < len(modalities):
-            input_dim = modalities[
+            dim = modalities[
                 len(self.modality_encoders)
             ].nelement() // modalities[len(self.modality_encoders)].size(
                 0
             )  # Compute flattened input dimension
-            self.modality_encoders.append(nn.Linear(input_dim, self.fusion_dim))
+            self.modality_encoders.append(nn.Linear(dim, self.fusion_dim))
 
         embeddings = []
         for i, modality in enumerate(modalities):

@@ -33,7 +33,7 @@ class SimpleLSTMCell(nn.Module):
         Forward pass of the Simple LSTM cell.
 
         Args:
-            x (Tensor): The input tensor of shape (batch_size, input_dim).
+            x (Tensor): The input tensor of shape (batch_size, dim).
             h (Tensor): The previous hidden state tensor of shape (batch_size, hidden_dim).
             c (Tensor): The previous cell state tensor of shape (batch_size, hidden_dim).
 
@@ -148,12 +148,12 @@ class SimpleLSTM(nn.Module):
 # if __name__ == "__main__":
 #     batch_size = 32
 #     seq_length = 10
-#     input_dim = 50
+#     dim = 50
 #     hidden_dim = 100
 #     num_layers = 2
 #     output_dim = 30
 
-#     model = SimpleLSTM(input_dim, hidden_dim, num_layers, output_dim)
-#     inputs = torch.randn(batch_size, seq_length, input_dim)
+#     model = SimpleLSTM(dim, hidden_dim, num_layers, output_dim)
+#     inputs = torch.randn(batch_size, seq_length, dim)
 #     outputs = model(inputs)
 #     print(outputs)  # Expected output shape: (batch_size, seq_length, output_dim)

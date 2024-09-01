@@ -22,7 +22,7 @@ Parameters:
 import torch
 import torch.nn as nn
 
-input_dim = 256
+dim = 256
 num_heads = 3
 dim_head = 64
 feedforward_dim = 512
@@ -30,7 +30,7 @@ expansion_factor = 3
 dropout_rate = 0.1
 
 transformer_block = VitTransformerBlock(
-    input_dim, num_heads, dim_head, feedforward_dim, expansion_factor, dropout_rate
+    dim, num_heads, dim_head, feedforward_dim, expansion_factor, dropout_rate
 )
 input_tensor = torch.randn(
     1, 3, 256, 512
@@ -38,14 +38,14 @@ input_tensor = torch.randn(
 output = transformer_block(input_tensor)
 
 # Usage example 2:
-input_dim = 256
+dim = 256
 num_heads = 4
 dim_head = 64
 feedforward_dim = 512
 expansion_factor = 3
 dropout_rate = 0.1
 transformer_block = VitTransformerBlock(
-    input_dim, num_heads, dim_head, feedforward_dim, expansion_factor, dropout_rate
+    dim, num_heads, dim_head, feedforward_dim, expansion_factor, dropout_rate
 )
 input_tensor = torch.randn(
     1, 4, 64, 256
