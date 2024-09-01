@@ -353,15 +353,15 @@ nav:
           - Structures:
             - Decoder: "zeta/nn/architecture/decoder.md"
             - Transformer: "zeta/nn/architecture/transformer.md"
-            - TransformerBlock: "zeta/nn/architecture/transformerblock.md"
+            # - TransformerBlock: "zeta/nn/architecture/transformerblock.md"
             - paralleltransformerblock: "paralleltransformerblock.md"
-            - hierarchicalblock: "hierarchicalblock.md"
-            - vitransformerwrapper: "vitransformerwrapper.md"
-            - localtransformer: "localtransformer.md"
-            - AutoRegressiveWrapper: "AutoRegressiveWrapper.md"
-            - simpletransformer: "simpletransformer.md"
-            - encoder: "encoder.md"
-            - encoderdecoder: "encoderdecoder.md"
+            # - hierarchicalblock: "hierarchicalblock.md"
+            # - vitransformerwrapper: "vitransformerwrapper.md"
+            # - localtransformer: "localtransformer.md"
+            # - AutoRegressiveWrapper: "AutoRegressiveWrapper.md"
+            # - simpletransformer: "simpletransformer.md"
+            # - encoder: "encoder.md"
+            # - encoderdecoder: "encoderdecoder.md"
       - zeta.quant:
           - Quantization Algorithms:
             - QUIK: "zeta/quant/quik.md"
