@@ -1,69 +1,132 @@
-site_name: Zeta Docs
-site_url: 'https://zeta.apac.ai'
-site_author: APAC AI
-site_description: >-
-  Create Ultra-Powerful Multi-Modality Models Seamlessly and Efficiently in as
-  minimal lines of code as possible.
+docs_dir: '.'  # replace with the correct path if your documentation files are not in the same directory as mkdocs.yml
+site_name: zeta
+site_url: https://zeta.apac.ai
+site_author: zeta
+site_description: The Enterprise-Grade Production-Ready Multi-Agent Orchestration Framework
 repo_name: kyegomez/zeta
-repo_url: 'https://github.com/kyegomez/zeta'
-edit_uri: 'https://github.com/kyegomez/"zeta/tree/main/docs'
-copyright: APAC Corp 2023. All rights reserved.
+repo_url: https://github.com/kyegomez/zeta
+edit_uri: https://github.com/kyegomez/zeta/tree/main/docs
+copyright: TGSC Corp 2024. All rights reserved.
+
 plugins:
-  - glightbox
+  # - glightbox
   - search
+  - git-authors
+  - mkdocs-jupyter:
+        kernel_name: python3
+        execute: false
+        include_source: True
+        include_requirejs: true
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            parameter_headings: true
+            paths: [supervision]
+            load_external_modules: true
+            allow_inspection: true
+            show_bases: true
+            group_by_category: true
+            docstring_style: google
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            show_category_heading: true
+          domains: [std, py]
+  - git-committers:
+      repository: kyegomez/zeta
+      branch: master
+      # token: !ENV ["GITHUB_TOKEN"]
+  - git-revision-date-localized:
+      enable_creation_date: true
 extra_css:
-  - docs/assets/css/extra.css
+  - assets/css/extra.css
 extra:
   social:
-    - icon: fontawesome/solid/house
-      link: assets/img/zeta-logo.png
-    - icon: fontawesome/brands/discord
-      link: https://discord.gg/qUtxnK2NMf
+    - icon: fontawesome/brands/twitter
+      link: https://x.com/KyeGomezB
     - icon: fontawesome/brands/github
-      link: https://github.com/kyegomez/Zeta/
-    - icon: fontawesome/brands/python
-      link: https://pypi.org/project/Zeta/
+      link: https://github.com/kyegomez/zeta
+    - icon: fontawesome/brands/discord
+      link: https://discord.com/servers/agora-999382051935506503
+
+  analytics:
+    provider: google
+    property: G-MPE9C65596
+
 theme:
-  name: material
-  custom_dir: docs/overrides
-  logo: assets/img/zeta-logo.png
-  palette:
+    name: material
+    custom_dir: overrides
+    logo: assets/img/zeta-logo.png
+    palette:
     - scheme: default
-      primary: custom
+      primary: black
       toggle:
-        icon: material/brightness-7
+        icon: material/brightness-7 
         name: Switch to dark mode
+    # Palette toggle for dark mode
     - scheme: slate
-      primary: custom
-      accent: light blue
+      primary: black
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
-  features:
-    - content.code.copy
-    - content.code.annotate
-    - navigation.tabs
-    - navigation.sections
-    - navigation.expand
-    - navigation.top
-    - announce.dismiss
-  font:
-    text: Roboto
-    code: Roboto Mono
+    features:
+        - content.code.copy
+        - content.code.annotate
+        - navigation.tabs
+        - navigation.sections
+        - navigation.expand
+        - navigation.top
+        - announce.dismiss
+# Extensions
 markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
-  - admonition
   - pymdownx.inlinehilite
-  - pymdownx.snippets
-  - pymdownx.superfences
-  - pymdownx.details
-  - pymdownx.tabbed
-  - tables
-  - def_list
-  - footnotes
+  - pymdownx.keys
+  - pymdownx.magiclink:
+      normalize_issue_symbols: true
+      repo_url_shorthand: true
+      user: squidfunk
+      repo: mkdocs-material
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.snippets:
+      auto_append:
+        - includes/mkdocs.md
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+      combine_header_slug: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
 nav:
   - Home:
     - Overview: "index.md"
