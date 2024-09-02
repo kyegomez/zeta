@@ -45,7 +45,7 @@ except ImportError:
 TOKENIZER_MODEL = "o200k_base"
 
 
-def tokenizer_encode(text):
+def tokenizer_encode(text: str):
     tokenizer = encoding_for_model(TOKENIZER_MODEL)
     return tokenizer.encode(text)
 
