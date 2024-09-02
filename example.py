@@ -27,4 +27,9 @@ output = attention(q, k, v)
 print(f"Output shape: {output.shape}")
 
 # Optional: Add assertion to check expected output shape
-assert output.shape == (batch_size, num_heads, seq_len_q, d_head), "Unexpected output shape"
+assert output.shape == (
+    batch_size,
+    num_heads,
+    seq_len_q,
+    d_head,
+), "Unexpected output shape"

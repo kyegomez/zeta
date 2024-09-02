@@ -1,0 +1,2 @@
+timestamp,symbol,predicted_return,last_close,last_volume,last_rsi,model_version
+2024-09-01T21:58:27.852901,HAL,-0.016843427,31.760000228881836,5391700,60.00001733954205,1000

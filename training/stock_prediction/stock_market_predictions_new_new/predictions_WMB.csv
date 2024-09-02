@@ -1,0 +1,2 @@
+timestamp,symbol,predicted_return,last_close,last_volume,last_rsi,model_version
+2024-09-01T21:49:59.855574,WMB,0.006339202,45.290000915527344,3351200,78.80507359424811,1000

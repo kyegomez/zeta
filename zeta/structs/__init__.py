@@ -1,10 +1,11 @@
 from zeta.structs.auto_regressive_wrapper import AutoRegressiveWrapper
 from zeta.structs.clip_encoder import CLIPVisionTower, build_vision_tower
 from zeta.structs.encoder_decoder import EncoderDecoder
-from zeta.structs.hierarchical_transformer import (
-    HierarchicalBlock,
-    HierarchicalTransformer,
-)
+
+# from zeta.structs.hierarchical_transformer import (
+#     HierarchicalBlock,
+#     HierarchicalTransformer,
+# )
 from zeta.structs.local_transformer import LocalTransformer
 from zeta.structs.multi_modal_projector import build_vision_projector
 from zeta.structs.simple_transformer import (
@@ -25,8 +26,8 @@ __all__ = [
     "Encoder",
     "Decoder",
     "EncoderDecoder",
-    "HierarchicalBlock",
-    "HierarchicalTransformer",
+    # "HierarchicalBlock",
+    # "HierarchicalTransformer",
     "LocalTransformer",
     "ParallelTransformerBlock",
     "Transformer",

@@ -1,0 +1,2 @@
+timestamp,symbol,predicted_return,last_close,last_volume,last_rsi,model_version
+2024-09-01T21:58:27.556044,PSX,0.02518863,135.3699951171875,1911900,61.66033135701225,1000

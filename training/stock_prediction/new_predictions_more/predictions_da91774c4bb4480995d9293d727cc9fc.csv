@@ -1,0 +1,2 @@
+timestamp,symbol,predicted_return,last_close,last_volume,last_rsi,model_version
+2024-09-01T22:00:36.540203,XOM,0.010445235,116.31999969482422,10381400,57.51164600782983,1000

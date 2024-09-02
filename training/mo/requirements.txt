@@ -1,0 +1,12 @@
+numpy
+triton
+argparse
+json
+os
+multiprocessing
+deepspeed
+torch
+datasets
+loguru
+mamba-omega
+tiktoken

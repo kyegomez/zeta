@@ -36,7 +36,7 @@ def disable_warnings_and_logs():
     logging.getLogger("numexpr").setLevel(logging.CRITICAL)
 
 
-# Run the suppression function at the start
-disable_warnings_and_logs()
+# # Run the suppression function at the start
+# disable_warnings_and_logs()
 
-# Ensure to place any of your script's import statements here, after the call to disable_warnings_and_logs()
+# # Ensure to place any of your script's import statements here, after the call to disable_warnings_and_logs()

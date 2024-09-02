@@ -510,6 +510,45 @@ print(loss)
 ```
 
 
+## PyTorch Model Logging
+- A decorator that logs the execution of the pytorch model, including parameters, gradients, and memory usage.
+
+```python
+from zeta.utils import verbose_execution
+
+import torch
+from torch import nn
+from zeta.utils.verbose_execution import verbose_execution
+
+# # Configure Loguru (optional)
+@verbose_execution(log_params=True, log_gradients=True, log_memory=True)
+class YourPyTorchModel(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.conv1 = nn.Conv2d(3, 64, 3)
+        self.relu = nn.ReLU()
+        self.flatten = nn.Flatten()
+        self.fc = nn.Linear(64 * 222 * 222, 10)  # Adjusted input size
+
+    def forward(self, x):
+        x = self.conv1(x)
+        x = self.relu(x)
+        x = self.flatten(x)
+        x = self.fc(x)
+        return x
+
+# Create and use your model
+model = YourPyTorchModel()
+input_tensor = torch.randn(1, 3, 224, 224)
+output = model(input_tensor)
+
+# If you want to see gradient information, you need to perform a backward pass
+loss = output.sum()
+loss.backward()
+```
+
+
+
 
 # Documentation
 All classes must have documentation if you see a class or function without documentation then please report it to me at kye@apac.ai,

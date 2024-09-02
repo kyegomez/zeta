@@ -1,5 +1,4 @@
 from torch import Tensor, nn
-from zeta.utils.log_pytorch_op import log_torch_op
 
 
 class PaloLDP(nn.Module):
@@ -53,7 +52,6 @@ class PaloLDP(nn.Module):
             groups=channels,
         )
 
-    @log_torch_op()
     def forward(self, x: Tensor) -> Tensor:
         """
         Forward pass of the PaloLDP module.

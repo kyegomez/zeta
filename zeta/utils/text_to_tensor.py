@@ -4,7 +4,6 @@ from torch import nn
 def text_to_tensor(
     text: str,
     tokenizer: callable,
-    process_func: callable,
     dim: int,
     num_tokens: int,
 ):
@@ -24,7 +23,7 @@ def text_to_tensor(
     tokens = tokenizer(text)
 
     # Truncate or pad the tokens to the specified length
-    tokens = process_func(tokens)
+    tokens = tokenizer(tokens)
 
     # Convert the tokens to a tensor
     out = nn.Embedding(num_tokens, dim)(tokens)
