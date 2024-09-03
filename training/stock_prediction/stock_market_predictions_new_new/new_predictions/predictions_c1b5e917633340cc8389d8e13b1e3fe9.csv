@@ -1,2 +1,0 @@
-timestamp,symbol,predicted_return,last_close,last_volume,last_rsi,model_version
-2024-09-01T21:55:16.195531,MPC,0.0048462222,175.30999755859375,1996000,69.00747191215504,1000

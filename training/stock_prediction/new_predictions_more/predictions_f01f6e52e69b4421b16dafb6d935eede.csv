@@ -1,2 +1,0 @@
-timestamp,symbol,predicted_return,last_close,last_volume,last_rsi,model_version
-2024-09-01T22:00:35.360360,CVX,0.0010565482,147.6199951171875,4824100,65.19144567659046,1000

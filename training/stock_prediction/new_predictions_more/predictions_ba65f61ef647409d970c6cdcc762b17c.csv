@@ -1,2 +1,0 @@
-timestamp,symbol,predicted_return,last_close,last_volume,last_rsi,model_version
-2024-09-01T22:00:36.136330,KMI,0.012877846,21.280000686645508,11384000,75.64099847086327,1000

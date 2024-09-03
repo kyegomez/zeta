@@ -1,2 +1,0 @@
-timestamp,symbol,predicted_return,last_close,last_volume,last_rsi,model_version
-2024-09-01T22:00:36.131810,BKR,-0.004052862,35.220001220703125,3101100,60.59906355667398,1000
