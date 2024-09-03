@@ -12,7 +12,7 @@ torchdiffeq>=0.2.3,<0.3.0
 beartype>=0.15.0,<0.16.0
 vector-quantize-pytorch>=1.12.0,<1.13.0
 loguru
-rich==13.7.1
+rich==13.8.0
 tiktoken==0.6.0
 transformers==4.44.2
 tqdm==4.66.5
