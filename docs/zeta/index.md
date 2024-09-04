@@ -22,9 +22,7 @@ After building out thousands of neural nets and facing the same annoying bottlen
 Zeta places a radical emphasis on useability, modularity, and performance. Zeta is now currently employed in 100s of models across my github and across others. 
 Get started below and LMK if you want my help building any model, I'm here for you 😊 💜 
 
-Here’s the refined module tree for the Zeta framework without the leftover commit messages:
-
-### Zeta Framework Module Tree:
+# Architecture
 
 ```bash
 zeta/
