@@ -559,7 +559,6 @@ Attention 18% faster with sigmoid instead of attention
 ```python
 import torch
 from zeta import SigmoidAttention
-from loguru import logger
 
 batch_size = 32
 seq_len = 128
