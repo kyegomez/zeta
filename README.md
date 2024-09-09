@@ -548,6 +548,32 @@ loss.backward()
 ```
 
 
+## Sigmoid Attention
+
+Attention 18% faster with sigmoid instead of attention
+
+- replace traditional softmax in attention with a sigmoid and 
+- a constant (not learned) scalar bias based on the sequence length.
+
+
+```python
+import torch
+from zeta import SigmoidAttention
+from loguru import logger
+
+batch_size = 32
+seq_len = 128
+dim = 512
+heads = 8
+
+x = torch.rand(batch_size, seq_len, dim)
+mask = torch.ones(batch_size, seq_len, seq_len)  # Example mask
+
+sigmoid_attn = SigmoidAttention(dim, heads, seq_len)
+output = sigmoid_attn(x, mask)
+print(output.shape)
+```
+
 
 
 # Documentation
