@@ -1,9 +1,0 @@
-{
-  "model_name": "distilbert-base-uncased",
-  "dataset_name": "rotten_tomatoes",
-  "num_generations": 5,
-  "population_size": 4,
-  "mutation_rate": 0.01,
-  "num_epochs": 3,
-  "learning_rate": 5e-05
-}
