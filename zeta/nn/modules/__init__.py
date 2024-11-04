@@ -227,6 +227,7 @@ from zeta.nn.modules.adaptive_gating import AdaptiveGating
 from zeta.nn.modules.crome_adapter import CROMEAdapter
 from zeta.nn.modules.cog_vlm_two_adapter import CogVLMTwoAdapter
 from zeta.nn.modules.sigmoid_attn import SigmoidAttention
+
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
 # from zeta.nn.modules.scaled_sinusoidal import ScaledSinuosidalEmbedding

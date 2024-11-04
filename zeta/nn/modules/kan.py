@@ -1,362 +1,140 @@
-import torch
-import torch.nn.functional as F
+"""Kolmogorov-Arnold Transformer (KAT) model
+author = "Xingyi Yang"
+"""
+
 import math
-from typing import List
+from functools import partial
+
+import torch
+import torch.nn as nn
+import torch.utils.checkpoint
+from kat_rational import KAT_Group
+from timm.models.layers import to_2tuple
+
+# git clone https://github.com/Adamdad/rational_kat_cu.git
+# cd rational_kat_cu
+# pip install -e .
 
 
-class KANLinear(torch.nn.Module):
-    def __init__(
-        self,
-        in_features: int,
-        out_features: int,
-        grid_size: int = 5,
-        spline_order: int = 3,
-        scale_noise: float = 0.1,
-        scale_base: float = 1.0,
-        scale_spline: float = 1.0,
-        enable_standalone_scale_spline: bool = True,
-        base_activation: torch.nn.Module = torch.nn.SiLU,
-        grid_eps: float = 0.02,
-        grid_range: List[float] = [-1, 1],
-    ):
-        super(KANLinear, self).__init__()
-        self.in_features = in_features
-        self.out_features = out_features
-        self.grid_size = grid_size
-        self.spline_order = spline_order
+def calculate_gain(nonlinearity, param=None):
+    r"""Return the recommended gain value for the given nonlinearity function.
+    The values are as follows:
 
-        h = (grid_range[1] - grid_range[0]) / grid_size
-        grid = (
-            (
-                torch.arange(-spline_order, grid_size + spline_order + 1) * h
-                + grid_range[0]
-            )
-            .expand(in_features, -1)
-            .contiguous()
-        )
-        self.register_buffer("grid", grid)
+    ================= ====================================================
+    nonlinearity      gain
+    ================= ====================================================
+    Linear / Identity :math:`1`
+    Conv{1,2,3}D      :math:`1`
+    Sigmoid           :math:`1`
+    Tanh              :math:`\frac{5}{3}`
+    ReLU              :math:`\sqrt{2}`
+    Leaky Relu        :math:`\sqrt{\frac{2}{1 + \text{negative\_slope}^2}}`
+    SELU              :math:`\frac{3}{4}`
+    ================= ====================================================
 
-        self.base_weight = torch.nn.Parameter(
-            torch.Tensor(out_features, in_features)
-        )
-        self.spline_weight = torch.nn.Parameter(
-            torch.Tensor(out_features, in_features, grid_size + spline_order)
-        )
-        if enable_standalone_scale_spline:
-            self.spline_scaler = torch.nn.Parameter(
-                torch.Tensor(out_features, in_features)
-            )
-
-        self.scale_noise = scale_noise
-        self.scale_base = scale_base
-        self.scale_spline = scale_spline
-        self.enable_standalone_scale_spline = enable_standalone_scale_spline
-        self.base_activation = base_activation()
-        self.grid_eps = grid_eps
-
-        self.reset_parameters()
-
-    def reset_parameters(self):
-        torch.nn.init.kaiming_uniform_(
-            self.base_weight, a=math.sqrt(5) * self.scale_base
-        )
-        with torch.no_grad():
-            noise = (
-                (
-                    torch.rand(
-                        self.grid_size + 1, self.in_features, self.out_features
-                    )
-                    - 1 / 2
-                )
-                * self.scale_noise
-                / self.grid_size
-            )
-            self.spline_weight.data.copy_(
-                (
-                    self.scale_spline
-                    if not self.enable_standalone_scale_spline
-                    else 1.0
-                )
-                * self.curve2coeff(
-                    self.grid.T[self.spline_order : -self.spline_order],
-                    noise,
-                )
-            )
-            if self.enable_standalone_scale_spline:
-                # torch.nn.init.constant_(self.spline_scaler, self.scale_spline)
-                torch.nn.init.kaiming_uniform_(
-                    self.spline_scaler, a=math.sqrt(5) * self.scale_spline
-                )
-
-    def b_splines(self, x: torch.Tensor):
-        """
-        Compute the B-spline bases for the given input tensor.
-
-        Args:
-            x (torch.Tensor): Input tensor of shape (batch_size, in_features).
-
-        Returns:
-            torch.Tensor: B-spline bases tensor of shape (batch_size, in_features, grid_size + spline_order).
-        """
-        assert x.dim() == 2 and x.size(1) == self.in_features
-
-        grid: torch.Tensor = (
-            self.grid
-        )  # (in_features, grid_size + 2 * spline_order + 1)
-        x = x.unsqueeze(-1)
-        bases = ((x >= grid[:, :-1]) & (x < grid[:, 1:])).to(x.dtype)
-        for k in range(1, self.spline_order + 1):
-            bases = (
-                (x - grid[:, : -(k + 1)])
-                / (grid[:, k:-1] - grid[:, : -(k + 1)])
-                * bases[:, :, :-1]
-            ) + (
-                (grid[:, k + 1 :] - x)
-                / (grid[:, k + 1 :] - grid[:, 1:(-k)])
-                * bases[:, :, 1:]
-            )
-
-        assert bases.size() == (
-            x.size(0),
-            self.in_features,
-            self.grid_size + self.spline_order,
-        )
-        return bases.contiguous()
-
-    def curve2coeff(self, x: torch.Tensor, y: torch.Tensor):
-        """
-        Compute the coefficients of the curve that interpolates the given points.
-
-        Args:
-            x (torch.Tensor): Input tensor of shape (batch_size, in_features).
-            y (torch.Tensor): Output tensor of shape (batch_size, in_features, out_features).
-
-        Returns:
-            torch.Tensor: Coefficients tensor of shape (out_features, in_features, grid_size + spline_order).
-        """
-        assert x.dim() == 2 and x.size(1) == self.in_features
-        assert y.size() == (x.size(0), self.in_features, self.out_features)
-
-        A = self.b_splines(x).transpose(
-            0, 1
-        )  # (in_features, batch_size, grid_size + spline_order)
-        B = y.transpose(0, 1)  # (in_features, batch_size, out_features)
-        solution = torch.linalg.lstsq(
-            A, B
-        ).solution  # (in_features, grid_size + spline_order, out_features)
-        result = solution.permute(
-            2, 0, 1
-        )  # (out_features, in_features, grid_size + spline_order)
-
-        assert result.size() == (
-            self.out_features,
-            self.in_features,
-            self.grid_size + self.spline_order,
-        )
-        return result.contiguous()
-
-    @property
-    def scaled_spline_weight(self):
-        return self.spline_weight * (
-            self.spline_scaler.unsqueeze(-1)
-            if self.enable_standalone_scale_spline
-            else 1.0
-        )
-
-    def forward(self, x: torch.Tensor):
-        assert x.dim() == 2 and x.size(1) == self.in_features
-
-        base_output = F.linear(self.base_activation(x), self.base_weight)
-        spline_output = F.linear(
-            self.b_splines(x).view(x.size(0), -1),
-            self.scaled_spline_weight.view(self.out_features, -1),
-        )
-        return base_output + spline_output
-
-    @torch.no_grad()
-    def update_grid(self, x: torch.Tensor, margin=0.01):
-        assert x.dim() == 2 and x.size(1) == self.in_features
-        batch = x.size(0)
-
-        splines = self.b_splines(x)  # (batch, in, coeff)
-        splines = splines.permute(1, 0, 2)  # (in, batch, coeff)
-        orig_coeff = self.scaled_spline_weight  # (out, in, coeff)
-        orig_coeff = orig_coeff.permute(1, 2, 0)  # (in, coeff, out)
-        unreduced_spline_output = torch.bmm(
-            splines, orig_coeff
-        )  # (in, batch, out)
-        unreduced_spline_output = unreduced_spline_output.permute(
-            1, 0, 2
-        )  # (batch, in, out)
-
-        # sort each channel individually to collect data distribution
-        x_sorted = torch.sort(x, dim=0)[0]
-        grid_adaptive = x_sorted[
-            torch.linspace(
-                0,
-                batch - 1,
-                self.grid_size + 1,
-                dtype=torch.int64,
-                device=x.device,
-            )
-        ]
-
-        uniform_step = (
-            x_sorted[-1] - x_sorted[0] + 2 * margin
-        ) / self.grid_size
-        grid_uniform = (
-            torch.arange(
-                self.grid_size + 1, dtype=torch.float32, device=x.device
-            ).unsqueeze(1)
-            * uniform_step
-            + x_sorted[0]
-            - margin
-        )
-
-        grid = (
-            self.grid_eps * grid_uniform + (1 - self.grid_eps) * grid_adaptive
-        )
-        grid = torch.concatenate(
-            [
-                grid[:1]
-                - uniform_step
-                * torch.arange(
-                    self.spline_order, 0, -1, device=x.device
-                ).unsqueeze(1),
-                grid,
-                grid[-1:]
-                + uniform_step
-                * torch.arange(
-                    1, self.spline_order + 1, device=x.device
-                ).unsqueeze(1),
-            ],
-            dim=0,
-        )
-
-        self.grid.copy_(grid.T)
-        self.spline_weight.data.copy_(
-            self.curve2coeff(x, unreduced_spline_output)
-        )
-
-    def regularization_loss(
-        self, regularize_activation=1.0, regularize_entropy=1.0
-    ):
-        """
-        Compute the regularization loss.
-
-        This is a dumb simulation of the original L1 regularization as stated in the
-        paper, since the original one requires computing absolutes and entropy from the
-        expanded (batch, in_features, out_features) intermediate tensor, which is hidden
-        behind the F.linear function if we want an memory efficient implementation.
-
-        The L1 regularization is now computed as mean absolute value of the spline
-        weights. The authors implementation also includes this term in addition to the
-        sample-based regularization.
-        """
-        l1_fake = self.spline_weight.abs().mean(-1)
-        regularization_loss_activation = l1_fake.sum()
-        p = l1_fake / regularization_loss_activation
-        regularization_loss_entropy = -torch.sum(p * p.log())
-        return (
-            regularize_activation * regularization_loss_activation
-            + regularize_entropy * regularization_loss_entropy
-        )
-
-
-class KAN(torch.nn.Module):
-    """
-    KAN (Kernel Activation Network) module.
+    .. warning::
+        In order to implement `Self-Normalizing Neural Networks`_ ,
+        you should use ``nonlinearity='linear'`` instead of ``nonlinearity='selu'``.
+        This gives the initial weights a variance of ``1 / N``,
+        which is necessary to induce a stable fixed point in the forward pass.
+        In contrast, the default gain for ``SELU`` sacrifices the normalisation
+        effect for more stable gradient flow in rectangular layers.
 
     Args:
-        layers_hidden (list): List of integers representing the number of hidden units in each layer.
-        grid_size (int, optional): Size of the grid. Defaults to 5.
-        spline_order (int, optional): Order of the spline. Defaults to 3.
-        scale_noise (float, optional): Scale factor for the noise. Defaults to 0.1.
-        scale_base (float, optional): Scale factor for the base. Defaults to 1.0.
-        scale_spline (float, optional): Scale factor for the spline. Defaults to 1.0.
-        base_activation (torch.nn.Module, optional): Activation function for the base. Defaults to torch.nn.SiLU.
-        grid_eps (float, optional): Epsilon value for the grid. Defaults to 0.02.
-        grid_range (list, optional): Range of the grid. Defaults to [-1, 1].
+        nonlinearity: the non-linear function (`nn.functional` name)
+        param: optional parameter for the non-linear function
 
-    Example:
-    >>> kan = KAN([2, 3, 1])
-    >>> x = torch.randn(10, 2)
-    >>> y = kan(x)
+    Examples:
+        >>> gain = nn.init.calculate_gain('leaky_relu', 0.2)  # leaky_relu with negative_slope=0.2
 
+    .. _Self-Normalizing Neural Networks: https://papers.nips.cc/paper/2017/hash/5d44ee6f2c3f71b73125876103c8f6c4-Abstract.html
     """
+    linear_fns = [
+        "linear",
+        "conv1d",
+        "conv2d",
+        "conv3d",
+        "conv_transpose1d",
+        "conv_transpose2d",
+        "conv_transpose3d",
+    ]
+    if nonlinearity in linear_fns or nonlinearity == "sigmoid":
+        return 1
+    elif nonlinearity == "tanh":
+        return 5.0 / 3
+    elif nonlinearity == "relu":
+        return math.sqrt(2.0)
+    elif nonlinearity == "gelu":
+        return math.sqrt(2.3567850379928976)
+    elif nonlinearity == "silu" or nonlinearity == "swish":
+        return math.sqrt(2.8178205270359653)
+    elif nonlinearity == "leaky_relu":
+        if param is None:
+            negative_slope = 0.01
+        elif (
+            not isinstance(param, bool)
+            and isinstance(param, int)
+            or isinstance(param, float)
+        ):
+            # True/False are instances of int, hence check above
+            negative_slope = param
+        else:
+            raise ValueError(
+                "negative_slope {} not a valid number".format(param)
+            )
+        return math.sqrt(2.0 / (1 + negative_slope**2))
+    elif nonlinearity == "selu":
+        return (
+            3.0 / 4
+        )  # Value found empirically (https://github.com/pytorch/pytorch/pull/50664)
+    else:
+        raise ValueError("Unsupported nonlinearity {}".format(nonlinearity))
+
+
+torch.nn.init.calculate_gain = calculate_gain
+
+
+class KAN(nn.Module):
+    """MLP as used in Vision Transformer, MLP-Mixer and related networks"""
 
     def __init__(
         self,
-        layers_hidden: List[int],
-        grid_size: int = 5,
-        spline_order: int = 3,
-        scale_noise: float = 0.1,
-        scale_base: float = 1.0,
-        scale_spline: float = 1.0,
-        base_activation: torch.nn.Module = torch.nn.SiLU,
-        grid_eps: float = 0.02,
-        grid_range: List[float] = [-1, 1],
-    ) -> None:
-        super(KAN, self).__init__()
-        self.grid_size = grid_size
-        self.spline_order = spline_order
-
-        self.layers = torch.nn.ModuleList()
-        for in_features, out_features in zip(layers_hidden, layers_hidden[1:]):
-            self.layers.append(
-                KANLinear(
-                    in_features,
-                    out_features,
-                    grid_size=grid_size,
-                    spline_order=spline_order,
-                    scale_noise=scale_noise,
-                    scale_base=scale_base,
-                    scale_spline=scale_spline,
-                    base_activation=base_activation,
-                    grid_eps=grid_eps,
-                    grid_range=grid_range,
-                )
-            )
-
-    def forward(self, x: torch.Tensor, update_grid=False):
-        """
-        Forward pass of the KAN module.
-
-        Args:
-            x (torch.Tensor): Input tensor.
-            update_grid (bool, optional): Whether to update the grid. Defaults to False.
-
-        Returns:
-            torch.Tensor: Output tensor.
-        """
-        for layer in self.layers:
-            if update_grid:
-                layer.update_grid(x)
-            x = layer(x)
-        return x
-
-    def regularization_loss(
-        self, regularize_activation=1.0, regularize_entropy=1.0
+        in_features,
+        hidden_features=None,
+        out_features=None,
+        act_layer=KAT_Group,
+        norm_layer=None,
+        bias=True,
+        drop=0.0,
+        use_conv=False,
+        act_init="gelu",
     ):
-        """
-        Compute the regularization loss of the KAN module.
-
-        Args:
-            regularize_activation (float, optional): Regularization factor for activation. Defaults to 1.0.
-            regularize_entropy (float, optional): Regularization factor for entropy. Defaults to 1.0.
-
-        Returns:
-            torch.Tensor: Regularization loss.
-        """
-        return sum(
-            layer.regularization_loss(regularize_activation, regularize_entropy)
-            for layer in self.layers
+        super().__init__()
+        out_features = out_features or in_features
+        hidden_features = hidden_features or in_features
+        bias = to_2tuple(bias)
+        drop_probs = to_2tuple(drop)
+        linear_layer = (
+            partial(nn.Conv2d, kernel_size=1) if use_conv else nn.Linear
         )
 
+        self.fc1 = linear_layer(in_features, hidden_features, bias=bias[0])
+        self.act1 = KAT_Group(mode="identity")
+        self.drop1 = nn.Dropout(drop_probs[0])
+        self.norm = (
+            norm_layer(hidden_features)
+            if norm_layer is not None
+            else nn.Identity()
+        )
+        self.act2 = KAT_Group(mode=act_init)
+        self.fc2 = linear_layer(hidden_features, out_features, bias=bias[1])
+        self.drop2 = nn.Dropout(drop_probs[1])
 
-# x = torch.randn(2, 3, 1)
-# kan = KAN(
-#     layers_hidden=[2, 3, 1],
-# )
-# y = kan(x)
-# print(y)
+    def forward(self, x):
+        x = self.act1(x)
+        x = self.drop1(x)
+        x = self.fc1(x)
+        x = self.act2(x)
+        x = self.drop2(x)
+        x = self.fc2(x)
+        return x
