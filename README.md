@@ -1,4 +1,3 @@
-[![Multi-Modality](images/agorabanner.png)](https://discord.gg/qUtxnK2NMf)
 
 ![Zeta banner](images/zeta.png)
 Build SOTA AI Models 80% faster with modular, high-performance, and scalable building blocks!
