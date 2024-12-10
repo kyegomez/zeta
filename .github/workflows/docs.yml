@@ -1,0 +1,20 @@
+name: Docs WorkFlow
+
+on:
+  push:
+    branches:
+      - master
+      - main
+      - develop
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - run: pip install --no-cache-dir mkdocs-material
+      - run: pip install --no-cache-dir "mkdocstrings[python]"
+      - run: pip install --no-cache-dir mkdocs-glightbox
+      - run: mkdocs gh-deploy --force
