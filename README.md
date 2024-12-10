@@ -80,7 +80,7 @@ Finally, we pass the input tensor x to the swiglu module, which applies the SwiG
 -------
 
 ### RelativePositionBias
-- `RelativePositionBias` quantizes the distance between two positions into a certain number of buckets and then uses an embedding to get the relative position bias. This mechanism aids in the attention mechanism by providing biases based on relative positions between the query and key, rather than relying solely on their absolute positions.
+`RelativePositionBias` quantizes the distance between two positions into a certain number of buckets and then uses an embedding to get the relative position bias. This mechanism aids in the attention mechanism by providing biases based on relative positions between the query and key, rather than relying solely on their absolute positions.
 
 ```python
 import torch
@@ -163,7 +163,7 @@ print(output.size())  # torch.Size([128, 20])
 ```
 
 ### `PalmE`
-- This is an implementation of the multi-modal Palm-E model using a decoder llm as the backbone with an VIT image encoder to process vision, it's very similiar to GPT4, Kosmos, RTX2, and many other multi-modality model architectures
+This is an implementation of the multi-modal Palm-E model using a decoder llm as the backbone with an VIT image encoder to process vision, it's very similiar to GPT4, Kosmos, RTX2, and many other multi-modality model architectures
 
 ```python
 import torch
@@ -343,7 +343,7 @@ output = vision_embedding(input_image)
 
 
 ### `niva`
-- Niva focuses on weights of certain layers (specified by quantize_layers). Ideal for models where runtime activation is variable. 👁️ Example Layers: nn.Embedding, nn.LSTM. 
+Niva focuses on weights of certain layers (specified by quantize_layers). Ideal for models where runtime activation is variable. 👁️ Example Layers: nn.Embedding, nn.LSTM. 
 
 ```python
 import torch
@@ -366,7 +366,7 @@ niva(
 
 
 ### `FusedDenseGELUDense`
-- Increase model speed by 2x with this module that fuses together 2 hyper-optimized dense ops from bits and bytes and a gelu together!
+Increase model speed by 2x with this module that fuses together 2 hyper-optimized dense ops from bits and bytes and a gelu together!
 
 ```python
 import torch
@@ -381,7 +381,7 @@ out.shape
 
 
 ### `FusedDropoutLayerNorm`
-- FusedDropoutLayerNorm is a fused kernel of dropout and layernorm to speed up FFNs or MLPS by 2X
+FusedDropoutLayerNorm is a fused kernel of dropout and layernorm to speed up FFNs or MLPS by 2X
 
 ```python
 import torch
@@ -404,7 +404,7 @@ print(output.shape)  # Expected: torch.Size([1, 512])
 
 
 ### `Mamba`
-- Pytorch implementation of the new SSM model architecture Mamba
+Pytorch implementation of the new SSM model architecture Mamba
 
 ```python
 import torch
@@ -448,7 +448,7 @@ print(modulated_features.shape)  # Should be [10, 1, 128]
 ```
 
 ### `hyper_optimize`
-- A single wrapper for torch.fx, torch.script, torch.compile, dynamic quantization, mixed precision through torch.amp, with execution time metrics all in once place!
+A single wrapper for torch.fx, torch.script, torch.compile, dynamic quantization, mixed precision through torch.amp, with execution time metrics all in once place!
 ```python
 import torch
 
@@ -510,7 +510,7 @@ print(loss)
 
 
 ## PyTorch Model Logging
-- A decorator that logs the execution of the pytorch model, including parameters, gradients, and memory usage.
+A decorator that logs the execution of the pytorch model, including parameters, gradients, and memory usage.
 
 ```python
 from zeta.utils import verbose_execution
@@ -549,10 +549,7 @@ loss.backward()
 
 ## Sigmoid Attention
 
-Attention 18% faster with sigmoid instead of attention
-
-- replace traditional softmax in attention with a sigmoid and 
-- a constant (not learned) scalar bias based on the sequence length.
+Attention 18% faster with sigmoid instead of attention. replace traditional softmax in attention with a sigmoid and a constant (not learned) scalar bias based on the sequence length.
 
 
 ```python
