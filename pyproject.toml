@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zetascale"
-version = "2.7.5"
+version = "2.7.6"
 description = "Rapidly Build, Optimize, and Train SOTA AI Models"
 authors = ["Zeta Team <kye@apac.ai>"]
 license = "MIT"

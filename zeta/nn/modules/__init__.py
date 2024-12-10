@@ -207,7 +207,6 @@ from zeta.nn.modules.chan_layer_norm import ChanLayerNorm
 
 from zeta.nn.modules.query_proposal import TextHawkQueryProposal
 from zeta.nn.modules.pixel_shuffling import PixelShuffleDownscale
-from zeta.nn.modules.kan import KAN
 from zeta.nn.modules.layer_scale import LayerScale
 from zeta.nn.modules.fractoral_norm import FractoralNorm
 from zeta.nn.modules.kv_cache_update import kv_cache_with_update
@@ -438,7 +437,6 @@ __all__ = [
     "video_patch_linear_flatten",
     "TextHawkQueryProposal",
     "PixelShuffleDownscale",
-    "KAN",
     "LayerScale",
     "FractoralNorm",
     "kv_cache_with_update",
