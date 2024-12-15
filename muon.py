@@ -1,8 +1,8 @@
-
 import math
 import torch
 import torch.nn as nn
 from zeta import Muon  # Assuming muon.py contains our implementation
+
 
 # Simple transformer layer
 class SimpleTransformer(nn.Module):
@@ -24,6 +24,7 @@ class SimpleTransformer(nn.Module):
         out = torch.matmul(attn, v)
         return self.output(out)
 
+
 # Create model
 model = SimpleTransformer()
 
@@ -32,7 +33,7 @@ muon_params = []
 other_params = []
 
 for name, param in model.named_parameters():
-    if any(x in name for x in ['query', 'key', 'value']):
+    if any(x in name for x in ["query", "key", "value"]):
         muon_params.append(param)
     else:
         other_params.append(param)

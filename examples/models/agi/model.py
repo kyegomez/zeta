@@ -222,7 +222,7 @@ def main():
     dummy_audio = torch.randn(1, 16000)  # Batch size 1, 1-second audio at 16kHz
 
     # Forward pass
-    output = model(dummy_image, dummy_audio)
+    model(dummy_image, dummy_audio)
     logger.info("Model output obtained")
 
 

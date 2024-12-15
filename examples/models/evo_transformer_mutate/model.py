@@ -444,7 +444,7 @@ class EvolutionaryAlgorithm:
         """
         parents = self.select_parents()
         next_generation = parents.copy()
-        num_children = self.population_size - len(parents)
+        self.population_size - len(parents)
         while len(next_generation) < self.population_size:
             parent_indices = torch.randperm(len(parents))[:2]
             parent1 = parents[parent_indices[0]]

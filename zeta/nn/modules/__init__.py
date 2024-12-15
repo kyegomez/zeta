@@ -226,6 +226,8 @@ from zeta.nn.modules.adaptive_gating import AdaptiveGating
 from zeta.nn.modules.crome_adapter import CROMEAdapter
 from zeta.nn.modules.cog_vlm_two_adapter import CogVLMTwoAdapter
 from zeta.nn.modules.sigmoid_attn import SigmoidAttention
+from zeta.nn.modules.flow_matching import Flow, MixtureFlow, MixtureFlowConfig
+from zeta.nn.modules.flow_transformer import FlowTransformerConfig, FlowMLP, FlowTransformer
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -455,4 +457,10 @@ __all__ = [
     "CROMEAdapter",
     "CogVLMTwoAdapter",
     "SigmoidAttention",
+    "Flow",
+    "MixtureFlow",
+    "MixtureFlowConfig",
+    "FlowTransformerConfig",
+    "FlowMLP",
+    "FlowTransformer",    
 ]
