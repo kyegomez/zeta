@@ -382,41 +382,41 @@ def create_optimizer(
     return torch.optim.AdamW(optim_groups, lr=config.learning_rate)
 
 
-# Create configuration
-config = FlowTransformerConfig(
-    dim=512,  # Model dimension
-    heads=8,  # Number of attention heads
-    depth=6,  # Number of transformer layers
-    seq_length=1024,  # Maximum sequence length
-    vocab_size=50000,  # Vocabulary size
-    flow_steps=4,  # Number of flow integration steps
-)
+# # Create configuration
+# config = FlowTransformerConfig(
+#     dim=512,  # Model dimension
+#     heads=8,  # Number of attention heads
+#     depth=6,  # Number of transformer layers
+#     seq_length=1024,  # Maximum sequence length
+#     vocab_size=50000,  # Vocabulary size
+#     flow_steps=4,  # Number of flow integration steps
+# )
 
-# Initialize model
-model = FlowTransformer(config)
-model = model.to(config.device)
+# # Initialize model
+# model = FlowTransformer(config)
+# model = model.to(config.device)
 
-# Create a sample input
-batch_size = 4
-seq_length = 512
-input_ids = torch.randint(
-    0, config.vocab_size, (batch_size, seq_length), device=config.device
-)
+# # Create a sample input
+# batch_size = 4
+# seq_length = 512
+# input_ids = torch.randint(
+#     0, config.vocab_size, (batch_size, seq_length), device=config.device
+# )
 
-# Optional attention mask (1 for tokens to attend to, 0 for tokens to ignore)
-attention_mask = torch.ones((batch_size, seq_length), device=config.device)
+# # Optional attention mask (1 for tokens to attend to, 0 for tokens to ignore)
+# attention_mask = torch.ones((batch_size, seq_length), device=config.device)
 
-# Forward pass
-with torch.no_grad():
-    output_logits = model(input_ids, attention_mask)
+# # Forward pass
+# with torch.no_grad():
+#     output_logits = model(input_ids, attention_mask)
 
-print(f"Input shape: {input_ids.shape}")
-print(
-    f"Output shape: {output_logits.shape}"
-)  # Should be [batch_size, seq_length, vocab_size]
+# print(f"Input shape: {input_ids.shape}")
+# print(
+#     f"Output shape: {output_logits.shape}"
+# )  # Should be [batch_size, seq_length, vocab_size]
 
-# Get predictions
-predictions = torch.argmax(output_logits, dim=-1)
-print(
-    f"Predictions shape: {predictions.shape}"
-)  # Should be [batch_size, seq_length]
+# # Get predictions
+# predictions = torch.argmax(output_logits, dim=-1)
+# print(
+#     f"Predictions shape: {predictions.shape}"
+# )  # Should be [batch_size, seq_length]
