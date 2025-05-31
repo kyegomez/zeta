@@ -12,16 +12,18 @@ from torch import Tensor, nn
 from torch.distributions import Categorical
 
 
-def make_moons(n_samples: int, noise: float = 0.1, random_state: Optional[int] = None) -> Tuple[np.ndarray, np.ndarray]:
+def make_moons(
+    n_samples: int, noise: float = 0.1, random_state: Optional[int] = None
+) -> Tuple[np.ndarray, np.ndarray]:
     """Generate a 2D dataset with two interleaving half circles (moons).
-    
+
     This is a custom implementation that replaces sklearn.datasets.make_moons.
-    
+
     Args:
         n_samples: Number of samples to generate
         noise: Standard deviation of Gaussian noise added to the data
         random_state: Random seed for reproducibility (optional)
-        
+
     Returns:
         Tuple of (X, y) where:
         - X: ndarray of shape (n_samples, 2) with the generated samples
@@ -29,36 +31,38 @@ def make_moons(n_samples: int, noise: float = 0.1, random_state: Optional[int] =
     """
     if random_state is not None:
         np.random.seed(random_state)
-    
+
     n_samples_out = n_samples // 2
     n_samples_in = n_samples - n_samples_out
-    
+
     # Generate outer moon (semicircle)
     outer_circ_x = np.cos(np.linspace(0, np.pi, n_samples_out))
     outer_circ_y = np.sin(np.linspace(0, np.pi, n_samples_out))
-    
+
     # Generate inner moon (semicircle, flipped and shifted)
     inner_circ_x = 1 - np.cos(np.linspace(0, np.pi, n_samples_in))
     inner_circ_y = 0.5 - np.sin(np.linspace(0, np.pi, n_samples_in))
-    
+
     # Combine the two moons
-    X = np.vstack([
-        np.column_stack([outer_circ_x, outer_circ_y]),
-        np.column_stack([inner_circ_x, inner_circ_y])
-    ])
-    
+    X = np.vstack(
+        [
+            np.column_stack([outer_circ_x, outer_circ_y]),
+            np.column_stack([inner_circ_x, inner_circ_y]),
+        ]
+    )
+
     # Create labels (0 for outer moon, 1 for inner moon)
     y = np.hstack([np.zeros(n_samples_out), np.ones(n_samples_in)])
-    
+
     # Add noise
     if noise > 0:
         X += np.random.normal(0, noise, X.shape)
-    
+
     # Shuffle the data
     indices = np.random.permutation(n_samples)
     X = X[indices]
     y = y[indices]
-    
+
     return X, y
 
 
@@ -787,17 +791,17 @@ class MixtureFlow(nn.Module):
         time_points = torch.linspace(0, 1, 10).to(self.config.device)
 
         expert_stats = {
-            "total_usage": torch.zeros(self.config.n_experts).to(
-                self.config.device
+            "total_usage": (
+                torch.zeros(self.config.n_experts).to(self.config.device)
             ),
-            "max_confidence": torch.zeros(self.config.n_experts).to(
-                self.config.device
+            "max_confidence": (
+                torch.zeros(self.config.n_experts).to(self.config.device)
             ),
-            "avg_confidence": torch.zeros(self.config.n_experts).to(
-                self.config.device
+            "avg_confidence": (
+                torch.zeros(self.config.n_experts).to(self.config.device)
             ),
-            "territory_size": torch.zeros(self.config.n_experts).to(
-                self.config.device
+            "territory_size": (
+                torch.zeros(self.config.n_experts).to(self.config.device)
             ),
         }
 

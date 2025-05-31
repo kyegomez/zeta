@@ -2,7 +2,6 @@ from pathlib import Path
 from loguru import logger
 from zeta import Flow, FlowConfig
 
-
 if __name__ == "__main__":
     # Setup logging
     logger.add("flow_model.log", rotation="500 MB")

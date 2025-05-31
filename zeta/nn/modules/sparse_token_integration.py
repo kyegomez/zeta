@@ -13,7 +13,6 @@ import torch
 from torch import nn, Tensor
 from einops.layers.torch import Rearrange
 
-
 # Tokens
 # image -> convolution -> tokens -> down sample -> projector
 # Image -> average pooling -> concat -> mlp

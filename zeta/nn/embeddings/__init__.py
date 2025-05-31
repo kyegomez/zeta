@@ -32,7 +32,6 @@ from zeta.nn.embeddings.scaled_sinusoidal_embeddings import (
 )
 from zeta.nn.embeddings.mi_rope import MIRoPE
 
-
 __all__ = [
     "AbsolutePositionalEmbedding",
     "BaseEmbedding",

@@ -25,7 +25,6 @@ from zeta.nn.attention.multi_grouped_attn import MultiGroupedQueryAttn
 from zeta.nn.attention.scalable_img_self_attn import ScalableImgSelfAttention
 from zeta.nn.attention.linearized_attention import LinearizedAttention
 
-
 __all__ = [
     "Attend",
     "FlashAttention",

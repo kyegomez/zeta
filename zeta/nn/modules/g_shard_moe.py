@@ -1,58 +1,219 @@
-import logging
 import math
 import time
-from typing import Any, Callable, Dict, Optional, Tuple, cast
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import torch
 import torch.distributed as dist
 import torch.nn.functional as F
-from torch import Tensor
-from torch.nn import Module, ModuleList
-
-try:
-    from fairseq.modules.moe import MOELayer
-
-    has_fairseq = True
-    Base = MOELayer
-except ModuleNotFoundError:
-    Base = Module
-    has_fairseq = False
-
-try:
-    # To enable Tutel MoE optimizations:
-    #   python3 -m pip install --user --upgrade git+https://github.com/microsoft/tutel@v0.1.x
-    from tutel import moe as tutel_moe
-
-    has_tutel, fused_cumsum_sub_one = True, tutel_moe.fast_cumsum_sub_one
-except ModuleNotFoundError:
-    has_tutel, fused_cumsum_sub_one = (
-        False,
-        lambda mask: torch.cumsum(mask, dim=0) - 1,
-    )
-
-logger = logging.getLogger(__name__)
+from torch import Tensor, nn
 
 
-# use a fixed temperature to compute balance loss
+class MOELayer(nn.Module):
+    """
+    Base Mixture of Experts (MoE) layer implementation using pure PyTorch.
+
+    This class serves as a base class for MoE implementations, providing
+    a common interface and basic functionality. It can be extended to implement
+    specific MoE architectures.
+
+    Args:
+        gate (nn.Module): The gating network that determines expert assignment.
+        experts (Union[nn.ModuleList, nn.Module]): The expert networks.
+        args (object): Configuration object containing MoE parameters.
+
+    Attributes:
+        gate (nn.Module): The gating network.
+        experts (nn.ModuleList): List of expert networks.
+        metadata (Dict[str, Any]): Dictionary to store routing statistics and metrics.
+        l_aux (Optional[Tensor]): Auxiliary loss for load balancing.
+    """
+
+    def __init__(
+        self,
+        gate: nn.Module,
+        experts: Union[nn.ModuleList, nn.Module],
+        args: Any,
+    ) -> None:
+        super().__init__()
+        self.gate = gate
+        if isinstance(experts, nn.ModuleList):
+            self.experts = experts
+        else:
+            self.experts = nn.ModuleList([experts])
+
+        self.args = args
+        self.metadata: Dict[str, Any] = {}
+        self.l_aux: Optional[Tensor] = None
+
+        # Mark expert parameters for distributed training
+        for expert in self.experts:
+            for param in expert.parameters():
+                param.expert = True  # type: ignore
+
+    def forward(
+        self,
+        input_tensor: Tensor,
+        input_padding_mask: Optional[Tensor] = None,
+        **kwargs: Any,
+    ) -> Tuple[Tensor, Optional[Tensor]]:
+        """Forward pass through the MoE layer."""
+        raise NotImplementedError(
+            "MOELayer is a base class. Use a specific implementation like GShardMoELayer."
+        )
+
+    def prepare_for_inference_(self) -> None:
+        """Prepare the layer for inference mode."""
+        pass
+
+    def get_aux_loss(self) -> Optional[Tensor]:
+        """Get the auxiliary loss for load balancing."""
+        return self.l_aux
+
+    def get_metadata(self) -> Dict[str, Any]:
+        """Get routing metadata and statistics."""
+        return self.metadata.copy()
+
+    def reset_metadata(self) -> None:
+        """Reset the metadata dictionary."""
+        self.metadata.clear()
+        self.l_aux = None
+
+
+class FastDispatcher:
+    """
+    Custom implementation for efficient token dispatching in MoE layers.
+
+    This class provides efficient dispatching of tokens to experts and
+    combines expert outputs back to the original token order.
+    """
+
+    def __init__(
+        self,
+        num_experts: int,
+        capacity: int,
+        model_dim: int,
+        dispatch_dtype: torch.dtype = torch.float32,
+    ) -> None:
+        self.num_experts = num_experts
+        self.capacity = capacity
+        self.model_dim = model_dim
+        self.dispatch_dtype = dispatch_dtype
+
+        # Initialize state
+        self.indices: Optional[Tensor] = None
+        self.locations: Optional[Tensor] = None
+        self.gates: Optional[Tensor] = None
+
+    def update(
+        self,
+        indices: Union[Tensor, List[Tensor]],
+        locations: Union[Tensor, List[Tensor]],
+        gates: Union[Tensor, List[Tensor]],
+        capacity: Optional[int] = None,
+    ) -> None:
+        """Update dispatcher state with routing information."""
+        if capacity is not None:
+            self.capacity = capacity
+
+        # Handle both tensor and list inputs
+        if isinstance(indices, list):
+            self.indices = indices[0] if len(indices) > 0 else None
+        else:
+            self.indices = indices
+
+        if isinstance(locations, list):
+            self.locations = locations[0] if len(locations) > 0 else None
+        else:
+            self.locations = locations
+
+        if isinstance(gates, list):
+            self.gates = gates[0] if len(gates) > 0 else None
+        else:
+            self.gates = gates
+
+    def encode(self, input_tensor: Tensor) -> Tensor:
+        """Dispatch tokens to experts based on routing decisions."""
+        if self.indices is None or self.locations is None or self.gates is None:
+            raise RuntimeError("Must call update() before encode()")
+
+        num_tokens, model_dim = input_tensor.shape
+        device = input_tensor.device
+
+        # Create dispatch mask: (num_tokens, num_experts * capacity)
+        dispatch_mask = torch.zeros(
+            (num_tokens, self.num_experts * self.capacity),
+            dtype=self.dispatch_dtype,
+            device=device,
+        )
+
+        valid_locations = self.locations < self.capacity
+        for i in range(num_tokens):
+            if valid_locations[i]:
+                expert_idx = self.indices[i].item()
+                location_idx = self.locations[i].item()
+                flat_idx = expert_idx * self.capacity + location_idx
+                dispatch_mask[i, flat_idx] = self.gates[i].item()
+
+        # Dispatch: (num_experts * capacity, model_dim)
+        dispatched = dispatch_mask.t() @ input_tensor.to(self.dispatch_dtype)
+
+        return dispatched
+
+    def decode(self, expert_output: Tensor) -> Tensor:
+        """Combine expert outputs back to original token order."""
+        if self.indices is None or self.locations is None or self.gates is None:
+            raise RuntimeError("Must call update() before decode()")
+
+        device = expert_output.device
+        num_tokens = self.indices.shape[0]
+
+        # Create combine mask: (num_tokens, num_experts * capacity)
+        combine_mask = torch.zeros(
+            (num_tokens, self.num_experts * self.capacity),
+            dtype=self.dispatch_dtype,
+            device=device,
+        )
+
+        valid_locations = self.locations < self.capacity
+        for i in range(num_tokens):
+            if valid_locations[i]:
+                expert_idx = self.indices[i].item()
+                location_idx = self.locations[i].item()
+                flat_idx = expert_idx * self.capacity + location_idx
+                combine_mask[i, flat_idx] = self.gates[i].item()
+
+        # Combine: (num_tokens, model_dim)
+        combined = combine_mask @ expert_output
+
+        return combined
+
+
+def fast_cumsum_sub_one(mask: Tensor) -> Tensor:
+    """Compute cumulative sum along dimension 0 minus 1."""
+    return torch.cumsum(mask, dim=0) - 1
+
+
+# Use a fixed temperature to compute balance loss
 TEMPERATURE_FOR_L_UAX = 0.07
 
-# maximum capacity of 1 expert as a fraction of number of tokens in the batch
-# Note: setting this to 1.0 causes inference to significantly slow down
+# Maximum capacity of 1 expert as a fraction of number of tokens in the batch
 EVAL_CAPACITY_TOKEN_FRACTION = 0.25
 
-# logging
+# Logging
 SAMPLE_FRACTION = 0.2
 
 
-def _find_my_group_index(grouped_ranks):
+def _find_my_group_index(grouped_ranks: List[List[int]]) -> int:
+    """Find the index of the group containing the current process rank."""
     my_rank = dist.get_rank()
     for i, group in enumerate(grouped_ranks):
         if my_rank in group:
             return i
-    raise RuntimeError
+    raise RuntimeError(f"Rank {my_rank} not found in any group")
 
 
-def get_moe_group(moe_expert_count=None):
+def get_moe_group(moe_expert_count: Optional[int] = None) -> Tuple[int, Any]:
+    """Get the MoE process group for expert parallelism."""
     if dist.is_initialized():
         if not hasattr(get_moe_group, "_moe_groups"):
             world_size = dist.get_world_size()
@@ -60,7 +221,6 @@ def get_moe_group(moe_expert_count=None):
             if world_size <= moe_expert_count:
                 assert moe_expert_count % world_size == 0
                 moe_groups = [[i] for i in range(world_size)]
-
             else:
                 assert world_size % moe_expert_count == 0
                 ranks_per_group = world_size // moe_expert_count
@@ -75,19 +235,20 @@ def get_moe_group(moe_expert_count=None):
 
         my_group_idx = _find_my_group_index(get_moe_group._moe_group_idx)
         return my_group_idx, get_moe_group._moe_groups[my_group_idx]
+    return 0, None
 
 
-def get_all2all_group(moe_expert_count):
+def get_all2all_group(moe_expert_count: int) -> Any:
+    """Get the all-to-all process group for MoE communication."""
     if dist.is_initialized():
         if not hasattr(get_all2all_group, "_all2all_groups"):
             world_size = dist.get_world_size()
 
-            # more experts than world size
+            # More experts than world size
             if world_size <= moe_expert_count:
                 assert moe_expert_count % world_size == 0
                 all2all_groups = [list(range(world_size))]
-
-            # larger world than num experts
+            # Larger world than num experts
             else:
                 assert world_size % moe_expert_count == 0
                 ranks_per_group = world_size // moe_expert_count
@@ -105,19 +266,51 @@ def get_all2all_group(moe_expert_count):
             get_all2all_group._all2all_group_idx
         )
         return get_all2all_group._all2all_groups[my_group_idx]
+    return None
+
+
+def one_hot(
+    indices: Tensor, num_classes: int, unsqueeze_indices: bool = False
+) -> Tensor:
+    """Create one-hot encoding of indices."""
+    if unsqueeze_indices:
+        indices = indices.unsqueeze(-1)
+    assert (
+        indices.shape[-1] == 1
+    ), "last dimension of indices must be have size 1"
+    output = torch.zeros(
+        indices.shape[:-1] + (num_classes,),
+        device=indices.device,
+        dtype=indices.dtype,
+    )
+    output.scatter_(len(output.shape) - 1, indices, 1)
+    return output
+
+
+def entropy(probs: Tensor) -> Tensor:
+    """Compute entropy of probability distributions."""
+    logits = torch.distributions.utils.probs_to_logits(probs)
+    p_log_p = probs * logits
+    return -p_log_p.sum(-1)
+
+
+def gumbel_rsample(shape: Tuple[int, ...], device: torch.device) -> Tensor:
+    """Sample from Gumbel distribution."""
+    uniform = torch.rand(shape, device=device)
+    return -torch.log(-torch.log(uniform + 1e-8) + 1e-8)
 
 
 def top1gating(
-    logits: torch.Tensor,
-    input_mask: Optional[torch.Tensor] = None,
-    use_fp32=False,
-    capacity_factor=1.0,
-    eval_mode=False,
-    moe_eval_capacity_token_fraction=EVAL_CAPACITY_TOKEN_FRACTION,
-    use_xmoe=False,
-    gate_obj=None,
-) -> Tuple[Tensor, Tensor, Tensor, Dict]:
-    """Implements Top2Gating on logits."""
+    logits: Tensor,
+    input_mask: Optional[Tensor] = None,
+    use_fp32: bool = False,
+    capacity_factor: float = 1.0,
+    eval_mode: bool = False,
+    moe_eval_capacity_token_fraction: float = EVAL_CAPACITY_TOKEN_FRACTION,
+    use_xmoe: bool = False,
+    gate_obj: Any = None,
+) -> Tuple[Tensor, Tensor, Tensor, Dict[str, Any]]:
+    """Implements Top1 gating for MoE."""
     metadata = {}
     if use_fp32:
         orig_dtype = logits.dtype
@@ -135,14 +328,14 @@ def top1gating(
         # capacity = capacity_factor * S/E
         capacity = int(capacity_factor * math.ceil(num_tokens / num_experts))
 
-    # Create a mask for 1st's expert per token
+    # Create a mask for 1st expert per token
     indices1_s = torch.argmax(gates, dim=1)
     mask1 = one_hot(indices1_s, num_classes=num_experts, unsqueeze_indices=True)
     if input_mask is not None and input_mask.any():
         nonpadding = ~input_mask
         mask1 = mask1 * nonpadding.unsqueeze(-1).to(mask1.dtype)
 
-    # for logging (percent of tokens routed to each expert)
+    # For logging (percent of tokens routed to each expert)
     expert1_hist = (
         100
         * torch.histc(
@@ -163,7 +356,7 @@ def top1gating(
     gates1_s = (gates * mask1).sum(dim=1)
 
     # Compute locations in capacity buffer
-    locations1 = fused_cumsum_sub_one(mask1)
+    locations1 = fast_cumsum_sub_one(mask1)
 
     # Compute l_aux
     me = torch.mean(gates, dim=0)
@@ -172,190 +365,47 @@ def top1gating(
     l_aux = torch.mean(me * ce)
     l_aux = l_aux * num_experts * num_experts
 
-    if has_tutel:
-        locations1_s = torch.sum(locations1 * mask1, dim=1)
-        return (
-            l_aux,
-            metadata,
-            capacity,
-            num_experts,
-            [
-                indices1_s,
-            ],
-            [
-                locations1_s,
-            ],
-            [
-                gates1_s,
-            ],
-        )
-
     # Remove locations outside capacity from mask
     mask1 = mask1 * torch.lt(locations1, capacity)
     # Store the capacity location for each token
     locations1_s = torch.sum(locations1 * mask1, dim=1)
 
     # Calculate combine_weights and dispatch_mask
-    gates1 = gates1_s.unsqueeze(-1) * mask1.to(
-        gates1_s.dtype
-    )  # einsum("s,se->se")
-    # locations1_sc = num_tokens * capacity
+    gates1 = gates1_s.unsqueeze(-1) * mask1.to(gates1_s.dtype)
     locations1_sc = one_hot(
         locations1_s, num_classes=capacity, unsqueeze_indices=True
     )
     combine1_sec = torch.bmm(
-        # einsum("se,sc->sec")
         gates1.unsqueeze(-1),
         locations1_sc.to(gates1.dtype).unsqueeze(1),
     )
     dispatch_mask = combine1_sec.bool()
+
     if use_fp32:
         return l_aux, combine1_sec.to(orig_dtype), dispatch_mask, metadata
     else:
         return l_aux, combine1_sec, dispatch_mask, metadata
 
 
-class Top1Gate(torch.nn.Module):
-    """Gate module which implements Top2Gating as described in Gshard_.
-    ::
-
-        gate = Top2Gate(model_dim, num_experts)
-        l_aux, combine_weights, dispatch_mask = gate(input)
-
-    .. Gshard_: https://arxiv.org/pdf/2006.16668.pdf
-
-    Args:
-        model_dim (int):
-            size of model embedding dimension
-        num_experts (ints):
-            number of experts in model
-    """
-
-    wg: torch.nn.Linear
-
-    def __init__(
-        self,
-        model_dim: int,
-        num_experts: int,
-        use_fp32=False,
-        input_noise_type=None,
-        capacity_factor=1.0,
-        moe_eval_capacity_token_fraction=EVAL_CAPACITY_TOKEN_FRACTION,
-        use_xmoe=False,
-    ) -> None:
-        # TODO: merge this to top2gate.py
-        #
-        super().__init__()
-
-        if not use_xmoe:
-            self.wg = torch.nn.Linear(model_dim, num_experts, bias=False)
-        else:
-            self.wg_reduction = torch.nn.Linear(model_dim, 16, bias=False)
-            wg = torch.empty(num_experts, 16)
-            torch.nn.init.orthogonal_(wg, gain=0.32)
-            self.register_parameter("wg", torch.nn.Parameter(wg))
-
-        self.use_xmoe = use_xmoe
-        self.use_fp32 = use_fp32
-        self.input_noise_type = input_noise_type
-        self.capacity_factor = capacity_factor
-        self.moe_eval_capacity_token_fraction = moe_eval_capacity_token_fraction
-
-    def forward(self, input, mask=None):  # type: ignore
-        if self.use_xmoe:
-            input = self.wg_reduction(input)
-            with torch.no_grad():
-                wg_norm = self.wg.norm(p=2.0, dim=1, keepdim=True)
-                self.wg.mul_(1.5 / wg_norm)
-            logits = self._cosine(input, self.wg)
-            logits = self._make_finite(logits)
-        else:
-            logits = self.wg(input)
-
-        return top1gating(
-            logits,
-            mask,
-            use_fp32=self.use_fp32,
-            capacity_factor=self.capacity_factor,
-            eval_mode=not self.training,
-            moe_eval_capacity_token_fraction=self.moe_eval_capacity_token_fraction,
-            use_xmoe=self.use_xmoe,
-            gate_obj=self,
-        )
-
-    def _make_finite(self, scores):
-        ok = scores.isfinite()
-        if not ok.all():
-            # NaNs here can break the assignment algorithm
-            scores[~ok] = scores[ok].min()
-        return scores
-
-    def _get_gating_temperature(self, eps=1e-4):
-        if self.gating_t.data.item() < eps:
-            return eps
-        return self.gating_t
-
-    def _cosine(self, mat1, mat2, eps=1e-4):
-        assert mat1.dim() == 2
-        assert mat2.dim() == 2
-        # mat1 = F.normalize(mat1, p=2.0, dim=1, eps=eps)
-        mat2 = F.normalize(mat2.float(), p=2.0, dim=1, eps=eps)
-        return mat1.float().matmul(mat2.transpose(0, 1)).type_as(mat1)
-
-
-gumbel_map: Dict[torch.device, Callable] = {}
-
-
-def gumbel_rsample(shape: Tuple, device: torch.device) -> Tensor:
-    gumbel = gumbel_map.get(device)
-    if gumbel is None:
-        one = torch.tensor(1.0, device=device)
-        zero = torch.tensor(0.0, device=device)
-        gumbel = torch.distributions.gumbel.Gumbel(zero, one).rsample  # type: ignore
-        gumbel_map[device] = gumbel
-    return gumbel(shape)
-
-
-def one_hot(
-    indices: torch.Tensor, num_classes: int, unsqueeze_indices=False
-) -> Tensor:
-    if unsqueeze_indices:
-        indices = indices.unsqueeze(-1)
-    assert (
-        indices.shape[-1] == 1
-    ), "last dimension of indices must be have size 1"
-    output = torch.zeros(
-        indices.shape[:-1] + (num_classes,),
-        device=indices.device,
-        dtype=indices.dtype,
-    )
-    output.scatter_(len(output.shape) - 1, indices, 1)
-    return output
-
-
-def entropy(probs):
-    logits = torch.distributions.utils.probs_to_logits(probs)
-    p_log_p = probs * logits
-    return -p_log_p.sum(-1)
-
-
 def top2gating(
-    logits: torch.Tensor,
-    input_mask: Optional[torch.Tensor] = None,
-    use_fp32=False,
-    second_expert_policy="sampling",
-    normalize_gate_prob_before_dropping=False,
-    eval_mode=False,
-    moe_eval_capacity_token_fraction=0.25,
-    batch_prioritized_routing=False,
-) -> Tuple[Tensor, Tensor, Tensor]:
-    """Implements Top2Gating on logits."""
+    logits: Tensor,
+    input_mask: Optional[Tensor] = None,
+    use_fp32: bool = False,
+    second_expert_policy: str = "sampling",
+    normalize_gate_prob_before_dropping: bool = False,
+    eval_mode: bool = False,
+    moe_eval_capacity_token_fraction: float = 0.25,
+    batch_prioritized_routing: bool = False,
+) -> Tuple[Tensor, Tensor, Tensor, Dict[str, Any]]:
+    """Implements Top2 gating for MoE."""
     metadata = {}
     if use_fp32:
         orig_dtype = logits.dtype
         logits = logits.float()
+
     gates = F.softmax(logits, dim=1)
     metadata["entropy_gating"] = entropy(probs=gates).mean().detach()
+
     # gates has shape of SE
     num_tokens = gates.shape[0]
     num_experts = gates.shape[1]
@@ -365,17 +415,18 @@ def top2gating(
         # capacity = 2S/E
         capacity = 2 * math.ceil(num_tokens / num_experts)
 
-    # Create a mask for 1st's expert per token
+    # Create a mask for 1st expert per token
     indices1_s = torch.argmax(gates, dim=1, keepdim=True)
     mask1 = one_hot(indices1_s, num_experts)
+
     if second_expert_policy == "sampling":
-        # Create a mask for 2nd's expert per token using Gumbel-max trick
-        # https://timvieira.github.io/blog/post/2014/07/31/gumbel-max-trick/
+        # Create a mask for 2nd expert per token using Gumbel-max trick
         logits_w_noise = logits + gumbel_rsample(
             logits.shape, device=logits.device
         )
     else:
         logits_w_noise = logits
+
     # Replace top-expert with min value
     logits_except1 = logits_w_noise.masked_fill(mask1.bool(), float("-inf"))
     indices2_s = torch.argmax(logits_except1, dim=1, keepdim=True)
@@ -386,7 +437,6 @@ def top2gating(
     if normalize_gate_prob_before_dropping:
         # Normalize gate probabilities
         denom_s = gates1_s + gates2_s
-        # Avoid divide-by-zero
         denom_s = torch.clamp(denom_s, min=torch.finfo(denom_s.dtype).eps)
         gates1_s = gates1_s / denom_s
         gates2_s = gates2_s / denom_s
@@ -402,16 +452,15 @@ def top2gating(
         mask2 = mask2 * nonpadding.unsqueeze(-1).to(mask1.dtype)
 
     if batch_prioritized_routing:
-        # if batch_prioritized_routing:
         importance_scores = -1 * gates.max(dim=1)[0]
         sorted_mask1 = mask1[importance_scores.argsort(dim=0)]
-        sorted_cumsum1 = fused_cumsum_sub_one(sorted_mask1) * sorted_mask1
+        sorted_cumsum1 = fast_cumsum_sub_one(sorted_mask1) * sorted_mask1
         importance_sorted_locations1 = sorted_cumsum1[
             importance_scores.argsort(dim=0).argsort(dim=0)
         ]
 
         sorted_mask2 = mask2[importance_scores.argsort(dim=0)]
-        sorted_cumsum2 = fused_cumsum_sub_one(sorted_mask2) * sorted_mask2
+        sorted_cumsum2 = fast_cumsum_sub_one(sorted_mask2) * sorted_mask2
         importance_sorted_locations2 = sorted_cumsum2[
             importance_scores.argsort(dim=0).argsort(dim=0)
         ]
@@ -423,8 +472,8 @@ def top2gating(
             importance_sorted_locations2,
         )
     else:
-        locations1 = fused_cumsum_sub_one(mask1)
-        locations2 = fused_cumsum_sub_one(mask2)
+        locations1 = fast_cumsum_sub_one(mask1)
+        locations2 = fast_cumsum_sub_one(mask2)
         # Update 2nd's location by accounting for locations of 1st
         locations2 += torch.sum(mask1, dim=0, keepdim=True)
 
@@ -434,7 +483,7 @@ def top2gating(
     l_aux = torch.mean(me * ce)
     l_aux = l_aux * num_experts * num_experts
 
-    # for logging purposes
+    # For logging purposes
     metadata["overflow_expert1"] = (
         100
         * torch.sum(mask1 * torch.ge(locations1, capacity))
@@ -447,11 +496,10 @@ def top2gating(
     )
 
     # Remove locations outside capacity from mask
-    mask1_, mask2_ = mask1, mask2
     mask1 = mask1 * torch.lt(locations1, capacity)
     mask2 = mask2 * torch.lt(locations2, capacity)
 
-    # for logging (percent of tokens routed to each expert)
+    # For logging (percent of tokens routed to each expert)
     expert1_hist = (
         100
         * torch.histc(
@@ -481,7 +529,6 @@ def top2gating(
     sample_count = max(math.ceil(num_experts * SAMPLE_FRACTION), 1)
     metadata["expert1_balance_top"] = expert1_hist[:sample_count].sum()
     metadata["expert1_balance_bottom"] = expert1_hist[-sample_count:].sum()
-
     metadata["expert2_balance_top"] = expert2_hist[:sample_count].sum()
     metadata["expert2_balance_bottom"] = expert2_hist[-sample_count:].sum()
 
@@ -490,35 +537,17 @@ def top2gating(
         gates1_s = (gates * mask1).sum(dim=1)
         gates2_s = (gates * mask2).sum(dim=1)
         denom_s = gates1_s + gates2_s
-        # Avoid divide-by-zero
         denom_s = torch.clamp(denom_s, min=torch.finfo(denom_s.dtype).eps)
         gates1_s /= denom_s
         gates2_s /= denom_s
-
-    if has_tutel:
-        locations1_s = torch.sum(locations1 * mask1_, dim=1)
-        locations2_s = torch.sum(locations2 * mask2_, dim=1)
-        return (
-            l_aux,
-            metadata,
-            capacity,
-            num_experts,
-            [indices1_s, indices2_s],
-            [locations1_s, locations2_s],
-            [gates1_s, gates2_s],
-        )
 
     # Store the capacity location for each token
     locations1_s = torch.sum(locations1 * mask1, dim=1)
     locations2_s = torch.sum(locations2 * mask2, dim=1)
 
     # Calculate combine_weights and dispatch_mask
-    gates1 = gates1_s.unsqueeze(-1) * mask1.to(
-        gates1_s.dtype
-    )  # einsum("s,se->se")
-    gates2 = gates2_s.unsqueeze(-1) * mask2.to(
-        gates2_s.dtype
-    )  # einsum("s,se->se")
+    gates1 = gates1_s.unsqueeze(-1) * mask1.to(gates1_s.dtype)
+    gates2 = gates2_s.unsqueeze(-1) * mask2.to(gates2_s.dtype)
     locations1_sc = one_hot(
         locations1_s, num_classes=capacity, unsqueeze_indices=True
     )
@@ -526,60 +555,111 @@ def top2gating(
         locations2_s, num_classes=capacity, unsqueeze_indices=True
     )
     combine1_sec = torch.bmm(
-        # einsum("se,sc->sec")
         gates1.unsqueeze(-1),
         locations1_sc.to(gates1.dtype).unsqueeze(1),
     )
     combine2_sec = torch.bmm(
-        # einsum("se,sc->sec")
         gates2.unsqueeze(-1),
         locations2_sc.to(gates2.dtype).unsqueeze(1),
     )
     combine_weights = combine1_sec + combine2_sec
     dispatch_mask = combine_weights.bool()
+
     if use_fp32:
         return l_aux, combine_weights.to(orig_dtype), dispatch_mask, metadata
     else:
         return l_aux, combine_weights, dispatch_mask, metadata
 
 
-class Top2Gate(torch.nn.Module):
-    """Gate module which implements Top2Gating as described in Gshard_.
-    ::
-
-        gate = Top2Gate(model_dim, num_experts)
-        l_aux, combine_weights, dispatch_mask = gate(input)
-
-    .. Gshard_: https://arxiv.org/pdf/2006.16668.pdf
-
-    Args:
-        model_dim (int):
-            size of model embedding dimension
-        num_experts (ints):
-            number of experts in model
-    """
-
-    wg: torch.nn.Linear
+class Top1Gate(nn.Module):
+    """Top-1 gating mechanism for MoE."""
 
     def __init__(
         self,
         model_dim: int,
         num_experts: int,
-        use_fp32=False,
-        second_expert_policy="sampling",
-        normalize_gate_prob_before_dropping=False,
-        moe_eval_capacity_token_fraction=0.25,
-        batch_prioritized_routing=False,
-        use_xmoe=False,
+        use_fp32: bool = False,
+        input_noise_type: Optional[str] = None,
+        capacity_factor: float = 1.0,
+        moe_eval_capacity_token_fraction: float = EVAL_CAPACITY_TOKEN_FRACTION,
+        use_xmoe: bool = False,
+    ) -> None:
+        super().__init__()
+
+        if not use_xmoe:
+            self.wg = nn.Linear(model_dim, num_experts, bias=False)
+        else:
+            self.wg_reduction = nn.Linear(model_dim, 16, bias=False)
+            wg = torch.empty(num_experts, 16)
+            nn.init.orthogonal_(wg, gain=0.32)
+            self.register_parameter("wg", nn.Parameter(wg))
+
+        self.use_xmoe = use_xmoe
+        self.use_fp32 = use_fp32
+        self.input_noise_type = input_noise_type
+        self.capacity_factor = capacity_factor
+        self.moe_eval_capacity_token_fraction = moe_eval_capacity_token_fraction
+
+    def forward(
+        self, input_tensor: Tensor, mask: Optional[Tensor] = None
+    ) -> Tuple[Tensor, Tensor, Tensor, Dict[str, Any]]:
+        if self.use_xmoe:
+            input_tensor = self.wg_reduction(input_tensor)
+            with torch.no_grad():
+                wg_norm = self.wg.norm(p=2.0, dim=1, keepdim=True)
+                self.wg.mul_(1.5 / wg_norm)
+            logits = self._cosine(input_tensor, self.wg)
+            logits = self._make_finite(logits)
+        else:
+            logits = self.wg(input_tensor)
+
+        return top1gating(
+            logits,
+            mask,
+            use_fp32=self.use_fp32,
+            capacity_factor=self.capacity_factor,
+            eval_mode=not self.training,
+            moe_eval_capacity_token_fraction=self.moe_eval_capacity_token_fraction,
+            use_xmoe=self.use_xmoe,
+            gate_obj=self,
+        )
+
+    def _make_finite(self, scores: Tensor) -> Tensor:
+        ok = scores.isfinite()
+        if not ok.all():
+            scores[~ok] = scores[ok].min()
+        return scores
+
+    def _cosine(self, mat1: Tensor, mat2: Tensor, eps: float = 1e-4) -> Tensor:
+        assert mat1.dim() == 2
+        assert mat2.dim() == 2
+        mat2 = F.normalize(mat2.float(), p=2.0, dim=1, eps=eps)
+        return mat1.float().matmul(mat2.transpose(0, 1)).type_as(mat1)
+
+
+class Top2Gate(nn.Module):
+    """Top-2 gating mechanism for MoE."""
+
+    def __init__(
+        self,
+        model_dim: int,
+        num_experts: int,
+        use_fp32: bool = False,
+        second_expert_policy: str = "sampling",
+        normalize_gate_prob_before_dropping: bool = False,
+        moe_eval_capacity_token_fraction: float = 0.25,
+        batch_prioritized_routing: bool = False,
+        use_xmoe: bool = False,
     ) -> None:
         super().__init__()
         if not use_xmoe:
-            self.wg = torch.nn.Linear(model_dim, num_experts, bias=False)
+            self.wg = nn.Linear(model_dim, num_experts, bias=False)
         else:
-            self.wg_reduction = torch.nn.Linear(model_dim, 16, bias=False)
+            self.wg_reduction = nn.Linear(model_dim, 16, bias=False)
             wg = torch.empty(num_experts, 16)
-            torch.nn.init.orthogonal_(wg, gain=0.32)
-            self.register_parameter("wg", torch.nn.Parameter(wg))
+            nn.init.orthogonal_(wg, gain=0.32)
+            self.register_parameter("wg", nn.Parameter(wg))
+
         self.use_fp32 = use_fp32
         self.second_expert_policy = second_expert_policy
         self.normalize_gate_prob_before_dropping = (
@@ -589,16 +669,19 @@ class Top2Gate(torch.nn.Module):
         self.batch_prioritized_routing = batch_prioritized_routing
         self.use_xmoe = use_xmoe
 
-    def forward(self, input, mask=None):  # type: ignore
+    def forward(
+        self, input_tensor: Tensor, mask: Optional[Tensor] = None
+    ) -> Tuple[Tensor, Tensor, Tensor, Dict[str, Any]]:
         if self.use_xmoe:
-            input = self.wg_reduction(input)
+            input_tensor = self.wg_reduction(input_tensor)
             with torch.no_grad():
                 wg_norm = self.wg.norm(p=2.0, dim=1, keepdim=True)
                 self.wg.mul_(1.5 / wg_norm)
-            logits = self._cosine(input, self.wg)
+            logits = self._cosine(input_tensor, self.wg)
             logits = self._make_finite(logits)
         else:
-            logits = self.wg(input)
+            logits = self.wg(input_tensor)
+
         return top2gating(
             logits,
             mask,
@@ -610,36 +693,31 @@ class Top2Gate(torch.nn.Module):
             batch_prioritized_routing=self.batch_prioritized_routing,
         )
 
-    def _cosine(self, mat1, mat2, eps=1e-4):
+    def _cosine(self, mat1: Tensor, mat2: Tensor, eps: float = 1e-4) -> Tensor:
         assert mat1.dim() == 2
         assert mat2.dim() == 2
-        # mat1 = F.normalize(mat1, p=2.0, dim=1, eps=eps)
         mat2 = F.normalize(mat2.float(), p=2.0, dim=1, eps=eps)
         return mat1.float().matmul(mat2.transpose(0, 1)).type_as(mat1)
 
-    def _make_finite(self, scores):
+    def _make_finite(self, scores: Tensor) -> Tensor:
         ok = scores.isfinite()
         if not ok.all():
-            # NaNs here can break the assignment algorithm
             scores[~ok] = scores[ok].min()
         return scores
 
 
-# einsum dimensions: (g)roup, (s)equence, (e)xpert, (m)odel, (c)apacity
-
-
-# Based on https://github.com/pytorch/pytorch/pull/40762
 class _AllToAll(torch.autograd.Function):
+    """All-to-all communication primitive."""
+
     @staticmethod
-    def forward(ctx: Any, group: dist.ProcessGroup, input: Tensor) -> Tensor:  # type: ignore
+    def forward(ctx: Any, group: Any, input_tensor: Tensor) -> Tensor:  # type: ignore
         ctx.group = group
-        input = input.contiguous()
-        output = torch.empty_like(input)
-        if torch.distributed.is_initialized():
-            dist.all_to_all_single(output, input, group=group)
+        input_tensor = input_tensor.contiguous()
+        output = torch.empty_like(input_tensor)
+        if torch.distributed.is_initialized() and group is not None:
+            dist.all_to_all_single(output, input_tensor, group=group)
         else:
-            assert group is None
-            output = input
+            output = input_tensor
         return output
 
     @staticmethod
@@ -647,120 +725,120 @@ class _AllToAll(torch.autograd.Function):
         return (None, _AllToAll.apply(ctx.group, *grad_output))
 
 
-class GShardMoELayer(Base):
+class GShardMoELayer(nn.Module):
     """
-    Mixture of Experts (MOE) layer implementation.
+    GShard Mixture of Experts (MoE) layer implementation using pure PyTorch.
+
+    This implementation follows the GShard paper architecture for distributed
+    mixture of experts, supporting both Top-1 and Top-2 gating mechanisms
+    with load balancing and expert parallelism.
 
     Args:
-        gate (nn.Module): The gating network that determines the expert assignment.
+        gate (nn.Module): The gating network (Top1Gate or Top2Gate).
         experts (Union[nn.ModuleList, nn.Module]): The expert networks.
-        args (argparse.Namespace): The command-line arguments.
+        args (object): Configuration object with MoE parameters.
 
-    Attributes:
-        gate (nn.Module): The gating network that determines the expert assignment.
-        experts (nn.ModuleList): The expert networks.
-        expert_group (dist.ProcessGroup): The process group for experts.
-        all2all_group (dist.ProcessGroup): The process group for all-to-all communication.
-        world_size (int): The number of processes in the expert group.
-        all2all_size (int): The number of processes in the all-to-all group.
-        num_local_experts (int): The number of local experts.
-        args (argparse.Namespace): The command-line arguments.
-        in_generation (bool): Flag indicating if the layer is in generation mode.
-        a2a_cuda_event_intervals (List[Tuple[torch.cuda.Event, torch.cuda.Event]]): List of CUDA event intervals for all-to-all communication.
-        a2a_cpu_time_ms (float): Total CPU time spent on all-to-all communication.
-
-    Methods:
-        forward(*input: Tensor, input_padding_mask=None, **kwargs: Any) -> Tensor:
-            Performs forward pass through the MOE layer.
-        prepare_for_inference_():
-            Prepares the MOE layer for inference mode.
-        all_to_all_wrapper(input: Tensor) -> Tensor:
-            Wrapper function for all-to-all communication.
-        record_all_to_all_stats():
-            Records statistics for all-to-all communication.
+    Example:
+        >>> gate = Top2Gate(model_dim=512, num_experts=8)
+        >>> expert = nn.Linear(512, 512)
+        >>> class Args:
+        ...     moe_expert_count = 8
+        >>> args = Args()
+        >>> moe = GShardMoELayer(gate, expert, args)
+        >>> x = torch.randn(32, 128, 512)
+        >>> output, aux_loss = moe(x)
     """
 
-    def __init__(self, gate, experts, args):
-        if has_fairseq:
-            super(Base, self).__init__()
-        else:
-            super().__init__()
+    def __init__(
+        self,
+        gate: nn.Module,
+        experts: Union[nn.ModuleList, nn.Module],
+        args: Any,
+    ) -> None:
+        super().__init__()
         self.gate = gate
-        if type(experts) == ModuleList:
-            self.experts = cast(ModuleList, experts)
+        if isinstance(experts, nn.ModuleList):
+            self.experts = experts
         else:
-            self.experts = ModuleList([experts])
+            self.experts = nn.ModuleList([experts])
+
         _, self.expert_group = get_moe_group(args.moe_expert_count)
         self.all2all_group = get_all2all_group(args.moe_expert_count)
-        self.world_size = dist.get_world_size(group=self.expert_group)
-        self.all2all_size = dist.get_world_size(group=self.all2all_group)
-        for p in experts.parameters():
-            p.expert = True  # type: ignore
+
+        if dist.is_initialized():
+            self.world_size = dist.get_world_size(group=self.expert_group)
+            self.all2all_size = dist.get_world_size(group=self.all2all_group)
+        else:
+            self.world_size = 1
+            self.all2all_size = 1
+
+        for expert in self.experts:
+            for p in expert.parameters():
+                p.expert = True  # type: ignore
+
         self.num_local_experts = len(self.experts)
         self.args = args
         self.in_generation = False
-        self.a2a_cuda_event_intervals = []
+        self.a2a_cuda_event_intervals: List[
+            Tuple[torch.cuda.Event, torch.cuda.Event]
+        ] = []
         self.a2a_cpu_time_ms = 0.0
+        self.metadata: Dict[str, Any] = {}
 
     def forward(
-        self, *input: Tensor, input_padding_mask=None, **kwargs: Any
-    ) -> Tensor:
-        assert len(input) == 1, "only single input Tensor supported"
-        input = input[0]
+        self,
+        *input_args: Tensor,
+        input_padding_mask: Optional[Tensor] = None,
+        **kwargs: Any,
+    ) -> Tuple[Tensor, Tensor]:
+        """Forward pass through the GShard MoE layer."""
+        assert len(input_args) == 1, "only single input Tensor supported"
+        input_tensor = input_args[0]
         assert (
-            len(input.shape) == 3
-        ), "input Tensor must have dimensions: (s)equence, (t)oken, (m)odel"
-        if input_padding_mask is not None:
-            assert (
-                len(input_padding_mask.shape) == 2
-            ), "input Tensor must have dimensions: (s)equence, (t)oken"
-            assert input_padding_mask.shape[0] == input.shape[0]
-            assert input_padding_mask.shape[1] == input.shape[1]
-        # assert input.shape[0] % len(self.experts) == 0, "num tokens must be order of number of local experts"
+            len(input_tensor.shape) == 3
+        ), "input Tensor must have dimensions: (batch, sequence, model)"
 
-        # Implement Algorithm 2 from GShard paper.
-        dim = input.shape[2]
-        # Pad to expected batch size
-        input_shape = list(input.shape)
+        if input_padding_mask is not None:
+            assert len(input_padding_mask.shape) == 2
+            assert input_padding_mask.shape[0] == input_tensor.shape[0]
+            assert input_padding_mask.shape[1] == input_tensor.shape[1]
+
+        # Implement Algorithm 2 from GShard paper
+        dim = input_tensor.shape[2]
+        input_shape = list(input_tensor.shape)
+
+        # Handle batch size padding
         expected_bsz = (
             getattr(self.args, "batch_size", 0)
             if self.training
             else getattr(self.args, "batch_size_valid", 0)
         )
-        # This indicates that --batch-size or --max-sentences is not specified
         if expected_bsz is None:
             expected_bsz = 0
-        # Note: Padding is not necessary at generation time at present
-        # because all DDP workers process the same batch. Also, batch size at generation time
-        # can be different from that present in the checkpoint state
+
         if (
             not self.in_generation
             and expected_bsz != 0
             and input_shape[0] != expected_bsz
         ):
-            logger.warning(
-                "padding batch with unexpected size"
-                f" {input_shape[0]} (expected: {expected_bsz})"
+            print(
+                f"Warning: padding batch with unexpected size {input_shape[0]} (expected: {expected_bsz})"
             )
-            assert (
-                input_shape[0] < expected_bsz
-            ), f"{input_shape[0]} < {expected_bsz}"
+            assert input_shape[0] < expected_bsz
+
             padded_input = torch.zeros(
                 (expected_bsz, input_shape[1], input_shape[2]),
-                dtype=input.dtype,
-                layout=input.layout,
-                device=input.device,
+                dtype=input_tensor.dtype,
+                layout=input_tensor.layout,
+                device=input_tensor.device,
             )
-            padded_input[: input_shape[0], :, :] = input
-            input = padded_input
+            padded_input[: input_shape[0], :, :] = input_tensor
+            input_tensor = padded_input
 
             padded_input_padding_mask = torch.ones(
-                (
-                    expected_bsz,
-                    input_shape[1],
-                ),
+                (expected_bsz, input_shape[1]),
                 dtype=torch.bool,
-                device=input.device,
+                device=input_tensor.device,
             )
             if input_padding_mask is not None:
                 padded_input_padding_mask[: input_shape[0], :] = (
@@ -770,8 +848,8 @@ class GShardMoELayer(Base):
                 padded_input_padding_mask[: input_shape[0], :] = False
             input_padding_mask = padded_input_padding_mask
 
-        # Reshape into S tokens by dropping sequence dimension.
-        reshaped_input = input.reshape(-1, dim)
+        # Reshape into S tokens by dropping sequence dimension
+        reshaped_input = input_tensor.reshape(-1, dim)
         reshaped_input_shape = reshaped_input.shape
         reshaped_input_padding_mask = (
             input_padding_mask.reshape(-1)
@@ -779,22 +857,22 @@ class GShardMoELayer(Base):
             else None
         )
 
-        # Doing padding here when --max-tokens is specified and not --batch-size or --max-sentences
-        # Pro of --max-tokens: more flexible for MT variable sequence lengths
-        # Con of --max-tokens: extra all-reduce needed to figure out optimal padding without running OOM
+        # Handle max-tokens padding
         if expected_bsz == 0:
             expected_dim = reshaped_input_shape[0] * torch.ones(
-                (1,), dtype=torch.long, device=input.device
+                (1,), dtype=torch.long, device=input_tensor.device
             )
-            dist.all_reduce(
-                expected_dim, group=dist.group.WORLD, op=dist.ReduceOp.MAX
-            )
+            if dist.is_initialized():
+                dist.all_reduce(
+                    expected_dim, group=dist.group.WORLD, op=dist.ReduceOp.MAX
+                )
             expected_dim = int(expected_dim.item())
+
             padded_input = torch.zeros(
                 (expected_dim, reshaped_input_shape[1]),
-                dtype=input.dtype,
-                layout=input.layout,
-                device=input.device,
+                dtype=input_tensor.dtype,
+                layout=input_tensor.layout,
+                device=input_tensor.device,
             )
             padded_input[: reshaped_input_shape[0], :] = reshaped_input
             reshaped_input = padded_input
@@ -810,41 +888,22 @@ class GShardMoELayer(Base):
                 padded_input_padding_mask[: reshaped_input_shape[0]] = False
             reshaped_input_padding_mask = padded_input_padding_mask
 
-        if has_tutel:
-            (
-                l_aux,
-                self.metadata,
-                C,
-                E,
-                indices_,
-                locations_,
-                gates_,
-            ) = self.gate(reshaped_input, reshaped_input_padding_mask)
-            S, M = reshaped_input.size(0), reshaped_input.size(1)
+        # Apply gating
+        l_aux, combine_weights, dispatch_mask, self.metadata = self.gate(
+            reshaped_input, reshaped_input_padding_mask
+        )
 
-            if not hasattr(self, "_tutel_dispatcher"):
-                self._tutel_dispatcher = tutel_moe.fast_dispatcher(
-                    E, C, M, dispatch_dtype=reshaped_input.dtype
-                )
-            self._tutel_dispatcher.update(
-                indices_, locations_, gates_, capacity=C
-            )
-            dispatched_input = self._tutel_dispatcher.encode(reshaped_input)
-        else:
-            l_aux, combine_weights, dispatch_mask, self.metadata = self.gate(
-                reshaped_input, reshaped_input_padding_mask
-            )
+        dispatch_mask = dispatch_mask.to(input_tensor.dtype).permute(
+            1, 2, 0
+        )  # S,E,C -> E,C,S
+        E, C, S = dispatch_mask.size()
+        M = reshaped_input.size(1)
+        assert reshaped_input.size() == (S, M)
 
-            dispatch_mask = dispatch_mask.to(input.dtype).permute(
-                1, 2, 0
-            )  # S,E,C -> E,C,S
-            E, C, S = dispatch_mask.size()
-            M = reshaped_input.size(1)
-            assert reshaped_input.size() == (S, M)
-            # einsum("sec,sm->ecm")
-            dispatched_input = torch.mm(
-                dispatch_mask.view(E * C, S), reshaped_input
-            )  # -> (E*C),M
+        # Dispatch tokens to experts
+        dispatched_input = torch.mm(
+            dispatch_mask.view(E * C, S), reshaped_input
+        )  # -> (E*C),M
 
         if self.all2all_size > 1:
             dispatched_input = self.all_to_all_wrapper(dispatched_input)
@@ -856,7 +915,7 @@ class GShardMoELayer(Base):
         chunks = dispatched_input.chunk(self.num_local_experts, dim=1)
         expert_outputs = []
         for chunk, expert in zip(chunks, self.experts):
-            expert_outputs += [expert(chunk)]
+            expert_outputs.append(expert(chunk))
         expert_output = torch.cat(expert_outputs, dim=1)
 
         if self.all2all_size > 1:
@@ -867,49 +926,47 @@ class GShardMoELayer(Base):
             self.all2all_size * self.num_local_experts, -1, dim
         )
 
-        if has_tutel:
-            combined_output = self._tutel_dispatcher.decode(
-                expert_output.view(E * C, M)
-            )
-        else:
-            # einsum("sec,ecm->sm")
-            combined_output = combine_weights.view(S, E * C).mm(
-                expert_output.view(E * C, M)
-            )
+        # Combine expert outputs
+        combined_output = combine_weights.view(S, E * C).mm(
+            expert_output.view(E * C, M)
+        )
 
-        # Remove padding here when --max-tokens is specified and not --batch-size or --max-sentences
+        # Remove padding
         combined_output = combined_output[: reshaped_input_shape[0], :]
-        combined_output = combined_output.reshape(input.shape)
+        combined_output = combined_output.reshape(input_tensor.shape)
         combined_output = combined_output[: input_shape[0], :, :]
 
         self.record_all_to_all_stats()
 
         return combined_output, l_aux
 
-    def prepare_for_inference_(self):
+    def prepare_for_inference_(self) -> None:
+        """Prepare the MoE layer for inference mode."""
         self.in_generation = True
 
-    def all_to_all_wrapper(self, input: Tensor):
+    def all_to_all_wrapper(self, input_tensor: Tensor) -> Tensor:
+        """Wrapper function for all-to-all communication."""
         dummy_a2a = getattr(self.args, "dummy_a2a", False)
         if dummy_a2a:
-            input = input.contiguous()
-            output = input.detach().clone()
-            return input
-        # always record times, since it is not a lot of overhead
-        # if we do not log it we simply clear it off in record_all_to_all_stats
+            input_tensor = input_tensor.contiguous()
+            return input_tensor.detach().clone()
+
+        # Record timing
         cuda_start = torch.cuda.Event(enable_timing=True)
         cuda_end = torch.cuda.Event(enable_timing=True)
         cpu_start = time.time() * 1000
         cuda_start.record()
-        output = _AllToAll.apply(self.all2all_group, input)
+
+        output = _AllToAll.apply(self.all2all_group, input_tensor)
+
         cuda_end.record()
         cpu_end = time.time() * 1000
         self.a2a_cpu_time_ms += cpu_end - cpu_start
         self.a2a_cuda_event_intervals.append((cuda_start, cuda_end))
         return output
 
-    def record_all_to_all_stats(self):
-        # controlled via an argument as we want to minimize any impact from torch.cuda.synchronize()
+    def record_all_to_all_stats(self) -> None:
+        """Record statistics for all-to-all communication performance."""
         record_a2a_perf_stats = getattr(
             self.args, "record_a2a_perf_stats", False
         )
@@ -920,6 +977,6 @@ class GShardMoELayer(Base):
             for ev_start, ev_end in self.a2a_cuda_event_intervals:
                 a2a_cuda_time_ms += ev_start.elapsed_time(ev_end)
             self.metadata["all_to_all_cuda_time_ms"] = a2a_cuda_time_ms
-        # reset stats
+        # Reset stats
         self.a2a_cpu_time_ms = 0.0
         self.a2a_cuda_event_intervals = []

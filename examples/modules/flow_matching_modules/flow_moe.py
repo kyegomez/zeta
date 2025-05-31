@@ -3,7 +3,6 @@ from pathlib import Path
 from loguru import logger
 from zeta.nn.modules.flow_matching import MixtureFlow, MixtureFlowConfig
 
-
 if __name__ == "__main__":
     # Setup configuration
     config = MixtureFlowConfig()

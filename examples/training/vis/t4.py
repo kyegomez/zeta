@@ -164,27 +164,29 @@ def group_by_layer(fig, params_info):
     fig.update_layout(
         updatemenus=[
             {
-                "buttons": [
-                    {
-                        "label": layer,
-                        "method": "update",
-                        "args": [
-                            {
-                                "visible": [
-                                    p["layer"] == layer for p in params_info
-                                ]
-                            }
-                        ],
-                    }
-                    for layer in layers
-                ]
-                + [
-                    {
-                        "label": "All",
-                        "method": "update",
-                        "args": [{"visible": [True] * len(params_info)}],
-                    }
-                ],
+                "buttons": (
+                    [
+                        {
+                            "label": layer,
+                            "method": "update",
+                            "args": [
+                                {
+                                    "visible": [
+                                        p["layer"] == layer for p in params_info
+                                    ]
+                                }
+                            ],
+                        }
+                        for layer in layers
+                    ]
+                    + [
+                        {
+                            "label": "All",
+                            "method": "update",
+                            "args": [{"visible": [True] * len(params_info)}],
+                        }
+                    ]
+                ),
                 "direction": "down",
                 "showactive": True,
             }
