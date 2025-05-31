@@ -71,7 +71,7 @@ class FlowMLP(nn.Module):
         self.time_embedding = nn.Linear(1, config.dim, bias=False)
         self.time_scale = nn.Parameter(torch.ones(1))
 
-        logger.debug(f"Initialized FlowMLP with architecture: {self.flow_net}")
+        # logger.debug(f"Initialized FlowMLP with architecture: {self.flow_net}")
 
     def forward(self, x: Tensor) -> Tensor:
         batch_size, seq_length, dim = x.shape
@@ -218,7 +218,7 @@ class FlowTransformer(nn.Module):
         """
         super().__init__()
         self.config = config
-        logger.info(f"Initializing Flow Transformer with config: {config}")
+        # logger.info(f"Initializing Flow Transformer with config: {config}")
 
         # Token embedding and positional encoding
         self.token_embedding = nn.Embedding(config.vocab_size, config.dim)

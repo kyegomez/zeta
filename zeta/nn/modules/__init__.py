@@ -12,6 +12,7 @@ from zeta.nn.modules._activations import (
     ReLUSquaredActivation,
 )
 from zeta.nn.modules.adaptive_conv import AdaptiveConv3DMod
+from zeta.nn.modules.adaptive_gating import AdaptiveGating
 from zeta.nn.modules.adaptive_layernorm import AdaptiveLayerNorm
 from zeta.nn.modules.adaptive_rmsnorm import AdaptiveRMSNorm
 from zeta.nn.modules.add_norm import add_norm
@@ -29,10 +30,14 @@ from zeta.nn.modules.blockdiag_butterfly import (
     fftconv_ref,
     mul_sum,
 )
+from zeta.nn.modules.chan_layer_norm import ChanLayerNorm
 from zeta.nn.modules.cnn_text import CNNNew
+from zeta.nn.modules.cog_vlm_two_adapter import CogVLMTwoAdapter
 from zeta.nn.modules.combined_linear import CombinedLinear
 from zeta.nn.modules.conv_mlp import Conv2DFeedforward
 from zeta.nn.modules.convnet import ConvNet
+from zeta.nn.modules.cope import CoPE
+from zeta.nn.modules.crome_adapter import CROMEAdapter
 from zeta.nn.modules.cross_modal_reparametization import (
     CrossModalReParametrization,
     CrossModalReparamLinear,
@@ -46,7 +51,9 @@ from zeta.nn.modules.dual_path_block import DualPathBlock
 from zeta.nn.modules.dynamic_module import DynamicModule
 from zeta.nn.modules.dynamic_routing_block import DynamicRoutingBlock
 from zeta.nn.modules.ether import Ether
+from zeta.nn.modules.evlm_xattn import GatedMoECrossAttn, GatedXAttention
 from zeta.nn.modules.exo import Exo
+from zeta.nn.modules.expand import expand
 from zeta.nn.modules.fast_text import FastTextNew
 from zeta.nn.modules.feedback_block import FeedbackBlock
 from zeta.nn.modules.feedforward import FeedForward
@@ -55,6 +62,18 @@ from zeta.nn.modules.film import Film
 from zeta.nn.modules.film_conditioning import FilmConditioning
 from zeta.nn.modules.flex_conv import FlexiConv
 from zeta.nn.modules.flexible_mlp import CustomMLP
+from zeta.nn.modules.flow_matching import (
+    Flow,
+    FlowConfig,
+    MixtureFlow,
+    MixtureFlowConfig,
+)
+from zeta.nn.modules.flow_transformer import (
+    FlowMLP,
+    FlowTransformer,
+    FlowTransformerConfig,
+)
+from zeta.nn.modules.fractoral_norm import FractoralNorm
 from zeta.nn.modules.freeze_layers import (
     freeze_all_layers,
     set_module_requires_grad,
@@ -76,8 +95,10 @@ from zeta.nn.modules.image_to_text import img_to_text
 from zeta.nn.modules.img_or_video_to_time import image_or_video_to_time
 from zeta.nn.modules.img_patch_embed import ImgPatchEmbed
 from zeta.nn.modules.itca import IterativeCrossSelfAttention
+from zeta.nn.modules.kv_cache_update import kv_cache_with_update
 from zeta.nn.modules.lang_conv_module import ConvolutionLanguageBlock
 from zeta.nn.modules.laser import Laser
+from zeta.nn.modules.layer_scale import LayerScale
 from zeta.nn.modules.layernorm import LayerNorm, l2norm
 from zeta.nn.modules.leaky_relu import LeakyRELU
 from zeta.nn.modules.log_ff import LogFF
@@ -94,6 +115,7 @@ from zeta.nn.modules.mm_layernorm import MMLayerNorm
 from zeta.nn.modules.mm_ops import text_to_twod, threed_to_text
 from zeta.nn.modules.moe import MixtureOfExperts
 from zeta.nn.modules.moe_router import MoERouter
+from zeta.nn.modules.mr_adapter import MRAdapter
 from zeta.nn.modules.multi_input_multi_output import (
     DynamicInputChannels,
     DynamicOutputDecoder,
@@ -103,16 +125,25 @@ from zeta.nn.modules.multi_input_multi_output import (
     OutputHead,
     SplitMultiOutput,
 )
+from zeta.nn.modules.multi_layer_key_cache import MultiLayerKeyValueAttention
 from zeta.nn.modules.multi_scale_block import MultiScaleBlock
 from zeta.nn.modules.nebula import Nebula
 from zeta.nn.modules.nfn_stem import NFNStem
 from zeta.nn.modules.norm_fractorals import NormalizationFractral
 from zeta.nn.modules.norm_utils import PostNorm
 from zeta.nn.modules.p_scan import PScan, pscan
+from zeta.nn.modules.palo_ldp import PaloLDP
 from zeta.nn.modules.parallel_wrapper import Parallel
 from zeta.nn.modules.patch_img import patch_img
+from zeta.nn.modules.patch_linear_flatten import (
+    cls_tokens,
+    patch_linear_flatten,
+    video_patch_linear_flatten,
+    vit_output_head,
+)
 from zeta.nn.modules.patch_video import patch_video
 from zeta.nn.modules.perceiver_layer import PerceiverLayer
+from zeta.nn.modules.pixel_shuffling import PixelShuffleDownscale
 from zeta.nn.modules.poly_expert_fusion_network import MLPProjectionFusion
 from zeta.nn.modules.polymorphic_activation import PolymorphicActivation
 from zeta.nn.modules.polymorphic_neuron import PolymorphicNeuronLayer
@@ -123,19 +154,35 @@ from zeta.nn.modules.pyro import hyper_optimize
 from zeta.nn.modules.qformer import QFormer
 from zeta.nn.modules.qkv_norm import qk_norm, qkv_norm
 from zeta.nn.modules.quantized_layernorm import QuantizedLN
+from zeta.nn.modules.query_proposal import TextHawkQueryProposal
 from zeta.nn.modules.recursive_block import RecursiveBlock
+from zeta.nn.modules.relu_squared import ReluSquared
 from zeta.nn.modules.residual import Residual
 from zeta.nn.modules.resnet import ResNet
+from zeta.nn.modules.return_loss_text import (
+    TextTokenEmbedding,
+    calc_z_loss,
+    dropout_seq,
+    max_neg_value,
+    return_loss_text,
+    transformer_generate,
+)
 from zeta.nn.modules.rms_norm import RMSNorm
 from zeta.nn.modules.rnn_nlp import RNNL
+from zeta.nn.modules.scale_norm import ScaleNorm
 from zeta.nn.modules.shufflenet import ShuffleNet
 from zeta.nn.modules.sig_lip import SigLipLoss
+from zeta.nn.modules.sig_lip_loss import SigLipSigmoidLoss
+from zeta.nn.modules.sigmoid_attn import SigmoidAttention
 from zeta.nn.modules.simple_attention import simple_attention
 from zeta.nn.modules.simple_feedforward import SimpleFeedForward
+from zeta.nn.modules.simple_lstm import SimpleLSTM
 from zeta.nn.modules.simple_mamba import Mamba, MambaBlock
 from zeta.nn.modules.simple_res_block import SimpleResBlock
+from zeta.nn.modules.simple_rnn import SimpleRNN
 from zeta.nn.modules.skipconnection import SkipConnection
 from zeta.nn.modules.slerp_model_merger import SLERPModelMerger
+from zeta.nn.modules.snake_act import Snake
 from zeta.nn.modules.space_time_unet import (
     ContinuousPositionBias,
     Downsample,
@@ -145,6 +192,15 @@ from zeta.nn.modules.space_time_unet import (
     SpaceTimeUnet,
     SpatioTemporalAttention,
     Upsample,
+)
+from zeta.nn.modules.sparse_moe import (
+    HeirarchicalSparseMoE,
+    NormalSparseMoE,
+    Top2Gating,
+)
+from zeta.nn.modules.sparse_token_integration import (
+    SparseChannelIntegration,
+    SparseTokenIntegration,
 )
 from zeta.nn.modules.spatial_transformer import SpatialTransformer
 from zeta.nn.modules.ssm import SSM, selective_scan, selective_scan_seq
@@ -180,54 +236,6 @@ from zeta.nn.modules.vit_denoiser import (
 )
 from zeta.nn.modules.ws_conv2d import WSConv2d
 from zeta.nn.modules.yolo import yolo
-from zeta.nn.modules.palo_ldp import PaloLDP
-from zeta.nn.modules.relu_squared import ReluSquared
-from zeta.nn.modules.scale_norm import ScaleNorm
-from zeta.nn.modules.mr_adapter import MRAdapter
-from zeta.nn.modules.sparse_moe import (
-    Top2Gating,
-    NormalSparseMoE,
-    HeirarchicalSparseMoE,
-)
-from zeta.nn.modules.return_loss_text import (
-    return_loss_text,
-    calc_z_loss,
-    max_neg_value,
-    TextTokenEmbedding,
-    dropout_seq,
-    transformer_generate,
-)
-from zeta.nn.modules.patch_linear_flatten import (
-    vit_output_head,
-    patch_linear_flatten,
-    cls_tokens,
-    video_patch_linear_flatten,
-)
-from zeta.nn.modules.chan_layer_norm import ChanLayerNorm
-
-from zeta.nn.modules.query_proposal import TextHawkQueryProposal
-from zeta.nn.modules.pixel_shuffling import PixelShuffleDownscale
-from zeta.nn.modules.layer_scale import LayerScale
-from zeta.nn.modules.fractoral_norm import FractoralNorm
-from zeta.nn.modules.kv_cache_update import kv_cache_with_update
-from zeta.nn.modules.expand import expand
-from zeta.nn.modules.sig_lip_loss import SigLipSigmoidLoss
-from zeta.nn.modules.sparse_token_integration import (
-    SparseTokenIntegration,
-    SparseChannelIntegration,
-)
-from zeta.nn.modules.simple_lstm import SimpleLSTM
-from zeta.nn.modules.simple_rnn import SimpleRNN
-from zeta.nn.modules.cope import CoPE
-from zeta.nn.modules.multi_layer_key_cache import MultiLayerKeyValueAttention
-from zeta.nn.modules.evlm_xattn import GatedMoECrossAttn, GatedXAttention
-from zeta.nn.modules.snake_act import Snake
-from zeta.nn.modules.adaptive_gating import AdaptiveGating
-from zeta.nn.modules.crome_adapter import CROMEAdapter
-from zeta.nn.modules.cog_vlm_two_adapter import CogVLMTwoAdapter
-from zeta.nn.modules.sigmoid_attn import SigmoidAttention
-from zeta.nn.modules.flow_matching import Flow, MixtureFlow, MixtureFlowConfig, FlowConfig
-from zeta.nn.modules.flow_transformer import FlowTransformerConfig, FlowMLP, FlowTransformer
 
 # from zeta.nn.modules.img_reshape import image_reshape
 # from zeta.nn.modules.flatten_features import flatten_features
@@ -462,6 +470,6 @@ __all__ = [
     "MixtureFlowConfig",
     "FlowTransformerConfig",
     "FlowMLP",
-    "FlowTransformer",  
-    "FlowConfig",  
+    "FlowTransformer",
+    "FlowConfig",
 ]

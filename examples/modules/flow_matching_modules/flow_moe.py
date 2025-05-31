@@ -13,9 +13,7 @@ if __name__ == "__main__":
     training_metrics = model.train_model(save_dir=Path("checkpoints"))
 
     # Visualize results
-    model.visualize_flow(
-        save_path=Path("visualizations/flow_evolution.png")
-    )
+    model.visualize_flow(save_path=Path("visualizations/flow_evolution.png"))
     model.visualize_expert_specialization(
         save_path=Path("visualizations/expert_specialization.png")
     )

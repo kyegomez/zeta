@@ -14,4 +14,3 @@ if __name__ == "__main__":
 
     # Visualize results
     flow.visualize_flow(save_path=Path("flow_visualization.png"))
-

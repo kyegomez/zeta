@@ -5,7 +5,7 @@ experimental_tests.py
 __pycache__/
 *.py[cod]
 *$py.class
-
+experimental_tests
 # C extensions
 *.so
 
