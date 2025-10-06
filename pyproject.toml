@@ -70,7 +70,7 @@ local-attention = "*"
 loguru = "*"
 # Pin compatible versions to prevent import errors
 joblib = ">=1.3.0,<1.4.0"
-scikit-learn = ">=1.5.0,<1.6.0"
+scikit-learn = ">=1.5.0,<1.8.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
