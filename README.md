@@ -477,13 +477,11 @@ print(output.shape)  # torch.Size([32, 128, 512])
 
 Comprehensive documentation is available at [zeta.apac.ai](https://zeta.apac.ai/).
 
+## Quick Examples
+
+There are various examples that you can try out in the [examples folder](examples/README.md)
+
 ## Running Tests
-
-Install the pre-commit hooks to run linters, type checking, and a subset of tests on every commit:
-
-```bash
-pre-commit install
-```
 
 To run the full test suite:
 
