@@ -2,14 +2,15 @@
 ![Zeta banner](images/zeta.png)
 Build SOTA AI Models 80% faster with modular, high-performance, and scalable building blocks!
 
-[![Docs](https://readthedocs.org/projects/zeta/badge/)](https://zeta.readthedocs.io)
-
 <p>
   <a href="https://github.com/kyegomez/zeta/blob/main/LICENSE">
     <img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg" />
   </a>
   <a href="https://pypi.org/project/zetascale">
     <img alt="PyPI" src="https://badge.fury.io/py/zetascale.svg" />
+  </a>
+  <a href="https://zeta.readthedocs.io">
+    <img alt="Docs" src="https://readthedocs.org/projects/zeta/badge/" />
   </a>
 </p>
 <p>
