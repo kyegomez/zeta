@@ -237,19 +237,6 @@ from zeta.nn.modules.vit_denoiser import (
 from zeta.nn.modules.ws_conv2d import WSConv2d
 from zeta.nn.modules.yolo import yolo
 
-# from zeta.nn.modules.img_reshape import image_reshape
-# from zeta.nn.modules.flatten_features import flatten_features
-# from zeta.nn.modules.scaled_sinusoidal import ScaledSinuosidalEmbedding
-# from zeta.nn.modules.scale import Scale
-# from zeta.nn.modules.scalenorm import ScaleNorm
-# from zeta.nn.modules.simple_rmsnorm import SimpleRMSNorm
-# from zeta.nn.modules.gru_gating import GRUGating
-# from zeta.nn.modules.shift_tokens import ShiftTokens
-# from zeta.nn.modules.swarmalator import simulate_swarmalators
-# from zeta.nn.modules.transformations import image_transform
-# from zeta.nn.modules.squeeze_excitation import SqueezeExcitation
-# from zeta.nn.modules.clex import Clex
-
 __all__ = [
     "CNNNew",
     "CombinedLinear",

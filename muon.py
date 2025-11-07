@@ -1,7 +1,7 @@
 import math
 import torch
 import torch.nn as nn
-from zeta import Muon  # Assuming muon.py contains our implementation
+from zeta import Muon
 
 
 # Simple transformer layer

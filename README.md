@@ -520,7 +520,7 @@ Zeta is an open-source project, and contributions are welcome! If you want to cr
 - [Bug Report](https://github.com/kyegomez/zeta/issues/new/choose)
 - [Feature Request](https://github.com/kyegomez/zeta/issues/new/choose)
 
-## Thank you
+## Our Contributors
 
 Thank you to all of our contributors who have built this great framework 🙌
 
