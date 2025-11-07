@@ -5,17 +5,28 @@ Build SOTA AI Models 80% faster with modular, high-performance, and scalable bui
 [![Docs](https://readthedocs.org/projects/zeta/badge/)](https://zeta.readthedocs.io)
 
 <p>
-  <a href="https://github.com/kyegomez/zeta/blob/main/LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg" /></a>
-  <a href="https://pypi.org/project/zetascale"><img alt="MIT License" src="https://badge.fury.io/py/zetascale.svg" /></a>
+  <a href="https://github.com/kyegomez/zeta/blob/main/LICENSE">
+    <img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue.svg" />
+  </a>
+  <a href="https://pypi.org/project/zetascale">
+    <img alt="PyPI" src="https://badge.fury.io/py/zetascale.svg" />
+  </a>
+</p>
+<p>
+  <a href="https://discord.gg/EamjgSaEQf">
+    <img src="https://img.shields.io/badge/Discord-Join%20our%20server-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Join our Discord" />
+  </a>
+  <a href="https://www.youtube.com/@kyegomez3242">
+    <img src="https://img.shields.io/badge/YouTube-Subscribe-red?style=for-the-badge&logo=youtube&logoColor=white" alt="Subscribe on YouTube" />
+  </a>
+  <a href="https://www.linkedin.com/in/kye-g-38759a207/">
+    <img src="https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin&logoColor=white" alt="Connect on LinkedIn" />
+  </a>
+  <a href="https://x.com/kyegomezb">
+    <img src="https://img.shields.io/badge/X.com-Follow-1DA1F2?style=for-the-badge&logo=x&logoColor=white" alt="Follow on X.com" />
+  </a>
 </p>
 
-[![Join our Discord](https://img.shields.io/badge/Discord-Join%20our%20server-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/jM3Z6M9uMq) [![Subscribe on YouTube](https://img.shields.io/badge/YouTube-Subscribe-red?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@kyegomez3242) [![Connect on LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kye-g-38759a207/) [![Follow on X.com](https://img.shields.io/badge/X.com-Follow-1DA1F2?style=for-the-badge&logo=x&logoColor=white)](https://x.com/kyegomezb)
-
-[![GitHub issues](https://img.shields.io/github/issues/kyegomez/zeta)](https://github.com/kyegomez/zeta/issues) [![GitHub forks](https://img.shields.io/github/forks/kyegomez/zeta)](https://github.com/kyegomez/zeta/network) [![GitHub stars](https://img.shields.io/github/stars/kyegomez/zeta)](https://github.com/kyegomez/zeta/stargazers) [![GitHub license](https://img.shields.io/github/license/kyegomez/zeta)](https://github.com/kyegomez/zeta/blob/main/LICENSE)[![GitHub star chart](https://img.shields.io/github/stars/kyegomez/zeta?style=social)](https://star-history.com/#kyegomez/zeta)[![Dependency Status](https://img.shields.io/librariesio/github/kyegomez/zeta)](https://libraries.io/github/kyegomez/zeta) [![Downloads](https://static.pepy.tech/badge/zeta/month)](https://pepy.tech/project/zetascale)
-
-[![Join the Agora discord](https://img.shields.io/discord/1110910277110743103?label=Discord&logo=discord&logoColor=white&style=plastic&color=d7b023)![Share on Twitter](https://img.shields.io/twitter/url/https/twitter.com/cloudposse.svg?style=social&label=Share%20%40kyegomez/zeta)](https://twitter.com/intent/tweet?text=Check%20out%20this%20amazing%20AI%20project:%20&url=https%3A%2F%2Fgithub.com%2Fkyegomez%2Fzeta) [![Share on Facebook](https://img.shields.io/badge/Share-%20facebook-blue)](https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fgithub.com%2Fkyegomez%2Fzeta) [![Share on LinkedIn](https://img.shields.io/badge/Share-%20linkedin-blue)](https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fgithub.com%2Fkyegomez%2Fzeta&title=&summary=&source=)
-
-[![Share on Reddit](https://img.shields.io/badge/-Share%20on%20Reddit-orange)](https://www.reddit.com/submit?url=https%3A%2F%2Fgithub.com%2Fkyegomez%2Fzeta&title=zeta%20-%20the%20future%20of%20AI) [![Share on Hacker News](https://img.shields.io/badge/-Share%20on%20Hacker%20News-orange)](https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fgithub.com%2Fkyegomez%2Fzeta&t=zeta%20-%20the%20future%20of%20AI) [![Share on Pinterest](https://img.shields.io/badge/-Share%20on%20Pinterest-red)](https://pinterest.com/pin/create/button/?url=https%3A%2F%2Fgithub.com%2Fkyegomez%2Fzeta&media=https%3A%2F%2Fexample.com%2Fimage.jpg&description=zeta%20-%20the%20future%20of%20AI) [![Share on WhatsApp](https://img.shields.io/badge/-Share%20on%20WhatsApp-green)](https://api.whatsapp.com/send?text=Check%20out%20zeta%20-%20the%20future%20of%20AI%20%23zeta%20%23AI%0A%0Ahttps%3A%2F%2Fgithub.com%2Fkyegomez%2Fzeta)
 
 After building out thousands of neural nets and facing the same annoying bottlenecks of chaotic codebases with no modularity and low performance modules, Zeta needed to be born to enable me and others to quickly prototype, train, and optimize the latest SOTA neural nets and deploy them into production. 
 
@@ -598,19 +609,14 @@ python3 -m pytest tests/                 # whole test suite
 
 Join our growing community around the world, for real-time support, ideas, and discussions on how to build better models 😊 
 
-- View our official [Docs](https://zeta.apac.ai)
-- Chat live with us on [Discord](https://discord.gg/kS3rwKs3ZC)
-- Follow us on [Twitter](https://twitter.com/kyegomez)
-- Connect with us on [LinkedIn](https://www.linkedin.com/company/the-swarm-corporation)
-- Visit us on [YouTube](https://www.youtube.com/channel/UC9yXyitkbU_WSy7bd_41SqQ)
-- [Join the Swarms community on Discord!](https://discord.gg/AJazBmhKnr)
+| Platform    | Link                                                                         | Description                 |
+|-------------|------------------------------------------------------------------------------|-----------------------------|
+| Docs        | [zeta.apac.ai](https://zeta.apac.ai)                                         | Official documentation      |
+| Discord     | [Join our Discord](https://discord.gg/EamjgSaEQf)                            | Live chat & community       |
+| Twitter     | [@kyegomez](https://twitter.com/kyegomez)                                    | Follow for updates          |
+| LinkedIn    | [The Swarm Corporation](https://www.linkedin.com/company/the-swarm-corporation) | Connect professionally      |
+| YouTube     | [YouTube Channel](https://www.youtube.com/channel/UC9yXyitkbU_WSy7bd_41SqQ)  | Watch our videos            |
 
----
-
-# 🤝 Schedule a 1-on-1 Session
-Want to train a custom AI model for a real-world task like General Multi-Modal Models, Facial Recognitions, Drug Discovery, Humanoid Robotics? I'll help you create the model architecture then train the model and then optimize it to meet your quality assurance standards.
-
-Book a [1-on-1 Session with Kye here.](https://calendly.com/apacai/agora), the Creator, to discuss any issues, provide feedback, or explore how we can improve Zeta for you or help you build your own custom models!
 
 ## 🫶 Contributions:
 
@@ -624,22 +630,20 @@ Zeta is an open-source project, and contributions are VERY welcome. If you want 
 
 ----
 
-## Accelerate Backlog
-Help us accelerate our backlog by supporting us financially! Note, we're an open source corporation and so all the revenue we generate is through donations at the moment ;)
 
-<a href="https://polar.sh/kyegomez"><img src="https://polar.sh/embed/fund-our-backlog.svg?org=kyegomez" /></a>
+# Citation
+If you use the zeta framework in your projects or papers please Cite Zeta so that we can continue to grow awareness of the framework and project.
+
+```bibtex
+@misc{zetascale,
+    title = {Zetascale Framework},
+    author = {Kye Gomez and },
+    year = {2024},
+    howpublished = {\url{https://github.com/kyegomez/zeta}},
+}
+```
 
 
 # License 
 - Apache
 
-
-# Citation
-```bibtex
-@misc{zetascale,
-    title = {Zetascale Framework},
-    author = {Kye Gomez},
-    year = {2024},
-    howpublished = {\url{https://github.com/kyegomez/zeta}},
-}
-```
