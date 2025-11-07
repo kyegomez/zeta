@@ -507,7 +507,7 @@ Join our growing community for real-time support, ideas, and discussions on buil
 
 ## Contributing
 
-Zeta is an open-source project, and contributions are welcome! Whether you want to create new features, fix bugs, or improve the infrastructure, we'd love to have you contribute.
+Zeta is an open-source project, and contributions are welcome! If you want to create new features, fix bugs, or improve the infrastructure, we'd love to have you contribute.
 
 **Getting Started:**
 
@@ -520,10 +520,16 @@ Zeta is an open-source project, and contributions are welcome! Whether you want 
 - [Bug Report](https://github.com/kyegomez/zeta/issues/new/choose)
 - [Feature Request](https://github.com/kyegomez/zeta/issues/new/choose)
 
+## Thank you
+
+Thank you to all of our contributors who have built this great framework 🙌
 
 <a href="https://github.com/kyegomez/zeta/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=kyegomez/zeta" alt="Contributors" />
 </a>
+
+---
+
 
 ## Citation
 
