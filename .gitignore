@@ -8,6 +8,8 @@ __pycache__/
 experimental_tests
 experimental
 
+experimental/
+
 # C extensions
 *.so
 

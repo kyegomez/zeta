@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "zetascale"
-version = "2.8.6"
-description = "Rapidly Build, Optimize, and Train SOTA AI Models"
+version = "2.8.8"
+description = "LEGO blocks for AI: Build state-of-the-art models faster with modular PyTorch components."
 authors = ["Zeta Team <kye@apac.ai>"]
 license = "MIT"
 readme = "README.md"
