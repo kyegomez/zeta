@@ -1,6 +1,8 @@
+# Zeta
 
 ![Zeta banner](images/zeta.png)
-Build SOTA AI Models 80% faster with modular, high-performance, and scalable building blocks!
+
+**Zeta** is a modular PyTorch framework designed to simplify the development of AI models by providing reusable, high-performance building blocks. Think of it as a collection of LEGO blocks for AI—each component is carefully crafted, tested, and optimized, allowing you to quickly assemble state-of-the-art models without reinventing the wheel.
 
 <p>
   <a href="https://github.com/kyegomez/zeta/blob/main/LICENSE">
@@ -28,129 +30,115 @@ Build SOTA AI Models 80% faster with modular, high-performance, and scalable bui
   </a>
 </p>
 
+## Overview
 
-After building out thousands of neural nets and facing the same annoying bottlenecks of chaotic codebases with no modularity and low performance modules, Zeta needed to be born to enable me and others to quickly prototype, train, and optimize the latest SOTA neural nets and deploy them into production. 
+Zeta provides a comprehensive library of modular components commonly used in modern AI architectures, including:
 
-Zeta places a radical emphasis on useability, modularity, and performance. Zeta is now currently employed in 100s of models across my github and across others. 
-Get started below and LMK if you want my help building any model, I'm here for you 😊 💜 
+- **Attention Mechanisms**: Multi-query attention, sigmoid attention, flash attention, and more
+- **Mixture of Experts (MoE)**: Efficient expert routing and gating mechanisms
+- **Neural Network Modules**: Feedforward networks, activation functions, normalization layers
+- **Quantization**: BitLinear, dynamic quantization, and other optimization techniques
+- **Architectures**: Transformers, encoders, decoders, vision transformers, and complete model implementations
+- **Training Utilities**: Optimization algorithms, logging, and performance monitoring
 
 
-# Install
+Each component is designed to be:
+- **Modular**: Drop-in replacements that work seamlessly with PyTorch
+- **High-Performance**: Optimized implementations with fused kernels where applicable
+- **Well-Tested**: Comprehensive test coverage ensuring reliability
+- **Production-Ready**: Used in hundreds of models across various domains
+
+## Installation
 
 ```bash
-$ pip3 install -U zetascale
+pip3 install -U zetascale
 ```
 
-# Usage
+## Quick Start
 
-## Starting Your Journey
+### Multi-Query Attention
 
-Creating a model empowered with the aforementioned breakthrough research features is a breeze. Here's how to quickly materialize the renowned Multi Query Attention
+Multi-query attention reduces memory usage while maintaining model quality by sharing key and value projections across attention heads.
 
 ```python
 import torch
 from zeta import MultiQueryAttention
 
-# Model
+# Initialize the model
 model = MultiQueryAttention(
     dim=512,
     heads=8,
 )
 
-# Input
+# Forward pass
 text = torch.randn(2, 4, 512)
-
-# Output
 output, _, _ = model(text)
-print(output.shape)
-print(output)
-
+print(output.shape)  # torch.Size([2, 4, 512])
 ```
 
+### SwiGLU Activation
 
-
-### `SwiGLU`
-The SwiGLU activation function takes an input tensor and applies a gating mechanism to selectively pass information. It consists of two parts: the "switch" gate and the "glu" gate. The switch gate controls the flow of information, while the glu gate performs a non-linear transformation on the input.
-
+The SwiGLU activation function applies a gating mechanism to selectively pass information through the network.
 
 ```python
 import torch
-
 from zeta.nn import SwiGLUStacked
 
 x = torch.randn(5, 10)
 swiglu = SwiGLUStacked(10, 20)
-swiglu(x).shape
+output = swiglu(x)
+print(output.shape)  # torch.Size([5, 20])
 ```
 
-In this example, we first import the necessary modules, including torch for tensor operations and SwiGLUStacked from zeta.nn for the SwiGLU activation function.
+### Relative Position Bias
 
-We then create a random input tensor x with a shape of (5, 10). Next, we instantiate an instance of SwiGLUStacked with an input size of 10 and an output size of 20.
-
-Finally, we pass the input tensor x to the swiglu module, which applies the SwiGLU activation function to it. The resulting output tensor is stored in the output variable. We print the shape of the output tensor to see the
-
--------
-
-### RelativePositionBias
-`RelativePositionBias` quantizes the distance between two positions into a certain number of buckets and then uses an embedding to get the relative position bias. This mechanism aids in the attention mechanism by providing biases based on relative positions between the query and key, rather than relying solely on their absolute positions.
+Relative position bias quantizes the distance between positions into buckets and uses embeddings to provide position-aware attention biases.
 
 ```python
 import torch
 from torch import nn
-
 from zeta.nn import RelativePositionBias
 
-# Initialize the RelativePositionBias module
+# Initialize the module
 rel_pos_bias = RelativePositionBias()
 
-# Example 1: Compute bias for a single batch
+# Compute bias for attention mechanism
 bias_matrix = rel_pos_bias(1, 10, 10)
 
-
-# Example 2: Utilize in conjunction with an attention mechanism
-# NOTE: This is a mock example, and may not represent an actual attention mechanism's complete implementation.
-class MockAttention(nn.Module):
+# Use in custom attention
+class CustomAttention(nn.Module):
     def __init__(self):
         super().__init__()
         self.rel_pos_bias = RelativePositionBias()
 
     def forward(self, queries, keys):
         bias = self.rel_pos_bias(queries.size(0), queries.size(1), keys.size(1))
-        # Further computations with bias in the attention mechanism...
-        return None  # Placeholder
-
-
-# Example 3: Modify default configurations
-custom_rel_pos_bias = RelativePositionBias(
-    bidirectional=False, num_buckets=64, max_distance=256, num_heads=8
-)
+        # Use bias in attention computation
+        return None
 ```
 
-### `FeedForward`
-The FeedForward module performs a feedforward operation on the input tensor x. It consists of a multi-layer perceptron (MLP) with an optional activation function and LayerNorm. 
-Used in most language, multi-modal, and modern neural networks.
+### FeedForward Network
+
+A flexible feedforward module with optional GLU activation and LayerNorm, commonly used in transformer architectures.
 
 ```python
 import torch
-
 from zeta.nn import FeedForward
 
 model = FeedForward(256, 512, glu=True, post_act_ln=True, dropout=0.2)
-
 x = torch.randn(1, 256)
-
 output = model(x)
-print(output.shape)
+print(output.shape)  # torch.Size([1, 512])
 ```
 
-### `BitLinear`
-- The BitLinear module performs linear transformation on the input data, followed by quantization and dequantization. The quantization process is performed using the absmax_quantize function, which quantizes the input tensor based on the absolute maximum value, [from the paper](https://arxiv.org/abs/2310.11453)
+### BitLinear Quantization
+
+BitLinear performs linear transformation with quantization and dequantization, reducing memory usage while maintaining performance. Based on [BitNet: Scaling 1-bit Transformers for Large Language Models](https://arxiv.org/abs/2310.11453).
+
 ```python
 import torch
 from torch import nn
-
 import zeta.quant as qt
-
 
 class MyModel(nn.Module):
     def __init__(self):
@@ -160,26 +148,18 @@ class MyModel(nn.Module):
     def forward(self, x):
         return self.linear(x)
 
-
-# Initialize the model
 model = MyModel()
-
-# Create a random tensor of size (128, 10)
 input = torch.randn(128, 10)
-
-# Perform the forward pass
 output = model(input)
-
-# Print the size of the output
 print(output.size())  # torch.Size([128, 20])
 ```
 
-### `PalmE`
-This is an implementation of the multi-modal Palm-E model using a decoder llm as the backbone with an VIT image encoder to process vision, it's very similiar to GPT4, Kosmos, RTX2, and many other multi-modality model architectures
+### PalmE: Multi-Modal Architecture
+
+A complete implementation of the PalmE multi-modal model architecture, combining a ViT image encoder with a transformer decoder for vision-language tasks.
 
 ```python
 import torch
-
 from zeta.structs import (
     AutoRegressiveWrapper,
     Decoder,
@@ -188,46 +168,14 @@ from zeta.structs import (
     ViTransformerWrapper,
 )
 
-
 class PalmE(torch.nn.Module):
     """
-        PalmE is a transformer architecture that uses a ViT encoder and a transformer decoder.
-
-        Args:
-
-            image_size (int): Size of the image.
-            patch_size (int): Size of the patch.
-            encoder_dim (int): Dimension of the encoder.
-            encoder_depth (int): Depth of the encoder.
-            encoder_heads (int): Number of heads in the encoder.
-            num_tokens (int): Number of tokens.
-            max_seq_len (int): Maximum sequence length.
-            decoder_dim (int): Dimension of the decoder.
-            decoder_depth (int): Depth of the decoder.
-            decoder_heads (int): Number of heads in the decoder.
-            alibi_num_heads (int): Number of heads in the alibi attention.
-            attn_kv_heads (int): Number of heads in the attention key-value projection.
-            use_abs_pos_emb (bool): Whether to use absolute positional embeddings.
-            cross_attend (bool): Whether to cross attend in the decoder.
-            alibi_pos_bias (bool): Whether to use positional bias in the alibi attention.
-            rotary_xpos (bool): Whether to use rotary positional embeddings.
-            attn_flash (bool): Whether to use attention flash.
-            qk_norm (bool): Whether to normalize the query and key in the attention layer.
-
-        Returns:
-
-                torch.Tensor: The output of the model.
-
-        Usage:
-
-    img = torch.randn(1, 3, 256, 256)
-    text = torch.randint(0, 20000, (1, 1024))
-    model = PalmE()
-    output = model(img, text)
-    print(output)
-
+    PalmE is a transformer architecture that uses a ViT encoder and a transformer decoder.
+    
+    This implementation demonstrates how to combine Zeta's modular components to build
+    a complete multi-modal model architecture.
     """
-
+    
     def __init__(
         self,
         image_size=256,
@@ -250,17 +198,19 @@ class PalmE(torch.nn.Module):
         qk_norm=True,
     ):
         super().__init__()
-
-        # vit architecture
+        
+        # Vision encoder
         self.encoder = ViTransformerWrapper(
             image_size=image_size,
             patch_size=patch_size,
             attn_layers=Encoder(
-                dim=encoder_dim, depth=encoder_depth, heads=encoder_heads
+                dim=encoder_dim, 
+                depth=encoder_depth, 
+                heads=encoder_heads
             ),
         )
-
-        # palm model architecture
+        
+        # Language decoder
         self.decoder = Transformer(
             num_tokens=num_tokens,
             max_seq_len=max_seq_len,
@@ -278,63 +228,46 @@ class PalmE(torch.nn.Module):
                 qk_norm=qk_norm,
             ),
         )
-
-        # autoregressive wrapper to enable generation of tokens
+        
+        # Enable autoregressive generation
         self.decoder = AutoRegressiveWrapper(self.decoder)
-
+    
     def forward(self, img: torch.Tensor, text: torch.Tensor):
         """Forward pass of the model."""
-        try:
-            encoded = self.encoder(img, return_embeddings=True)
-            return self.decoder(text, context=encoded)
-        except Exception as error:
-            print(f"Failed in forward method: {error}")
-            raise
+        encoded = self.encoder(img, return_embeddings=True)
+        return self.decoder(text, context=encoded)
 
-
-# Usage with random inputs
+# Usage
 img = torch.randn(1, 3, 256, 256)
 text = torch.randint(0, 20000, (1, 1024))
-
-# Initiliaze the model
 model = PalmE()
 output = model(img, text)
-print(output)
+print(output.shape)
 ```
 
+### U-Net Architecture
 
-### `Unet`
-Unet is a famous convolutional neural network architecture originally used for biomedical image segmentation but soon became the backbone of the generative AI Mega-revolution. The architecture comprises two primary pathways: downsampling and upsampling, followed by an output convolution. Due to its U-shape, the architecture is named U-Net. Its symmetric architecture ensures that the context (from downsampling) and the localization (from upsampling) are captured effectively.
+A complete U-Net implementation for image segmentation and generative tasks.
 
 ```python
 import torch
-
 from zeta.nn import Unet
 
-# Initialize the U-Net model
 model = Unet(n_channels=1, n_classes=2)
-
-# Random input tensor with dimensions [batch_size, channels, height, width]
 x = torch.randn(1, 1, 572, 572)
-
-# Forward pass through the model
 y = model(x)
-
-# Output
 print(f"Input shape: {x.shape}")
 print(f"Output shape: {y.shape}")
 ```
 
+### Vision Embeddings
 
-### `VisionEmbeddings`
-The VisionEmbedding class is designed for converting images into patch embeddings, making them suitable for processing by transformer-based models. This class plays a crucial role in various computer vision tasks and enables the integration of vision data into transformer architectures!
+Convert images into patch embeddings suitable for transformer-based vision models.
 
 ```python
 import torch
-
 from zeta.nn import VisionEmbedding
 
-# Create an instance of VisionEmbedding
 vision_embedding = VisionEmbedding(
     img_size=224,
     patch_size=16,
@@ -344,128 +277,102 @@ vision_embedding = VisionEmbedding(
     prepend_cls_token=True,
 )
 
-# Load an example image (3 channels, 224x224)
 input_image = torch.rand(1, 3, 224, 224)
-
-# Perform image-to-patch embedding
 output = vision_embedding(input_image)
-
-# The output now contains patch embeddings, ready for input to a transformer model
+print(output.shape)
 ```
 
+### Dynamic Quantization with Niva
 
-### `niva`
-Niva focuses on weights of certain layers (specified by quantize_layers). Ideal for models where runtime activation is variable. 👁️ Example Layers: nn.Embedding, nn.LSTM. 
+Niva provides dynamic quantization for specific layer types, ideal for models with variable runtime activations.
 
 ```python
 import torch
-
+from torch import nn
 from zeta import niva
 
 # Load a pre-trained model
 model = YourModelClass()
 
-# Quantize the model dynamically, specifying layers to quantize
+# Quantize the model dynamically
 niva(
     model=model,
-    model_path="path_to_pretrainedim_weights.pt",
-    output_path="quantizedim.pt",
+    model_path="path_to_pretrained_weights.pt",
+    output_path="quantized_model.pt",
     quant_type="dynamic",
     quantize_layers=[nn.Linear, nn.Conv2d],
     dtype=torch.qint8,
 )
 ```
 
+### Fused Operations
 
-### `FusedDenseGELUDense`
-Increase model speed by 2x with this module that fuses together 2 hyper-optimized dense ops from bits and bytes and a gelu together!
+Zeta includes several fused operations that combine multiple operations into single kernels for improved performance.
+
+#### FusedDenseGELUDense
+
+Fuses two dense operations with GELU activation for up to 2x speedup.
 
 ```python
 import torch
-
 from zeta.nn import FusedDenseGELUDense
 
 x = torch.randn(1, 512)
 model = FusedDenseGELUDense(512, 1024)
 out = model(x)
-out.shape
+print(out.shape)  # torch.Size([1, 1024])
 ```
 
+#### FusedDropoutLayerNorm
 
-### `FusedDropoutLayerNorm`
-FusedDropoutLayerNorm is a fused kernel of dropout and layernorm to speed up FFNs or MLPS by 2X
+Fuses dropout and layer normalization for faster feedforward networks.
 
 ```python
 import torch
-from torch import nn
-
 from zeta.nn import FusedDropoutLayerNorm
 
-# Initialize the module
 model = FusedDropoutLayerNorm(dim=512)
-
-# Create a sample input tensor
 x = torch.randn(1, 512)
-
-# Forward pass
 output = model(x)
-
-# Check output shape
-print(output.shape)  # Expected: torch.Size([1, 512])
+print(output.shape)  # torch.Size([1, 512])
 ```
 
+### Mamba: State Space Model
 
-### `Mamba`
-Pytorch implementation of the new SSM model architecture Mamba
+PyTorch implementation of the Mamba state space model architecture.
 
 ```python
 import torch
-
 from zeta.nn import MambaBlock
 
-# Initialize Mamba
 block = MambaBlock(dim=64, depth=1)
-
-# Random input
 x = torch.randn(1, 10, 64)
-
-# Apply the model to the block
 y = block(x)
-
-print(y.shape)
-# torch.Size([1, 10, 64])
+print(y.shape)  # torch.Size([1, 10, 64])
 ```
 
-### `FiLM`
+### FiLM: Feature-wise Linear Modulation
+
+Feature-wise Linear Modulation for conditional feature transformation.
 
 ```python
 import torch
-
 from zeta.nn import Film
 
-# Initialize the Film layer
 film_layer = Film(dim=128, hidden_dim=64, expanse_ratio=4)
-
-# Create some dummy data for conditions and hiddens
-conditions = torch.randn(10, 128)  # Batch size is 10, feature size is 128
-hiddens = torch.randn(
-    10, 1, 128
-)  # Batch size is 10, sequence length is 1, feature size is 128
-
-# Pass the data through the Film layer
+conditions = torch.randn(10, 128)
+hiddens = torch.randn(10, 1, 128)
 modulated_features = film_layer(conditions, hiddens)
-
-# Print the shape of the output
-print(modulated_features.shape)  # Should be [10, 1, 128]
+print(modulated_features.shape)  # torch.Size([10, 1, 128])
 ```
 
-### `hyper_optimize`
-A single wrapper for torch.fx, torch.script, torch.compile, dynamic quantization, mixed precision through torch.amp, with execution time metrics all in once place!
+### Model Optimization
+
+The `hyper_optimize` decorator` provides a unified interface for multiple optimization techniques.
+
 ```python
 import torch
-
 from zeta.nn import hyper_optimize
-
 
 @hyper_optimize(
     torch_fx=False,
@@ -478,60 +385,47 @@ from zeta.nn import hyper_optimize
 def model(x):
     return x @ x
 
-
 out = model(torch.randn(1, 3, 32, 32))
 print(out)
 ```
 
+### Direct Policy Optimization (DPO)
 
-### DPO - Direct Policy Optimization
-Direct Policy Optimization employed for many RLHF applications for LLMs.
+DPO implementation for reinforcement learning from human feedback (RLHF) applications.
 
 ```python
 import torch
 from torch import nn
-
 from zeta.rl import DPO
 
-
-# Define a simple policy model
 class PolicyModel(nn.Module):
     def __init__(self, dim, output_dim):
         super().__init__()
         self.fc = nn.Linear(dim, output_dim)
-
+    
     def forward(self, x):
         return self.fc(x)
-
 
 dim = 10
 output_dim = 5
 policy_model = PolicyModel(dim, output_dim)
-
-# Initialize DPO with the policy model
 dpo_model = DPO(model=policy_model, beta=0.1)
 
-# Sample preferred and unpreferred sequences
 preferred_seq = torch.randint(0, output_dim, (3, dim))
 unpreferred_seq = torch.randint(0, output_dim, (3, dim))
-
-# Compute loss
 loss = dpo_model(preferred_seq, unpreferred_seq)
 print(loss)
 ```
 
+### PyTorch Model Logging
 
-## PyTorch Model Logging
-A decorator that logs the execution of the pytorch model, including parameters, gradients, and memory usage.
+A decorator for comprehensive model execution logging, including parameters, gradients, and memory usage.
 
 ```python
-from zeta.utils import verbose_execution
-
 import torch
 from torch import nn
 from zeta.utils.verbose_execution import verbose_execution
 
-# # Configure Loguru (optional)
 @verbose_execution(log_params=True, log_gradients=True, log_memory=True)
 class YourPyTorchModel(nn.Module):
     def __init__(self):
@@ -539,8 +433,8 @@ class YourPyTorchModel(nn.Module):
         self.conv1 = nn.Conv2d(3, 64, 3)
         self.relu = nn.ReLU()
         self.flatten = nn.Flatten()
-        self.fc = nn.Linear(64 * 222 * 222, 10)  # Adjusted input size
-
+        self.fc = nn.Linear(64 * 222 * 222, 10)
+    
     def forward(self, x):
         x = self.conv1(x)
         x = self.relu(x)
@@ -548,26 +442,22 @@ class YourPyTorchModel(nn.Module):
         x = self.fc(x)
         return x
 
-# Create and use your model
 model = YourPyTorchModel()
 input_tensor = torch.randn(1, 3, 224, 224)
 output = model(input_tensor)
 
-# If you want to see gradient information, you need to perform a backward pass
+# Gradient information requires backward pass
 loss = output.sum()
 loss.backward()
 ```
 
+### Sigmoid Attention
 
-## Sigmoid Attention
-
-Attention 18% faster with sigmoid instead of attention. replace traditional softmax in attention with a sigmoid and a constant (not learned) scalar bias based on the sequence length.
-
+An attention mechanism that replaces softmax with sigmoid, providing up to 18% speedup while maintaining performance.
 
 ```python
 import torch
 from zeta import SigmoidAttention
-from loguru import logger
 
 batch_size = 32
 seq_len = 128
@@ -575,40 +465,37 @@ dim = 512
 heads = 8
 
 x = torch.rand(batch_size, seq_len, dim)
-mask = torch.ones(batch_size, seq_len, seq_len)  # Example mask
+mask = torch.ones(batch_size, seq_len, seq_len)
 
 sigmoid_attn = SigmoidAttention(dim, heads, seq_len)
 output = sigmoid_attn(x, mask)
-print(output.shape)
+print(output.shape)  # torch.Size([32, 128, 512])
 ```
 
+## Documentation
 
+Comprehensive documentation is available at [zeta.apac.ai](https://zeta.apac.ai/).
 
-# Documentation
-All classes must have documentation if you see a class or function without documentation then please report it to me at kye@apac.ai,
+## Running Tests
 
-Documentation is at [zeta.apac.ai](https://zeta.apac.ai/)
-
-
--------
-
-
-# Running tests
-You should install the pre-commit hooks with pre-commit install. This will run the linter, mypy, and a subset of the tests on every commit.
-
-For more examples on how to run the full test suite please refer to the CI workflow.
-
-Some examples of running tests locally:
+Install the pre-commit hooks to run linters, type checking, and a subset of tests on every commit:
 
 ```bash
-python3 -m pip install -e '.[testing]'  # install extra deps for testing
-python3 -m pytest tests/                 # whole test suite
+pre-commit install
 ```
-----
+
+To run the full test suite:
+
+```bash
+python3 -m pip install -e '.[testing]'  # Install extra dependencies for testing
+python3 -m pytest tests/                # Run the entire test suite
+```
+
+For more details, refer to the CI workflow configuration.
 
 ## Community
 
-Join our growing community around the world, for real-time support, ideas, and discussions on how to build better models 😊 
+Join our growing community for real-time support, ideas, and discussions on building better AI models.
 
 | Platform    | Link                                                                         | Description                 |
 |-------------|------------------------------------------------------------------------------|-----------------------------|
@@ -618,33 +505,39 @@ Join our growing community around the world, for real-time support, ideas, and d
 | LinkedIn    | [The Swarm Corporation](https://www.linkedin.com/company/the-swarm-corporation) | Connect professionally      |
 | YouTube     | [YouTube Channel](https://www.youtube.com/channel/UC9yXyitkbU_WSy7bd_41SqQ)  | Watch our videos            |
 
+## Contributing
 
-## 🫶 Contributions:
+Zeta is an open-source project, and contributions are welcome! Whether you want to create new features, fix bugs, or improve the infrastructure, we'd love to have you contribute.
 
-The easiest way to contribute is to pick any issue with the `good first issue` tag 💪. Read the Contributing guidelines [here](/CONTRIBUTING.md). Bug Report? [File here](https://github.com/kyegomez/zeta/issues/new/choose) | Feature Request? [File here](https://github.com/kyegomez/zeta/issues/new/choose)
+**Getting Started:**
 
-Zeta is an open-source project, and contributions are VERY welcome. If you want to contribute, you can create new features, fix bugs, or improve the infrastructure. Please refer to the [CONTRIBUTING.md](https://github.com/kyegomez/zeta/blob/master/CONTRIBUTING.md) and our [contributing board](https://github.com/users/kyegomez/projects/1) to participate in Roadmap discussions!
+- Pick any issue with the `good first issue` tag to get started
+- Read our [Contributing Guidelines](CONTRIBUTING.md)
+- Check out our [contributing board](https://github.com/users/kyegomez/projects/1) for roadmap discussions
+
+**Report Issues:**
+
+- [Bug Report](https://github.com/kyegomez/zeta/issues/new/choose)
+- [Feature Request](https://github.com/kyegomez/zeta/issues/new/choose)
+
 
 <a href="https://github.com/kyegomez/zeta/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=kyegomez/zeta" />
+  <img src="https://contrib.rocks/image?repo=kyegomez/zeta" alt="Contributors" />
 </a>
 
-----
+## Citation
 
-
-# Citation
-If you use the zeta framework in your projects or papers please Cite Zeta so that we can continue to grow awareness of the framework and project.
+If you use Zeta in your research or projects, please cite it:
 
 ```bibtex
 @misc{zetascale,
     title = {Zetascale Framework},
-    author = {Kye Gomez and },
+    author = {Kye Gomez},
     year = {2024},
     howpublished = {\url{https://github.com/kyegomez/zeta}},
 }
 ```
 
+## License
 
-# License 
-- Apache
-
+Apache 2.0 License
