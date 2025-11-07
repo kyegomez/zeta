@@ -2,7 +2,7 @@
 
 ![Zeta banner](images/zeta.png)
 
-**Zeta** is a modular PyTorch framework designed to simplify the development of AI models by providing reusable, high-performance building blocks. Think of it as a collection of LEGO blocks for AI—each component is carefully crafted, tested, and optimized, allowing you to quickly assemble state-of-the-art models without reinventing the wheel.
+**Zeta** is a modular PyTorch framework designed to simplify the development of AI models by providing reusable, high-performance building blocks. Think of it as a collection of LEGO blocks for AI each component is carefully crafted, tested, and optimized, allowing you to quickly assemble state-of-the-art models without reinventing the wheel.
 
 <p>
   <a href="https://github.com/kyegomez/zeta/blob/main/LICENSE">

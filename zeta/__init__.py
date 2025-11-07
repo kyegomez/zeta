@@ -11,8 +11,3 @@ from zeta.nn.quant import *  # noqa: F403, E402
 from zeta.rl import *  # noqa: F403, E402
 from zeta.training import *  # noqa: F403, E402
 from zeta.utils import *  # noqa: F403, E402
-
-try:
-    from zeta.experimental import *  # noqa: F403, E402
-except ImportError:
-    pass
